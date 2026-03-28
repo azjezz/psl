@@ -15,6 +15,8 @@ use Psl\H2\Frame\FrameType;
  * by events such as sending/receiving HEADERS, END_STREAM, RST_STREAM, and PUSH_PROMISE frames.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-5.1
+ *
+ * @api
  */
 enum StreamState
 {

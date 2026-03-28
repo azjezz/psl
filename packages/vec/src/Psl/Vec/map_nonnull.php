@@ -28,6 +28,8 @@ use Closure;
  * @param (Closure(Tv): (T|null)) $function
  *
  * @return list<T>
+ *
+ * @api
  */
 function map_nonnull(iterable $iterable, Closure $function): array
 {

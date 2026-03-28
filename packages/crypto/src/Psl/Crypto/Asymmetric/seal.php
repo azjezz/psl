@@ -13,6 +13,8 @@ use function sodium_crypto_box_seal;
  * Seal a message for a recipient's public key (anonymous sender).
  *
  * Only the holder of the corresponding secret key can open the sealed message.
+ *
+ * @api
  */
 function seal(#[SensitiveParameter] string $plaintext, #[SensitiveParameter] PublicKey $publicKey): string
 {

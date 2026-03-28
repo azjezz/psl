@@ -31,6 +31,8 @@ use function substr;
  * should use its own Decoder instance.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc7541
+ *
+ * @api
  */
 final class Decoder
 {

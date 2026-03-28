@@ -6,4 +6,7 @@ namespace Psl\IO\Exception;
 
 use Psl;
 
+/**
+ * @api
+ */
 interface ExceptionInterface extends Psl\Exception\ExceptionInterface {}

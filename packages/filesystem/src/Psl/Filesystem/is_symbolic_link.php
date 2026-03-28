@@ -10,6 +10,8 @@ use function is_link as php_is_link;
  * Check whether $symbolicLink exists and is a symbolic link.
  *
  * @param non-empty-string $node Path, absolute or relative to the current working directory.
+ *
+ * @api
  */
 function is_symbolic_link(string $node): bool
 {

@@ -6,6 +6,9 @@ namespace Psl\Crypto\Signing;
 
 use SensitiveParameter;
 
+/**
+ * @api
+ */
 interface VerifierInterface
 {
     /**

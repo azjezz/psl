@@ -10,6 +10,8 @@ use function mb_strtoupper;
  * Returns the string with all alphabetic characters converted to uppercase.
  *
  * @pure
+ *
+ * @api
  */
 function uppercase(string $string, Encoding $encoding = Encoding::Utf8): string
 {

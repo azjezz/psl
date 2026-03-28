@@ -30,6 +30,8 @@ use function Psl\Graph\Internal\get_node_key;
  * @return list<TNode>
  *
  * @pure
+ *
+ * @api
  */
 function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
 {

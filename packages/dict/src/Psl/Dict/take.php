@@ -19,6 +19,8 @@ namespace Psl\Dict;
  * @param int<0, max> $n Number of elements to take from the start
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function take(iterable $iterable, int $n): array
 {

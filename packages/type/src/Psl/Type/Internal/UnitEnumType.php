@@ -16,6 +16,8 @@ use function sprintf;
  * @template T of UnitEnum
  *
  * @extends Type\Type<T>
+ *
+ * @internal
  */
 final readonly class UnitEnumType extends Type\Type
 {

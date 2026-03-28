@@ -16,6 +16,8 @@ use function str_contains;
  *
  * @throws Psl\Exception\InvariantViolationException If $key contains an ASCII equals sign `=`, the NUL character `\0`,
  *                                                   or when the $value contains the NUL character.
+ *
+ * @api
  */
 function set_var(string $key, string $value): void
 {

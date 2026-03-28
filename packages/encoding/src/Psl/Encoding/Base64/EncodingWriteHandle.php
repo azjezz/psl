@@ -14,6 +14,8 @@ use function substr;
 /**
  * A write handle that accepts raw binary data, buffers until {@see CHUNK_SIZE} (57) byte chunks
  * are available, base64-encodes each chunk, and writes to the inner handle with {@see LINE_ENDING}.
+ *
+ * @api
  */
 final class EncodingWriteHandle implements IO\WriteHandleInterface
 {

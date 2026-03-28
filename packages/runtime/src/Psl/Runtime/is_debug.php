@@ -10,6 +10,8 @@ use const PHP_DEBUG;
  * Return true if PHP was built with debugging enabled.
  *
  * @pure
+ *
+ * @api
  */
 function is_debug(): bool
 {

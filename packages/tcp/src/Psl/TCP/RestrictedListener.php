@@ -24,6 +24,8 @@ use Psl\Network;
  *       new CIDR\Block('10.0.0.0/8'),
  *       IP\Address::parse('127.0.0.1'),
  *   ]);
+ *
+ * @api
  */
 final readonly class RestrictedListener implements ListenerInterface
 {

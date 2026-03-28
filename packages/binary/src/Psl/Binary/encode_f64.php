@@ -10,6 +10,8 @@ use function pack;
  * Encode a 64-bit floating point value to a binary string.
  *
  * @pure
+ *
+ * @api
  */
 function encode_f64(float $value, Endianness $endianness = Endianness::Big): string
 {

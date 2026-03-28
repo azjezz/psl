@@ -18,6 +18,8 @@ use function count;
  * Deferred closures run concurrently. {@see awaitAll()} blocks until every
  * task has completed. If one or more tasks throw, all exceptions are collected
  * and thrown as a {@see Exception\CompositeException} after every task finishes.
+ *
+ * @api
  */
 final class TaskGroup
 {

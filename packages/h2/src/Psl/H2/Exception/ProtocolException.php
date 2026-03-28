@@ -12,6 +12,8 @@ use Throwable;
  *
  * Carries the appropriate {@see ErrorCode} to include in the GOAWAY
  * or RST_STREAM frame sent to the peer.
+ *
+ * @api
  */
 final class ProtocolException extends RuntimeException
 {

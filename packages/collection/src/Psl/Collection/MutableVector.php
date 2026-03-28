@@ -28,6 +28,8 @@ use const ARRAY_FILTER_USE_BOTH;
  * @template T
  *
  * @implements MutableVectorInterface<T>
+ *
+ * @api
  */
 final class MutableVector implements MutableVectorInterface
 {

@@ -12,6 +12,8 @@ use Stringable;
  * The authority component has the form: [userinfo@]host[:port]
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3986#section-3.2
+ *
+ * @api
  */
 final readonly class Authority implements Stringable
 {

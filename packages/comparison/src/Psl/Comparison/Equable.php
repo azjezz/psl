@@ -6,6 +6,8 @@ namespace Psl\Comparison;
 
 /**
  * @template T
+ *
+ * @api
  */
 interface Equable
 {

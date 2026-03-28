@@ -9,6 +9,8 @@ namespace Psl\Str;
  * it doesn't end with the suffix.
  *
  * @pure
+ *
+ * @api
  */
 function strip_suffix(string $string, string $suffix, Encoding $encoding = Encoding::Utf8): string
 {

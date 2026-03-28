@@ -12,6 +12,8 @@ use Revolt\EventLoop;
  * The common use case for this is if your async function actually has to wait for some blocking call,
  * you can tell other Awaitables in the async scheduler that they can work while this one waits for
  * the blocking call to finish (e.g., maybe in a polling situation or something).
+ *
+ * @api
  */
 function later(): void
 {

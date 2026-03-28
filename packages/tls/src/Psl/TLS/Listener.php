@@ -19,6 +19,8 @@ use Psl\Network;
  *       $stream = $listener->accept();
  *       // $stream is TLS-encrypted
  *   }
+ *
+ * @api
  */
 final readonly class Listener implements ListenerInterface
 {

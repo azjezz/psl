@@ -20,6 +20,8 @@ use function unpack;
  * as a Structured Fields serialization.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9218
+ *
+ * @api
  */
 final readonly class PriorityUpdateFrame implements FrameInterface
 {

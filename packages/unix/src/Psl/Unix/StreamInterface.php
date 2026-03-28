@@ -8,5 +8,7 @@ use Psl\Network;
 
 /**
  * A connected Unix domain socket stream.
+ *
+ * @api
  */
 interface StreamInterface extends Network\StreamInterface {}

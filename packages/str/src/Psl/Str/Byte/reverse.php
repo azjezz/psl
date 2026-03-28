@@ -10,6 +10,8 @@ use function strrev;
  * Reverses the string.
  *
  * @pure
+ *
+ * @api
  */
 function reverse(string $string): string
 {

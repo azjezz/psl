@@ -27,6 +27,8 @@ use function max;
  * @return int<0, max>
  *
  * @pure
+ *
+ * @api
  */
 function depth(NodeInterface $tree): int
 {

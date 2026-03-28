@@ -9,6 +9,9 @@ use Throwable;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class UnhandledAwaitableException extends RuntimeException implements ExceptionInterface
 {
     public static function forThrowable(Throwable $throwable): UnhandledAwaitableException

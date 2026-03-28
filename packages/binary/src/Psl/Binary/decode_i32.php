@@ -15,6 +15,8 @@ use function unpack;
  * @return int<-2147483648, 2147483647>
  *
  * @pure
+ *
+ * @api
  */
 function decode_i32(string $bytes, Endianness $endianness = Endianness::Big): int
 {

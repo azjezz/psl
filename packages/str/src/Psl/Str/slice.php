@@ -19,6 +19,8 @@ use function mb_substr;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @pure
+ *
+ * @api
  */
 function slice(string $string, int $offset, null|int $length = null, Encoding $encoding = Encoding::Utf8): string
 {

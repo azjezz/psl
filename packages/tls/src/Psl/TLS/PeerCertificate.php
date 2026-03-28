@@ -12,6 +12,8 @@ use Psl\DateTime;
  * Wraps parsed certificate data without exposing the underlying OpenSSL extension types.
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class PeerCertificate
 {

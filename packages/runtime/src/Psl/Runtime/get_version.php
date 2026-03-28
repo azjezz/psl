@@ -12,6 +12,8 @@ use const PHP_VERSION;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function get_version(): string
 {

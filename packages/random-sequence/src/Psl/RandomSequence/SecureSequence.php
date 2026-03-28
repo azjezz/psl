@@ -10,6 +10,8 @@ use Psl\SecureRandom;
 
 /**
  * A Cryptographically Secure PRNG.
+ *
+ * @api
  */
 final class SecureSequence implements DefaultInterface, SequenceInterface
 {

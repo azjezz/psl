@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Ansi\Screen;
 
+/**
+ * @api
+ */
 enum EraseMode: int
 {
     case Below = 0;

@@ -21,6 +21,8 @@ use function sprintf;
  * @implements Interoperability\FromStdlib<DateTimeImmutable>
  * @implements Interoperability\ToIntl<IntlCalendar>
  * @implements Interoperability\FromIntl<IntlCalendar>
+ *
+ * @api
  */
 final readonly class DateTime implements
     DateTimeInterface,
@@ -639,6 +641,18 @@ final readonly class DateTime implements
 
     /**
      * @psalm-mutation-free
+     *
+     * @return array{
+     *     timezone: Timezone,
+     *     timestamp: Timestamp,
+     *     year: int,
+     *     month: int<1, 12>,
+     *     day: int<1, 31>,
+     *     hours: int<0, 23>,
+     *     minutes: int<0, 59>,
+     *     seconds: int<0, 59>,
+     *     nanoseconds: int<0, 999999999>,
+     * }
      */
     #[Override]
     public function jsonSerialize(): array

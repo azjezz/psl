@@ -10,6 +10,8 @@ use function hash_equals;
  * Timing attack safe string comparison.
  *
  * @pure
+ *
+ * @api
  */
 function equals(string $knownString, string $userString): bool
 {

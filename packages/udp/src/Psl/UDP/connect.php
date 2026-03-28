@@ -15,6 +15,8 @@ use Psl\Network;
  * @param int<0, 65535> $port
  *
  * @throws Network\Exception\RuntimeException If binding or connecting fails.
+ *
+ * @api
  */
 function connect(string $host, int $port): ConnectedSocket
 {

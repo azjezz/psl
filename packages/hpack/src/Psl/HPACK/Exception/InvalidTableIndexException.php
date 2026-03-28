@@ -6,6 +6,8 @@ namespace Psl\HPACK\Exception;
 
 /**
  * Exception thrown when an invalid HPACK table index is referenced.
+ *
+ * @api
  */
 final class InvalidTableIndexException extends InvalidArgumentException
 {

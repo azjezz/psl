@@ -17,6 +17,8 @@ use function substr;
  * Decrypt a message using authenticated public-key decryption.
  *
  * @throws Exception\DecryptionException If decryption fails.
+ *
+ * @api
  */
 function decrypt(
     #[SensitiveParameter]

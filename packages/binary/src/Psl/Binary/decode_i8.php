@@ -15,6 +15,8 @@ use function unpack;
  * @return int<-128, 127>
  *
  * @pure
+ *
+ * @api
  */
 function decode_i8(string $bytes): int
 {

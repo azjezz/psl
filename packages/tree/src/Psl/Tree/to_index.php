@@ -33,6 +33,8 @@ use Closure;
  * @return list<int<0, max>>|null null if no node matches the predicate
  *
  * @pure
+ *
+ * @api
  */
 function to_index(NodeInterface $tree, Closure $predicate): null|array
 {

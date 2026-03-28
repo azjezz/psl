@@ -13,6 +13,8 @@ use function sodium_crypto_box_publickey_from_secretkey;
  * Generate a new X25519 key pair for key exchange.
  *
  * @throws SecureRandom\Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy for key generation.
+ *
+ * @api
  */
 function generate_key_pair(): KeyPair
 {

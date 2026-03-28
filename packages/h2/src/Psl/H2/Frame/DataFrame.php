@@ -15,6 +15,8 @@ use function substr;
  * Carries the application data payload for a stream.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.1
+ *
+ * @api
  */
 final readonly class DataFrame implements FrameInterface
 {

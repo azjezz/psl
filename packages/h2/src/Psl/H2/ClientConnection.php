@@ -17,6 +17,8 @@ use Psl\IO;
  * @link https://datatracker.ietf.org/doc/html/rfc9113
  *
  * @mago-expect analysis:deprecated-class
+ *
+ * @api
  */
 final class ClientConnection implements ClientConnectionInterface
 {

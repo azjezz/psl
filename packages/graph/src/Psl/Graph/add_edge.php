@@ -29,6 +29,8 @@ namespace Psl\Graph;
  * @return ($graph is DirectedGraph<TNode, TWeight> ? DirectedGraph<TNode, TWeight> : UndirectedGraph<TNode, TWeight>)
  *
  * @pure
+ *
+ * @api
  */
 function add_edge(
     DirectedGraph|UndirectedGraph $graph,

@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @param TypeInterface<T> $innerType
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function json_decoded(TypeInterface $innerType): TypeInterface
 {

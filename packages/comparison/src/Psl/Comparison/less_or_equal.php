@@ -9,6 +9,8 @@ namespace Psl\Comparison;
  *
  * @param T $a
  * @param T $b
+ *
+ * @api
  */
 function less_or_equal(mixed $a, mixed $b): bool
 {

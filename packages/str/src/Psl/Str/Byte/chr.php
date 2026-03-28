@@ -10,6 +10,8 @@ use function chr as php_chr;
  * Return a specific character.
  *
  * @pure
+ *
+ * @api
  */
 function chr(int $ascii): string
 {

@@ -15,6 +15,8 @@ use Psl\IO;
  * This is the core type for connected network streams (TCP, Unix, TLS).
  * It extends SocketInterface with read/write capabilities, peer address access,
  * data peeking (reading without consuming), and write-side shutdown.
+ *
+ * @api
  */
 interface StreamInterface extends
     SocketInterface,

@@ -8,6 +8,9 @@ use Psl\Crypto;
 use Psl\Crypto\Exception;
 use Psl\IO;
 
+/**
+ * @api
+ */
 interface StreamEncryptorInterface extends Crypto\StreamEncryptorInterface
 {
     /**

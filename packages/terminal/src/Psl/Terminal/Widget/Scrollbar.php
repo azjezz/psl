@@ -17,6 +17,8 @@ use function array_values;
  *
  * Renders a 1-character-wide vertical scrollbar with a track (`░`) and thumb (`█`).
  * The thumb size and position are calculated from content length, viewport length, and scroll position.
+ *
+ * @api
  */
 final class Scrollbar implements WidgetInterface
 {

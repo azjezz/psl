@@ -15,6 +15,8 @@ use function str_word_count;
  *                            the word inside the string and the value is the actual word itself
  *
  * @pure
+ *
+ * @api
  */
 function words(string $string, null|string $charactersList = null): array
 {

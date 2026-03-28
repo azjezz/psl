@@ -10,6 +10,8 @@ use ReflectionClass;
  * Checks if class is final.
  *
  * @param class-string $className
+ *
+ * @api
  */
 function is_final(string $className): bool
 {

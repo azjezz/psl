@@ -8,5 +8,7 @@ use Psl\Network\Exception;
 
 /**
  * Exception thrown when a TLS handshake fails.
+ *
+ * @api
  */
 final class HandshakeFailedException extends Exception\RuntimeException implements ExceptionInterface {}

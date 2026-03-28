@@ -46,3 +46,8 @@ ignore = [
 ]
 plugins = ["php-standard-library"]
 strict-list-index-checks = true
+find-unused-parameters = true
+find-unused-expressions = true
+find-unused-definitions = true
+trust-existence-checks = false
+check-missing-type-hints = true

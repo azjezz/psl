@@ -16,6 +16,8 @@ use Psl\Option\Option;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return Option<Tk>
+ *
+ * @api
  */
 function last_key_opt(iterable $iterable): Option
 {

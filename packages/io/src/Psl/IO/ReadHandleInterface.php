@@ -10,6 +10,8 @@ use Psl\Async\NullCancellationToken;
 
 /**
  * An `IO\Handle` that is readable.
+ *
+ * @api
  */
 interface ReadHandleInterface extends HandleInterface
 {

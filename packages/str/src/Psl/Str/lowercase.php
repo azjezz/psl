@@ -28,6 +28,8 @@ use function mb_strtolower;
  * @return lowercase-string
  *
  * @pure
+ *
+ * @api
  */
 function lowercase(string $string, Encoding $encoding = Encoding::Utf8): string
 {

@@ -11,6 +11,8 @@ use const SODIUM_CRYPTO_SCALARMULT_SCALARBYTES;
  * The length of a key exchange secret key in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const SECRET_KEY_BYTES = SODIUM_CRYPTO_SCALARMULT_SCALARBYTES;
 
@@ -18,6 +20,8 @@ const SECRET_KEY_BYTES = SODIUM_CRYPTO_SCALARMULT_SCALARBYTES;
  * The length of a key exchange public key in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const PUBLIC_KEY_BYTES = SODIUM_CRYPTO_SCALARMULT_BYTES;
 
@@ -25,5 +29,7 @@ const PUBLIC_KEY_BYTES = SODIUM_CRYPTO_SCALARMULT_BYTES;
  * The length of the shared secret in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const SHARED_SECRET_BYTES = SODIUM_CRYPTO_SCALARMULT_BYTES;

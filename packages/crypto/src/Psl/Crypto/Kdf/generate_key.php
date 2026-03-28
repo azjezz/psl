@@ -10,6 +10,8 @@ use function sodium_crypto_kdf_keygen;
 
 /**
  * Generate a new random KDF master key.
+ *
+ * @api
  */
 function generate_key(): Key
 {

@@ -16,6 +16,8 @@ namespace Psl\Str;
  *      => Str('fooab')
  *
  * @pure
+ *
+ * @api
  */
 function concat(string $string, string ...$rest): string
 {

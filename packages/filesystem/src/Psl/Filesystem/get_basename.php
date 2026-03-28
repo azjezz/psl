@@ -19,6 +19,8 @@ use function basename as php_basename;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function get_basename(string $path, null|string $suffix = null): string
 {

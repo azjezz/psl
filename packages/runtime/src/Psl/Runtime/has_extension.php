@@ -12,6 +12,8 @@ use function extension_loaded;
  * @param non-empty-string $extension
  *
  * @psalm-mutation-free
+ *
+ * @api
  */
 function has_extension(string $extension): bool
 {

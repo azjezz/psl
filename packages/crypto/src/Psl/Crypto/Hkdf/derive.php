@@ -20,6 +20,8 @@ use function sodium_memzero;
  * @see https://tools.ietf.org/html/rfc5869
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function derive(
     #[SensitiveParameter]

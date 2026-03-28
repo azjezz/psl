@@ -10,6 +10,9 @@ use Psl\File;
 use Psl\File\Lock;
 use Psl\File\LockType;
 
+/**
+ * @internal
+ */
 abstract readonly class AbstractHandleWrapper implements File\HandleInterface
 {
     public function __construct(

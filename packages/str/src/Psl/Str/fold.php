@@ -15,6 +15,8 @@ namespace Psl\Str;
  * @return lowercase-string
  *
  * @pure
+ *
+ * @api
  */
 function fold(string $string, Encoding $encoding = Encoding::Utf8): string
 {

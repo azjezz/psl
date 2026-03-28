@@ -10,6 +10,8 @@ namespace Psl\Str\Byte;
  * @return int<0, 255>
  *
  * @pure
+ *
+ * @api
  */
 function ord(string $character): int
 {

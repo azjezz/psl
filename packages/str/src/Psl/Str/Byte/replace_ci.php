@@ -11,6 +11,8 @@ use function str_ireplace;
  * `$replacement` (case-insensitive).
  *
  * @pure
+ *
+ * @api
  */
 function replace_ci(string $haystack, string $needle, string $replacement): string
 {

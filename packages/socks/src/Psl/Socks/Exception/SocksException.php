@@ -8,5 +8,7 @@ use Psl\Network\Exception;
 
 /**
  * Exception thrown when a SOCKS5 protocol operation fails.
+ *
+ * @api
  */
 class SocksException extends Exception\RuntimeException implements ExceptionInterface {}

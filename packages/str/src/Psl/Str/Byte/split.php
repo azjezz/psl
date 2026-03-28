@@ -18,6 +18,8 @@ use function explode;
  * @return list<string>
  *
  * @pure
+ *
+ * @api
  */
 function split(string $string, string $delimiter, null|int $limit = null): array
 {

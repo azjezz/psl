@@ -8,5 +8,7 @@ use Psl\Exception;
 
 /**
  * Marker interface for all Cache component exceptions.
+ *
+ * @api
  */
 interface ExceptionInterface extends Exception\ExceptionInterface {}

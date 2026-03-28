@@ -12,6 +12,8 @@ use Override;
  * @template T
  *
  * @implements NodeInterface<T>
+ *
+ * @api
  */
 final readonly class LeafNode implements NodeInterface
 {

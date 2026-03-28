@@ -24,6 +24,8 @@ use Closure;
  * @param (Closure(Tv): bool) $predicate
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function take_while(iterable $iterable, Closure $predicate): array
 {

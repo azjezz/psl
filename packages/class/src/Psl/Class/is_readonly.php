@@ -10,6 +10,8 @@ use ReflectionClass;
  * Checks if class is read only.
  *
  * @param class-string $className
+ *
+ * @api
  */
 function is_readonly(string $className): bool
 {

@@ -8,6 +8,8 @@ namespace Psl\Range;
  * @throws Exception\InvalidRangeException If the lower bound is greater than the upper bound.
  *
  * @psalm-mutation-free
+ *
+ * @api
  */
 function between(int $lowerBound, int $upperBound, bool $upperInclusive = false): BetweenRange
 {

@@ -6,6 +6,8 @@ namespace Psl\Ansi\Color;
 
 /**
  * @pure
+ *
+ * @api
  */
 function magenta(): Color
 {

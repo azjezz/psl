@@ -10,6 +10,8 @@ use Psl\Async\NullCancellationToken;
 
 /**
  * @template T
+ *
+ * @api
  */
 interface SenderInterface extends ChannelInterface
 {

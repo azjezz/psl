@@ -14,13 +14,13 @@ final class TableState {}
 
 $app = Terminal\Application::create(new TableState(), title: 'Table Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, TableState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, TableState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }
 });
 
-$app->run(static function (Terminal\Frame $frame, TableState $state): void {
+$app->run(static function (Terminal\Frame $frame, TableState $_state): void {
     Widget\Table::new()
         ->headers(['Name', 'Status', 'CPU'])
         ->widths([15, 10, 8])

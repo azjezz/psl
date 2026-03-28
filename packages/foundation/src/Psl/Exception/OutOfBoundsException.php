@@ -6,4 +6,7 @@ namespace Psl\Exception;
 
 use OutOfBoundsException as OutOfBoundsRootException;
 
+/**
+ * @api
+ */
 class OutOfBoundsException extends OutOfBoundsRootException implements ExceptionInterface {}

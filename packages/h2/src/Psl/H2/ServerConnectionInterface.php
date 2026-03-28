@@ -17,6 +17,8 @@ use Psl\IO;
  * reading the client preface, sending response headers, and server push.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113
+ *
+ * @api
  */
 interface ServerConnectionInterface extends ConnectionInterface
 {

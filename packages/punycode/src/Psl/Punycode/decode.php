@@ -12,6 +12,8 @@ use Psl\Punycode\Internal\Codec;
  * @link https://datatracker.ietf.org/doc/html/rfc3492#section-6.2
  *
  * @throws Exception\EncodingException If the input is malformed or decoding overflows.
+ *
+ * @api
  */
 function decode(string $input): string
 {

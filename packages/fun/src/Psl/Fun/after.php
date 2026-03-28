@@ -19,6 +19,8 @@ use Closure;
  * @return (Closure(I): R)
  *
  * @pure
+ *
+ * @api
  */
 function after(Closure $first, Closure $next): Closure
 {

@@ -22,6 +22,8 @@ use const PHP_INT_MIN;
  * @psalm-external-mutation-free
  *
  * @return ($min is int<1, max> ? positive-int : ($min is int<0, max> ? non-negative-int : int))
+ *
+ * @api
  */
 function int(int $min = PHP_INT_MIN, int $max = PHP_INT_MAX): int
 {

@@ -13,13 +13,13 @@ final class LayoutState {}
 
 $app = Terminal\Application::create(new LayoutState(), title: 'Layout Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, LayoutState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, LayoutState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }
 });
 
-$app->run(static function (Terminal\Frame $frame, LayoutState $state): void {
+$app->run(static function (Terminal\Frame $frame, LayoutState $_state): void {
     $buffer = $frame->buffer();
 
     // Vertical split: header (3 rows) + content (fill) + footer (1 row)

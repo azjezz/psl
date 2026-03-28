@@ -13,6 +13,8 @@ use Psl\Ansi\OperatingSystemCommandKind;
  * Supported by Windows Terminal, ConEmu, Kitty, and Ghostty.
  *
  * @pure
+ *
+ * @api
  */
 function progress_clear(): OperatingSystemCommand
 {

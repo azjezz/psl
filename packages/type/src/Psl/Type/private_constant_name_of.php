@@ -10,6 +10,8 @@ namespace Psl\Type;
  * @param class-string $classname
  *
  * @return TypeInterface<non-empty-string>
+ *
+ * @api
  */
 function private_constant_name_of(string $classname): TypeInterface
 {

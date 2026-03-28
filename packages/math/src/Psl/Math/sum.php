@@ -12,6 +12,8 @@ use function array_sum;
  * @param list<int> $numbers
  *
  * @pure
+ *
+ * @api
  */
 function sum(array $numbers): int
 {

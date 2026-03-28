@@ -14,6 +14,8 @@ namespace Psl\Type;
  * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<array<Tk, Tv>>
+ *
+ * @api
  */
 function dict(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {

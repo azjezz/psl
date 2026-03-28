@@ -24,6 +24,8 @@ use const STREAM_SOCK_STREAM;
  * @return array{StreamInterface, StreamInterface}
  *
  * @throws Exception\RuntimeException If unable to create the socket pair.
+ *
+ * @api
  */
 function socket_pair(): array
 {

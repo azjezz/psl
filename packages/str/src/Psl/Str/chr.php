@@ -20,6 +20,8 @@ use function mb_chr;
  * @throws Exception\OutOfBoundsException If the code point is out of the valid Unicode range.
  *
  * @pure
+ *
+ * @api
  */
 function chr(int $codepoint, Encoding $encoding = Encoding::Utf8): string
 {

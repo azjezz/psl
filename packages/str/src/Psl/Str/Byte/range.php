@@ -38,6 +38,8 @@ use Psl\Str\Exception;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @pure
+ *
+ * @api
  */
 function range(string $string, RangeInterface $range): string
 {

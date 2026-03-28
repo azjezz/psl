@@ -28,6 +28,8 @@ use Closure;
  * @param (Closure(T): bool) $predicate
  *
  * @return list<T>|null null if no node matches the predicate
+ *
+ * @api
  */
 function path_to(NodeInterface $tree, Closure $predicate): null|array
 {

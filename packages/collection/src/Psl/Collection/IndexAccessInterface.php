@@ -9,6 +9,8 @@ namespace Psl\Collection;
  *
  * @template Tk of array-key
  * @template Tv
+ *
+ * @api
  */
 interface IndexAccessInterface
 {

@@ -6,6 +6,8 @@ namespace Psl\Terminal;
 
 /**
  * No-op raw mode switcher for remote scenarios where the client manages raw mode.
+ *
+ * @api
  */
 final class NoopRawModeSwitcher implements RawModeSwitcherInterface
 {

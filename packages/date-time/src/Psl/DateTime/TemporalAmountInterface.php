@@ -21,6 +21,8 @@ use Stringable;
  *
  * @extends Comparison\Equable<TemporalAmountInterface>
  * @implements Interoperability\ToStdlib<DateInterval>
+ *
+ * @api
  */
 interface TemporalAmountInterface extends Comparison\Equable, JsonSerializable, Stringable, Interoperability\ToStdlib
 {

@@ -11,6 +11,8 @@ namespace Psl\H2\Event;
  * allowing clients to signal priority preferences using Structured Fields syntax.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9218
+ *
+ * @api
  */
 final readonly class PriorityUpdateReceived implements EventInterface
 {

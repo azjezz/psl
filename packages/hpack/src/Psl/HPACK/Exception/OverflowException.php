@@ -9,6 +9,8 @@ use Throwable;
 
 /**
  * @inheritors HeaderListSizeException|IntegerOverflowException
+ *
+ * @api
  */
 class OverflowException extends Exception\OverflowException implements ExceptionInterface
 {

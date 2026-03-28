@@ -12,6 +12,8 @@ use Psl\IO;
  *
  * Each read method reads the required number of bytes from the underlying
  * handle and decodes the value, avoiding loading all data into memory.
+ *
+ * @api
  */
 final readonly class HandleReader implements ReaderInterface
 {

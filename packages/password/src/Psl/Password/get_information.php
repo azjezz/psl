@@ -24,6 +24,8 @@ use const PASSWORD_BCRYPT_DEFAULT_COST;
  * @return array{algorithm: Algorithm, options: array{cost: int}|array{memory_cost: int, time_cost: int, threads: int}}
  *
  * @pure
+ *
+ * @api
  */
 function get_information(string $hash): array
 {

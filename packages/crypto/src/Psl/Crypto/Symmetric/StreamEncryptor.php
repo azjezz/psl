@@ -20,6 +20,9 @@ use function unpack;
 use const SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL;
 use const SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_MESSAGE;
 
+/**
+ * @api
+ */
 final readonly class StreamEncryptor implements StreamEncryptorInterface
 {
     public function __construct(

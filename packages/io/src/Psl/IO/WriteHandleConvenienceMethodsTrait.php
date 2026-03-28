@@ -14,6 +14,8 @@ use function substr;
 
 /**
  * @require-implements WriteHandleInterface
+ *
+ * @api
  */
 trait WriteHandleConvenienceMethodsTrait
 {

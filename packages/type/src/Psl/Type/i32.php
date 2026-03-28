@@ -10,6 +10,8 @@ namespace Psl\Type;
  * @mago-expect analysis:impure-static-variable - The $instance is always the same and is considered pure.
  *
  * @return TypeInterface<int<-2147483648, 2147483647>>
+ *
+ * @api
  */
 function i32(): TypeInterface
 {

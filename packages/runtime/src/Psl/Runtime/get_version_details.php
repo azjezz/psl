@@ -15,6 +15,8 @@ use const PHP_RELEASE_VERSION;
  * @return array{major: non-empty-string, minor: non-empty-string, release: non-empty-string, extra: non-empty-string|null}
  *
  * @pure
+ *
+ * @api
  */
 function get_version_details(): array
 {

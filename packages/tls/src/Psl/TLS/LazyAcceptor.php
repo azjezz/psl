@@ -35,6 +35,8 @@ use const STREAM_PEEK;
  *       };
  *       $tls = $hello->complete($config);
  *   }
+ *
+ * @api
  */
 final class LazyAcceptor implements DefaultInterface
 {

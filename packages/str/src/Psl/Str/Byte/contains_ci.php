@@ -17,6 +17,8 @@ use Psl\Str;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
+ *
+ * @api
  */
 function contains_ci(string $haystack, string $needle, int $offset = 0): bool
 {

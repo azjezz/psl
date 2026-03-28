@@ -17,6 +17,8 @@ use Closure;
  * @throws Exception\CompositeException If multiple functions failed at once.
  *
  * @return array<Tk, Tv> an array containing the results, preserving the original functions order.
+ *
+ * @api
  */
 function concurrently(iterable $tasks): array
 {

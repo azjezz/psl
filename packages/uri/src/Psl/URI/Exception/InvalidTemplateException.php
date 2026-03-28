@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\URI\Exception;
 
+/**
+ * @api
+ */
 final class InvalidTemplateException extends InvalidArgumentException
 {
     private function __construct(string $message)

@@ -15,6 +15,8 @@ use function sprintf;
  * @throws Exception\RuntimeException If unable to copy $source to $destination.
  * @throws Exception\NotFoundException If $source is not found.
  * @throws Exception\NotReadableException If $source is not readable.
+ *
+ * @api
  */
 function copy(string $source, string $destination, bool $overwrite = false): void
 {

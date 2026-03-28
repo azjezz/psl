@@ -20,6 +20,8 @@ use Psl\Default\DefaultInterface;
  * - Full: Full format, offering the most detailed time representation, including hour, minute, second, and time zone (e.g., 5:30:00 PM Pacific Standard Time).
  *
  * The default format style is Medium.
+ *
+ * @api
  */
 enum TimeStyle implements DefaultInterface
 {

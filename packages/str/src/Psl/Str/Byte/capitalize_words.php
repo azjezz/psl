@@ -13,6 +13,8 @@ use function ucwords;
  * vertical tab by default, but you can specify custom delimiters.
  *
  * @pure
+ *
+ * @api
  */
 function capitalize_words(string $string, string $delimiters = " \t\r\n\f\v"): string
 {

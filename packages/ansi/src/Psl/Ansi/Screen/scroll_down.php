@@ -9,6 +9,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 
 /**
  * @pure
+ *
+ * @api
  */
 function scroll_down(int $lines = 1): ControlSequenceIntroducer
 {

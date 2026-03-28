@@ -15,6 +15,8 @@ use function strlen;
  * Otherwise, Q-encoding or B-encoding is chosen based on the proportion of non-ASCII bytes.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2047
+ *
+ * @api
  */
 function encode(string $text, Encoding $charset = Encoding::Utf8): string
 {

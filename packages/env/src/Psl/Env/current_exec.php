@@ -10,6 +10,8 @@ use function realpath;
 
 /**
  * Returns the full filesystem path of the current running executable.
+ *
+ * @api
  */
 function current_exec(): string
 {

@@ -8,6 +8,8 @@ use Psl\Ansi\Exception;
 
 /**
  * @immutable
+ *
+ * @api
  */
 final readonly class Color
 {

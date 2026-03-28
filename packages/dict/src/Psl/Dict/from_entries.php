@@ -14,6 +14,8 @@ namespace Psl\Dict;
  * @param iterable<list{Tk, Tv}> $entries
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function from_entries(iterable $entries): array
 {

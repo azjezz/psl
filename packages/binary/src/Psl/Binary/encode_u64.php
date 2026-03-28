@@ -15,6 +15,8 @@ use function pack;
  * @throws Exception\OverflowException If $value is negative.
  *
  * @pure
+ *
+ * @api
  */
 function encode_u64(int $value, Endianness $endianness = Endianness::Big): string
 {

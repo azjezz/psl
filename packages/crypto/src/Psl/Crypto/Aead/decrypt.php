@@ -18,6 +18,8 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_decrypt;
  *
  * @throws Exception\DecryptionException If decryption fails.
  * @throws Exception\RuntimeException If AES-256-GCM is not available.
+ *
+ * @api
  */
 function decrypt(
     #[SensitiveParameter]

@@ -6,4 +6,7 @@ namespace Psl\Exception;
 
 use InvalidArgumentException as InvalidArgumentRootException;
 
+/**
+ * @api
+ */
 class InvalidArgumentException extends InvalidArgumentRootException implements ExceptionInterface {}

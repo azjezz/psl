@@ -16,6 +16,8 @@ namespace Psl\Math;
  * @return T
  *
  * @pure
+ *
+ * @api
  */
 function minva(int|float $first, int|float $second, int|float ...$rest): int|float
 {

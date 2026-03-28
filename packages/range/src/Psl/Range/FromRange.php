@@ -31,6 +31,8 @@ use const PHP_INT_MAX;
  * @see LowerBoundRangeInterface::getLowerBound()
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class FromRange implements LowerBoundRangeInterface
 {

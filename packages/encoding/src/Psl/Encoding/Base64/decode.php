@@ -14,6 +14,8 @@ use Psl\Encoding\Exception;
  * @throws Exception\RangeException If the encoded string contains characters outside
  *                                  the base64 characters range.
  * @throws Exception\IncorrectPaddingException If the encoded string has an incorrect padding.
+ *
+ * @api
  */
 function decode(string $base64, Variant $variant = Variant::Standard, bool $explicitPadding = true): string
 {

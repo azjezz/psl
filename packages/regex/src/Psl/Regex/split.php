@@ -21,6 +21,8 @@ use const PREG_SPLIT_NO_EMPTY;
  * @return list<string>
  *
  * @pure
+ *
+ * @api
  */
 function split(string $subject, string $pattern, null|int $limit = null): array
 {

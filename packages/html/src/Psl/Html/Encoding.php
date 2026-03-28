@@ -14,6 +14,8 @@ use Psl\Default\DefaultInterface;
  * HTML documents and web development. It includes various Unicode, Western European,
  * Cyrillic, Chinese, Japanese, and other character sets to support internationalization
  * and localization of web content.
+ *
+ * @api
  */
 enum Encoding: string implements DefaultInterface
 {

@@ -18,6 +18,8 @@ use function iterator_to_array;
  * @param iterable<T> $values
  *
  * @return array<T, int>
+ *
+ * @api
  */
 function count_values(iterable $values): array
 {

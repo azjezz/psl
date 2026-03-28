@@ -13,6 +13,8 @@ use function strlen;
 
 /**
  * @require-implements ReadHandleInterface
+ *
+ * @api
  */
 trait ReadHandleConvenienceMethodsTrait
 {

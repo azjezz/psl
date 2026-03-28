@@ -7,6 +7,9 @@ namespace Psl\Channel;
 use Countable;
 use Override;
 
+/**
+ * @api
+ */
 interface ChannelInterface extends Countable
 {
     /**

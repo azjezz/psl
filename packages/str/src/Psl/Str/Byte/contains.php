@@ -17,6 +17,8 @@ use Psl\Str;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
+ *
+ * @api
  */
 function contains(string $haystack, string $needle, int $offset = 0): bool
 {

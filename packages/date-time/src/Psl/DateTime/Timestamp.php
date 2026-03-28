@@ -21,6 +21,8 @@ use const PHP_INT_MIN;
  * @immutable
  *
  * @implements Interoperability\FromStdlib<DateTimeImmutable>
+ *
+ * @api
  */
 final readonly class Timestamp implements TemporalInterface, Interoperability\FromStdlib
 {

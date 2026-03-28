@@ -6,4 +6,7 @@ namespace Psl\Async\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 class RuntimeException extends Exception\RuntimeException implements ExceptionInterface {}

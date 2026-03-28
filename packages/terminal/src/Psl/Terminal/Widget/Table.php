@@ -16,6 +16,8 @@ use function count;
 
 /**
  * A table widget that renders columnar data with headers, a separator, and optional row highlighting.
+ *
+ * @api
  */
 final class Table implements WidgetInterface
 {

@@ -19,6 +19,8 @@ use function mb_stripos;
  * @throws Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
+ *
+ * @api
  */
 function search_ci(string $haystack, string $needle, int $offset = 0, Encoding $encoding = Encoding::Utf8): null|int
 {

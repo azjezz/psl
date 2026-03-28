@@ -21,6 +21,7 @@ use const STREAM_CLIENT_CONNECT;
 
 /**
  * @param non-empty-string $uri
+ * @param array<string, mixed> $context
  *
  * @throws Exception\RuntimeException If failed to connect to client on the given address.
  * @throws CancelledException If the operation was cancelled.

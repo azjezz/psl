@@ -10,6 +10,8 @@ use function str_rot13;
  * Perform the rot13 transform on a string.
  *
  * @pure
+ *
+ * @api
  */
 function rot13(string $string): string
 {

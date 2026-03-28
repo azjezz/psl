@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @param class-string<T> $classname
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function instance_of(string $classname): TypeInterface
 {

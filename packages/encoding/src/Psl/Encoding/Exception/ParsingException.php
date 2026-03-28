@@ -6,6 +6,9 @@ namespace Psl\Encoding\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class ParsingException extends RuntimeException implements ExceptionInterface
 {
     public static function forInvalidEncodedWord(string $text): self

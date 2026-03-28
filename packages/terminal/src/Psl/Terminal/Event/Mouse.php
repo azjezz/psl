@@ -8,6 +8,8 @@ namespace Psl\Terminal\Event;
  * Represents a mouse event.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Mouse
 {

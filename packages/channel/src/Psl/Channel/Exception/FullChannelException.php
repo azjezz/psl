@@ -11,6 +11,8 @@ use function sprintf;
 
 /**
  * This exception is throw when calling {@see Channel\SenderInterface::trySend()} on a full channel.
+ *
+ * @api
  */
 final class FullChannelException extends OutOfBoundsException implements ExceptionInterface
 {

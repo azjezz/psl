@@ -8,6 +8,8 @@ use Psl\H2\Exception\FrameDecodingException;
 
 /**
  * @psalm-inheritors DataFrame|HeadersFrame|PriorityFrame|RstStreamFrame|SettingsFrame|PushPromiseFrame|PingFrame|GoAwayFrame|WindowUpdateFrame|ContinuationFrame|PriorityUpdateFrame|AltSvcFrame|OriginFrame
+ *
+ * @api
  */
 interface FrameInterface
 {

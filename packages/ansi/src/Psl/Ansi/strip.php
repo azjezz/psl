@@ -10,6 +10,8 @@ use function preg_replace;
  * Strips all ANSI escape sequences from the given text.
  *
  * @pure
+ *
+ * @api
  */
 function strip(string $text): string
 {

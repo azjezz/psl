@@ -19,6 +19,8 @@ use function unpack;
  * @return int<0, max>
  *
  * @pure
+ *
+ * @api
  */
 function decode_u64(string $bytes, Endianness $endianness = Endianness::Big): int
 {

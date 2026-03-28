@@ -17,6 +17,8 @@ use function unpack;
  * A streamId of 0 applies to the connection-level flow control window.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.9
+ *
+ * @api
  */
 final readonly class WindowUpdateFrame implements FrameInterface
 {

@@ -8,6 +8,8 @@ namespace Psl\Result;
  * @template T
  *
  * @param iterable<array-key, ResultInterface<T>> $results
+ *
+ * @api
  */
 function collect_stats(iterable $results): Stats
 {

@@ -13,6 +13,8 @@ use function strlen;
  * Measures round-trip time and verifies connection liveness.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.7
+ *
+ * @api
  */
 final readonly class PingFrame implements FrameInterface
 {

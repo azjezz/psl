@@ -17,6 +17,8 @@ use Closure;
  * @param iterable<Tk, (Closure(): Tv)> $tasks
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function series(iterable $tasks): array
 {

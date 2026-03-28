@@ -13,6 +13,8 @@ use function unpack;
  * @throws Exception\UnderflowException If $bytes has fewer than 8 bytes.
  *
  * @pure
+ *
+ * @api
  */
 function decode_f64(string $bytes, Endianness $endianness = Endianness::Big): float
 {

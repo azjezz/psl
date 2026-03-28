@@ -23,6 +23,8 @@ use const PREG_SET_ORDER;
  * @throws Exception\ParsingException If an encoded-word is malformed.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc2047
+ *
+ * @api
  */
 function decode(string $input): string
 {

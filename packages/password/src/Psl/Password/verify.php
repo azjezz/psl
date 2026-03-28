@@ -12,6 +12,8 @@ use function password_verify;
  * Checks if the given hash matches the given options.
  *
  * @pure
+ *
+ * @api
  */
 function verify(#[SensitiveParameter] string $password, string $hash): bool
 {

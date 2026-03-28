@@ -15,6 +15,8 @@ use function is_array;
  * @param iterable<T> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? T : T|null)
+ *
+ * @api
  */
 function last(iterable $iterable): mixed
 {

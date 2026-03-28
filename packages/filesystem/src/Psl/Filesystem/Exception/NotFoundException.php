@@ -6,6 +6,9 @@ namespace Psl\Filesystem\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class NotFoundException extends InvalidArgumentException
 {
     public static function forNode(string $node): NotFoundException

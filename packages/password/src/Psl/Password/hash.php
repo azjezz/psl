@@ -14,6 +14,8 @@ use function password_hash;
  * @param array{cost?: int}|array{memory_cost?: int, time_cost?: int, threads?: int} $options
  *
  * @pure
+ *
+ * @api
  */
 function hash(
     #[SensitiveParameter]

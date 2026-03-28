@@ -9,6 +9,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 
 /**
  * @pure
+ *
+ * @api
  */
 function move_to(int $row, int $column): ControlSequenceIntroducer
 {

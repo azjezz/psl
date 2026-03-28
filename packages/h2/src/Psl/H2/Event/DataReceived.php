@@ -15,6 +15,8 @@ namespace Psl\H2\Event;
  * on this stream and no further DATA or HEADERS frames will arrive for it.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.1 RFC 9113 Section 6.1 - DATA
+ *
+ * @api
  */
 final readonly class DataReceived implements EventInterface
 {

@@ -8,6 +8,8 @@ namespace Psl\Compression;
  * Decompress a string in one shot.
  *
  * @throws Exception\RuntimeException If the decompression operation fails.
+ *
+ * @api
  */
 function decompress(string $data, DecompressorInterface $decompressor): string
 {

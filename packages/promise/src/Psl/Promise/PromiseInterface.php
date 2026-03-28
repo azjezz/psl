@@ -9,6 +9,8 @@ use Throwable;
 
 /**
  * @template T
+ *
+ * @api
  */
 interface PromiseInterface
 {

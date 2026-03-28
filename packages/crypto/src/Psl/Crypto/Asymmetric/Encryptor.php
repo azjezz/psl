@@ -13,6 +13,9 @@ use function sodium_crypto_box_seal;
 use function sodium_crypto_box_seal_open;
 use function sodium_memzero;
 
+/**
+ * @api
+ */
 final readonly class Encryptor implements Crypto\EncryptorInterface
 {
     public function __construct(

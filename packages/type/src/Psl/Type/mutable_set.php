@@ -14,6 +14,8 @@ use Psl\Collection;
  * @param TypeInterface<T> $type
  *
  * @return TypeInterface<Collection\MutableSetInterface<T>>
+ *
+ * @api
  */
 function mutable_set(TypeInterface $type): TypeInterface
 {

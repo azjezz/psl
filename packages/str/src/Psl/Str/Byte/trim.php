@@ -13,6 +13,8 @@ use function trim as php_trim;
  * be stripped: space, tab, newline, carriage return, NUL byte, vertical tab.
  *
  * @pure
+ *
+ * @api
  */
 function trim(string $string, null|string $charMask = null): string
 {

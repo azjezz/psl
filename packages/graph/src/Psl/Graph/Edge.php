@@ -9,6 +9,8 @@ namespace Psl\Graph;
  *
  * @template TNode
  * @template TWeight
+ *
+ * @api
  */
 final readonly class Edge
 {

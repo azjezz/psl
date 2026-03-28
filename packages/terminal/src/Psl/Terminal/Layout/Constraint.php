@@ -8,6 +8,8 @@ namespace Psl\Terminal\Layout;
  * Describes how a layout segment should be sized.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Constraint
 {

@@ -19,6 +19,8 @@ use function array_key_exists;
  * @param iterable<Tk> $keys
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function select_keys(iterable $iterable, iterable $keys): array
 {

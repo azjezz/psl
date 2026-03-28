@@ -28,6 +28,8 @@ use function is_array;
  * @template T
  *
  * @implements PromiseInterface<T>
+ *
+ * @api
  */
 final readonly class Awaitable implements PromiseInterface
 {

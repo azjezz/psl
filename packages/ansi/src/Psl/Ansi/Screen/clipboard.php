@@ -11,6 +11,8 @@ use function base64_encode;
 
 /**
  * @pure
+ *
+ * @api
  */
 function clipboard(string $data): OperatingSystemCommand
 {

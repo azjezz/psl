@@ -20,6 +20,8 @@ use function unpack;
  * to determine whether they can reuse the connection for requests to those origins.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc8336
+ *
+ * @api
  */
 final readonly class OriginFrame implements FrameInterface
 {

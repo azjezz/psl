@@ -12,32 +12,38 @@ final class EventState {}
 
 $app = Terminal\Application::create(new EventState(), title: 'Events Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, EventState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, EventState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }
 
-    if ($event->is('enter')) { /* handle enter */
+    if ($event->is('enter')) {
+        /**
+         * handle enter
+         */
     }
 
-    if ($event->is('up')) { /* handle up arrow */
+    if ($event->is('up')) {
+        /**
+         * handle up arrow
+         */
     }
 });
 
-$app->on(Event\Mouse::class, static function (Event\Mouse $event, EventState $state): void {
-    // $event->kind (Press, Release, Drag, ScrollUp, ScrollDown, Move)
-    // $event->column, $event->row
+$app->on(Event\Mouse::class, static function (Event\Mouse $_event, EventState $_state): void {
+    // $_event->kind (Press, Release, Drag, ScrollUp, ScrollDown, Move)
+    // $_event->column, $_event->row
 });
 
-$app->on(Event\Paste::class, static function (Event\Paste $event, EventState $state): void {
-    // $event->text -- the pasted string
+$app->on(Event\Paste::class, static function (Event\Paste $_event, EventState $_state): void {
+    // $_event->text -- the pasted string
 });
 
-$app->on(Event\Resize::class, static function (Event\Resize $event, EventState $state): void {
-    // $event->width, $event->height
+$app->on(Event\Resize::class, static function (Event\Resize $_event, EventState $_state): void {
+    // $_event->width, $_event->height
 });
 
-$app->run(static function (Terminal\Frame $frame, EventState $state): void {
+$app->run(static function (Terminal\Frame $frame, EventState $_state): void {
     Widget\Paragraph::new([
         Widget\Line::new([Widget\Span::raw('Press Ctrl+C to exit')]),
     ])->render($frame->rect(), $frame->buffer());

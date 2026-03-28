@@ -18,6 +18,8 @@ use function is_array;
  * @return ($iterable is non-empty-array|non-empty-list ? Tk : Tk|null)
  *
  * @mago-expect lint:loop-does-not-iterate
+ *
+ * @api
  */
 function first_key(iterable $iterable): mixed
 {

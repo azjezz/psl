@@ -11,6 +11,8 @@ use Psl\H2\Exception\FrameDecodingException;
  * Continues a header block fragment from a preceding HEADERS or PUSH_PROMISE frame.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.10
+ *
+ * @api
  */
 final readonly class ContinuationFrame implements FrameInterface
 {

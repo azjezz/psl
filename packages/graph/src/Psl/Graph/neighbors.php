@@ -25,6 +25,8 @@ use function array_map;
  * @return list<TNode>
  *
  * @pure
+ *
+ * @api
  */
 function neighbors(DirectedGraph|UndirectedGraph $graph, mixed $node): array
 {

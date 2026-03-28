@@ -13,6 +13,8 @@ use Psl\Default\DefaultInterface;
  * Used with {@see Connector} to perform TLS handshakes.
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class ClientConfiguration implements DefaultInterface
 {

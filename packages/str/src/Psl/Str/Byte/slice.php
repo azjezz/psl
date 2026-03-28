@@ -20,6 +20,8 @@ use function substr;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
+ *
+ * @api
  */
 function slice(string $string, int $offset, null|int $length = null): string
 {

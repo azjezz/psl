@@ -13,6 +13,8 @@ use Psl\Str\Exception;
  * @throws Exception\InvalidArgumentException If $string is not made of grapheme clusters.
  *
  * @pure
+ *
+ * @api
  */
 function strip_suffix(string $string, string $suffix): string
 {

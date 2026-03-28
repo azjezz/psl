@@ -18,6 +18,8 @@ use function substr;
  * A read handle that encodes raw text from an inner readable handle using quoted-printable encoding.
  *
  * Reads line-by-line from the inner handle and encodes each line via {@see encode_line()}.
+ *
+ * @api
  */
 final class EncodingReadHandle implements IO\BufferedReadHandleInterface
 {

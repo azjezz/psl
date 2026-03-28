@@ -23,6 +23,8 @@ use Closure;
  * @param (Closure(T): bool) $predicate
  *
  * @return bool
+ *
+ * @api
  */
 function all(NodeInterface $node, Closure $predicate): bool
 {

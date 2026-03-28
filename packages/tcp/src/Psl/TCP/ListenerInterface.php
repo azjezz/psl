@@ -11,6 +11,8 @@ use Psl\Network;
 
 /**
  * A TCP listener that accepts incoming TCP connections.
+ *
+ * @api
  */
 interface ListenerInterface extends Network\ListenerInterface
 {

@@ -15,6 +15,8 @@ use Psl\IRI\Internal\IRIParser;
  * @link https://datatracker.ietf.org/doc/html/rfc3987#section-2.2
  *
  * @throws Exception\InvalidIRIException If the input contains invalid Unicode characters for an IRI.
+ *
+ * @api
  */
 function parse(string $input): IRI
 {

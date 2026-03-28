@@ -19,6 +19,8 @@ namespace Psl\Dict;
  * @param int<0, max> $n Number of elements to drop from the start
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function drop(iterable $iterable, int $n): array
 {

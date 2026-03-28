@@ -12,6 +12,8 @@ namespace Psl\H2\Event;
  * without additional TLS handshakes.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc8336
+ *
+ * @api
  */
 final readonly class OriginReceived implements EventInterface
 {

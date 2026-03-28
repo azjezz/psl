@@ -10,6 +10,8 @@ use function mb_convert_encoding;
  * Convert character encoding of the giving string.
  *
  * @pure
+ *
+ * @api
  */
 function convert_encoding(string $string, Encoding $fromEncoding, Encoding $toEncoding): string
 {

@@ -15,6 +15,8 @@ namespace Psl\Math;
  * @return ($numbers is non-empty-list<T> ? T : null)
  *
  * @pure
+ *
+ * @api
  */
 function min(array $numbers): null|float|int
 {

@@ -14,6 +14,8 @@ use Psl\Collection;
  * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<Collection\MutableVectorInterface<T>>
+ *
+ * @api
  */
 function mutable_vector(TypeInterface $valueType): TypeInterface
 {

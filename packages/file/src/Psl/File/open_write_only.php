@@ -14,6 +14,8 @@ namespace Psl\File;
  * @throws Exception\NotFoundException If $file does not exist, and $writeMode is {@see WriteMode::TRUNCATE} or {@see WriteMode::APPEND}.
  * @throws Exception\NotWritableException If $file exists, and is non-writable.
  * @throws Exception\RuntimeException If unable to create the $file if it does not exist.
+ *
+ * @api
  */
 function open_write_only(string $file, WriteMode $mode = WriteMode::OpenOrCreate): WriteHandle
 {

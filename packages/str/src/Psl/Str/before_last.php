@@ -8,6 +8,8 @@ namespace Psl\Str;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @pure
+ *
+ * @api
  */
 function before_last(
     string $haystack,

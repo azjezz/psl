@@ -26,6 +26,8 @@ use const MB_CASE_TITLE;
  *      => Str('مرحبا بكم')
  *
  * @pure
+ *
+ * @api
  */
 function capitalize_words(string $string, Encoding $encoding = Encoding::Utf8): string
 {

@@ -8,6 +8,8 @@ use Override;
 
 /**
  * @template T of UnboundedChannelState|BoundedChannelState
+ *
+ * @internal
  */
 trait ChannelSideTrait
 {

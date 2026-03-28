@@ -6,6 +6,9 @@ namespace Psl\File\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class NotFileException extends InvalidArgumentException
 {
     public static function for(string $path): NotFileException

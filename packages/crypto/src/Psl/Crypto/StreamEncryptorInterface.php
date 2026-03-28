@@ -6,6 +6,9 @@ namespace Psl\Crypto;
 
 use Psl\IO;
 
+/**
+ * @api
+ */
 interface StreamEncryptorInterface
 {
     /**

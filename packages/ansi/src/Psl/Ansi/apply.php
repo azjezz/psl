@@ -12,6 +12,8 @@ namespace Psl\Ansi;
  * @throws Exception\InvalidArgumentException If any sequence is not an SGR sequence.
  *
  * @pure
+ *
+ * @api
  */
 function apply(string $text, ControlSequenceIntroducer ...$sequences): string
 {

@@ -13,6 +13,8 @@ use Stringable;
  * Represents a parsed URI Template per RFC 6570.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc6570
+ *
+ * @api
  */
 final readonly class Template implements Stringable
 {

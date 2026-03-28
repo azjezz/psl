@@ -18,6 +18,8 @@ namespace Psl\Vec;
  * @param int<0, max> $n Number of elements to drop from the start
  *
  * @return list<T>
+ *
+ * @api
  */
 function drop(iterable $iterable, int $n): array
 {

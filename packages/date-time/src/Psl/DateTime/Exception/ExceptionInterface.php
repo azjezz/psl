@@ -6,4 +6,7 @@ namespace Psl\DateTime\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 interface ExceptionInterface extends Exception\ExceptionInterface {}

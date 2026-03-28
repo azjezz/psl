@@ -14,6 +14,8 @@ use Closure;
  * @return (Closure(T): T)
  *
  * @pure
+ *
+ * @api
  */
 function identity(): Closure
 {

@@ -6,6 +6,8 @@ namespace Psl\Result;
 
 /**
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class Stats
 {

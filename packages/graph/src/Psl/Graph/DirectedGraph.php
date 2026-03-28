@@ -16,6 +16,8 @@ use function Psl\Graph\Internal\get_node_key;
  * @template TWeight
  *
  * @implements GraphInterface<TNode, TWeight>
+ *
+ * @api
  */
 final readonly class DirectedGraph implements GraphInterface
 {

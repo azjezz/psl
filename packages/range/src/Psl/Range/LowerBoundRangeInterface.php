@@ -12,6 +12,8 @@ use Psl\Iter;
  * @extends IteratorAggregate<int, int>
  *
  * @psalm-immutable
+ *
+ * @api
  */
 interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
 {

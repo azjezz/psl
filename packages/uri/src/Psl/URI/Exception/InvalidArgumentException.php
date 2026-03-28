@@ -9,6 +9,8 @@ use Throwable;
 
 /**
  * @inheritors InvalidURIException|InvalidTemplateException
+ *
+ * @api
  */
 class InvalidArgumentException extends Exception\InvalidArgumentException implements ExceptionInterface
 {

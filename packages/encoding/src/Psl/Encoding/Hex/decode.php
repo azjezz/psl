@@ -21,6 +21,8 @@ use function strlen;
  *
  * @throws Exception\RangeException If the hexadecimal string contains characters outside the base16 range,
  *                                  or an odd number of characters.
+ *
+ * @api
  */
 function decode(string $hexadecimal): string
 {

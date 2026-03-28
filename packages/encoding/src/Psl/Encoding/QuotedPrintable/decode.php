@@ -8,6 +8,8 @@ use function quoted_printable_decode;
 
 /**
  * Decode a quoted-printable encoded string.
+ *
+ * @api
  */
 function decode(string $data): string
 {

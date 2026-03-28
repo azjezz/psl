@@ -9,6 +9,8 @@ use Psl\Ansi\OperatingSystemCommandKind;
 
 /**
  * @pure
+ *
+ * @api
  */
 function title(string $title): OperatingSystemCommand
 {

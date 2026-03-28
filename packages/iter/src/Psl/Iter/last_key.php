@@ -16,6 +16,8 @@ use function is_array;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? Tk : Tk|null)
+ *
+ * @api
  */
 function last_key(iterable $iterable): mixed
 {

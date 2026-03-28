@@ -9,6 +9,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 
 /**
  * @pure
+ *
+ * @api
  */
 function erase(EraseMode $mode = EraseMode::Below): ControlSequenceIntroducer
 {

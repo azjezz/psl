@@ -20,6 +20,8 @@ use function is_array;
  * @param iterable<Tk, Tv|null> $iterable
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function filter_nulls(iterable $iterable): array
 {

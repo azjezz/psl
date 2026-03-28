@@ -8,6 +8,8 @@ namespace Psl\Terminal\Layout;
  * Create a minimum-size constraint wrapping another constraint.
  *
  * @pure
+ *
+ * @api
  */
 function min(int $min, Constraint $constraint): Constraint
 {

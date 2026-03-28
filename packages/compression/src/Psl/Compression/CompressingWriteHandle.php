@@ -22,6 +22,8 @@ use function substr;
  * Compressed output that cannot be written immediately is buffered internally.
  * Call {@see flush()} to finalize the compression stream and drain all
  * remaining buffered data.
+ *
+ * @api
  */
 final class CompressingWriteHandle implements IO\BufferedWriteHandleInterface
 {

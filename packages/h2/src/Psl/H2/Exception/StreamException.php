@@ -10,6 +10,8 @@ namespace Psl\H2\Exception;
  *
  * Each factory method corresponds to a specific stream-level failure
  * condition defined by RFC 9113.
+ *
+ * @api
  */
 final class StreamException extends RuntimeException
 {

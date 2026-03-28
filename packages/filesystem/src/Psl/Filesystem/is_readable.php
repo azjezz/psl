@@ -10,6 +10,8 @@ use function is_readable as php_is_readable;
  * Check whether $node exists and is readable.
  *
  * @param non-empty-string $node Path, absolute or relative to the current working directory.
+ *
+ * @api
  */
 function is_readable(string $node): bool
 {

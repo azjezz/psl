@@ -20,6 +20,8 @@ use Psl\HPACK\Header;
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.2 RFC 9113 Section 6.2 - HEADERS
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.10 RFC 9113 Section 6.10 - CONTINUATION
+ *
+ * @api
  */
 final readonly class HeadersReceived implements EventInterface
 {

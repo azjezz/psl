@@ -24,6 +24,8 @@ namespace Psl\Tree;
  * @psalm-assert-if-true LeafNode $node
  *
  * @pure
+ *
+ * @api
  */
 function is_leaf(NodeInterface $node): bool
 {

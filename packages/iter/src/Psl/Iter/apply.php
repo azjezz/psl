@@ -13,6 +13,8 @@ use Closure;
  *
  * @param iterable<T> $iterable Iterable to apply on
  * @param (Closure(T): mixed) $function Apply function
+ *
+ * @api
  */
 function apply(iterable $iterable, Closure $function): void
 {

@@ -20,6 +20,8 @@ use function preg_replace_callback;
  *
  * @throws Exception\InvalidPatternException If $pattern is invalid.
  * @throws Exception\RuntimeException In case of an unexpected error.
+ *
+ * @api
  */
 function replace_with(string $haystack, string $pattern, Closure $callback, null|int $limit = null): string
 {

@@ -17,6 +17,8 @@ use function sprintf;
  * @throws Exception\NotFoundException If $source does not exist.
  * @throws Exception\NotFileException If $source is not a file.
  * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
+ *
+ * @api
  */
 function create_hard_link(string $source, string $destination): void
 {

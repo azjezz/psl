@@ -20,6 +20,8 @@ use const ENT_SUBSTITUTE;
  * @psalm-taint-escape html
  *
  * @pure
+ *
+ * @api
  */
 function encode_special_characters(
     string $html,

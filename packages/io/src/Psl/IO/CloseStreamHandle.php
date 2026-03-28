@@ -8,6 +8,8 @@ use Override;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final class CloseStreamHandle implements CloseHandleInterface, StreamHandleInterface
 {

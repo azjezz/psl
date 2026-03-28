@@ -12,6 +12,8 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_keygen;
 
 /**
  * Generate a new random AEAD key for the given algorithm.
+ *
+ * @api
  */
 function generate_key(Algorithm $algorithm): Key
 {

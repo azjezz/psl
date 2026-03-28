@@ -31,6 +31,8 @@ namespace Psl\Str;
  *      => Bool(false)
  *
  * @pure
+ *
+ * @api
  */
 function ends_with_ci(string $string, string $suffix, Encoding $encoding = Encoding::Utf8): bool
 {

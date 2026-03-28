@@ -14,6 +14,8 @@ namespace Psl\Math;
  * @return non-empty-string
  *
  * @pure
+ *
+ * @api
  */
 function to_base(int $number, int $base): string
 {

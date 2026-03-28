@@ -18,6 +18,8 @@ use function substr;
  *
  * Reads chunks from the inner handle, encodes each via {@see encode()},
  * and buffers the encoded output for consumption.
+ *
+ * @api
  */
 final class EncodingReadHandle implements IO\BufferedReadHandleInterface
 {

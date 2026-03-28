@@ -18,6 +18,8 @@ use function symlink;
  * @throws Exception\NotReadableException If $destination is a non-empty directory, and is non-readable {@see delete_directory()}.
  *
  * @mago-expect lint:no-empty-catch-clause
+ *
+ * @api
  */
 function create_symbolic_link(string $source, string $destination): void
 {

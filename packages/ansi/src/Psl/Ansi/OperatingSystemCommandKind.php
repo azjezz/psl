@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Psl\Ansi;
 
+/**
+ * @api
+ */
 enum OperatingSystemCommandKind: int
 {
     case WindowIconAndTitle = 0;

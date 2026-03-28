@@ -14,6 +14,8 @@ use Psl\Exception\RuntimeException;
  * @see Channel\SenderInterface::trySend()
  * @see Channel\ReceiverInterface::receive()
  * @see Channel\ReceiverInterface::tryReceive()
+ *
+ * @api
  */
 final class ClosedChannelException extends RuntimeException implements ExceptionInterface
 {

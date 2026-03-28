@@ -10,6 +10,8 @@ use ReflectionClass;
  * Checks if method is defined in the given class.
  *
  * @param class-string $className
+ *
+ * @api
  */
 function has_method(string $className, string $methodName): bool
 {

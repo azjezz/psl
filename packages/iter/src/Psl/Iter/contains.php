@@ -15,6 +15,8 @@ use function is_array;
  *
  * @param iterable<T> $iterable
  * @param T $value
+ *
+ * @api
  */
 function contains(iterable $iterable, mixed $value): bool
 {

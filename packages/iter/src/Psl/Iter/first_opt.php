@@ -17,6 +17,8 @@ use Psl\Option\Option;
  * @return Option<T>
  *
  * @mago-expect lint:loop-does-not-iterate
+ *
+ * @api
  */
 function first_opt(iterable $iterable): Option
 {

@@ -6,6 +6,8 @@ namespace Psl\Terminal\Layout;
 
 /**
  * The kind of a layout constraint.
+ *
+ * @api
  */
 enum ConstraintKind
 {

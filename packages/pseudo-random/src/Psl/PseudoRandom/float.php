@@ -8,6 +8,8 @@ namespace Psl\PseudoRandom;
  * Returns a pseudo-random float in the range of [0.0, 1.0].
  *
  * @psalm-external-mutation-free
+ *
+ * @api
  */
 function float(): float
 {

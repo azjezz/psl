@@ -6,6 +6,9 @@ namespace Psl\Crypto\KeyExchange;
 
 use SensitiveParameter;
 
+/**
+ * @api
+ */
 final readonly class KeyPair
 {
     public function __construct(

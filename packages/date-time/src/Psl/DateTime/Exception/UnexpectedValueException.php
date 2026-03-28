@@ -8,6 +8,9 @@ use Psl\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class UnexpectedValueException extends Exception\UnexpectedValueException implements ExceptionInterface
 {
     /**

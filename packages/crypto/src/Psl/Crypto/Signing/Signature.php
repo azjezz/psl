@@ -11,6 +11,8 @@ use function strlen;
 
 /**
  * Represents a detached Ed25519 signature.
+ *
+ * @api
  */
 final readonly class Signature
 {

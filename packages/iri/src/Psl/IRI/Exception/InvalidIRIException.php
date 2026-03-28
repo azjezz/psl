@@ -13,6 +13,8 @@ use const STR_PAD_LEFT;
  * Exception thrown when an IRI string is invalid per RFC 3987.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3987
+ *
+ * @api
  */
 final class InvalidIRIException extends InvalidArgumentException
 {

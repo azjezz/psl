@@ -17,6 +17,8 @@ use Psl\IO;
  * stream priority signaling and extended CONNECT for protocol bootstrapping.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113
+ *
+ * @api
  */
 interface ClientConnectionInterface extends ConnectionInterface
 {

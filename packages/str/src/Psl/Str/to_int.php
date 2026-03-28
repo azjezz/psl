@@ -11,6 +11,8 @@ use function error_reporting;
  * Returns the given string as an integer, or null if the string isn't numeric.
  *
  * @pure
+ *
+ * @api
  */
 function to_int(string $string): null|int
 {

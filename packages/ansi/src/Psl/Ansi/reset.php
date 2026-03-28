@@ -8,6 +8,8 @@ namespace Psl\Ansi;
  * Returns the SGR reset sequence.
  *
  * @pure
+ *
+ * @api
  */
 function reset(): ControlSequenceIntroducer
 {

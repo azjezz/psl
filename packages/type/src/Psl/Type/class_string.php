@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @param class-string<T> $classname
  *
  * @return TypeInterface<class-string<T>>
+ *
+ * @api
  */
 function class_string(string $classname): TypeInterface
 {

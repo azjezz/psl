@@ -16,6 +16,8 @@ use function str_repeat;
  * @see https://tools.ietf.org/html/rfc5869#section-2.2
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function extract(
     #[SensitiveParameter]

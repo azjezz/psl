@@ -6,6 +6,8 @@ namespace Psl\Range;
 
 /**
  * @psalm-mutation-free
+ *
+ * @api
  */
 function from(int $lowerBound): FromRange
 {

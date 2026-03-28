@@ -11,11 +11,14 @@ use Psl\IO;
 use Psl\Str;
 
 use function array_fill;
+use function array_slice;
 
 /**
  * A 2D grid of {@see Cell} objects representing the terminal screen.
  *
  * Supports diff-based rendering: only cells that changed since the last flush are written to output.
+ *
+ * @api
  */
 final class Buffer
 {
@@ -229,7 +232,7 @@ final class Buffer
         /** @var array<non-negative-int, array<non-negative-int, Cell>> $copy */
         $copy = [];
         for ($y = 0; $y < $height; $y++) {
-            $copy[] = $source[$y];
+            $copy[] = array_slice($source[$y], 0, $width);
         }
 
         return $copy;

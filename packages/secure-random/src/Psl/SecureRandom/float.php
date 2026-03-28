@@ -10,6 +10,8 @@ namespace Psl\SecureRandom;
  * @throws Exception\InsufficientEntropyException If it was not possible to gather sufficient entropy.
  *
  * @psalm-external-mutation-free
+ *
+ * @api
  */
 function float(): float
 {

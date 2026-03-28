@@ -20,6 +20,8 @@ use const STR_PAD_RIGHT;
  * @param int<0, max> $totalLength
  *
  * @pure
+ *
+ * @api
  */
 function pad_right(string $string, int $totalLength, string $padString = ' '): string
 {

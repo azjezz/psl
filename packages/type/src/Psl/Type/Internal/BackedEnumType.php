@@ -16,6 +16,8 @@ use function sprintf;
  * @template T of BackedEnum
  *
  * @extends Type\Type<T>
+ *
+ * @internal
  */
 final readonly class BackedEnumType extends Type\Type
 {

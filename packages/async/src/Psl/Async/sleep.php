@@ -13,6 +13,8 @@ use Revolt\EventLoop;
  * If a cancellation token is provided, the sleep can be interrupted early.
  *
  * @throws Exception\CancelledException If the cancellation token is cancelled during the sleep.
+ *
+ * @api
  */
 function sleep(
     DateTime\Duration $duration,

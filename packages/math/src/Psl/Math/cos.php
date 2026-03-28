@@ -10,6 +10,8 @@ use function cos as php_cos;
  * Return the cosine of the given number.
  *
  * @pure
+ *
+ * @api
  */
 function cos(float $number): float
 {

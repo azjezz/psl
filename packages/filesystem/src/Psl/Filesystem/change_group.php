@@ -15,6 +15,8 @@ use function sprintf;
  *
  * @throws Exception\RuntimeException If unable to change the group ownership for $node.
  * @throws Exception\NotFoundException If $node does not exist.
+ *
+ * @api
  */
 function change_group(string $node, int $group): void
 {

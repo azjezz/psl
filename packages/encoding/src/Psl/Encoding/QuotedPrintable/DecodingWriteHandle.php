@@ -19,6 +19,8 @@ use function substr;
  *
  * Buffers input until complete lines (terminated by \n) are available,
  * handles soft-break continuations, then decodes and writes to the inner handle.
+ *
+ * @api
  */
 final class DecodingWriteHandle implements IO\WriteHandleInterface
 {

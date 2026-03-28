@@ -12,6 +12,8 @@ namespace Psl\Type;
  * @param T $value
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function literal_scalar(string|int|float|bool $value): TypeInterface
 {

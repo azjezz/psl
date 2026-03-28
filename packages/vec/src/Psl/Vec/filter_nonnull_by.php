@@ -29,6 +29,8 @@ use function is_array;
  * @param (Closure(Tv): mixed) $function
  *
  * @return list<Tv>
+ *
+ * @api
  */
 function filter_nonnull_by(iterable $iterable, Closure $function): array
 {

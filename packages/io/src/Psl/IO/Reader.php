@@ -14,6 +14,9 @@ use function strlen;
 use function strpos;
 use function substr;
 
+/**
+ * @api
+ */
 final class Reader implements BufferedReadHandleInterface
 {
     use ReadHandleConvenienceMethodsTrait;

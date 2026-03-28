@@ -9,6 +9,8 @@ namespace Psl\Str\Byte;
  * it doesn't start with the prefix.
  *
  * @pure
+ *
+ * @api
  */
 function strip_prefix(string $string, string $prefix): string
 {

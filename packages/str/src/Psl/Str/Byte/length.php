@@ -12,6 +12,8 @@ use function strlen;
  * @return int<0, max>
  *
  * @pure
+ *
+ * @api
  */
 function length(string $string): int
 {

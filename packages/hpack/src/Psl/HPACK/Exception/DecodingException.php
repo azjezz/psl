@@ -6,6 +6,8 @@ namespace Psl\HPACK\Exception;
 
 /**
  * Exception thrown when HPACK decoding fails due to malformed or invalid input.
+ *
+ * @api
  */
 final class DecodingException extends RuntimeException
 {

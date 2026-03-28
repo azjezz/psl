@@ -8,6 +8,8 @@ use Override;
 
 /**
  * @psalm-immutable
+ *
+ * @api
  */
 interface UpperBoundRangeInterface extends RangeInterface
 {

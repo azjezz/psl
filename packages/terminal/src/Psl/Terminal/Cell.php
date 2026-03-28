@@ -12,6 +12,8 @@ use function count;
  * Represents a single terminal cell containing a grapheme cluster and optional styling.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Cell
 {

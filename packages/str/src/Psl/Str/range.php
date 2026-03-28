@@ -37,6 +37,8 @@ use Psl\Range\UpperBoundRangeInterface;
  * @throws Exception\OutOfBoundsException If the $offset is out-of-bounds.
  *
  * @pure
+ *
+ * @api
  */
 function range(string $string, RangeInterface $range, Encoding $encoding = Encoding::Utf8): string
 {

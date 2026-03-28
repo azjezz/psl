@@ -9,6 +9,8 @@ use Psl\Type\Exception\CoercionException;
 
 /**
  * @template-covariant T
+ *
+ * @api
  */
 interface TypeInterface
 {

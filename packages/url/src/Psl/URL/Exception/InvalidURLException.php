@@ -13,6 +13,8 @@ use Throwable;
  * either empty or absolute (starts with '/').
  *
  * @link https://www.rfc-editor.org/rfc/rfc3986#section-3 RFC 3986 Section 3 - Syntax Components
+ *
+ * @api
  */
 final class InvalidURLException extends InvalidArgumentException
 {

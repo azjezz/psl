@@ -15,13 +15,13 @@ final class BlockState {}
 
 $app = Terminal\Application::create(new BlockState(), title: 'Block Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, BlockState $state) use ($app): void {
+$app->on(Event\Key::class, static function (Event\Key $event, BlockState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }
 });
 
-$app->run(static function (Terminal\Frame $frame, BlockState $state): void {
+$app->run(static function (Terminal\Frame $frame, BlockState $_state): void {
     $area = $frame->rect();
     $buffer = $frame->buffer();
 

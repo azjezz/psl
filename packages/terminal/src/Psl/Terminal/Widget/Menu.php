@@ -16,6 +16,8 @@ use function count;
 
 /**
  * A selectable menu widget.
+ *
+ * @api
  */
 final class Menu implements WidgetInterface
 {

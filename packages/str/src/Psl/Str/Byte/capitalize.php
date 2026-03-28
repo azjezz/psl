@@ -13,6 +13,8 @@ use function ucfirst;
  * will be unchanged.
  *
  * @pure
+ *
+ * @api
  */
 function capitalize(string $string): string
 {

@@ -10,6 +10,8 @@ namespace Psl\Type;
  * @param ?string $kind The resource kind, if null, the resource type won't be validated.
  *
  * @return TypeInterface<resource>
+ *
+ * @api
  */
 function resource(null|string $kind = null): TypeInterface
 {

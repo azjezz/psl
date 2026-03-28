@@ -29,6 +29,8 @@ use Closure;
  * @param (Closure(Tv): (T|null)) $function
  *
  * @return array<Tk, T>
+ *
+ * @api
  */
 function map_nonnull(iterable $iterable, Closure $function): array
 {

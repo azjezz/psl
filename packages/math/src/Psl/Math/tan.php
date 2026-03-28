@@ -10,6 +10,8 @@ use function tan as php_tan;
  * Returns the tangent of the given number.
  *
  * @pure
+ *
+ * @api
  */
 function tan(float $number): float
 {

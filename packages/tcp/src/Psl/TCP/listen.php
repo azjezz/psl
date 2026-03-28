@@ -15,6 +15,8 @@ use const PHP_OS_FAMILY;
  * @param int<0, max> $port
  *
  * @throws Network\Exception\RuntimeException If failed to listen on given address.
+ *
+ * @api
  */
 function listen(
     string $host = '127.0.0.1',

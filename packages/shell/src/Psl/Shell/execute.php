@@ -31,6 +31,8 @@ use function strlen;
  * @throws Exception\PossibleAttackException In case the command being run is suspicious ( e.g: contains NULL byte ).
  * @throws Exception\RuntimeException In case $workingDirectory doesn't exist, or unable to create a new process.
  * @throws CancelledException If the operation is cancelled.
+ *
+ * @api
  */
 function execute(
     string $command,

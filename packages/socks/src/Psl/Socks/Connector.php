@@ -22,6 +22,8 @@ use Psl\TCP;
  *   );
  *
  *   $stream = $connector->connect('target.example.com', 443);
+ *
+ * @api
  */
 final readonly class Connector implements TCP\ConnectorInterface
 {

@@ -15,6 +15,8 @@ use function count;
  * @template T
  *
  * @implements StackInterface<T>
+ *
+ * @api
  */
 final class Stack implements StackInterface
 {

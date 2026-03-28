@@ -13,6 +13,8 @@ use Psl\Default\DefaultInterface;
  * This enumeration classifies different operating systems into a set of well-known families,
  * facilitating OS-specific behavior or optimizations in a type-safe manner. The classification
  * helps in abstracting OS checks and performing operations that depend on the underlying OS family.
+ *
+ * @api
  */
 enum OperatingSystemFamily: string implements DefaultInterface
 {

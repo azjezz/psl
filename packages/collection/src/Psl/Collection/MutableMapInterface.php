@@ -13,6 +13,8 @@ use Override;
  *
  * @extends MapInterface<Tk, Tv>
  * @extends MutableAccessibleCollectionInterface<Tk, Tv>
+ *
+ * @api
  */
 interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionInterface
 {

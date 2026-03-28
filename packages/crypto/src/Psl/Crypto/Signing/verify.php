@@ -8,6 +8,8 @@ use SensitiveParameter;
 
 /**
  * Verify an Ed25519 detached signature.
+ *
+ * @api
  */
 function verify(
     Signature $signature,

@@ -15,6 +15,8 @@ namespace Psl\Comparison;
  *
  * @link https://www.php.net/manual/en/language.operators.comparison.php
  * @link https://www.php.net/manual/en/types.comparisons.php
+ *
+ * @api
  */
 function compare(mixed $a, mixed $b): Order
 {

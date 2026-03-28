@@ -21,6 +21,8 @@ use function substr_replace;
  * @pure
  *
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
+ *
+ * @api
  */
 function splice(string $string, string $replacement, int $offset, null|int $length = null): string
 {

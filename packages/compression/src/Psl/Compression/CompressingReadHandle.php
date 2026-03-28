@@ -19,6 +19,8 @@ use function substr;
  * Wraps a raw data handle and returns compressed output on read.
  * Reads chunks from the inner handle, compresses each via the given
  * compressor, and buffers the result.
+ *
+ * @api
  */
 final class CompressingReadHandle implements IO\ReadHandleInterface
 {

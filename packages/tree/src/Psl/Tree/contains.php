@@ -23,6 +23,8 @@ namespace Psl\Tree;
  * @return bool
  *
  * @pure
+ *
+ * @api
  */
 function contains(NodeInterface $tree, mixed $value): bool
 {

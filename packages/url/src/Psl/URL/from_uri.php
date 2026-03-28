@@ -17,6 +17,8 @@ use Psl\URL\Exception\InvalidURLException;
  * @link https://www.rfc-editor.org/rfc/rfc3986#section-3 RFC 3986 Section 3 - Syntax Components
  *
  * @throws InvalidURLException If the URI does not meet URL constraints.
+ *
+ * @api
  */
 function from_uri(URI $uri): URL
 {

@@ -19,6 +19,8 @@ use function sprintf;
  * @throws Exception\RuntimeException If an error occurred during the operation.
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 function write_error(string $message, mixed ...$args): void
 {

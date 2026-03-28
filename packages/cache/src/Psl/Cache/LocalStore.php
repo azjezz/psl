@@ -21,6 +21,8 @@ use function array_key_first;
  *
  * Expired entries are cleaned up proactively via an event loop timer
  * that activates when TTL'd entries exist, rather than lazily on access.
+ *
+ * @api
  */
 final class LocalStore implements StoreInterface
 {

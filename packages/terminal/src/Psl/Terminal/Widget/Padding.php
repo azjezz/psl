@@ -8,6 +8,8 @@ namespace Psl\Terminal\Widget;
  * A value object representing padding on all four sides.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Padding
 {

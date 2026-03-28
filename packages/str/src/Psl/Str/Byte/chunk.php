@@ -19,6 +19,8 @@ use function str_split;
  *                      If the given string is empty, and empty array will be returned.
  *
  * @pure
+ *
+ * @api
  */
 function chunk(string $string, int $chunkLength = 1): array
 {

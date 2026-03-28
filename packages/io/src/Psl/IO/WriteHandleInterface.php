@@ -10,6 +10,8 @@ use Psl\Async\NullCancellationToken;
 
 /**
  * An interface for a writable Handle.
+ *
+ * @api
  */
 interface WriteHandleInterface extends HandleInterface
 {

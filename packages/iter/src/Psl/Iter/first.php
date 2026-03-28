@@ -14,6 +14,8 @@ namespace Psl\Iter;
  * @return ($iterable is non-empty-array|non-empty-list ? T : T|null)
  *
  * @mago-expect lint:loop-does-not-iterate
+ *
+ * @api
  */
 function first(iterable $iterable): mixed
 {

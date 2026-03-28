@@ -15,6 +15,8 @@ use function is_array;
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function from_iterable(iterable $iterable): array
 {

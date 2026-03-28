@@ -14,6 +14,8 @@ use Closure;
  * @param (Closure(): T) $initializer
  *
  * @return (Closure(): T)
+ *
+ * @api
  */
 function lazy(Closure $initializer): Closure
 {

@@ -14,6 +14,8 @@ use Psl\Hash;
  * @throws Hash\Exception\RuntimeException If unable to pump data into the hashing context.
  *
  * @pure
+ *
+ * @api
  */
 function hash(string $data, Algorithm $algorithm, string $key): string
 {

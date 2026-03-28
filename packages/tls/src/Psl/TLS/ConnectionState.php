@@ -8,6 +8,8 @@ namespace Psl\TLS;
  * Immutable snapshot of TLS connection state captured after handshake.
  *
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class ConnectionState
 {

@@ -8,6 +8,8 @@ use Override;
 
 /**
  * @require-implements ReaderInterface
+ *
+ * @api
  */
 trait ReaderConvenienceMethodsTrait
 {

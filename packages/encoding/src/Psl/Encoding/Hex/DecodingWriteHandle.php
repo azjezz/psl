@@ -15,6 +15,8 @@ use function substr;
 /**
  * A write handle that accepts hex-encoded bytes, buffers until complete 2-byte pairs
  * are available, decodes and writes to the inner handle.
+ *
+ * @api
  */
 final class DecodingWriteHandle implements IO\WriteHandleInterface
 {

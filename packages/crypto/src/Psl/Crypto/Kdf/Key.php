@@ -9,6 +9,9 @@ use SensitiveParameter;
 
 use function strlen;
 
+/**
+ * @api
+ */
 final readonly class Key
 {
     /**

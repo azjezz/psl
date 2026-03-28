@@ -30,6 +30,8 @@ use function count;
  * @template Tout
  *
  * @mago-expect lint:excessive-nesting
+ *
+ * @api
  */
 final class KeyedSemaphore
 {

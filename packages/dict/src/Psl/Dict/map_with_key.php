@@ -27,6 +27,8 @@ use Closure;
  * @param (Closure(Tk,Tv): T) $function
  *
  * @return ($iterable is non-empty-array|non-empty-list ? non-empty-array<Tk, T> : array<Tk, T>)
+ *
+ * @api
  */
 function map_with_key(iterable $iterable, Closure $function): array
 {

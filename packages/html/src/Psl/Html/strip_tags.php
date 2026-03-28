@@ -12,6 +12,8 @@ use function strip_tags as php_strip_tags;
  * @param list<string> $allowedTags tags which should not be stripped.
  *
  * @pure
+ *
+ * @api
  */
 function strip_tags(string $html, array $allowedTags = []): string
 {

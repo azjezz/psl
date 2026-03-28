@@ -6,6 +6,9 @@ namespace Psl\File\Exception;
 
 use function sprintf;
 
+/**
+ * @api
+ */
 final class AlreadyCreatedException extends RuntimeException
 {
     public static function for(string $path): AlreadyCreatedException

@@ -12,6 +12,8 @@ namespace Psl\Filesystem;
  * @throws Exception\RuntimeException If unable to create the directory.
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function create_directory_for_file(string $filename, int $permissions = 0o777): string
 {

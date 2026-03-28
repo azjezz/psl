@@ -16,6 +16,8 @@ use Closure;
  * @return (Closure(T): T)
  *
  * @pure
+ *
+ * @api
  */
 function tap(Closure $callback): Closure
 {

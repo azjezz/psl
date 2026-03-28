@@ -12,6 +12,8 @@ use function sprintf;
 
 /**
  * Exception thrown when two values are incomparable.
+ *
+ * @api
  */
 class IncomparableException extends InvalidArgumentRootException implements ExceptionInterface
 {

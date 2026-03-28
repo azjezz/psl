@@ -11,6 +11,8 @@ use Override;
  * @template T of array-key
  *
  * @extends AccessibleCollectionInterface<T, T>
+ *
+ * @api
  */
 interface SetInterface extends AccessibleCollectionInterface
 {

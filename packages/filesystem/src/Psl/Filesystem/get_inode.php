@@ -16,6 +16,8 @@ use function sprintf;
  *
  * @throws Exception\NotFoundException If $node is not found.
  * @throws Exception\RuntimeException In case of an error.
+ *
+ * @api
  */
 function get_inode(string $node): int
 {

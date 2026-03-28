@@ -6,4 +6,7 @@ namespace Psl\Exception;
 
 use UnexpectedValueException as UnexpectedValueRootException;
 
+/**
+ * @api
+ */
 class UnexpectedValueException extends UnexpectedValueRootException implements ExceptionInterface {}

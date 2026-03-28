@@ -16,6 +16,8 @@ namespace Psl\H2\Event;
  * previously sent by the local endpoint.
  *
  * @see https://www.rfc-editor.org/rfc/rfc9113#section-6.7 RFC 9113 Section 6.7 - PING
+ *
+ * @api
  */
 final readonly class PingReceived implements EventInterface
 {

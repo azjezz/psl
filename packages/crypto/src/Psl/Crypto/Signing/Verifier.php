@@ -11,6 +11,8 @@ use function sodium_crypto_sign_verify_detached;
 
 /**
  * Verifies Ed25519 detached signatures using a public key.
+ *
+ * @api
  */
 final readonly class Verifier implements VerifierInterface
 {

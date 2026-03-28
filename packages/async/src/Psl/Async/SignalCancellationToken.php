@@ -11,6 +11,8 @@ use Exception as RootException;
  * A cancellation token that can be manually triggered.
  *
  * Call {@see cancel()} to cancel all subscribed operations.
+ *
+ * @api
  */
 final class SignalCancellationToken implements CancellationTokenInterface
 {

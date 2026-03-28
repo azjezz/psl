@@ -14,6 +14,8 @@ use Throwable;
  * catch point for any error that occurs during HTTP/2 processing.
  *
  * @inheritors ProtocolException|StreamException|FrameDecodingException|FlowControlException|ConnectionException
+ *
+ * @api
  */
 class RuntimeException extends Exception\RuntimeException implements ExceptionInterface
 {

@@ -14,6 +14,8 @@ use Stringable;
  * @link https://datatracker.ietf.org/doc/html/rfc3986#section-3.2.2
  *
  * @psalm-inheritors IPHost|RegisteredNameHost
+ *
+ * @api
  */
 interface HostInterface extends Stringable
 {

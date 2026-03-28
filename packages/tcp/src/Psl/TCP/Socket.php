@@ -19,6 +19,8 @@ use const PHP_OS_FAMILY;
  * @deprecated Use {@see ConnectConfiguration::$bindTo} or {@see ListenConfiguration::$bindTo} instead.
  *  The `bindTo` option on configuration objects replaces the bind-then-connect/listen pattern
  *  that this class provides. This class will be removed in PSL 7.0.
+ *
+ * @api
  */
 final class Socket
 {

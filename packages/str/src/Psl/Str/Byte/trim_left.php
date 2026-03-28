@@ -13,6 +13,8 @@ use function ltrim;
  * be stripped: space, tab, newline, carriage return, NUL byte, vertical tab.
  *
  * @pure
+ *
+ * @api
  */
 function trim_left(string $string, null|string $charMask = null): string
 {

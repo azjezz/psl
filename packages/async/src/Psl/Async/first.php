@@ -16,6 +16,8 @@ namespace Psl\Async;
  * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
  * @return T
+ *
+ * @api
  */
 function first(iterable $awaitables): mixed
 {

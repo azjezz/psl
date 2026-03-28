@@ -11,6 +11,8 @@ use function is_executable as php_is_executable;
  * or a directory with `execute` permission.
  *
  * @param non-empty-string $node Path, absolute or relative to the current working directory.
+ *
+ * @api
  */
 function is_executable(string $node): bool
 {

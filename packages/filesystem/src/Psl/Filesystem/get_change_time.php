@@ -19,6 +19,8 @@ use function sprintf;
  * @throws Exception\RuntimeException In case of an error.
  *
  * @return int The last inode modification time as a Unix timestamp.
+ *
+ * @api
  */
 function get_change_time(string $node): int
 {

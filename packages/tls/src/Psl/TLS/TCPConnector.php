@@ -19,6 +19,8 @@ use Psl\TCP;
  *
  * The resulting streams can be used with {@see TCP\SocketPoolInterface} to
  * enable connection pooling for TLS connections (e.g. DNS-over-TLS).
+ *
+ * @api
  */
 final readonly class TCPConnector implements TCP\ConnectorInterface
 {

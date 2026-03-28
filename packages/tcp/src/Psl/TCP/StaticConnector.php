@@ -13,6 +13,8 @@ use Psl\Async\NullCancellationToken;
  *
  * Useful for testing or forwarding connections to a specific endpoint
  * regardless of the requested target.
+ *
+ * @api
  */
 final readonly class StaticConnector implements ConnectorInterface
 {

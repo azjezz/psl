@@ -33,6 +33,8 @@ use function min;
  * @param iterable<Tu> $second
  *
  * @return list<array{0: Tv, 1: Tu}>
+ *
+ * @api
  */
 function zip(iterable $first, iterable $second): array
 {

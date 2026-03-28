@@ -10,6 +10,8 @@ namespace Psl\H2\Exception;
  *
  * These errors indicate that the raw bytes read from the connection do
  * not conform to the frame layout rules defined in RFC 9113, Section 4.
+ *
+ * @api
  */
 final class FrameDecodingException extends RuntimeException
 {

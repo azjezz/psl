@@ -24,6 +24,8 @@ namespace Psl\Graph;
  * @param GraphInterface<TNode, TWeight> $graph
  *
  * @pure
+ *
+ * @api
  */
 function has_cycle(GraphInterface $graph): bool
 {

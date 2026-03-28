@@ -16,6 +16,8 @@ use function substr;
  * @throws Exception\InvalidArgumentException If $hex is not a valid hex color string.
  *
  * @pure
+ *
+ * @api
  */
 function hex(string $hex): Color
 {

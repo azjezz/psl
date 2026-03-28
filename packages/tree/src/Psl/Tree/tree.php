@@ -22,6 +22,8 @@ namespace Psl\Tree;
  * @return TreeNode<T>
  *
  * @pure
+ *
+ * @api
  */
 function tree(mixed $value, array $children = []): TreeNode
 {

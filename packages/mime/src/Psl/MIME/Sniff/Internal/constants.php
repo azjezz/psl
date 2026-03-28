@@ -8,6 +8,8 @@ namespace Psl\MIME\Sniff\Internal;
  * Maximum number of bytes read from a handle for MIME sniffing.
  *
  * Used by {@see \Psl\MIME\Sniff\from_handle()} to limit the read size.
+ *
+ * @internal
  */
 const SNIFF_BUFFER_SIZE = 4096;
 
@@ -23,6 +25,8 @@ const SNIFF_BUFFER_SIZE = 4096;
  * formats (SQLite, WebAssembly).
  *
  * @var list<array{int, string, null|string, string}>
+ *
+ * @internal
  */
 const SIGNATURES = [
     // Images
@@ -89,6 +93,8 @@ const SIGNATURES = [
  * Recognized formats: WebP images, WAV audio, and AVI video.
  *
  * @var array<string, string>
+ *
+ * @internal
  */
 const RIFF_SUBTYPES = [
     'WEBP' => 'image/webp',
@@ -103,6 +109,8 @@ const RIFF_SUBTYPES = [
  * is looked up in this map to distinguish MP4 video, MP4/M4A audio, and QuickTime containers.
  *
  * @var array<string, string>
+ *
+ * @internal
  */
 const FTYP_BRANDS = [
     'isom' => 'video/mp4',

@@ -16,6 +16,8 @@ use function pack;
  * @throws Exception\OverflowException If the finite $value exceeds float32 range.
  *
  * @pure
+ *
+ * @api
  */
 function encode_f32(float $value, Endianness $endianness = Endianness::Big): string
 {

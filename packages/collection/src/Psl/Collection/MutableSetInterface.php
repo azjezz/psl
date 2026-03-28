@@ -12,6 +12,8 @@ use Override;
  *
  * @extends SetInterface<T>
  * @extends MutableAccessibleCollectionInterface<T, T>
+ *
+ * @api
  */
 interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetInterface
 {

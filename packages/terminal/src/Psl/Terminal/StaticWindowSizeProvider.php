@@ -9,6 +9,8 @@ namespace Psl\Terminal;
  *
  * Useful for remote scenarios where the initial size is known,
  * and for testing.
+ *
+ * @api
  */
 final readonly class StaticWindowSizeProvider implements WindowSizeProviderInterface
 {

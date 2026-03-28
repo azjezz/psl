@@ -10,6 +10,8 @@ namespace Psl\DateTime;
  * This enum distinguishes between the Anno Domini (AD) era, denoting years after the birth of Jesus Christ,
  * and the Before Christ (BC) era, denoting years before the birth of Jesus Christ. It provides a type-safe way
  * to represent and work with these two divisions of historical time.
+ *
+ * @api
  */
 enum Era: string
 {

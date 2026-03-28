@@ -11,6 +11,8 @@ use Psl\Network;
 
 /**
  * A TLS listener that accepts incoming connections and performs TLS handshakes.
+ *
+ * @api
  */
 interface ListenerInterface extends Network\ListenerInterface
 {

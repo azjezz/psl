@@ -27,6 +27,8 @@ use const ARRAY_FILTER_USE_BOTH;
  * @template T
  *
  * @implements VectorInterface<T>
+ *
+ * @api
  */
 final readonly class Vector implements VectorInterface
 {

@@ -15,6 +15,8 @@ use function str_contains;
  * @param non-empty-string $key
  *
  * @throws Psl\Exception\InvariantViolationException If contains an ASCII equals sign `=` or, the NUL character `\0`.
+ *
+ * @api
  */
 function remove_var(string $key): void
 {

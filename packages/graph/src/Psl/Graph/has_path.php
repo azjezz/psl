@@ -27,6 +27,8 @@ use function Psl\Graph\Internal\get_node_key;
  * @param TNode $to
  *
  * @pure
+ *
+ * @api
  */
 function has_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to): bool
 {

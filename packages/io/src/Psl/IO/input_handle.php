@@ -17,6 +17,8 @@ use const PHP_SAPI;
  * POST data, if any.
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 function input_handle(): CloseHandleInterface&ReadHandleInterface&StreamHandleInterface
 {

@@ -12,6 +12,8 @@ namespace Psl\H2\Frame;
  * the frame header and payload are interpreted.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6
+ *
+ * @api
  */
 enum FrameType: int
 {

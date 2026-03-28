@@ -16,6 +16,8 @@ use function strlen;
  *
  * @param positive-int $maxLineLength
  * @param non-empty-string $lineEnding
+ *
+ * @api
  */
 function encode_line(string $line, int $maxLineLength = 76, string $lineEnding = "\r\n"): string
 {

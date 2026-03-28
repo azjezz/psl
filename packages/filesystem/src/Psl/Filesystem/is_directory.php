@@ -13,6 +13,8 @@ use function is_dir;
  *                     If it is a link, it will be resolved and checked.
  *
  * @psalm-assert-if-true =non-empty-string $node
+ *
+ * @api
  */
 function is_directory(string $node): bool
 {

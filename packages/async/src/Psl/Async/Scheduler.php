@@ -18,6 +18,8 @@ use Revolt\EventLoop\Suspension;
  * @see EventLoop
  *
  * @codeCoverageIgnore
+ *
+ * @api
  */
 final readonly class Scheduler
 {

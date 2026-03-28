@@ -16,6 +16,8 @@ use WeakReference;
  *         $requestToken,
  *         new TimeoutCancellationToken(Duration::seconds(5)),
  *     );
+ *
+ * @api
  */
 final class LinkedCancellationToken implements CancellationTokenInterface
 {

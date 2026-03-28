@@ -12,6 +12,9 @@ use function get_debug_type;
 use function implode;
 use function sprintf;
 
+/**
+ * @api
+ */
 final class CoercionException extends Exception
 {
     private string $target;

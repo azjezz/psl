@@ -18,6 +18,8 @@ use const PHP_INT_MAX;
  * @return list<string>
  *
  * @pure
+ *
+ * @api
  */
 function split(string $string, string $delimiter, null|int $limit = null, Encoding $encoding = Encoding::Utf8): array
 {

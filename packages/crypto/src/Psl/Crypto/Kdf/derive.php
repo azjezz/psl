@@ -21,6 +21,8 @@ use function strlen;
  * @throws Exception\RuntimeException If the context is not exactly {@see CONTEXT_BYTES} bytes.
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function derive(#[SensitiveParameter] Key $key, int $subKeyId, string $context, int $length = 32): string
 {

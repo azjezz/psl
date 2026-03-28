@@ -9,6 +9,8 @@ use Psl\Ansi\ControlSequenceIntroducerKind;
 
 /**
  * @pure
+ *
+ * @api
  */
 function hide(): ControlSequenceIntroducer
 {

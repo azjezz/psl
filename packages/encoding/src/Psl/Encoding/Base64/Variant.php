@@ -9,6 +9,8 @@ use Psl\Default\DefaultInterface;
 
 /**
  * Enumerates variants of Base64 encoding.
+ *
+ * @api
  */
 enum Variant implements DefaultInterface
 {

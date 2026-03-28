@@ -11,6 +11,8 @@ use Psl\Async\NullCancellationToken;
 /**
  * A buffered readable handle that provides higher-level reading methods
  * on top of {@see ReadHandleInterface}.
+ *
+ * @api
  */
 interface BufferedReadHandleInterface extends ReadHandleInterface
 {

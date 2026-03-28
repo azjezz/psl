@@ -16,6 +16,8 @@ use Closure;
  *
  * @param iterable<T> $iterable Iterable to check against the predicate
  * @param (Closure(T): bool) $predicate
+ *
+ * @api
  */
 function all(iterable $iterable, Closure $predicate): bool
 {

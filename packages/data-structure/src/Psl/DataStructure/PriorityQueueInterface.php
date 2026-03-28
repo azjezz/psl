@@ -10,6 +10,8 @@ use Override;
  * @template T
  *
  * @extends QueueInterface<T>
+ *
+ * @api
  */
 interface PriorityQueueInterface extends QueueInterface
 {

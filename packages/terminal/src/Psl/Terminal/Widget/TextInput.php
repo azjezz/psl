@@ -21,6 +21,8 @@ use function mb_substr;
  *
  * The widget renders the current value with a visible cursor position.
  * When the text is longer than the available width, it scrolls to keep the cursor visible.
+ *
+ * @api
  */
 final class TextInput implements WidgetInterface
 {

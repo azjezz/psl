@@ -8,6 +8,8 @@ namespace Psl\Ansi;
  * A simple control character command (e.g. BEL, BS).
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class ControlCharacter implements CommandInterface
 {

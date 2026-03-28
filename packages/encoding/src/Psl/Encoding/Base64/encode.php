@@ -8,6 +8,8 @@ namespace Psl\Encoding\Base64;
  * Convert a binary string into a base64-encoded string.
  *
  * @pure
+ *
+ * @api
  */
 function encode(string $binary, Variant $variant = Variant::Standard, bool $padding = true): string
 {

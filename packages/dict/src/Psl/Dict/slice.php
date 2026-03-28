@@ -26,6 +26,8 @@ use function is_array;
  * @param null|int<0, max> $length Length (if not specified all remaining values from the array are used)
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function slice(iterable $iterable, int $start, null|int $length = null): array
 {

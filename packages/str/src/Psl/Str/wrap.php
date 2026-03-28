@@ -17,6 +17,8 @@ namespace Psl\Str;
  * @return string the given string wrapped at the specified column
  *
  * @pure
+ *
+ * @api
  */
 function wrap(
     string $string,

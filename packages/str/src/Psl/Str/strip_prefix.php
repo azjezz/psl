@@ -9,6 +9,8 @@ namespace Psl\Str;
  * it doesn't start with the prefix.
  *
  * @pure
+ *
+ * @api
  */
 function strip_prefix(string $string, string $prefix, Encoding $encoding = Encoding::Utf8): string
 {

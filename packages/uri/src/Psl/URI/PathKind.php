@@ -8,6 +8,8 @@ namespace Psl\URI;
  * Discriminates URI path types per RFC 3986.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3986#section-3.3
+ *
+ * @api
  */
 enum PathKind
 {

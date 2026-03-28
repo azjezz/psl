@@ -15,6 +15,8 @@ use function is_array;
  * @param iterable<T> $iterable
  *
  * @return list<T>
+ *
+ * @api
  */
 function values(iterable $iterable): array
 {

@@ -38,6 +38,8 @@ use function sprintf;
  * @throws CancelledException If the operation is cancelled.
  *
  * @return Generator<T, string, mixed, null>
+ *
+ * @api
  */
 function streaming(iterable $handles, CancellationTokenInterface $cancellation = new NullCancellationToken()): Generator
 {

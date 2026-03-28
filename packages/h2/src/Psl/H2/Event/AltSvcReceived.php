@@ -11,6 +11,8 @@ namespace Psl\H2\Event;
  * that the client can use for future requests to the same origin.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc7838
+ *
+ * @api
  */
 final readonly class AltSvcReceived implements EventInterface
 {

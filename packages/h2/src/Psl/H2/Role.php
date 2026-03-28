@@ -15,6 +15,8 @@ use Psl\H2\Frame\FrameType;
  * preface exchange behavior as described in RFC 9113 Section 3.4.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-3.4
+ *
+ * @api
  */
 enum Role
 {

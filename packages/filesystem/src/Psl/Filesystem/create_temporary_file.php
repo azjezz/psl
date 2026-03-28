@@ -24,6 +24,8 @@ use function sys_get_temp_dir;
  * @throws Exception\InvalidArgumentException If $prefix contains a directory separator.
  *
  * @return non-empty-string The absolute path to the temporary file.
+ *
+ * @api
  */
 function create_temporary_file(null|string $directory = null, null|string $prefix = null): string
 {

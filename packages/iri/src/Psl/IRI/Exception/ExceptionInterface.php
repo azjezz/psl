@@ -10,5 +10,7 @@ use Psl\Exception;
  * Marker interface for all IRI component exceptions.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3987
+ *
+ * @api
  */
 interface ExceptionInterface extends Exception\ExceptionInterface {}

@@ -19,6 +19,8 @@ use function sys_get_temp_dir;
  * @see https://github.com/php/php-src/blob/fd0b57d48bab3924a31d3d0b038f0d5de6eab3e3/main/php_open_temporary_file.c#L204
  *
  * @return non-empty-string
+ *
+ * @api
  */
 function temp_dir(): string
 {

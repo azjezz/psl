@@ -19,6 +19,8 @@ use function str_split;
  *
  * @throws Exception\InvalidArgumentException If $number contains an invalid digit in base $fromBase
  * @throws Exception\OverflowException In case of an integer overflow
+ *
+ * @api
  */
 function from_base(string $number, int $fromBase): int
 {

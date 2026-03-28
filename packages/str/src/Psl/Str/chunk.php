@@ -32,6 +32,8 @@ use function mb_str_split;
  *                                as the first (and only) array element.
  *
  * @pure
+ *
+ * @api
  */
 function chunk(string $string, int $chunkLength = 1, Encoding $encoding = Encoding::Utf8): array
 {

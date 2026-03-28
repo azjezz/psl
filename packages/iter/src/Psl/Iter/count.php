@@ -19,6 +19,8 @@ use function is_countable;
  * @param iterable<T> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? int<1, max> : int<0, max>)
+ *
+ * @api
  */
 function count(iterable $iterable): int
 {

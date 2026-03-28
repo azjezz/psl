@@ -12,6 +12,8 @@ use Psl\Async\NullCancellationToken;
  * Interface for accepting incoming connections.
  *
  * Replaces the previous ServerInterface and StreamServerInterface with a unified listener abstraction.
+ *
+ * @api
  */
 interface ListenerInterface extends SocketInterface
 {

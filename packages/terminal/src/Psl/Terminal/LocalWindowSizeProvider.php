@@ -6,6 +6,8 @@ namespace Psl\Terminal;
 
 /**
  * Window size provider for local terminals using stty/tput/PowerShell.
+ *
+ * @api
  */
 final readonly class LocalWindowSizeProvider implements WindowSizeProviderInterface
 {

@@ -17,6 +17,8 @@ use function is_array;
  * @param iterable<T> ...$rest
  *
  * @return list<T>
+ *
+ * @api
  */
 function concat(iterable $first, iterable ...$rest): array
 {

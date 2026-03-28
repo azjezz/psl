@@ -6,6 +6,8 @@ namespace Psl\HPACK\Exception;
 
 /**
  * Exception thrown when an HPACK-encoded integer value exceeds PHP_INT_MAX.
+ *
+ * @api
  */
 final class IntegerOverflowException extends OverflowException
 {

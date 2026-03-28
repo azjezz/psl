@@ -15,6 +15,8 @@ namespace Psl\Type;
  * @param TypeInterface<T> $type
  *
  * @return TypeInterface<T>
+ *
+ * @api
  */
 function always_assert(TypeInterface $type): TypeInterface
 {

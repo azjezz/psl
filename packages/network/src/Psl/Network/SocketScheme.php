@@ -6,6 +6,8 @@ namespace Psl\Network;
 
 /**
  * A socket scheme.
+ *
+ * @api
  */
 enum SocketScheme: string
 {

@@ -21,6 +21,8 @@ use function password_needs_rehash;
  * @param array{cost?: int}|array{memory_cost?: int, time_cost?: int, threads?: int} $options
  *
  * @pure
+ *
+ * @api
  */
 function needs_rehash(string $hash, Algorithm $algorithm = Algorithm::Default, array $options = []): bool
 {

@@ -11,6 +11,8 @@ use function str_replace;
  * `$replacement`.
  *
  * @pure
+ *
+ * @api
  */
 function replace(string $haystack, string $needle, string $replacement): string
 {

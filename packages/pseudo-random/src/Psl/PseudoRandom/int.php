@@ -16,6 +16,8 @@ use const PHP_INT_MIN;
  * @throws Exception\InvalidArgumentException If $min > $max
  *
  * @psalm-external-mutation-free
+ *
+ * @api
  */
 function int(int $min = PHP_INT_MIN, int $max = PHP_INT_MAX): int
 {

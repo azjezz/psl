@@ -18,6 +18,8 @@ use function array_reduce;
  * @return Closure(T): T
  *
  * @pure
+ *
+ * @api
  */
 function pipe(Closure ...$stages): Closure
 {

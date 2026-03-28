@@ -22,6 +22,8 @@ use function substr;
  * Decompressed output that cannot be written immediately is buffered internally.
  * Call {@see flush()} to finalize the decompression stream and drain all
  * remaining buffered data.
+ *
+ * @api
  */
 final class DecompressingWriteHandle implements IO\BufferedWriteHandleInterface
 {

@@ -23,6 +23,8 @@ use Closure;
  * @param (Closure(T): bool) $predicate
  *
  * @return T|null
+ *
+ * @api
  */
 function find(NodeInterface $tree, Closure $predicate): mixed
 {

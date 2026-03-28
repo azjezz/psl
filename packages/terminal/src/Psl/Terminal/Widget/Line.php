@@ -8,6 +8,8 @@ namespace Psl\Terminal\Widget;
  * A line of styled text composed of spans.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Line
 {

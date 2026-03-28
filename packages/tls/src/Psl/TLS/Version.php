@@ -8,6 +8,8 @@ use Psl\Default\DefaultInterface;
 
 /**
  * Represents the minimum or maximum TLS protocol version to use.
+ *
+ * @api
  */
 enum Version: int implements DefaultInterface
 {

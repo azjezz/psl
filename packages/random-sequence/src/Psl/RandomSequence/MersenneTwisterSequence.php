@@ -8,6 +8,8 @@ use Override;
 
 /**
  * A Mersenne Twister ( MT19937 ) PRNG.
+ *
+ * @api
  */
 final class MersenneTwisterSequence implements SequenceInterface
 {

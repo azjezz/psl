@@ -6,4 +6,7 @@ namespace Psl\Hash\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 final class RuntimeException extends Exception\RuntimeException implements ExceptionInterface {}

@@ -31,6 +31,8 @@ use const ARRAY_FILTER_USE_BOTH;
  * @template Tv
  *
  * @implements MutableMapInterface<Tk, Tv>
+ *
+ * @api
  */
 final class MutableMap implements MutableMapInterface
 {

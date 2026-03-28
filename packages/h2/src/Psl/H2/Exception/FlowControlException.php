@@ -11,6 +11,8 @@ namespace Psl\H2\Exception;
  * may transmit before receiving a WINDOW_UPDATE from the receiver.
  * This exception is raised when those limits are breached or when
  * concurrency caps are exceeded.
+ *
+ * @api
  */
 final class FlowControlException extends RuntimeException
 {

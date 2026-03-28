@@ -6,6 +6,8 @@ namespace Psl\Terminal;
 
 /**
  * Provides the current terminal window size.
+ *
+ * @api
  */
 interface WindowSizeProviderInterface
 {

@@ -20,6 +20,8 @@ use function unpack;
  * origin of the request on that stream.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc7838#section-4
+ *
+ * @api
  */
 final readonly class AltSvcFrame implements FrameInterface
 {

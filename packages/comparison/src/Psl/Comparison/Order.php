@@ -20,6 +20,8 @@ use Psl\Default\DefaultInterface;
  *
  * Usage of this enum can help to avoid "magic numbers" in comparison logic and make
  * code more readable and maintainable.
+ *
+ * @api
  */
 enum Order: int implements DefaultInterface
 {

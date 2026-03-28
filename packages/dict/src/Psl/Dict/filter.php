@@ -30,6 +30,8 @@ use function is_array;
  * @param (Closure(Tv): bool)|null $predicate
  *
  * @return array<Tk, Tv>
+ *
+ * @api
  */
 function filter(iterable $iterable, null|Closure $predicate = null): array
 {

@@ -10,6 +10,8 @@ use const PHP_OS_FAMILY;
  * Return whether PHP was built for Windows OS family.
  *
  * @pure
+ *
+ * @api
  */
 function is_windows(): bool
 {

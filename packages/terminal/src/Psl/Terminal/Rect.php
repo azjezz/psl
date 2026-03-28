@@ -10,6 +10,8 @@ use Psl\Math;
  * Represents a rectangular area in the terminal.
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Rect
 {

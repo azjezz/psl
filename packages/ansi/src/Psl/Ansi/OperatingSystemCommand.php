@@ -6,6 +6,8 @@ namespace Psl\Ansi;
 
 /**
  * @immutable
+ *
+ * @api
  */
 final readonly class OperatingSystemCommand implements CommandInterface
 {

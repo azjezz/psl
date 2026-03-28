@@ -12,6 +12,8 @@ use function interface_exists;
  * @param string $interfaceName
  *
  * @pure
+ *
+ * @api
  */
 function defined(string $interfaceName): bool
 {

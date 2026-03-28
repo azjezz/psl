@@ -18,6 +18,8 @@ use function preg_replace;
  * @throws Exception\RuntimeException In case of an unexpected error.
  *
  * @pure
+ *
+ * @api
  */
 function replace(string $haystack, string $pattern, string $replacement, null|int $limit = null): string
 {

@@ -23,6 +23,8 @@ use function implode;
  *                elements in the same order, with the glue string between each element
  *
  * @pure
+ *
+ * @api
  */
 function join(array $pieces, string $glue): string
 {

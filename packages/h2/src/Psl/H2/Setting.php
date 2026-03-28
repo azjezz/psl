@@ -16,6 +16,8 @@ use Psl\H2\Frame\FrameType;
  * identifiers MUST ignore those settings.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5.2
+ *
+ * @api
  */
 enum Setting: int
 {

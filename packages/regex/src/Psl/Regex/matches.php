@@ -15,6 +15,8 @@ use function preg_match;
  * @throws Exception\RuntimeException If an internal error accord.
  *
  * @pure
+ *
+ * @api
  */
 function matches(string $subject, string $pattern, int $offset = 0): bool
 {

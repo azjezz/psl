@@ -25,6 +25,8 @@ use Closure;
  * @param (Closure(TKey, TValue): bool) $predicate
  *
  * @return TValue|null
+ *
+ * @api
  */
 function search_with_keys(iterable $iterable, Closure $predicate): mixed
 {

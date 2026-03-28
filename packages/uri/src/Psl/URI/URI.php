@@ -11,6 +11,8 @@ use Stringable;
  * Represents a parsed and normalized URI per RFC 3986.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc3986
+ *
+ * @api
  */
 final readonly class URI implements Stringable
 {

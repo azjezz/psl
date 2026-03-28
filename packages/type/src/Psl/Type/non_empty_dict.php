@@ -14,6 +14,8 @@ namespace Psl\Type;
  * @param TypeInterface<Tv> $valueType
  *
  * @return TypeInterface<non-empty-array<Tk, Tv>>
+ *
+ * @api
  */
 function non_empty_dict(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
 {

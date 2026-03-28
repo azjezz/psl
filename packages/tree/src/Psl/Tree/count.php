@@ -22,6 +22,8 @@ namespace Psl\Tree;
  * @return int<1, max>
  *
  * @pure
+ *
+ * @api
  */
 function count(NodeInterface $node): int
 {

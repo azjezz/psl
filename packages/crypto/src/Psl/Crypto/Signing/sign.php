@@ -11,6 +11,8 @@ use SensitiveParameter;
  * Sign a message with an Ed25519 secret key.
  *
  * @throws Exception\RuntimeException If signing fails.
+ *
+ * @api
  */
 function sign(#[SensitiveParameter] string $message, #[SensitiveParameter] SecretKey $secretKey): Signature
 {

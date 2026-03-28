@@ -28,6 +28,8 @@ use function is_iterable;
  * @extends Type\Type<array<Tk, Tv>>
  *
  * @mago-expect lint:kan-defect
+ *
+ * @internal
  */
 final readonly class ShapeType extends Type\Type
 {

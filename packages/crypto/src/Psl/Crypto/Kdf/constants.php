@@ -13,6 +13,8 @@ use const SODIUM_CRYPTO_KDF_KEYBYTES;
  * The length of a KDF master key in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const KEY_BYTES = SODIUM_CRYPTO_KDF_KEYBYTES;
 
@@ -20,6 +22,8 @@ const KEY_BYTES = SODIUM_CRYPTO_KDF_KEYBYTES;
  * The required length of the KDF context string in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const CONTEXT_BYTES = SODIUM_CRYPTO_KDF_CONTEXTBYTES;
 
@@ -27,6 +31,8 @@ const CONTEXT_BYTES = SODIUM_CRYPTO_KDF_CONTEXTBYTES;
  * The minimum derived key length in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const DERIVED_MIN_BYTES = SODIUM_CRYPTO_KDF_BYTES_MIN;
 
@@ -34,5 +40,7 @@ const DERIVED_MIN_BYTES = SODIUM_CRYPTO_KDF_BYTES_MIN;
  * The maximum derived key length in bytes.
  *
  * @var positive-int
+ *
+ * @api
  */
 const DERIVED_MAX_BYTES = SODIUM_CRYPTO_KDF_BYTES_MAX;

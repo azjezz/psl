@@ -8,6 +8,8 @@ namespace Psl\Ansi\Screen;
  * Progress indicator state for the terminal taskbar/tab.
  *
  * Used with the OSC 9;4 sequence, supported by Windows Terminal, ConEmu, Kitty, and Ghostty.
+ *
+ * @api
  */
 enum ProgressState: int
 {

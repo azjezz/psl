@@ -14,6 +14,8 @@ use Psl\Type\Exception\CoercionException;
  * This is necessary to get coerce and assert narrow down the type without psalm having a TNonNull type.
  *
  * @extends Type\Type<mixed>
+ *
+ * @api
  */
 final readonly class NonNullType extends Type\Type
 {

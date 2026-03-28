@@ -11,6 +11,8 @@ use SensitiveParameter;
  * Decrypt a ciphertext message with a symmetric key.
  *
  * @throws Exception\DecryptionException If decryption fails.
+ *
+ * @api
  */
 function open(
     #[SensitiveParameter]

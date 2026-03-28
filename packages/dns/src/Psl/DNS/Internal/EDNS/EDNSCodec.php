@@ -72,7 +72,7 @@ final class EDNSCodec
             /** @var non-negative-int $optionLength */
 
             if ($code === self::NSID_OPTION_CODE) {
-                $options[] = self::decodeNsid($data, $offset, $length, $optionLength);
+                $options[] = self::decodeNsid($data, $offset, $optionLength);
             } elseif ($code === self::ECS_OPTION_CODE) {
                 $options[] = self::decodeEcs($data, $offset, $length, $optionLength);
             } elseif ($code === self::COOKIE_OPTION_CODE) {
@@ -198,7 +198,7 @@ final class EDNSCodec
      *
      * @throws OutOfBoundsException If the option data is truncated.
      */
-    private static function decodeNsid(string $data, int &$offset, int $length, int $optionLength): NSIDOption
+    private static function decodeNsid(string $data, int &$offset, int $optionLength): NSIDOption
     {
         $id = $optionLength > 0 ? substr($data, $offset, $optionLength) : '';
         $offset += $optionLength;

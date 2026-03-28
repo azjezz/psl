@@ -12,6 +12,8 @@ use Psl\Default\DefaultInterface;
  *
  * This enum provides a collection of standardized date pattern strings for various protocols
  * and standards, such as RFC 2822, ISO 8601, HTTP headers, and more.
+ *
+ * @api
  */
 enum FormatPattern: string implements DefaultInterface
 {

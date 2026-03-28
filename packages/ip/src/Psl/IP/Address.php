@@ -34,6 +34,8 @@ use const STR_PAD_LEFT;
  *
  * @implements Comparable<Address>
  * @implements Equable<Address>
+ *
+ * @api
  */
 final readonly class Address implements Stringable, Comparable, Equable
 {

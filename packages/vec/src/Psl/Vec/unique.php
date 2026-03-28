@@ -12,6 +12,8 @@ namespace Psl\Vec;
  * @param iterable<Tv> $iterable
  *
  * @return list<Tv>
+ *
+ * @api
  */
 function unique(iterable $iterable): array
 {

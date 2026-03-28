@@ -6,6 +6,8 @@ namespace Psl\Network;
 
 /**
  * @psalm-immutable
+ *
+ * @api
  */
 final readonly class Address
 {

@@ -10,6 +10,8 @@ use function strlen;
 
 /**
  * @require-implements WriterInterface
+ *
+ * @api
  */
 trait WriterConvenienceMethodsTrait
 {

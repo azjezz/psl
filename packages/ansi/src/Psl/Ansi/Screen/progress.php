@@ -20,6 +20,8 @@ use Psl\Ansi\OperatingSystemCommandKind;
  * @param int<0, 100> $progress Percentage value (0-100).
  *
  * @pure
+ *
+ * @api
  */
 function progress(ProgressState $state, int $progress = 0): OperatingSystemCommand
 {

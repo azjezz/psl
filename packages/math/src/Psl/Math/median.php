@@ -17,6 +17,8 @@ use function sort;
  * @return ($numbers is non-empty-list ? float : null)
  *
  * @pure
+ *
+ * @api
  */
 function median(array $numbers): float|null
 {

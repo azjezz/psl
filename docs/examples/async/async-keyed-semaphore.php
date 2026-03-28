@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Async;
 use Psl\DateTime\Duration;
 
-$semaphore = new Async\KeyedSemaphore(2, static function (string $key, int $input): void {
+$semaphore = new Async\KeyedSemaphore(2, static function (string $_key, int $_input): void {
     Async\sleep(Duration::seconds(1));
 });
 

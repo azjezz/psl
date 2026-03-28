@@ -6,6 +6,9 @@ namespace Psl\URI\Exception;
 
 use Throwable;
 
+/**
+ * @api
+ */
 final class InvalidURIException extends InvalidArgumentException
 {
     private function __construct(string $message, null|Throwable $previous = null)

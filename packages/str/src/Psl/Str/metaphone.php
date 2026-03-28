@@ -15,6 +15,8 @@ use function metaphone as php_metaphone;
  * @return string the metaphone key as a string
  *
  * @pure
+ *
+ * @api
  */
 function metaphone(string $string, int $phonemes = 0): string
 {

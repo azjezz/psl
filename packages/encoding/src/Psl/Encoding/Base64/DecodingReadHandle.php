@@ -20,6 +20,8 @@ use function substr;
  *
  * Reads chunks from the inner handle, strips whitespace, and decodes complete 4-byte groups.
  * On EOF, decodes any remaining bytes (which must be valid base64 with proper padding).
+ *
+ * @api
  */
 final class DecodingReadHandle implements IO\BufferedReadHandleInterface
 {

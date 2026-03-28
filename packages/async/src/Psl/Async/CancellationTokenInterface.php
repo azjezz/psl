@@ -12,6 +12,8 @@ use Closure;
  * Implementations allow operations to be cancelled either manually
  * ({@see SignalCancellationToken}) or automatically after a timeout
  * ({@see TimeoutCancellationToken}).
+ *
+ * @api
  */
 interface CancellationTokenInterface
 {

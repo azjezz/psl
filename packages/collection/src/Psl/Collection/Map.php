@@ -29,6 +29,8 @@ use const ARRAY_FILTER_USE_BOTH;
  * @template Tv
  *
  * @implements MapInterface<Tk, Tv>
+ *
+ * @api
  */
 final readonly class Map implements MapInterface
 {

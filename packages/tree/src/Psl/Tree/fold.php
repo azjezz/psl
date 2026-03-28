@@ -28,6 +28,8 @@ use function array_map;
  * @param (Closure(T, list<Ta>): Ta) $function
  *
  * @return Ta
+ *
+ * @api
  */
 function fold(NodeInterface $tree, Closure $function): mixed
 {

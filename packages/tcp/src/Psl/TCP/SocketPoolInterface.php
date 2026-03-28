@@ -15,6 +15,8 @@ use Psl\Network;
  * Connections are keyed by host:port. When a connection is checked out,
  * an idle connection is reused if available; otherwise a new one is created.
  * Checked-in connections are kept alive for reuse until an idle timeout expires.
+ *
+ * @api
  */
 interface SocketPoolInterface
 {

@@ -17,6 +17,8 @@ use function unpack;
  * A SETTINGS ACK has an empty settings array and ack set to true.
  *
  * @link https://datatracker.ietf.org/doc/html/rfc9113#section-6.5
+ *
+ * @api
  */
 final readonly class SettingsFrame implements FrameInterface
 {

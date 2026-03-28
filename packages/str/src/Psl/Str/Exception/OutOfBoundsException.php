@@ -10,6 +10,8 @@ use function sprintf;
 
 /**
  * @mutation-free
+ *
+ * @api
  */
 final class OutOfBoundsException extends Exception\OutOfBoundsException implements ExceptionInterface
 {

@@ -21,6 +21,8 @@ use function sprintf;
  * @throws Exception\NotWritableException If $file exists, and is non-writable.
  * @throws Exception\RuntimeException In case of an error.
  * @throws Async\Exception\CancelledException If the operation is cancelled.
+ *
+ * @api
  */
 function write(
     string $file,

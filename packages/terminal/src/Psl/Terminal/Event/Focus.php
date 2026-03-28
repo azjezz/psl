@@ -10,6 +10,8 @@ namespace Psl\Terminal\Event;
  * Emitted when the terminal window gains or loses focus (requires focus tracking mode).
  *
  * @immutable
+ *
+ * @api
  */
 final readonly class Focus
 {

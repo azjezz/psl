@@ -14,6 +14,8 @@ use Psl\Default\DefaultInterface;
  * @template T
  *
  * @see https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)
+ *
+ * @api
  */
 interface QueueInterface extends Countable, DefaultInterface
 {

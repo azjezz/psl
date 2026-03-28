@@ -10,6 +10,8 @@ use function atan as php_atan;
  * Returns the arc tangent of the given number.
  *
  * @pure
+ *
+ * @api
  */
 function atan(float $number): float
 {

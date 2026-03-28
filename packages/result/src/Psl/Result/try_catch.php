@@ -20,6 +20,8 @@ use Throwable;
  * @param (Closure(Throwable): Ts) $catch
  *
  * @return T|Ts
+ *
+ * @api
  */
 function try_catch(Closure $try, Closure $catch): mixed
 {

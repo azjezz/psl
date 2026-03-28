@@ -23,6 +23,8 @@ use function strrpos;
  * @throws Str\Exception\OutOfBoundsException If $offset is out-of-bounds.
  *
  * @return null|int<0, max>
+ *
+ * @api
  */
 function search_last(string $haystack, string $needle, int $offset = 0): null|int
 {

@@ -20,6 +20,8 @@ use Throwable;
  * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
  * @return T
+ *
+ * @api
  */
 function any(iterable $awaitables): mixed
 {

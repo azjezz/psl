@@ -25,6 +25,8 @@ use Closure;
  * @param Ts $initial
  *
  * @return list<Ts>
+ *
+ * @api
  */
 function reductions(iterable $iterable, Closure $function, mixed $initial): array
 {

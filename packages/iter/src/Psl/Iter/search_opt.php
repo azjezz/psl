@@ -26,6 +26,8 @@ use Psl\Option\Option;
  * @param (Closure(T): bool) $predicate
  *
  * @return Option<T>
+ *
+ * @api
  */
 function search_opt(iterable $iterable, Closure $predicate): Option
 {

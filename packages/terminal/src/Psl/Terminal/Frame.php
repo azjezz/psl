@@ -10,6 +10,8 @@ use Psl\DateTime;
  * Represents a render frame, wraps the root Rect (full terminal) and the Buffer.
  *
  * Passed to the render callback on each frame tick.
+ *
+ * @api
  */
 final class Frame
 {

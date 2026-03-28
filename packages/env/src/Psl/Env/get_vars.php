@@ -10,6 +10,8 @@ use function getenv;
  * Returns an iterator of (variable, value) pairs of strings, for all the environment variables of the current process.
  *
  * @return array<string, string>
+ *
+ * @api
  */
 function get_vars(): array
 {

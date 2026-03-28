@@ -17,6 +17,8 @@ use function is_string;
  *
  * @param iterable<Tk, Tv> $iterable
  * @param Tk $key
+ *
+ * @api
  */
 function contains_key(iterable $iterable, mixed $key): bool
 {

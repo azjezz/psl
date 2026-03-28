@@ -12,6 +12,8 @@ use function ucfirst;
 
 /**
  * Represents a locale identifier.
+ *
+ * @api
  */
 enum Locale: string
 {

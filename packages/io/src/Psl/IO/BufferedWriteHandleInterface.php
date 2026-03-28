@@ -11,6 +11,8 @@ use Psl\Async\NullCancellationToken;
 /**
  * A buffered writable handle that provides explicit flushing
  * on top of {@see WriteHandleInterface}.
+ *
+ * @api
  */
 interface BufferedWriteHandleInterface extends WriteHandleInterface
 {

@@ -27,6 +27,8 @@ use const ARRAY_FILTER_USE_KEY;
  * @template T of array-key
  *
  * @implements SetInterface<T>
+ *
+ * @api
  */
 final readonly class Set implements SetInterface
 {

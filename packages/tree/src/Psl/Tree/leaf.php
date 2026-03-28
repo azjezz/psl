@@ -18,6 +18,8 @@ namespace Psl\Tree;
  * @return LeafNode<T>
  *
  * @pure
+ *
+ * @api
  */
 function leaf(mixed $value): LeafNode
 {

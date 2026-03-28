@@ -6,4 +6,7 @@ namespace Psl\IO\Exception;
 
 use Psl\Exception;
 
+/**
+ * @api
+ */
 class OverflowException extends Exception\OverflowException implements ExceptionInterface {}
