@@ -27,7 +27,7 @@ use function substr;
  *
  * @api
  */
-final class TeeWriteHandle implements WriteHandleInterface, CloseHandleInterface
+final class TeeWriteHandle implements BufferedWriteHandleInterface, CloseHandleInterface
 {
     use WriteHandleConvenienceMethodsTrait;
 
@@ -70,37 +70,29 @@ final class TeeWriteHandle implements WriteHandleInterface, CloseHandleInterface
     {
         $this->assertHandleIsOpen();
 
-        // Step 1: drain any pending buffer to $second
         if ($this->pendingForSecond !== '') {
             $drained = $this->second->tryWrite($this->pendingForSecond);
             if ($drained > 0) {
                 $this->pendingForSecond = substr($this->pendingForSecond, $drained);
             }
 
-            // Step 2: if pending buffer still not empty, return 0 (backpressure)
             if ($this->pendingForSecond !== '') {
                 return 0;
             }
         }
 
-        // Step 3: try write $bytes to $first
         $firstN = $this->first->tryWrite($bytes);
-
-        // Step 4: if $first accepted nothing, return 0
         if ($firstN === 0) {
             return 0;
         }
 
-        // Step 5: try write the same $firstN bytes to $second
         $slice = substr($bytes, 0, $firstN);
         $secondN = $this->second->tryWrite($slice);
 
-        // Step 6: both in sync
         if ($secondN === $firstN) {
             return $firstN;
         }
 
-        // Step 7: buffer the remainder for $second
         $this->pendingForSecond = substr($slice, $secondN);
 
         return $firstN;
@@ -125,21 +117,23 @@ final class TeeWriteHandle implements WriteHandleInterface, CloseHandleInterface
     {
         $this->assertHandleIsOpen();
 
-        // Step 1: drain pending buffer to $second (blocking)
-        if ($this->pendingForSecond !== '') {
-            $this->second->writeAll($this->pendingForSecond, $cancellation);
-            $this->pendingForSecond = '';
-        }
-
-        // Step 2: write to $first
+        $this->flush($cancellation);
         $firstN = $this->first->write($bytes, $cancellation);
-
-        // Step 3: if bytes were accepted, write them all to $second
         if ($firstN > 0) {
             $this->second->writeAll(substr($bytes, 0, $firstN), $cancellation);
         }
 
         return $firstN;
+    }
+
+    public function flush(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
+    {
+        $this->assertHandleIsOpen();
+
+        if ($this->pendingForSecond !== '') {
+            $this->second->writeAll($this->pendingForSecond, $cancellation);
+            $this->pendingForSecond = '';
+        }
     }
 
     /**
@@ -151,14 +145,6 @@ final class TeeWriteHandle implements WriteHandleInterface, CloseHandleInterface
     public function isClosed(): bool
     {
         return $this->closed;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __destruct()
-    {
-        $this->close();
     }
 
     /**
@@ -193,5 +179,13 @@ final class TeeWriteHandle implements WriteHandleInterface, CloseHandleInterface
         if ($this->closed) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __destruct()
+    {
+        $this->close();
     }
 }

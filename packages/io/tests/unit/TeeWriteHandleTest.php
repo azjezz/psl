@@ -247,4 +247,45 @@ final class TeeWriteHandleTest extends TestCase
         static::assertSame('abcdef', $first->getBuffer());
         static::assertSame('abcdef', $second->getWrittenData());
     }
+
+    public function testFlushDrainsPendingBuffer(): void
+    {
+        $first = new IO\MemoryHandle();
+        $second = new SlowWriteHandle(3);
+        $tee = new IO\TeeWriteHandle($first, $second);
+
+        $tee->tryWrite('hello');
+        static::assertSame('hello', $first->getBuffer());
+        static::assertSame('hel', $second->getWrittenData());
+
+        $second->setMaxBytesPerWrite(100);
+        $tee->flush();
+
+        static::assertSame('hello', $second->getWrittenData());
+    }
+
+    public function testFlushWithNoPendingIsNoOp(): void
+    {
+        $first = new IO\MemoryHandle();
+        $second = new IO\MemoryHandle();
+        $tee = new IO\TeeWriteHandle($first, $second);
+
+        $tee->writeAll('data');
+        $tee->flush();
+
+        $first->seek(0);
+        $second->seek(0);
+        static::assertSame('data', $first->readAll());
+        static::assertSame('data', $second->readAll());
+    }
+
+    public function testFlushThrowsAfterClose(): void
+    {
+        $tee = new IO\TeeWriteHandle(new IO\MemoryHandle(), new IO\MemoryHandle());
+        $tee->close();
+
+        $this->expectException(IO\Exception\AlreadyClosedException::class);
+
+        $tee->flush();
+    }
 }

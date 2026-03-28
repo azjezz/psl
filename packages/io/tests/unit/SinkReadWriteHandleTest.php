@@ -275,5 +275,19 @@ final class SinkReadWriteHandleTest extends TestCase
         yield 'writeAll' => [
             static fn(IO\SinkReadWriteHandle $handle): null => $handle->writeAll('data'),
         ];
+
+        yield 'flush' => [
+            static fn(IO\SinkReadWriteHandle $handle): null => $handle->flush(),
+        ];
+    }
+
+    public function testFlushIsNoOp(): void
+    {
+        $handle = new IO\SinkReadWriteHandle();
+
+        $handle->writeAll('data');
+        $handle->flush();
+
+        static::assertFalse($handle->isClosed());
     }
 }

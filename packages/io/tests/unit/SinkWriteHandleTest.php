@@ -163,5 +163,19 @@ final class SinkWriteHandleTest extends TestCase
         yield 'writeAll' => [
             static fn(IO\SinkWriteHandle $handle): null => $handle->writeAll('data'),
         ];
+
+        yield 'flush' => [
+            static fn(IO\SinkWriteHandle $handle): null => $handle->flush(),
+        ];
+    }
+
+    public function testFlushIsNoOp(): void
+    {
+        $handle = new IO\SinkWriteHandle();
+
+        $handle->writeAll('data');
+        $handle->flush();
+
+        static::assertFalse($handle->isClosed());
     }
 }

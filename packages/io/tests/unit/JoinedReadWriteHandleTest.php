@@ -7,7 +7,11 @@ namespace Psl\IO\Tests\Unit;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
+
+use function strlen;
 
 final class JoinedReadWriteHandleTest extends TestCase
 {
@@ -152,5 +156,58 @@ final class JoinedReadWriteHandleTest extends TestCase
         yield 'write' => [static fn(IO\JoinedReadWriteHandle $h) => $h->write('data')];
         yield 'writeAll' => [static fn(IO\JoinedReadWriteHandle $h) => $h->writeAll('data')];
         yield 'tryWrite' => [static fn(IO\JoinedReadWriteHandle $h) => $h->tryWrite('data')];
+        yield 'flush' => [static fn(IO\JoinedReadWriteHandle $h) => $h->flush()];
+    }
+
+    public function testFlushDelegatesToBufferedWriter(): void
+    {
+        $flushed = false;
+        $writer = new class($flushed) implements IO\BufferedWriteHandleInterface, IO\CloseHandleInterface {
+            use IO\WriteHandleConvenienceMethodsTrait;
+
+            public function __construct(
+                private bool &$flushed,
+            ) {}
+
+            public function tryWrite(string $bytes): int
+            {
+                return strlen($bytes);
+            }
+
+            public function write(
+                string $bytes,
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
+            ): int {
+                return $this->tryWrite($bytes);
+            }
+
+            public function flush(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
+            {
+                $this->flushed = true;
+            }
+
+            public function isClosed(): bool
+            {
+                return false;
+            }
+
+            public function close(): void {}
+        };
+
+        $handle = new IO\JoinedReadWriteHandle(new IO\MemoryHandle(), $writer);
+
+        static::assertFalse($flushed);
+        $handle->flush();
+        static::assertTrue($flushed);
+    }
+
+    public function testFlushIsNoOpForNonBufferedWriter(): void
+    {
+        $handle = new IO\JoinedReadWriteHandle(new IO\MemoryHandle(), new IO\MemoryHandle());
+
+        $handle->writeAll('data');
+        $handle->flush();
+
+        static::assertFalse($handle->isClosed());
     }
 }

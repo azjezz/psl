@@ -20,7 +20,7 @@ use function strlen;
  *
  * @api
  */
-final class SinkWriteHandle implements WriteHandleInterface, CloseHandleInterface
+final class SinkWriteHandle implements BufferedWriteHandleInterface, CloseHandleInterface
 {
     use WriteHandleConvenienceMethodsTrait;
 
@@ -58,6 +58,11 @@ final class SinkWriteHandle implements WriteHandleInterface, CloseHandleInterfac
         return $this->tryWrite($bytes);
     }
 
+    public function flush(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
+    {
+        $this->assertHandleIsOpen();
+    }
+
     /**
      * Check whether the handle has been closed.
      *
@@ -67,14 +72,6 @@ final class SinkWriteHandle implements WriteHandleInterface, CloseHandleInterfac
     public function isClosed(): bool
     {
         return $this->closed;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __destruct()
-    {
-        $this->close();
     }
 
     /**
@@ -98,5 +95,13 @@ final class SinkWriteHandle implements WriteHandleInterface, CloseHandleInterfac
         if ($this->closed) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __destruct()
+    {
+        $this->close();
     }
 }
