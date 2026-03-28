@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
+use Psl\Async;
 use Psl\IO;
 
 use function sprintf;
@@ -20,15 +21,28 @@ use function sprintf;
  * @throws Exception\NotFileException If $file points to a non-file node on the filesystem.
  * @throws Exception\NotReadableException If $file exists, and is non-readable.
  * @throws Exception\RuntimeException In case of an error.
+ * @throws Async\Exception\CancelledException If the operation is cancelled.
  */
-function read(string $file, int $offset = 0, null|int $length = null): string
-{
-    try {
-        $handle = namespace\open_read_only($file);
-        $lock = $handle->lock(namespace\LockType::Shared);
+function read(
+    string $file,
+    int $offset = 0,
+    null|int $length = null,
+    Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+): string {
+    $cancellation->throwIfCancelled();
 
+    try {
+        $cancellation->throwIfCancelled();
+        $handle = namespace\open_read_only($file);
+
+        $cancellation->throwIfCancelled();
+        $lock = $handle->lock(namespace\LockType::Shared, $cancellation);
+
+        $cancellation->throwIfCancelled();
         $handle->seek($offset);
-        $content = $handle->readAll($length);
+
+        $cancellation->throwIfCancelled();
+        $content = $handle->readAll($length, $cancellation);
 
         $lock->release();
         $handle->close();

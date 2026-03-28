@@ -6,6 +6,7 @@ namespace Psl\File\Internal;
 
 use Override;
 use Psl\Async;
+use Psl\DateTime\Duration;
 use Psl\File;
 use Psl\File\Lock;
 use Psl\File\LockType;
@@ -15,6 +16,7 @@ use Psl\IO\Exception;
 use function error_get_last;
 use function flock;
 use function fseek;
+use function min;
 use function sprintf;
 
 use const LOCK_EX;
@@ -95,13 +97,24 @@ final class ResourceHandle extends IO\Internal\ResourceHandle implements
      * @codeCoverageIgnore
      */
     #[Override]
-    public function lock(LockType $type): Lock
-    {
+    public function lock(
+        LockType $type,
+        Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+    ): Lock {
+        $wait = Duration::milliseconds(1);
+        $max = Duration::milliseconds(100);
+
         while (true) {
+            $cancellation->throwIfCancelled();
+
             try {
                 return $this->tryLock($type);
             } catch (File\Exception\AlreadyLockedException) {
-                Async\later();
+                Async\sleep($wait, $cancellation);
+                $wait = Duration::nanoseconds((int) min(
+                    $wait->getTotalMilliseconds() * 2,
+                    $max->getTotalMilliseconds(),
+                ));
             }
         }
     }

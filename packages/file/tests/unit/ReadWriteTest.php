@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File\Tests\Unit;
 
+use Psl\Async;
 use Psl\Env;
 use Psl\File;
 use Psl\Filesystem;
@@ -122,6 +123,56 @@ final class ReadWriteTest extends AbstractFileTestCase
         $content = File\read($file, 84, 16);
 
         static::assertSame('PHP programmers.', $content);
+    }
+
+    public function testReadWithCancellation(): void
+    {
+        $file = Str\join([$this->directory, 'cancel-read.txt'], Filesystem\SEPARATOR);
+        File\write($file, 'hello world');
+
+        $content = File\read($file, cancellation: new Async\NullCancellationToken());
+
+        static::assertSame('hello world', $content);
+    }
+
+    public function testReadWithCancelledToken(): void
+    {
+        $file = Str\join([$this->directory, 'cancel-read2.txt'], Filesystem\SEPARATOR);
+        File\write($file, 'hello');
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        try {
+            File\read($file, cancellation: $token);
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
+    }
+
+    public function testWriteWithCancellation(): void
+    {
+        $file = Str\join([$this->directory, 'cancel-write.txt'], Filesystem\SEPARATOR);
+
+        File\write($file, 'hello', cancellation: new Async\NullCancellationToken());
+
+        static::assertStringEqualsFile($file, 'hello');
+    }
+
+    public function testWriteWithCancelledToken(): void
+    {
+        $file = Str\join([$this->directory, 'cancel-write2.txt'], Filesystem\SEPARATOR);
+
+        $token = new Async\SignalCancellationToken();
+        $token->cancel();
+
+        try {
+            File\write($file, 'hello', cancellation: $token);
+            static::fail('Expected CancelledException');
+        } catch (Async\Exception\CancelledException) {
+            static::addToAssertionCount(1);
+        }
     }
 
     public function testThrowsWhenDirectoryCreationFails(): void

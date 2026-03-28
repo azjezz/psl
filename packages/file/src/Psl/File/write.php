@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\File;
 
-use Psl\File;
+use Psl\Async;
 use Psl\IO;
 
 use function clearstatcache;
@@ -20,16 +20,25 @@ use function sprintf;
  * @throws Exception\NotFoundException If $file does not exist, and $writeMode is {@see WriteMode::TRUNCATE} or {@see WriteMode::APPEND}.
  * @throws Exception\NotWritableException If $file exists, and is non-writable.
  * @throws Exception\RuntimeException In case of an error.
+ * @throws Async\Exception\CancelledException If the operation is cancelled.
  */
-function write(string $file, string $content, WriteMode $mode = WriteMode::OpenOrCreate): void
-{
+function write(
+    string $file,
+    string $content,
+    WriteMode $mode = WriteMode::OpenOrCreate,
+    Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+): void {
     clearstatcache();
 
     try {
-        $handle = File\open_write_only($file, $mode);
-        $lock = $handle->lock(File\LockType::Exclusive);
+        $cancellation->throwIfCancelled();
+        $handle = namespace\open_write_only($file, $mode);
 
-        $handle->writeAll($content);
+        $cancellation->throwIfCancelled();
+        $lock = $handle->lock(namespace\LockType::Exclusive, $cancellation);
+
+        $cancellation->throwIfCancelled();
+        $handle->writeAll($content, $cancellation);
 
         $lock->release();
         $handle->close();

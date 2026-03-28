@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Psl\File\Internal;
 
 use Override;
+use Psl\Async;
 use Psl\File;
 use Psl\File\Lock;
 use Psl\File\LockType;
 
-abstract class AbstractHandleWrapper implements File\HandleInterface
+abstract readonly class AbstractHandleWrapper implements File\HandleInterface
 {
     public function __construct(
-        private File\HandleInterface $handle,
+        private ResourceHandle $handle,
     ) {}
 
     /**
@@ -39,9 +40,11 @@ abstract class AbstractHandleWrapper implements File\HandleInterface
      * @inheritDoc
      */
     #[Override]
-    public function lock(LockType $type): Lock
-    {
-        return $this->handle->lock($type);
+    public function lock(
+        LockType $type,
+        Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+    ): Lock {
+        return $this->handle->lock($type, $cancellation);
     }
 
     /**
