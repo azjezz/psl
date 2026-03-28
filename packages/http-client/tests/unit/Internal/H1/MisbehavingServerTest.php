@@ -209,8 +209,8 @@ final class MisbehavingServerTest extends TestCase
         $body = $transaction->response->body;
         static::assertNotNull($body);
 
-        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
-        $this->expectExceptionMessage('Connection closed with');
+        $this->expectException(IO\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('premature EOF');
 
         $body->readAll();
     }

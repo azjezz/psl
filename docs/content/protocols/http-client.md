@@ -84,6 +84,12 @@ TRACE requests that include a body are rejected with a `RequestException` per RF
 
 @example('protocols/http-client-body-rules.php')
 
+## Connection Timeout
+
+`SendConfiguration::$connectionTimeout` sets the maximum duration for establishing a connection (TCP handshake + TLS handshake) on a per-request basis. When set, the connector's cancellation token is linked with a timeout token scoped to this duration. The overall request cancellation token still applies independently.
+
+@example('protocols/http-client-connection-timeout.php')
+
 ## Callbacks
 
 `SendConfiguration` provides two per-request callbacks for observing connection and protocol events:
@@ -133,6 +139,8 @@ The following fields are overridable per-request:
 | `protocolVersions` | Yes |
 | `proxyConfiguration` | Yes |
 | `onInformationalResponse` | Yes (merged, not replaced) |
+| `connectionTimeout` | Per-request only (not on `ClientConfiguration`) |
+| `onConnection` | Per-request only (not on `ClientConfiguration`) |
 | `socksConfiguration` | No (client-only) |
 | `unixSocket` | No (client-only) |
 | `h2ClientConfiguration` | No (client-only) |
@@ -226,6 +234,5 @@ The client throws a structured exception hierarchy. Transport-level exceptions f
 | RFC 3986 | URI resolution for base URL and redirect Location headers |
 | RFC 1928 | SOCKS5 proxy protocol |
 | RFC 7231 | Historical redirect method rewriting (301/302 to GET) |
-| RFC 8297 | 103 Early Hints |
 
 See `src/Psl/HTTP/Client/` for the full API.

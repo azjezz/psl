@@ -186,6 +186,14 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
     }
 
     /**
+     * @codeCoverageIgnore
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
      * @psalm-external-mutation-free
      *
      * @inheritDoc

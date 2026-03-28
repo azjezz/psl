@@ -154,6 +154,14 @@ final class IterableReadHandle implements ReadHandleInterface, CloseHandleInterf
     }
 
     /**
+     * @codeCoverageIgnore
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
      * Close the handle, discarding any buffered data.
      *
      * After closing, all read operations will throw {@see Exception\AlreadyClosedException}.

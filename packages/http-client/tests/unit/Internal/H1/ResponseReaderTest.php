@@ -376,8 +376,8 @@ final class ResponseReaderTest extends TestCase
         $body = $response->body;
         static::assertNotNull($body);
 
-        $this->expectException(ProtocolException::class);
-        $this->expectExceptionMessage('exceeds maximum allowed size');
+        $this->expectException(IO\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('exceeded the configured limit');
         $body->readAll();
     }
 
@@ -395,8 +395,8 @@ final class ResponseReaderTest extends TestCase
         $body = $response->body;
         static::assertNotNull($body);
 
-        $this->expectException(ProtocolException::class);
-        $this->expectExceptionMessage('exceeds maximum allowed size');
+        $this->expectException(IO\Exception\RuntimeException::class);
+        $this->expectExceptionMessage('exceeded the configured limit');
         $body->readAll();
     }
 

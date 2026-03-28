@@ -48,7 +48,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Psl\\IO\\Tests\\Unit\\": "tests/unit/"
+            "Psl\\IO\\Tests\\Unit\\": "tests/unit/",
+            "Psl\\IO\\Tests\\Fixture\\": "tests/fixture/",
+            "Psl\\IO\\Tests\\Benchmark\\\\": "tests/benchmark/"
         }
     },
     "extra": {

@@ -5,6 +5,16 @@
 ### features
 
 - feat(io): add `IO\IterableReadHandle` - a streaming `ReadHandleInterface` that lazily consumes an `iterable<string>` without buffering the entire content in memory
+- feat(io): add `IO\ConcatReadHandle` - reads from two handles in sequence, switching to the second when the first reaches EOF
+- feat(io): add `IO\JoinedReadWriteHandle` - joins a `ReadHandleInterface` and `WriteHandleInterface` into a single read-write handle, delegating all operations to the respective underlying handle
+- feat(io): add `IO\TeeWriteHandle` - writes to two handles simultaneously with backpressure buffering when the second handle is slower
+- feat(io): add `IO\SinkWriteHandle` - a `/dev/null`-like write handle that discards all written data
+- feat(io): add `IO\SinkReadHandle` - a read handle that is always at EOF, unlike `MemoryHandle('')` which only reports EOF after the first read
+- feat(io): add `IO\SinkReadWriteHandle` - a sink that discards writes and always reports EOF on reads
+- feat(io): add `IO\TruncatedReadHandle` - reads up to N bytes from an underlying handle, silently reporting EOF when the limit is reached
+- feat(io): add `IO\BoundedReadHandle` - reads up to N bytes from an underlying handle, throwing `RuntimeException` if the underlying handle has more data than the limit allows
+- feat(io): add `IO\FixedLengthReadHandle` - reads exactly N bytes from an underlying handle, throwing `RuntimeException` on premature EOF
+- feat(http-client): add `SendConfiguration::$connectionTimeout` - per-request maximum duration for establishing a connection (TCP + TLS handshake), using a linked cancellation token
 - feat(type): support `'true'`/`'false'` string literals in `Type\bool()` coercion - [#735](https://github.com/php-standard-library/php-standard-library/pull/735) by @verweto
 - feat(mime): introduce `MIME` component - comprehensive MIME toolkit implementing RFC 2045-2049 and related standards
   - Media type parsing, validation, and content negotiation (`MediaType`, `MediaRange`, `MediaPreferences`) per RFC 2045, RFC 6838, RFC 9110
@@ -106,6 +116,7 @@
 
 ### fixes
 
+- fix(async): `State::subscribe()` and `State::invokeCallbacks()` no longer capture `$this` in queued closures, preventing delayed garbage collection of `Deferred`/`Awaitable` chains
 - fix(uri): bare IPv6 addresses (e.g., `http://::1/path`) are now correctly parsed as `IPHost` instead of being misparsed as a registered name with a numeric port
 - fix(h2): separate `maxConcurrent` (peer's limit on our streams) from `peerMaxConcurrent` (our limit on peer's streams) in `StreamTable`, preventing the client's own SETTINGS from limiting its outgoing streams
 - fix(h2): `BDPEstimator` now produces an initial connection-level WINDOW_UPDATE during `initialize()` to bring the receive window from the RFC default (65535) up to `initialWindowSize`, preventing flow-control stalls when many concurrent streams receive data simultaneously

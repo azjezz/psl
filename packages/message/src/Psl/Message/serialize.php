@@ -45,8 +45,5 @@ function serialize(MessageInterface $message): IO\ReadHandleInterface
 
     $headers = Headers::fromPairs($pairs);
 
-    return new Internal\ConcatenatedReadHandle(
-        new IO\MemoryHandle($headers->toFoldedString() . "\r\n"),
-        $message->content->body(),
-    );
+    return new IO\ConcatReadHandle(new IO\MemoryHandle($headers->toFoldedString() . "\r\n"), $message->content->body());
 }
