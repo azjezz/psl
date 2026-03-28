@@ -68,9 +68,15 @@ In non-CLI SAPIs, `input_handle()` reads from `php://input` and `output_handle()
 
 ## Copying and Streaming
 
-`IO\copy()` reads from one handle and writes to another until EOF:
+`IO\copy()` reads from one handle and writes to another until EOF. If the writer implements `BufferedWriteHandleInterface`, it is flushed after all data has been written:
 
 @example('io/io-copy.php')
+
+For control over the read chunk size, use `IO\copy_chunked()`:
+
+@example('io/io-copy-chunked.php')
+
+Both functions have bidirectional variants -- `IO\copy_bidirectional()` and `IO\copy_bidirectional_chunked()` -- that copy data in both directions concurrently between two read-write handles. These are useful for building proxies and tunnels.
 
 `IO\streaming()` multiplexes reads from several stream handles concurrently, yielding chunks as they arrive. This is useful for reading interleaved process output:
 
