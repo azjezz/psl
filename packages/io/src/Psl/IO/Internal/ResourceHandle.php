@@ -242,7 +242,14 @@ class ResourceHandle implements
             try {
                 $suspension->suspend();
 
-                return $written + $this->tryWrite($remainingBytes);
+                $chunk = $this->tryWrite($remainingBytes);
+                if ($chunk === 0) {
+                    throw new Exception\RuntimeException(
+                        'Stream reported as writable but accepted no data; the connection may be broken.',
+                    );
+                }
+
+                return $written + $chunk;
             } finally {
                 $this->writeSuspension = null;
                 EventLoop::disable($this->writeWatcher);
@@ -258,7 +265,14 @@ class ResourceHandle implements
         try {
             $suspension->suspend();
 
-            return $written + $this->tryWrite($remainingBytes);
+            $chunk = $this->tryWrite($remainingBytes);
+            if ($chunk === 0) {
+                throw new Exception\RuntimeException(
+                    'Stream reported as writable but accepted no data; the connection may be broken.',
+                );
+            }
+
+            return $written + $chunk;
         } finally {
             $this->writeSuspension = null;
             EventLoop::disable($this->writeWatcher);
