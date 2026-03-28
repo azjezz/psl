@@ -4,24 +4,48 @@ declare(strict_types=1);
 
 namespace Psl\HTTP\Client\Exception;
 
+use Psl\HTTP\Client;
+use Psl\HTTP\Message;
 use Throwable;
 
 /**
  * Thrown when the request itself is invalid or cannot be dispatched.
  *
- * This exception indicates a problem with the request before it reaches the wire,
- * such as a missing URL or a structurally invalid message.
+ * This exception indicates a problem with the request that is detected before
+ * the HTTP exchange begins on the wire. Unlike {@see ProtocolException}, which
+ * signals a server-side or transport-level protocol violation, this exception
+ * signals that the client cannot even attempt the exchange because the request
+ * is structurally unsound.
+ *
+ * Two categories of request errors are covered:
+ *
+ * 1. **Missing URL**: The request has no URL and no base URL is configured in
+ *    the {@see Client\ClientConfiguration}. Thrown by {@see Client\Client}, {@see Client\Connection\Connector}, and
+ *    {@see Client\Connection\PooledConnector},
+ *
+ * 2. **Invalid request structure**: The request violates HTTP semantics,
+ *    such as a TRACE request that includes a body (forbidden by RFC 9110
+ *    Section 9.3.8), or a request with a host header mismatch. Thrown by {@see Client\Client}
  *
  * @see RuntimeException Parent exception for all HTTP client errors.
+ * @see ProtocolException For errors originating from the server response or transport protocol.
+ *
+ * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.8 TRACE Method
+ *
+ * @api
  */
 final class RequestException extends RuntimeException
 {
     /**
      * Create an exception for a request that has no URL and no base URL is configured.
      *
-     * @param null|Throwable $previous Optional underlying cause.
+     * Thrown when URL resolution fails because neither the {@see Message\Request}
+     * carries a URL nor the {@see Client\ClientConfiguration} provides a base
+     * URL to resolve against.
      *
-     * @return self
+     * @param null|Throwable $previous Optional underlying cause, typically an exception
+     *                                 from URL parsing when a base URL was present but
+     *                                 resolution still failed.
      */
     public static function forMissingUrl(null|Throwable $previous = null): self
     {
@@ -34,9 +58,13 @@ final class RequestException extends RuntimeException
     /**
      * Create an exception for a structurally invalid request.
      *
+     * Thrown when the request violates HTTP semantics in a way that prevents
+     * the client from sending it, such as including a body on a TRACE request
+     * or specifying conflicting host headers.
+     *
      * @param string $detail Human-readable description of why the request is invalid.
      *
-     * @return self
+     * @link https://datatracker.ietf.org/doc/html/rfc9110#section-9.3.8 TRACE requests must not include a body.
      */
     public static function forInvalidRequest(string $detail): self
     {

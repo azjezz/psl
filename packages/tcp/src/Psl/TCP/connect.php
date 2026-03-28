@@ -24,9 +24,15 @@ function connect(
     ConnectConfiguration $configuration = new ConnectConfiguration(),
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): StreamInterface {
-    $context = ['socket' => [
+    $socketOptions = [
         'tcp_nodelay' => $configuration->noDelay,
-    ]];
+    ];
+
+    if ($configuration->bindTo !== null) {
+        $socketOptions['bindto'] = $configuration->bindTo;
+    }
+
+    $context = ['socket' => $socketOptions];
 
     $socket = Network\Internal\socket_connect("tcp://{$host}:{$port}", $context, $cancellation);
 

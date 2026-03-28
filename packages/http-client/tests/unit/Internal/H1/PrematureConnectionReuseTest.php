@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Psl\HTTP\Client\Tests\Unit\Internal\H1;
 
 use PHPUnit\Framework\TestCase;
+use Psl\HTTP\Client\ClientConfiguration;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Internal\H1\H1Connection;
 use Psl\HTTP\Client\Internal\H1\Transport;
 use Psl\HTTP\Client\Tests\Fixture\H1\FakeStream;
 use Psl\HTTP\Message\Request;
+use Psl\Network;
 use Psl\URL;
 
 final class PrematureConnectionReuseTest extends TestCase
@@ -17,11 +20,11 @@ final class PrematureConnectionReuseTest extends TestCase
     public function testKeepAliveIsTrueWhileBodyIsUnconsumed(): void
     {
         $stream = new FakeStream("HTTP/1.1 200 OK\r\ncontent-length: 11\r\n\r\nHello World");
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
         $url = URL\parse('http://127.0.0.1:8080/');
         $request = new Request(method: 'GET', url: $url, requestTarget: '/');
 
-        [$tx, $keepAlive] = Transport::exchange($connection, $request, $url, 8192);
+        [$tx, $keepAlive] = Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertTrue($keepAlive, 'Transport says the connection can be reused');
         static::assertNotNull($tx->response->body);
@@ -39,16 +42,16 @@ final class PrematureConnectionReuseTest extends TestCase
             . "HTTP/1.1 200 OK\r\ncontent-length: 3\r\n\r\nBye";
 
         $stream = new FakeStream($data);
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
         $url = URL\parse('http://127.0.0.1:8080/');
         $request = new Request(method: 'GET', url: $url, requestTarget: '/');
 
-        [$tx1, $keepAlive] = Transport::exchange($connection, $request, $url, 8192);
+        [$tx1, $keepAlive] = Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertTrue($keepAlive);
 
         $this->expectException(ProtocolException::class);
-        Transport::exchange($connection, $request, $url, 8192);
+        Transport::exchange($connection, $request, $url, new ClientConfiguration());
     }
 
     public function testReuseAfterBodyConsumptionSucceeds(): void
@@ -58,11 +61,11 @@ final class PrematureConnectionReuseTest extends TestCase
             . "HTTP/1.1 200 OK\r\ncontent-length: 3\r\n\r\nBye";
 
         $stream = new FakeStream($data);
-        $connection = new H1Connection($stream);
+        $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
         $url = URL\parse('http://127.0.0.1:8080/');
         $request = new Request(method: 'GET', url: $url, requestTarget: '/');
 
-        [$tx1, $keepAlive] = Transport::exchange($connection, $request, $url, 8192);
+        [$tx1, $keepAlive] = Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertTrue($keepAlive);
 
@@ -70,7 +73,7 @@ final class PrematureConnectionReuseTest extends TestCase
         static::assertNotNull($body1);
         static::assertSame('Hello World', $body1->readAll());
 
-        [$tx2, $keepAlive2] = Transport::exchange($connection, $request, $url, 8192);
+        [$tx2, $keepAlive2] = Transport::exchange($connection, $request, $url, new ClientConfiguration());
 
         static::assertSame(200, $tx2->response->status);
         $body2 = $tx2->response->body;

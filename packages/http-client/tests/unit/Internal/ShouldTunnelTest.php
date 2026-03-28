@@ -12,12 +12,12 @@ use function Psl\HTTP\Client\Internal\should_tunnel;
 final class ShouldTunnelTest extends TestCase
 {
     /**
-     * @param list<non-empty-string> $noTunneling
+     * @param list<non-empty-string> $skipProxyFor
      */
     #[DataProvider('shouldTunnelProvider')]
-    public function testShouldTunnel(string $host, array $noTunneling, bool $expected): void
+    public function testShouldTunnel(string $host, array $skipProxyFor, bool $expected): void
     {
-        static::assertSame($expected, should_tunnel($host, $noTunneling));
+        static::assertSame($expected, should_tunnel($host, $skipProxyFor));
     }
 
     /**
@@ -44,5 +44,13 @@ final class ShouldTunnelTest extends TestCase
         yield 'deep suffix match' => ['deep.sub.example.com', ['.example.com'], false];
 
         yield 'second rule matches' => ['example.com', ['other.com', 'example.com'], false];
+
+        yield 'partial name match is not a bypass' => ['fooexample.com', ['example.com'], true];
+
+        yield 'dot prefix skips subdomains' => ['foo.example.com', ['.example.com'], false];
+
+        yield 'dot prefix does not skip partial names' => ['fooexample.com', ['.example.com'], true];
+
+        yield 'without dot prefix skips subdomains but not partial names' => ['fooexample.com', ['example.com'], true];
     }
 }

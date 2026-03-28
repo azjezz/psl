@@ -11,6 +11,7 @@ use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Connection\ConnectionInterface;
+use Psl\HTTP\Client\Connection\ConnectionMetadata;
 use Psl\HTTP\Client\Exception;
 use Psl\HTTP\Client\Internal\PoolReleasingBodyHandle;
 use Psl\HTTP\Message\Request;
@@ -45,25 +46,20 @@ final class H1Connection implements ConnectionInterface
      */
     public bool $keepAlive = false;
 
-    public Network\Address $localAddress {
-        get => $this->stream->getLocalAddress();
-    }
-
-    public Network\Address $peerAddress {
-        get => $this->stream->getPeerAddress();
-    }
-
-    public null|TLS\ConnectionState $tlsState {
-        get => $this->stream instanceof TLS\StreamInterface ? $this->stream->getState() : null;
-    }
-
     /**
      * @param Network\StreamInterface $stream The underlying TCP/TLS stream.
-     * @param null|(Closure(Network\StreamInterface): void) $onRelease Called with the stream when the connection can be returned to the pool. Null if pooling is not used.
+     * @param ConnectionMetadata $metadata Connection metadata (local/peer addresses, TLS state).
+     * @param null|(Closure(Network\StreamInterface, ConnectionMetadata): void) $onRelease Called with the stream when the connection can be returned to the pool. Null if pooling is not used.
+     * @param null|(Closure(Network\StreamInterface, ConnectionMetadata): void) $onRelease Called with the stream when the connection can be returned to the pool. Null if pooling is not used.
+     * @param bool $isForwardProxy Whether this connection targets an HTTP forward proxy. When true, the transport uses absolute-form request-targets (RFC 7230 Section 5.3.2).
+     * @param null|non-empty-string $proxyAuthorization Proxy-Authorization header value to send with requests through the forward proxy.
      */
     public function __construct(
         public readonly Network\StreamInterface $stream,
+        public readonly ConnectionMetadata $metadata,
         private readonly null|Closure $onRelease = null,
+        public readonly bool $isForwardProxy = false,
+        public readonly null|string $proxyAuthorization = null,
     ) {
         $this->reader = new IO\Reader($stream);
     }
@@ -89,17 +85,9 @@ final class H1Connection implements ConnectionInterface
         ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): Transaction {
-        $maxHeaderSize = $configuration->maxResponseHeaderSize;
         $url = $request->url ?? throw Exception\RequestException::forMissingUrl();
 
-        [$transaction, $keepAlive] = Transport::exchange(
-            $this,
-            $request,
-            $url,
-            $maxHeaderSize,
-            $configuration->maxResponseBodySize,
-            $cancellation,
-        );
+        [$transaction, $keepAlive] = Transport::exchange($this, $request, $url, $configuration, $cancellation);
 
         $this->keepAlive = $keepAlive;
 
@@ -118,9 +106,10 @@ final class H1Connection implements ConnectionInterface
 
         $body = $transaction->response->body;
         $stream = $this->stream;
+        $metadata = $this->metadata;
 
         if ($body === null || $body->reachedEndOfDataSource()) {
-            ($this->onRelease)($stream);
+            ($this->onRelease)($stream, $metadata);
 
             return $transaction;
         }
@@ -129,9 +118,10 @@ final class H1Connection implements ConnectionInterface
         $wrappedBody = new PoolReleasingBodyHandle($body, static function (bool $fullyConsumed) use (
             $onRelease,
             $stream,
+            $metadata,
         ): void {
             if ($fullyConsumed) {
-                $onRelease($stream);
+                $onRelease($stream, $metadata);
             } else {
                 $stream->close();
             }

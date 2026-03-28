@@ -140,16 +140,15 @@ final class ChunkedBodyHandleTest extends TestCase
 
         $start = Timestamp::monotonic();
 
-        $threw = false;
         try {
             $handle->read(null, new Async\TimeoutCancellationToken(Duration::milliseconds(300)));
+            static::fail('Expected CancelledException');
         } catch (Async\Exception\CancelledException) {
-            $threw = true;
+            static::addToAssertionCount(1);
         }
 
         $elapsed = Timestamp::monotonic()->since($start)->getTotalMilliseconds();
 
-        static::assertTrue($threw);
         static::assertLessThan(1500, $elapsed);
     }
 
@@ -217,12 +216,12 @@ final class ChunkedBodyHandleTest extends TestCase
 
     public function testTrailersDefaultOnUnexpectedEof(): void
     {
-        [$handle, $deferred] = self::handle('');
+        [$handle] = self::handle('');
+
+        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectExceptionMessage('Connection closed before chunk size');
 
         $handle->readAll();
-
-        $trailers = $deferred->getAwaitable()->await();
-        static::assertTrue($trailers->isEmpty());
     }
 
     public function testTryReadReturnsBufferedData(): void

@@ -26,8 +26,12 @@ All TCP connectors implement `ConnectorInterface`, making them interchangeable a
 
 `TCP\listen()` and `TCP\connect()` accept configuration objects that control socket behavior:
 
-- **`ListenConfiguration`** -- noDelay, reuseAddress, reusePort, backlog (default 512), idleConnections (default 256)
-- **`ConnectConfiguration`** -- noDelay
+- **`ListenConfiguration`** -- noDelay, reuseAddress, reusePort, backlog (default 512), idleConnections (default 256), bindTo
+- **`ConnectConfiguration`** -- noDelay, bindTo
+
+The `bindTo` option on both configuration objects allows binding to a specific local address before connecting or listening. This is useful for selecting a particular network interface or source IP:
+
+@example('networking/tcp-bind-to.php')
 
 All configuration objects are immutable and provide `with*` builder methods for fluent configuration:
 
@@ -35,9 +39,11 @@ All configuration objects are immutable and provide `with*` builder methods for 
 
 @example('networking/tcp-backlog.php')
 
-### Low-Level Socket
+### Low-Level Socket (Deprecated)
 
-`Socket` gives you fine-grained control over socket creation. Create a socket, bind to an address, then pass a configuration to `listen()` or `connect()`:
+> **Deprecated**: `TCP\Socket` is deprecated in favor of the `bindTo` option on `ConnectConfiguration` and `ListenConfiguration`. It will be removed in PSL 7.0.
+
+`Socket` previously provided fine-grained control over socket creation via a bind-then-connect/listen pattern. This is now replaced by the `bindTo` configuration option. See the example below for the migration pattern:
 
 @example('networking/tcp-low-level-socket.php')
 

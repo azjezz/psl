@@ -71,7 +71,7 @@ final class State
         $this->handled = true;
 
         if ($this->complete) {
-            EventLoop::queue(fn(): mixed => $callback($this->throwable, $this->result, $id));
+            EventLoop::queue($callback, $this->throwable, $this->result, $id);
 
             return $id;
         }
@@ -155,7 +155,7 @@ final class State
         $this->complete = true;
 
         foreach ($this->callbacks as $id => $callback) {
-            EventLoop::queue(fn(): mixed => $callback($this->throwable, $this->result, $id));
+            EventLoop::queue($callback, $this->throwable, $this->result, $id);
         }
 
         $this->callbacks = [];

@@ -24,7 +24,7 @@
     "require": {
         "php": "~8.4.0 || ~8.5.0",
         "php-standard-library/foundation": "^6.0",
-        "php-standard-library/async": "^6.0",
+        "php-standard-library/async": "^6.2",
         "php-standard-library/cache": "^6.0",
         "php-standard-library/date-time": "^6.0",
         "php-standard-library/default": "^6.0",
@@ -38,13 +38,14 @@
         "php-standard-library/tcp": "^6.0",
         "php-standard-library/tls": "^6.0",
         "php-standard-library/udp": "^6.0",
-        "php-standard-library/url": "^6.0"
+        "php-standard-library/url": "^6.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^13.0",
         "php-standard-library/binary": "^6.0",
         "php-standard-library/iter": "^6.0",
-        "php-standard-library/str": "^6.0"
+        "php-standard-library/str": "^6.0",
+        "php-standard-library/socks": "^6.0"
     },
     "conflict": {
         "azjezz/psl": "*"

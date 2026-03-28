@@ -52,9 +52,10 @@ final class FixedLengthBodyHandleTest extends TestCase
     {
         $handle = self::handle('short', 100);
 
-        $data = $handle->readAll();
-        static::assertSame('short', $data);
-        static::assertTrue($handle->reachedEndOfDataSource());
+        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectExceptionMessage('Connection closed with 95 bytes remaining');
+
+        $handle->readAll();
     }
 
     public function testTryReadReturnsAvailableData(): void
@@ -154,7 +155,9 @@ final class FixedLengthBodyHandleTest extends TestCase
         static::assertSame('abc', $handle->tryRead(10));
         static::assertFalse($handle->reachedEndOfDataSource());
 
-        static::assertSame('', $handle->tryRead());
-        static::assertTrue($handle->reachedEndOfDataSource());
+        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectExceptionMessage('Connection closed with 7 bytes remaining');
+
+        $handle->tryRead();
     }
 }

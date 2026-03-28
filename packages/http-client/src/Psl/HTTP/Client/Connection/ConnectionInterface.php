@@ -13,8 +13,6 @@ use Psl\HTTP\Client\Exception\RuntimeException;
 use Psl\HTTP\Message\Request;
 use Psl\HTTP\Message\Response;
 use Psl\HTTP\Message\Transaction;
-use Psl\Network;
-use Psl\TLS;
 
 /**
  * A protocol-aware HTTP exchange channel.
@@ -44,55 +42,12 @@ use Psl\TLS;
 interface ConnectionInterface
 {
     /**
-     * The local network address of this connection.
+     * Metadata about this connection: local/peer addresses and TLS state.
      *
-     * This is the address of the local socket endpoint, the IP address and
-     * port assigned by the operating system for this side of the connection.
-     * Useful for diagnostics, logging, and network-level observability.
-     *
-     * For TCP-based connections (HTTP/1.1 and HTTP/2), this is the local
-     * TCP socket address. For QUIC-based connections (HTTP/3), this is the
-     * local UDP socket address.
+     * Provides diagnostics, logging, and security policy enforcement
+     * (e.g., SSRF protection via peer address inspection).
      */
-    public Network\Address $localAddress { get; }
-
-    /**
-     * The remote network address of the connected peer.
-     *
-     * This is the resolved address of the server after DNS resolution, the
-     * actual IP address and port the connection was established to. This may
-     * differ from the hostname in the request URL when the server is behind
-     * a load balancer, CDN, or when connecting through a proxy.
-     *
-     * Connection-level middleware can inspect this address to enforce security
-     * policies such as SSRF protection by checking against denied IP ranges
-     * before the exchange is performed.
-     *
-     * For TCP-based connections (HTTP/1.1 and HTTP/2), this is the remote
-     * TCP socket address. For QUIC-based connections (HTTP/3), this is the
-     * remote UDP socket address.
-     */
-    public Network\Address $peerAddress { get; }
-
-    /**
-     * The TLS connection state, or {@see null} for plaintext connections.
-     *
-     * When present, this provides details about the negotiated TLS session
-     * including the protocol version, cipher suite, peer certificates, and
-     * ALPN-negotiated application protocol.
-     *
-     * For HTTP/2 over TLS (h2), the ALPN protocol will be "h2". For HTTP/1.1
-     * over TLS, it will typically be "http/1.1". For HTTP/3, which uses
-     * QUIC with TLS 1.3 integrated into the transport handshake, this will
-     * reflect the QUIC-TLS session state.
-     *
-     * This is {@see null} for plaintext HTTP connections (h2c, HTTP/1.1
-     * without TLS).
-     *
-     * @link https://datatracker.ietf.org/doc/html/rfc8446 TLS 1.3
-     * @link https://datatracker.ietf.org/doc/html/rfc7301 TLS ALPN Extension
-     */
-    public null|TLS\ConnectionState $tlsState { get; }
+    public ConnectionMetadata $metadata { get; }
 
     /**
      * Execute one HTTP request/response exchange on this connection.
@@ -131,13 +86,25 @@ interface ConnectionInterface
      *
      * For HTTP/1.x connections with pool release callbacks, this wraps the
      * response body so the connection is returned to the pool when the body
-     * is consumed. For other connection types, this returns the transaction
-     * as-is.
+     * is consumed. For other connection types (HTTP/2), this returns the
+     * transaction as-is since stream lifecycle is managed independently.
      *
-     * This MUST only be called once on the final transaction returned to
-     * the user. Middleware that calls {@see exchange()} multiple times for
-     * multi-step protocols (e.g., NTLM) should NOT call this on intermediate
-     * responses.
+     * Callers MUST return the result of this method, not the original
+     * transaction. The finalized transaction may have a different response
+     * body handle that manages connection lifecycle:
+     *
+     * ```php
+     * return $connection->finalize($transaction);
+     * ```
+     *
+     * {@see HandlerInterface} implementations MUST call this on the transaction
+     * returned by {@see exchange()} before returning it. {@see MiddlewareInterface}
+     * implementations that short-circuit the handler chain MUST also call this
+     * on any transaction they construct directly.
+     *
+     * Middleware that calls {@see exchange()} multiple times for multi-step
+     * protocols (e.g., NTLM authentication) MUST NOT call this on intermediate
+     * responses, only on the final transaction being returned to the caller.
      */
     public function finalize(Transaction $transaction): Transaction;
 }

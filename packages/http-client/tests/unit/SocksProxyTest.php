@@ -23,7 +23,7 @@ final class SocksProxyTest extends TestCase
             connector: new PooledConnector(),
             configuration: new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                proxy: new Socks\Configuration('127.0.0.1', 1),
+                socksConfiguration: new Socks\Configuration('127.0.0.1', 1),
             ),
         );
 
@@ -37,7 +37,7 @@ final class SocksProxyTest extends TestCase
             connector: new Connector(),
             configuration: new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                proxy: new Socks\Configuration('127.0.0.1', 1),
+                socksConfiguration: new Socks\Configuration('127.0.0.1', 1),
             ),
         );
 

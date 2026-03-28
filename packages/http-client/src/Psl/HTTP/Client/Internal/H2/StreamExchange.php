@@ -24,19 +24,61 @@ use function strtolower;
 /**
  * Manages one HTTP/2 request/response exchange on a single stream.
  *
- * Creates an {@see H2Stream}, registers it with the multiplexer, sends request
- * frames, and waits for the response via the stream's deferred. The response
- * body is read lazily through {@see ResponseBodyHandle} which reads from the
- * H2Stream's buffer - fully decoupled from the multiplexer's read fiber.
+ * Orchestrates the full lifecycle of an HTTP/2 stream exchange:
+ * 1. Acquires a stream slot from the {@see H2Session} (blocks if at concurrency limit).
+ * 2. Creates an {@see H2Stream} and registers it with the {@see H2Multiplexer}.
+ * 3. Sends HEADERS and (optionally) DATA frames, including trailers if present.
+ * 4. Awaits the response HEADERS from the stream's deferred.
+ * 5. Returns a {@see Transaction} with either a bodiless response (if END_STREAM
+ *    was set on the response HEADERS) or a {@see ResponseBodyHandle} for lazy
+ *    body consumption.
+ *
+ * The response body is read lazily through {@see ResponseBodyHandle}, which pulls
+ * from the {@see H2Stream}'s buffer. This is fully decoupled from the
+ * {@see H2Multiplexer}'s read fiber: the multiplexer pushes data into the stream
+ * buffer, and the consumer pulls from it.
+ *
+ * Stream slot lifecycle: the stream slot is released as soon as the response
+ * HEADERS arrive (not when the body is fully consumed), because HTTP/2 streams
+ * can receive data independently of the concurrency limit once headers are received.
+ *
+ * Error handling: on cancellation, the stream is unregistered and the slot released.
+ * On protocol or I/O errors, the session is additionally marked as closed since
+ * the connection may be in an indeterminate state.
+ *
+ * H1/H2 header mapping: connection-specific headers (host, connection,
+ * transfer-encoding) are stripped and replaced with HTTP/2 pseudo-headers
+ * (:method, :path, :scheme, :authority) per RFC 9113 Section 8.3.
  *
  * @internal
+ *
+ * @see H2Session Provides stream slot acquisition and release.
+ * @see H2Stream Per-stream state container receiving events from the multiplexer.
+ * @see H2Multiplexer Dispatches events to the registered stream.
+ * @see ResponseBodyHandle Lazy body handle backed by the H2Stream's buffer.
+ *
+ * @link https://datatracker.ietf.org/doc/html/rfc9113#section-8.3 HTTP/2 Request Pseudo-Headers
  */
 final class StreamExchange
 {
     private function __construct() {}
 
     /**
-     * @throws RequestException If the request is structurally invalid.
+     * Perform a complete HTTP/2 request/response exchange on a new stream.
+     *
+     * Acquires a stream slot, sends the request (HEADERS + optional DATA + optional
+     * trailer HEADERS), and awaits the response. Informational (1xx) responses are
+     * collected by the {@see H2Stream} and included in the returned transaction.
+     *
+     * @param H2Session $session The session providing stream slots and the multiplexer.
+     * @param Request $request The HTTP request to send.
+     * @param URL\URL $url The resolved request URL (used for pseudo-headers).
+     * @param ClientConfiguration $configuration Client configuration governing body size limits.
+     * @param CancellationTokenInterface $cancellation Token to cancel the exchange.
+     *
+     * @return Transaction The transaction containing informational responses and the final response.
+     *
+     * @throws RequestException If the request is structurally invalid (e.g., trailers without body).
      * @throws RuntimeException If the H2 connection is closed or a protocol error occurs.
      * @throws CancelledException If the cancellation token fires.
      * @throws ExceptionInterface If an H2 framing error occurs.
@@ -89,7 +131,7 @@ final class StreamExchange
             );
         }
 
-        $stream = new H2Stream($streamId);
+        $stream = new H2Stream($streamId, $configuration->onInformationalResponse);
         $multiplexer->register($stream);
 
         try {
@@ -152,7 +194,19 @@ final class StreamExchange
     }
 
     /**
-     * @param positive-int $streamId
+     * Stream the request body as HTTP/2 DATA frames.
+     *
+     * Reads from the body handle in 16,384-byte chunks (the default maximum
+     * frame payload per RFC 9113 Section 4.2) and sends each as a DATA frame.
+     * The END_STREAM flag is set on the final DATA frame if no trailers follow.
+     *
+     * If the body is empty (reaches EOF immediately), an empty DATA frame with
+     * END_STREAM is sent to signal the end of the request.
+     *
+     * @param ClientConnectionInterface $connection The H2 connection to send DATA frames on.
+     * @param positive-int $streamId The stream ID to send data on.
+     * @param IO\ReadHandleInterface $body The request body to read from.
+     * @param bool $endStreamOnFinish Whether to set END_STREAM on the last DATA frame. False when trailers will follow.
      */
     private static function sendBody(
         ClientConnectionInterface $connection,

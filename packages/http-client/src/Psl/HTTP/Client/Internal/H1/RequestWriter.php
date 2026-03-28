@@ -104,6 +104,8 @@ final class RequestWriter
         $body = $request->body;
         if ($body !== null && !$hasContentLength && !$hasTransferEncoding) {
             $head .= "transfer-encoding: chunked\r\n";
+        } elseif ($body === null && !$hasContentLength && !$hasTransferEncoding) {
+            $head .= "content-length: 0\r\n";
         }
 
         $head .= "\r\n";

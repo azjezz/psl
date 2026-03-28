@@ -6,7 +6,7 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Psl\HTTP\Client\Internal\Origin;
+use Psl\HTTP\Client\Connection\Origin;
 use Psl\URL;
 
 final class OriginTest extends TestCase

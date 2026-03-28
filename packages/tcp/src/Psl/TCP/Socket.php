@@ -15,6 +15,10 @@ use const PHP_OS_FAMILY;
  * A TCP socket that can be configured before connecting or listening.
  *
  * Create a socket, bind to an address, then consume it by calling connect() or listen().
+ *
+ * @deprecated Use {@see ConnectConfiguration::$bindTo} or {@see ListenConfiguration::$bindTo} instead.
+ *  The `bindTo` option on configuration objects replaces the bind-then-connect/listen pattern
+ *  that this class provides. This class will be removed in PSL 7.0.
  */
 final class Socket
 {
@@ -34,6 +38,7 @@ final class Socket
      */
     public static function createV4(): self
     {
+        // @mago-expect analysis:deprecated-class
         return new self(false);
     }
 
@@ -42,6 +47,7 @@ final class Socket
      */
     public static function createV6(): self
     {
+        // @mago-expect analysis:deprecated-class
         return new self(true);
     }
 
@@ -132,29 +138,36 @@ final class Socket
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return array{socket: array<string, mixed>}
      */
     private function buildContext(ListenConfiguration|ConnectConfiguration $configuration): array
     {
-        if ($configuration instanceof ConnectConfiguration) {
-            return ['socket' => [
-                'tcp_nodelay' => $configuration->noDelay,
-            ]];
-        }
-
         $socket = [
             'tcp_nodelay' => $configuration->noDelay,
-            'so_reuseaddr' => PHP_OS_FAMILY === 'Windows' ? $configuration->reusePort : $configuration->reuseAddress,
-            'so_reuseport' => $configuration->reusePort,
         ];
-
-        if ($this->ipv6) {
-            $socket['ipv6_v6only'] = true;
-        }
 
         if ($this->bindAddress !== null) {
             [$host, $port] = $this->bindAddress;
             $socket['bindto'] = "{$host}:{$port}";
+        }
+
+        if (null !== $configuration->bindTo) {
+            $socket['bindto'] = $configuration->bindTo;
+        }
+
+        if ($configuration instanceof ConnectConfiguration) {
+            return ['socket' => $socket];
+        }
+
+        $socket['so_reuseaddr'] = PHP_OS_FAMILY === 'Windows'
+            ? $configuration->reusePort
+            : $configuration->reuseAddress;
+        $socket['so_reuseport'] = $configuration->reusePort;
+
+        if ($this->ipv6) {
+            $socket['ipv6_v6only'] = true;
         }
 
         return ['socket' => $socket];

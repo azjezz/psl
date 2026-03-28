@@ -18,6 +18,7 @@ final readonly class ListenConfiguration implements DefaultInterface
      * @param bool $reusePort Allow multiple sockets to bind to the same port.
      * @param int<1, max> $backlog Maximum length of the queue of pending connections.
      * @param int<1, max> $idleConnections Maximum number of idle connections to buffer.
+     * @param null|non-empty-string $bindTo
      */
     public function __construct(
         public bool $noDelay = false,
@@ -25,6 +26,7 @@ final readonly class ListenConfiguration implements DefaultInterface
         public bool $reusePort = false,
         public int $backlog = 512,
         public int $idleConnections = 256,
+        public null|string $bindTo = null,
     ) {}
 
     #[Override]
@@ -38,7 +40,14 @@ final readonly class ListenConfiguration implements DefaultInterface
      */
     public function withNoDelay(bool $noDelay): self
     {
-        return new self($noDelay, $this->reuseAddress, $this->reusePort, $this->backlog, $this->idleConnections);
+        return new self(
+            $noDelay,
+            $this->reuseAddress,
+            $this->reusePort,
+            $this->backlog,
+            $this->idleConnections,
+            $this->bindTo,
+        );
     }
 
     /**
@@ -46,7 +55,14 @@ final readonly class ListenConfiguration implements DefaultInterface
      */
     public function withReuseAddress(bool $reuseAddress): self
     {
-        return new self($this->noDelay, $reuseAddress, $this->reusePort, $this->backlog, $this->idleConnections);
+        return new self(
+            $this->noDelay,
+            $reuseAddress,
+            $this->reusePort,
+            $this->backlog,
+            $this->idleConnections,
+            $this->bindTo,
+        );
     }
 
     /**
@@ -54,7 +70,14 @@ final readonly class ListenConfiguration implements DefaultInterface
      */
     public function withReusePort(bool $reusePort): self
     {
-        return new self($this->noDelay, $this->reuseAddress, $reusePort, $this->backlog, $this->idleConnections);
+        return new self(
+            $this->noDelay,
+            $this->reuseAddress,
+            $reusePort,
+            $this->backlog,
+            $this->idleConnections,
+            $this->bindTo,
+        );
     }
 
     /**
@@ -64,7 +87,14 @@ final readonly class ListenConfiguration implements DefaultInterface
      */
     public function withBacklog(int $backlog): self
     {
-        return new self($this->noDelay, $this->reuseAddress, $this->reusePort, $backlog, $this->idleConnections);
+        return new self(
+            $this->noDelay,
+            $this->reuseAddress,
+            $this->reusePort,
+            $backlog,
+            $this->idleConnections,
+            $this->bindTo,
+        );
     }
 
     /**
@@ -74,6 +104,30 @@ final readonly class ListenConfiguration implements DefaultInterface
      */
     public function withIdleConnections(int $idleConnections): self
     {
-        return new self($this->noDelay, $this->reuseAddress, $this->reusePort, $this->backlog, $idleConnections);
+        return new self(
+            $this->noDelay,
+            $this->reuseAddress,
+            $this->reusePort,
+            $this->backlog,
+            $idleConnections,
+            $this->bindTo,
+        );
+    }
+
+    /**
+     * @param null|non-empty-string $bindTo Local address to bind to before listening.
+     *
+     * @psalm-mutation-free
+     */
+    public function withBindTo(null|string $bindTo): self
+    {
+        return new self(
+            $this->noDelay,
+            $this->reuseAddress,
+            $this->reusePort,
+            $this->backlog,
+            $this->idleConnections,
+            $bindTo,
+        );
     }
 }

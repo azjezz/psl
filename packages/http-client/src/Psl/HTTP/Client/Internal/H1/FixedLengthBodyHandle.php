@@ -6,6 +6,7 @@ namespace Psl\HTTP\Client\Internal\H1;
 
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
+use Psl\HTTP\Client\Exception;
 use Psl\IO;
 
 use function min;
@@ -66,7 +67,10 @@ final class FixedLengthBodyHandle implements IO\ReadHandleInterface
 
         if ($data === '' && $this->reader->reachedEndOfDataSource()) {
             $this->eof = true;
-            return '';
+
+            throw Exception\ProtocolException::forMalformedResponse(
+                'Connection closed with ' . $this->remaining . ' bytes remaining',
+            );
         }
 
         /** @var non-negative-int $remaining */
@@ -94,7 +98,10 @@ final class FixedLengthBodyHandle implements IO\ReadHandleInterface
 
         if ($data === '' && $this->reader->reachedEndOfDataSource()) {
             $this->eof = true;
-            return '';
+
+            throw Exception\ProtocolException::forMalformedResponse(
+                'Connection closed with ' . $this->remaining . ' bytes remaining',
+            );
         }
 
         /** @var non-negative-int $remaining */

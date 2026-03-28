@@ -505,4 +505,84 @@ final class ParseTest extends TestCase
 
         static::assertSame('//a//b', $uri->path);
     }
+
+    public function testInvalidIPv4LikeHostFallsToRegisteredName(): void
+    {
+        $uri = URI\parse('http://999.999.999.999/');
+
+        $authority = $uri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(RegisteredNameHost::class, $authority->host);
+        static::assertSame('999.999.999.999', $authority->host->toString());
+        static::assertSame('/', $uri->path);
+    }
+
+    public function testInvalidIPv4LikeHostWithPortFallsToRegisteredName(): void
+    {
+        $uri = URI\parse('http://256.1.1.1:8080/');
+
+        $authority = $uri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(RegisteredNameHost::class, $authority->host);
+        static::assertSame('256.1.1.1', $authority->host->toString());
+        static::assertSame(8080, $authority->port);
+    }
+
+    public function testIPLiteralNonNumericPortThrows(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://[::1]:abc/');
+    }
+
+    public function testIPLiteralGarbageAfterBracketThrows(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://[::1]xyz/');
+    }
+
+    public function testIPLiteralInvalidAddressInsideBracketsThrows(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://[notanip]/');
+    }
+
+    public function testIPLiteralMissingCloseBracketThrows(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://[::1/');
+    }
+
+    public function testIPLiteralPortAboveMaxThrows(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://[::1]:99999/');
+    }
+
+    public function testBareIPv6ParsedAsIPHost(): void
+    {
+        $uri = URI\parse('http://::1/');
+
+        $authority = $uri->authority;
+        static::assertNotNull($authority);
+        static::assertInstanceOf(IPHost::class, $authority->host);
+    }
+
+    public function testPercentEncodingTrailingPercent(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://h/path%');
+    }
+
+    public function testPercentEncodingIncompleteSequence(): void
+    {
+        $this->expectException(InvalidURIException::class);
+
+        URI\parse('http://h/path%A');
+    }
 }

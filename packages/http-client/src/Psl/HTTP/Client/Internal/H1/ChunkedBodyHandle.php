@@ -131,7 +131,10 @@ final class ChunkedBodyHandle implements IO\ReadHandleInterface
             if ($sizeLine === null) {
                 $this->completed = true;
                 $this->trailers->complete(FieldMap::default());
-                return;
+
+                throw ProtocolException::forMalformedResponse(
+                    'Connection closed before chunk size was received in chunked transfer encoding.',
+                );
             }
 
             $sizeHex = (($pos = strpos($sizeLine, ';')) !== false ? substr($sizeLine, 0, $pos) : null) ?? $sizeLine;
@@ -159,7 +162,12 @@ final class ChunkedBodyHandle implements IO\ReadHandleInterface
         if ($data === '' && $this->reader->reachedEndOfDataSource()) {
             $this->completed = true;
             $this->trailers->complete(FieldMap::default());
-            return;
+
+            throw ProtocolException::forMalformedResponse(
+                'Connection closed during chunked transfer with '
+                . $this->chunkRemaining
+                . ' bytes remaining in chunk.',
+            );
         }
 
         /** @var non-negative-int $remaining */
