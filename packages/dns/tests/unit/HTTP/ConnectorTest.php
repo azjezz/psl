@@ -553,6 +553,55 @@ final class ConnectorTest extends TestCase
         static::assertSame('192.168.1.1', $receivedConfig->socksConfiguration->proxyHost);
     }
 
+    public function testUnixSocketSkipsDnsResolution(): void
+    {
+        $receivedOrigin = null;
+
+        $inner = $this->createMockConnector(static function (Origin $origin) use (&$receivedOrigin): void {
+            $receivedOrigin = $origin;
+        });
+
+        $resolver = new DNS\StaticResolver([]);
+
+        $connector = new DNS\HTTP\Connector($inner, $resolver);
+
+        $request = new Request(method: 'GET', url: parse('http://docker/v1.24/containers/json'));
+        $origin = Origin::fromUrl($request->url);
+        $config = new ClientConfiguration(unixSocket: '/var/run/docker.sock');
+
+        $connector->connect($origin, $request, $config);
+
+        static::assertNotNull($receivedOrigin);
+        static::assertSame('docker', $receivedOrigin->host);
+    }
+
+    public function testUnixSocketDoesNotResolveProxyEither(): void
+    {
+        $receivedConfig = null;
+
+        $inner = $this->createMockConnector(static function (
+            Origin $origin,
+            Request $request,
+            ClientConfiguration $config,
+        ) use (&$receivedConfig): void {
+            $receivedConfig = $config;
+        });
+
+        $resolver = new DNS\StaticResolver([]);
+
+        $connector = new DNS\HTTP\Connector($inner, $resolver);
+
+        $request = new Request(method: 'GET', url: parse('http://docker/v1.24/info'));
+        $origin = Origin::fromUrl($request->url);
+        $proxyConfig = new ProxyConfiguration(url: parse('http://unresolvable-proxy:8080'));
+        $config = new ClientConfiguration(unixSocket: '/var/run/docker.sock', proxyConfiguration: $proxyConfig);
+
+        $connector->connect($origin, $request, $config);
+
+        static::assertNotNull($receivedConfig);
+        static::assertSame('/var/run/docker.sock', $receivedConfig->unixSocket);
+    }
+
     /**
      * @param (Closure(Origin, Request?, ClientConfiguration?): void) $onConnect
      */

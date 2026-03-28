@@ -76,6 +76,10 @@ final readonly class Connector implements ConnectorInterface
         ClientConfiguration $configuration,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): ConnectionInterface {
+        if ($configuration->unixSocket !== null) {
+            return $this->connector->connect($origin, $request, $configuration, $cancellation);
+        }
+
         $resolvedOrigin = $this->resolveOrigin($origin, $cancellation);
         $configuration = $this->resolveHttpProxyHostname($configuration, $cancellation);
         $configuration = $this->resolveSocksProxyHostname($configuration, $cancellation);
