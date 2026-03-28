@@ -9,7 +9,6 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Exception\ProtocolException;
-use Psl\HTTP\Client\Internal\LimitedReadHandle;
 use Psl\HTTP\Message\FieldMap;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Response;
@@ -29,7 +28,7 @@ use function trim;
  * Reads and validates the status line, header fields, and determines the
  * appropriate body framing strategy per RFC 9112:
  * - Chunked transfer encoding (Section 7.1): {@see ChunkedBodyHandle}
- * - Content-Length (Section 6.2): {@see FixedLengthBodyHandle}
+ * - Content-Length (Section 6.2): {@see IO\FixedLengthReadHandle}
  * - Read-until-close (Section 7.2): {@see UntilCloseBodyHandle}
  *
  * Also determines whether the connection supports keep-alive based on the
@@ -39,7 +38,7 @@ use function trim;
  *
  * @see Transport Calls this reader after sending the request.
  * @see ChunkedBodyHandle Body handle for chunked responses.
- * @see FixedLengthBodyHandle Body handle for Content-Length responses.
+ * @see IO\FixedLengthReadHandle Body handle for Content-Length responses.
  * @see UntilCloseBodyHandle Body handle for connection-close responses.
  */
 final class ResponseReader
@@ -248,11 +247,11 @@ final class ResponseReader
      * - No body for HEAD, 204, 304, and 1xx responses.
      * - {@see ChunkedBodyHandle} for Transfer-Encoding: chunked (Section 7.1).
      *   Trailers are parsed lazily when the body is fully consumed.
-     * - {@see FixedLengthBodyHandle} for Content-Length (Section 6.2).
+     * - {@see IO\FixedLengthReadHandle} for Content-Length (Section 6.2).
      * - {@see UntilCloseBodyHandle} as fallback (Section 7.2).
      *
      * When a max response body size is configured, the handle is wrapped in
-     * {@see LimitedReadHandle} for size enforcement.
+     * {@see IO\BoundedReadHandle} for size enforcement.
      *
      * @param IO\Reader $reader Buffered reader wrapping the connection stream.
      * @param null|string $contentLength Content-Length header value, or null.
@@ -289,13 +288,13 @@ final class ResponseReader
             }
 
             /** @var non-negative-int $length */
-            $handle = new FixedLengthBodyHandle($reader, $length);
+            $handle = new IO\FixedLengthReadHandle($reader, $length);
         } else {
             $handle = new UntilCloseBodyHandle($reader);
         }
 
         if ($maxResponseBodySize > 0) {
-            return [new LimitedReadHandle($handle, $maxResponseBodySize), $trailers];
+            return [new IO\BoundedReadHandle($handle, $maxResponseBodySize), $trailers];
         }
 
         return [$handle, $trailers];

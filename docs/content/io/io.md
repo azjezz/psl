@@ -76,4 +76,56 @@ In non-CLI SAPIs, `input_handle()` reads from `php://input` and `output_handle()
 
 @example('io/io-streaming.php')
 
+## Handle Decorators
+
+PSL provides several decorator handles that wrap an existing handle and add behavior.
+
+### IterableReadHandle
+
+`IterableReadHandle` wraps an `iterable<string>` (array, generator, or any iterable) as a streaming `ReadHandleInterface`. The iterator is advanced lazily on each `read()` call, so the entire content is never buffered in memory.
+
+@example('io/io-iterable-read-handle.php')
+
+### ConcatReadHandle
+
+`ConcatReadHandle` reads from two handles in sequence. It delegates to the first handle until EOF, then transparently switches to the second.
+
+@example('io/io-concat-read-handle.php')
+
+### TruncatedReadHandle
+
+`TruncatedReadHandle` reads up to N bytes from the underlying handle. Once the limit is reached, it silently reports EOF regardless of whether more data is available. Data beyond the limit is neither consumed nor validated.
+
+@example('io/io-truncated-read-handle.php')
+
+### BoundedReadHandle
+
+`BoundedReadHandle` reads up to N bytes from the underlying handle. Unlike `TruncatedReadHandle`, it peeks past the limit to check for overflow. If the underlying handle has more data, an `IO\Exception\RuntimeException` is thrown. Use this when exceeding the limit is a violation (e.g., HTTP response body size limits).
+
+@example('io/io-bounded-read-handle.php')
+
+### FixedLengthReadHandle
+
+`FixedLengthReadHandle` reads exactly N bytes from the underlying handle. If the handle reaches EOF before N bytes are consumed, an `IO\Exception\RuntimeException` is thrown. Use this when the data source promises a specific length (e.g., HTTP Content-Length bodies, fixed-size protocol frames).
+
+@example('io/io-fixed-length-read-handle.php')
+
+### JoinedReadWriteHandle
+
+`JoinedReadWriteHandle` combines a `ReadHandleInterface` and a `WriteHandleInterface` into a single bidirectional handle. All read operations delegate to the reader, all write operations delegate to the writer.
+
+@example('io/io-joined-read-write-handle.php')
+
+### TeeWriteHandle
+
+`TeeWriteHandle` writes to two handles simultaneously. If the second handle is slower, data is buffered internally and drained on subsequent writes. This is useful for mirroring output to a log, computing a hash while streaming, or duplicating data to two destinations.
+
+@example('io/io-tee-write-handle.php')
+
+### Sink Handles
+
+`SinkWriteHandle` discards all written data, like `/dev/null`. `SinkReadHandle` is a read handle that always reports EOF immediately -- unlike `new MemoryHandle('')` which only reports EOF after the first read attempt. `SinkReadWriteHandle` combines both: writes are discarded and reads always report EOF. These are useful as no-op handles in tests or when output must be consumed but can be discarded.
+
+@example('io/io-sink-handle.php')
+
 See `src/Psl/IO/` for the full API.

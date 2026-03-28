@@ -6,6 +6,7 @@ namespace Psl\HTTP\Client\Exception;
 
 use Psl\HTTP\Client;
 use Psl\HTTP\Message\ProtocolVersion;
+use Psl\IO;
 
 /**
  * Thrown when the server sends a malformed or unexpected response, when a
@@ -37,7 +38,7 @@ use Psl\HTTP\Message\ProtocolVersion;
  * 4. **Response body size violations**: The response body exceeds the
  *    maximum size configured via {@see Client\ClientConfiguration}.
  *    Thrown by the body size limiter
- *    ({@see Client\Internal\LimitedReadHandle}) and the HTTP/2
+ *    ({@see IO\BoundedReadHandle}) and the HTTP/2
  *    response body handle
  *    ({@see Client\Internal\H2\ResponseBodyHandle}).
  *

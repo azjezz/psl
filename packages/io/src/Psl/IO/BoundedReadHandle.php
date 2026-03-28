@@ -1,0 +1,205 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Psl\IO;
+
+use Override;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
+
+use function min;
+use function strlen;
+
+/**
+ * A read handle that wraps another {@see ReadHandleInterface} and enforces a
+ * maximum byte limit.
+ *
+ * Reads up to $limit bytes from the underlying handle. Once the limit is
+ * reached, the handle peeks one additional byte from the underlying handle to
+ * distinguish between "data fits exactly" (reports EOF) and "data exceeds
+ * limit" (throws {@see Exception\RuntimeException}).
+ *
+ * This is useful for enforcing size limits where exceeding the boundary is a
+ * violation (e.g., HTTP response body size limits, protocol frame sizes).
+ *
+ * For a variant that silently truncates at the limit without checking for
+ * overflow, see {@see TruncatedReadHandle}.
+ *
+ * @api
+ */
+final class BoundedReadHandle implements ReadHandleInterface, CloseHandleInterface
+{
+    use ReadHandleConvenienceMethodsTrait;
+
+    private bool $closed = false;
+    private int $bytesRead = 0;
+    private bool $limitReached = false;
+
+    /**
+     * @param ReadHandleInterface $handle The underlying handle to read from.
+     * @param int $limit The maximum total number of bytes allowed. If the underlying
+     *  handle contains more data, an {@see Exception\RuntimeException} is thrown.
+     */
+    public function __construct(
+        private readonly ReadHandleInterface $handle,
+        private readonly int $limit,
+    ) {}
+
+    /**
+     * Whether the limit has been reached cleanly or the underlying handle has been exhausted.
+     *
+     * Returns {@see true} when the limit was reached and no overflow was detected,
+     * or when the underlying handle itself reports EOF. Returns {@see false} otherwise.
+     *
+     * @throws Exception\AlreadyClosedException If the handle has been closed.
+     */
+    #[Override]
+    public function reachedEndOfDataSource(): bool
+    {
+        $this->assertHandleIsOpen();
+
+        return $this->limitReached || $this->handle->reachedEndOfDataSource();
+    }
+
+    /**
+     * Return data immediately available from the underlying handle, capped to the remaining allowance.
+     *
+     * If the byte limit has been reached, peeks one byte to check for overflow:
+     * if the underlying handle has more data, throws {@see Exception\RuntimeException}.
+     * Otherwise, returns an empty string (EOF).
+     *
+     * @param null|positive-int $maxBytes Maximum number of bytes to return, or null for the remaining allowance.
+     *
+     * @throws Exception\AlreadyClosedException If the handle has been closed.
+     * @throws Exception\RuntimeException If the underlying handle contains more data than the limit allows.
+     */
+    #[Override]
+    public function tryRead(null|int $maxBytes = null): string
+    {
+        $this->assertHandleIsOpen();
+
+        if ($this->bytesRead >= $this->limit) {
+            return $this->handleLimitReached();
+        }
+
+        $remaining = $this->limit - $this->bytesRead;
+
+        /** @var positive-int $cappedMax */
+        $cappedMax = $maxBytes === null ? $remaining : min($maxBytes, $remaining);
+
+        $data = $this->handle->tryRead($cappedMax);
+        $this->bytesRead += strlen($data);
+
+        return $data;
+    }
+
+    /**
+     * Read from the underlying handle, capped to the remaining byte allowance.
+     *
+     * If the byte limit has been reached, peeks one byte to check for overflow:
+     * if the underlying handle has more data, throws {@see Exception\RuntimeException}.
+     * Otherwise, returns an empty string (EOF).
+     *
+     * @param null|positive-int $maxBytes Maximum number of bytes to return, or null for the remaining allowance.
+     *
+     * @throws Exception\AlreadyClosedException If the handle has been closed.
+     * @throws Exception\RuntimeException If the underlying handle contains more data than the limit allows.
+     */
+    #[Override]
+    public function read(
+        null|int $maxBytes = null,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): string {
+        $this->assertHandleIsOpen();
+
+        if ($this->bytesRead >= $this->limit) {
+            return $this->handleLimitReached();
+        }
+
+        $remaining = $this->limit - $this->bytesRead;
+
+        /** @var positive-int $cappedMax */
+        $cappedMax = $maxBytes === null ? $remaining : min($maxBytes, $remaining);
+
+        $data = $this->handle->read($cappedMax, $cancellation);
+        $this->bytesRead += strlen($data);
+
+        return $data;
+    }
+
+    /**
+     * Whether the handle has been closed.
+     */
+    #[Override]
+    public function isClosed(): bool
+    {
+        return $this->closed;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
+
+    /**
+     * Close the handle.
+     *
+     * If the underlying handle implements {@see CloseHandleInterface}, it will be
+     * closed as well. After closing, all read operations will throw
+     * {@see Exception\AlreadyClosedException}.
+     */
+    #[Override]
+    public function close(): void
+    {
+        if (!$this->closed) {
+            $this->closed = true;
+
+            if ($this->handle instanceof CloseHandleInterface) {
+                $this->handle->close();
+            }
+        }
+    }
+
+    /**
+     * Check whether the underlying handle has data beyond the limit.
+     *
+     * Peeks one byte from the underlying handle. If data is available, the limit
+     * has been exceeded and an {@see Exception\RuntimeException} is thrown. If the
+     * handle is at EOF or returns empty, the limit was reached cleanly.
+     *
+     * @throws Exception\RuntimeException If the underlying handle has overflow data.
+     */
+    private function handleLimitReached(): string
+    {
+        if ($this->limitReached || $this->handle->reachedEndOfDataSource()) {
+            $this->limitReached = true;
+
+            return '';
+        }
+
+        $peek = $this->handle->tryRead(1);
+        if ($peek === '') {
+            $this->limitReached = true;
+
+            return '';
+        }
+
+        throw new Exception\RuntimeException(
+            'Response body exceeded the configured limit of ' . $this->limit . ' bytes.',
+        );
+    }
+
+    /**
+     * @throws Exception\AlreadyClosedException If the handle has been closed.
+     */
+    private function assertHandleIsOpen(): void
+    {
+        if ($this->closed) {
+            throw new Exception\AlreadyClosedException('Handle has already been closed.');
+        }
+    }
+}

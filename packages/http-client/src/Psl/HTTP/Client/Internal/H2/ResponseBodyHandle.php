@@ -10,6 +10,7 @@ use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Message\FieldMap;
 use Psl\IO;
 use Psl\IO\Exception;
+use Throwable;
 
 use function strlen;
 
@@ -24,7 +25,7 @@ use function strlen;
  * Body size enforcement is performed inline: each successful read increments
  * a byte counter, and if the configured maximum response body size is exceeded,
  * the handle enters an error state and closes the stream. Unlike H1, where size
- * enforcement is done by wrapping with {@see LimitedReadHandle}, H2 handles
+ * enforcement is done by wrapping with {@see IO\BoundedReadHandle}, H2 handles
  * enforce the limit directly because the body data arrives via the multiplexer's
  * push mechanism rather than a sequential read.
  *
@@ -141,7 +142,7 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface, IO\CloseHandle
 
         try {
             $data = $this->stream->readBody($maxBytes, $cancellation);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->setError($e);
             return '';
         }
@@ -203,9 +204,9 @@ final class ResponseBodyHandle implements IO\ReadHandleInterface, IO\CloseHandle
      * a consistent exception type and closes the handle to unregister from the
      * multiplexer.
      *
-     * @param \Throwable $cause The underlying error.
+     * @param Throwable $cause The underlying error.
      */
-    private function setError(\Throwable $cause): void
+    private function setError(Throwable $cause): void
     {
         $this->errored = true;
         $this->errorCause = new Exception\RuntimeException(
