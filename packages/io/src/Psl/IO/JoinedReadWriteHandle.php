@@ -24,7 +24,7 @@ use Psl\Async\NullCancellationToken;
  *
  * @api
  */
-final class JoinedReadWriteHandle implements ReadHandleInterface, WriteHandleInterface, CloseHandleInterface
+final class JoinedReadWriteHandle implements ReadHandleInterface, BufferedWriteHandleInterface, CloseHandleInterface
 {
     private bool $closed = false;
 
@@ -191,6 +191,15 @@ final class JoinedReadWriteHandle implements ReadHandleInterface, WriteHandleInt
         $this->writer->writeAll($bytes, $cancellation);
     }
 
+    public function flush(CancellationTokenInterface $cancellation = new NullCancellationToken()): void
+    {
+        $this->assertHandleIsOpen();
+
+        if ($this->writer instanceof BufferedWriteHandleInterface) {
+            $this->writer->flush($cancellation);
+        }
+    }
+
     /**
      * Whether the handle has been closed.
      */
@@ -198,14 +207,6 @@ final class JoinedReadWriteHandle implements ReadHandleInterface, WriteHandleInt
     public function isClosed(): bool
     {
         return $this->closed;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __destruct()
-    {
-        $this->close();
     }
 
     /**
@@ -237,5 +238,13 @@ final class JoinedReadWriteHandle implements ReadHandleInterface, WriteHandleInt
         if ($this->closed) {
             throw new Exception\AlreadyClosedException('Handle has already been closed.');
         }
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __destruct()
+    {
+        $this->close();
     }
 }

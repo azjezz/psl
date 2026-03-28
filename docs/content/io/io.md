@@ -112,19 +112,19 @@ PSL provides several decorator handles that wrap an existing handle and add beha
 
 ### JoinedReadWriteHandle
 
-`JoinedReadWriteHandle` combines a `ReadHandleInterface` and a `WriteHandleInterface` into a single bidirectional handle. All read operations delegate to the reader, all write operations delegate to the writer.
+`JoinedReadWriteHandle` combines a `ReadHandleInterface` and a `WriteHandleInterface` into a single bidirectional handle. All read operations delegate to the reader, all write operations delegate to the writer. It implements `BufferedWriteHandleInterface`, so calling `flush()` delegates to the underlying writer if it also implements `BufferedWriteHandleInterface`.
 
 @example('io/io-joined-read-write-handle.php')
 
 ### TeeWriteHandle
 
-`TeeWriteHandle` writes to two handles simultaneously. If the second handle is slower, data is buffered internally and drained on subsequent writes. This is useful for mirroring output to a log, computing a hash while streaming, or duplicating data to two destinations.
+`TeeWriteHandle` writes to two handles simultaneously. If the second handle is slower, data is buffered internally and drained on subsequent writes. It implements `BufferedWriteHandleInterface` -- call `flush()` to explicitly drain any pending data to the second handle. This is useful for mirroring output to a log, computing a hash while streaming, or duplicating data to two destinations.
 
 @example('io/io-tee-write-handle.php')
 
 ### Sink Handles
 
-`SinkWriteHandle` discards all written data, like `/dev/null`. `SinkReadHandle` is a read handle that always reports EOF immediately -- unlike `new MemoryHandle('')` which only reports EOF after the first read attempt. `SinkReadWriteHandle` combines both: writes are discarded and reads always report EOF. These are useful as no-op handles in tests or when output must be consumed but can be discarded.
+`SinkWriteHandle` discards all written data, like `/dev/null`. `SinkReadHandle` is a read handle that always reports EOF immediately -- unlike `new MemoryHandle('')` which only reports EOF after the first read attempt. `SinkReadWriteHandle` combines both: writes are discarded and reads always report EOF. All write sinks implement `BufferedWriteHandleInterface` with a no-op `flush()` for compatibility with code that expects flushable writers. These are useful as no-op handles in tests or when output must be consumed but can be discarded.
 
 @example('io/io-sink-handle.php')
 
