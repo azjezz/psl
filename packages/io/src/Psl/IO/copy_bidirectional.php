@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Psl\IO;
 
-use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
@@ -12,8 +11,10 @@ use Psl\Async\NullCancellationToken;
 /**
  * Copy data bidirectionally between two handles until both sides reach EOF.
  *
- * This is useful for building proxies: data flows from $a to $b and from $b to $a
- * concurrently until both directions reach EOF.
+ * Data flows from $a to $b and from $b to $a concurrently using 8 KB chunks
+ * until both directions reach EOF. This is useful for building proxies.
+ *
+ * For a custom chunk size, use {@see copy_bidirectional_chunked()}.
  *
  * @return array{int<0, max>, int<0, max>} [bytes_a_to_b, bytes_b_to_a]
  *
@@ -25,8 +26,5 @@ function copy_bidirectional(
     ReadHandleInterface&WriteHandleInterface $b,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): array {
-    return Async\concurrently([
-        static fn(): int => namespace\copy($a, $b, $cancellation),
-        static fn(): int => namespace\copy($b, $a, $cancellation),
-    ]);
+    return namespace\copy_bidirectional_chunked($a, $b, 8192, $cancellation);
 }

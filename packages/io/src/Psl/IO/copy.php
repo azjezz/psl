@@ -8,12 +8,14 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 
-use function strlen;
-
 /**
  * Copy data from a read handle to a write handle until EOF.
  *
- * Reads from $reader until EOF and writes all data to $writer.
+ * Reads from $reader in 8 KB chunks until EOF and writes all data to $writer.
+ * If the writer implements {@see BufferedWriteHandleInterface}, it is flushed
+ * after all data has been written to ensure no bytes remain in an internal buffer.
+ *
+ * For a custom chunk size, use {@see copy_chunked()}.
  *
  * @return int<0, max> The total number of bytes copied.
  *
@@ -25,22 +27,5 @@ function copy(
     WriteHandleInterface $writer,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): int {
-    $bytesCopied = 0;
-    $bufferSize = 8192;
-
-    while (true) {
-        $data = $reader->read($bufferSize, $cancellation);
-        if ($data === '') {
-            if ($reader->reachedEndOfDataSource()) {
-                break;
-            }
-
-            continue;
-        }
-
-        $writer->writeAll($data, $cancellation);
-        $bytesCopied += strlen($data);
-    }
-
-    return $bytesCopied;
+    return namespace\copy_chunked($reader, $writer, 8192, $cancellation);
 }

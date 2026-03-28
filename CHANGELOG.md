@@ -14,6 +14,7 @@
 - feat(io): add `IO\TruncatedReadHandle` - reads up to N bytes from an underlying handle, silently reporting EOF when the limit is reached
 - feat(io): add `IO\BoundedReadHandle` - reads up to N bytes from an underlying handle, throwing `RuntimeException` if the underlying handle has more data than the limit allows
 - feat(io): add `IO\FixedLengthReadHandle` - reads exactly N bytes from an underlying handle, throwing `RuntimeException` on premature EOF
+- feat(io): add `IO\copy_chunked()` and `IO\copy_bidirectional_chunked()` - variants of `IO\copy()` and `IO\copy_bidirectional()` that accept a custom chunk size
 - feat(http-client): add `SendConfiguration::$connectionTimeout` - per-request maximum duration for establishing a connection (TCP + TLS handshake), using a linked cancellation token
 - feat(type): support `'true'`/`'false'` string literals in `Type\bool()` coercion - [#735](https://github.com/php-standard-library/php-standard-library/pull/735) by @verweto
 - feat(mime): introduce `MIME` component - comprehensive MIME toolkit implementing RFC 2045-2049 and related standards
@@ -116,6 +117,7 @@
 
 ### fixes
 
+- fix(io): `IO\copy()` now flushes the writer after copying if it implements `BufferedWriteHandleInterface`, ensuring no data remains in an internal buffer
 - fix(async): `State::subscribe()` and `State::invokeCallbacks()` no longer capture `$this` in queued closures, preventing delayed garbage collection of `Deferred`/`Awaitable` chains
 - fix(uri): bare IPv6 addresses (e.g., `http://::1/path`) are now correctly parsed as `IPHost` instead of being misparsed as a registered name with a numeric port
 - fix(h2): separate `maxConcurrent` (peer's limit on our streams) from `peerMaxConcurrent` (our limit on peer's streams) in `StreamTable`, preventing the client's own SETTINGS from limiting its outgoing streams
