@@ -17,6 +17,7 @@ use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
 use function str_repeat;
+use function strlen;
 
 final class FlowControlTest extends TestCase
 {
@@ -144,17 +145,16 @@ final class FlowControlTest extends TestCase
         $dataRaw = new DataFrame(1, str_repeat('x', 100), false)->toRaw();
         [$responseFrames, $events] = $sm->receive($dataRaw);
 
-        $windowUpdates = [];
-        foreach ($responseFrames as $frame) {
-            $parsed = WindowUpdateFrame::fromRaw($frame);
-            if ($parsed instanceof WindowUpdateFrame) {
-                $windowUpdates[] = $parsed;
-            }
-        }
+        static::assertCount(1, $responseFrames);
+        $encoded = $responseFrames[0];
+        static::assertIsString($encoded);
+        static::assertSame(26, strlen($encoded));
 
-        static::assertCount(2, $windowUpdates);
-        $connectionUpdate = $windowUpdates[0] ?? null;
-        $streamUpdate = $windowUpdates[1] ?? null;
+        [$connRaw] = Frame\decode($encoded, 0);
+        [$streamRaw] = Frame\decode($encoded, 13);
+
+        $connectionUpdate = WindowUpdateFrame::fromRaw($connRaw);
+        $streamUpdate = WindowUpdateFrame::fromRaw($streamRaw);
         static::assertInstanceOf(WindowUpdateFrame::class, $connectionUpdate);
         static::assertInstanceOf(WindowUpdateFrame::class, $streamUpdate);
         static::assertSame(0, $connectionUpdate->streamId);

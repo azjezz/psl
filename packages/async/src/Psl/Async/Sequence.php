@@ -94,17 +94,22 @@ final class Sequence
         try {
             return ($this->operation)($input);
         } finally {
-            $suspension = array_shift($this->pending);
-            if (null !== $suspension) {
-                $suspension->resume();
-            } else {
-                foreach ($this->waits as $suspension) {
-                    $suspension->resume();
-                }
-
-                $this->waits = [];
-
+            // Fast path: no pending waiters — just clear the flag.
+            if ($this->pending === [] && $this->waits === []) {
                 $this->ongoing = false;
+            } else {
+                $suspension = array_shift($this->pending);
+                if (null !== $suspension) {
+                    $suspension->resume();
+                } else {
+                    foreach ($this->waits as $suspension) {
+                        $suspension->resume();
+                    }
+
+                    $this->waits = [];
+
+                    $this->ongoing = false;
+                }
             }
         }
     }

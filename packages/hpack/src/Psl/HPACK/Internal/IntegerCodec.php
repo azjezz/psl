@@ -61,9 +61,9 @@ final class IntegerCodec
      *
      * @return array{int<0, max>, int<0, max>} [decoded value, new offset]
      */
-    public static function decode(string $data, int $offset, int $prefixBits): array
+    public static function decode(string $data, int $offset, int $prefixBits, null|int $length = null): array
     {
-        $length = strlen($data);
+        $length ??= strlen($data);
         if ($offset >= $length) {
             throw DecodingException::forUnexpectedEndOfData();
         }

@@ -150,6 +150,29 @@ final class State
         return $this->complete;
     }
 
+    /**
+     * Return the result directly if the operation is complete.
+     *
+     * This allows callers to bypass the subscribe/EventLoop::queue/suspend
+     * cycle when the state is already resolved.
+     *
+     * @throws Throwable If the operation completed with an error.
+     *
+     * @return T
+     */
+    public function getResult(): mixed
+    {
+        Psl\invariant($this->complete, 'Cannot get result of an incomplete operation.');
+
+        $this->handled = true;
+
+        if ($this->throwable !== null) {
+            throw $this->throwable;
+        }
+
+        return $this->result;
+    }
+
     private function invokeCallbacks(): void
     {
         $this->complete = true;

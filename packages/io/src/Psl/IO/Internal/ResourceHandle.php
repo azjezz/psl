@@ -290,7 +290,9 @@ class ResourceHandle implements
         string $bytes,
         Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
     ): int {
-        Psl\invariant(null !== $this->writeSequence, 'The resource handle is not writable.');
+        if (null === $this->writeSequence) {
+            Psl\invariant_violation('The resource handle is not writable.');
+        }
 
         return $this->writeSequence->waitFor([$bytes, $cancellation]);
     }
@@ -420,7 +422,9 @@ class ResourceHandle implements
         null|int $maxBytes = null,
         Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
     ): string {
-        Psl\invariant(null !== $this->readSequence, 'The resource handle is not readable.');
+        if (null === $this->readSequence) {
+            Psl\invariant_violation('The resource handle is not readable.');
+        }
 
         return $this->readSequence->waitFor([$maxBytes, $cancellation]);
     }

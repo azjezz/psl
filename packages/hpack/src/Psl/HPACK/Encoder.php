@@ -131,12 +131,14 @@ final class Encoder
 
         $totalSize = 0;
         foreach ($headers as $header) {
-            $totalSize += strlen($header->name) + strlen($header->value) + 32;
+            $nameLen = strlen($header->name);
+            $valueLen = strlen($header->value);
+            $totalSize += $nameLen + $valueLen + 32;
             if ($totalSize > $this->maxHeaderListSize) {
                 throw HeaderListSizeException::forExceededLimit($totalSize, $this->maxHeaderListSize);
             }
 
-            $result .= $this->encodeHeaderEntry($header->name, $header->value, $header->sensitive);
+            $result .= $this->encodeHeaderEntry($header->name, $nameLen, $header->value, $valueLen, $header->sensitive);
         }
 
         return $result;
@@ -161,20 +163,23 @@ final class Encoder
     {
         $result = $this->encodePendingTableSize();
 
-        $totalSize = 7 + strlen($status) + 32;
+        $statusLen = strlen($status);
+        $totalSize = 7 + $statusLen + 32;
         if ($totalSize > $this->maxHeaderListSize) {
             throw HeaderListSizeException::forExceededLimit($totalSize, $this->maxHeaderListSize);
         }
 
-        $result .= $this->encodeHeaderEntry(':status', $status, false);
+        $result .= $this->encodeHeaderEntry(':status', 7, $status, $statusLen, false);
 
         foreach ($headers as $header) {
-            $totalSize += strlen($header->name) + strlen($header->value) + 32;
+            $nameLen = strlen($header->name);
+            $valueLen = strlen($header->value);
+            $totalSize += $nameLen + $valueLen + 32;
             if ($totalSize > $this->maxHeaderListSize) {
                 throw HeaderListSizeException::forExceededLimit($totalSize, $this->maxHeaderListSize);
             }
 
-            $result .= $this->encodeHeaderEntry($header->name, $header->value, $header->sensitive);
+            $result .= $this->encodeHeaderEntry($header->name, $nameLen, $header->value, $valueLen, $header->sensitive);
         }
 
         return $result;
@@ -205,10 +210,15 @@ final class Encoder
      *
      * @return non-empty-string
      */
-    private function encodeHeaderEntry(string $name, string $value, bool $sensitive): string
-    {
+    private function encodeHeaderEntry(
+        string $name,
+        int $nameLen,
+        string $value,
+        int $valueLen,
+        bool $sensitive,
+    ): string {
         if ($sensitive) {
-            return $this->encodeLiteralNeverIndexed($name, $value);
+            return $this->encodeLiteralNeverIndexed($name, $nameLen, $value, $valueLen);
         }
 
         $staticResult = StaticTable::search($name, $value);
@@ -236,15 +246,12 @@ final class Encoder
             $nameMatchIndex ??= $combinedIndex;
         }
 
+        $this->dynamicTable->insert($name, $nameLen, $value, $valueLen);
         if ($nameMatchIndex !== null) {
-            $this->dynamicTable->insert($name, $value);
-
-            return IntegerCodec::encode($nameMatchIndex, 6, 0b0100_0000) . $this->encodeString($value);
+            return IntegerCodec::encode($nameMatchIndex, 6, 0b0100_0000) . $this->encodeString($value, $valueLen);
         }
 
-        $this->dynamicTable->insert($name, $value);
-
-        return "\x40" . $this->encodeString($name) . $this->encodeString($value);
+        return "\x40" . $this->encodeString($name, $nameLen) . $this->encodeString($value, $valueLen);
     }
 
     /**
@@ -253,7 +260,7 @@ final class Encoder
      *
      * @return non-empty-string
      */
-    private function encodeLiteralNeverIndexed(string $name, string $value): string
+    private function encodeLiteralNeverIndexed(string $name, int $nameLen, string $value, int $valueLen): string
     {
         $staticResult = StaticTable::search($name, $value);
         $nameIndex = 0;
@@ -268,19 +275,18 @@ final class Encoder
         }
 
         if ($nameIndex > 0) {
-            return IntegerCodec::encode($nameIndex, 4, 0b0001_0000) . $this->encodeString($value);
+            return IntegerCodec::encode($nameIndex, 4, 0b0001_0000) . $this->encodeString($value, $valueLen);
         }
 
-        return "\x10" . $this->encodeString($name) . $this->encodeString($value);
+        return "\x10" . $this->encodeString($name, $nameLen) . $this->encodeString($value, $valueLen);
     }
 
     /**
      * @return non-empty-string
      */
-    private function encodeString(string $value): string
+    private function encodeString(string $value, int $rawLen): string
     {
-        $rawLen = strlen($value);
-        $estimatedBits = Huffman::estimateEncodedBits($value);
+        $estimatedBits = Huffman::estimateEncodedBits($value, $rawLen);
         $estimatedBytes = ($estimatedBits + 7) >> 3;
 
         if ($estimatedBytes >= $rawLen) {

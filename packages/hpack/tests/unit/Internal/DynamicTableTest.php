@@ -15,7 +15,7 @@ final class DynamicTableTest extends TestCase
     public function testInsertAndRetrieve(): void
     {
         $table = new DynamicTable();
-        $table->insert('custom-key', 'custom-value');
+        $table->insert('custom-key', 10, 'custom-value', 12);
 
         $entry = $table->get(0);
 
@@ -26,8 +26,8 @@ final class DynamicTableTest extends TestCase
     public function testNewestEntryAtIndex0(): void
     {
         $table = new DynamicTable();
-        $table->insert('first', 'one');
-        $table->insert('second', 'two');
+        $table->insert('first', 5, 'one', 3);
+        $table->insert('second', 6, 'two', 3);
 
         static::assertSame(['second', 'two'], $table->get(0));
         static::assertSame(['first', 'one'], $table->get(1));
@@ -36,7 +36,7 @@ final class DynamicTableTest extends TestCase
     public function testEntrySize(): void
     {
         $table = new DynamicTable();
-        $table->insert('name', 'value');
+        $table->insert('name', 4, 'value', 5);
 
         static::assertSame(4 + 5 + 32, $table->size());
     }
@@ -45,9 +45,9 @@ final class DynamicTableTest extends TestCase
     {
         $table = new DynamicTable(80);
 
-        $table->insert('key1', 'val1');
-        $table->insert('key2', 'val2');
-        $table->insert('key3', 'val3');
+        $table->insert('key1', 4, 'val1', 4);
+        $table->insert('key2', 4, 'val2', 4);
+        $table->insert('key3', 4, 'val3', 4);
 
         static::assertSame(['key3', 'val3'], $table->get(0));
         static::assertSame(['key2', 'val2'], $table->get(1));
@@ -58,11 +58,11 @@ final class DynamicTableTest extends TestCase
     public function testOversizedEntryEmptiesTable(): void
     {
         $table = new DynamicTable(64);
-        $table->insert('a', 'b');
+        $table->insert('a', 1, 'b', 1);
 
         static::assertSame(1, $table->count());
 
-        $table->insert(str_repeat('x', 100), 'y');
+        $table->insert(str_repeat('x', 100), 100, 'y', 1);
 
         static::assertSame(0, $table->count());
         static::assertSame(0, $table->size());
@@ -71,7 +71,7 @@ final class DynamicTableTest extends TestCase
     public function testSetMaxSizeZeroClearsTable(): void
     {
         $table = new DynamicTable();
-        $table->insert('key', 'value');
+        $table->insert('key', 3, 'value', 5);
 
         static::assertSame(1, $table->count());
 
@@ -84,9 +84,9 @@ final class DynamicTableTest extends TestCase
     public function testSetMaxSizeEvictsOldest(): void
     {
         $table = new DynamicTable(4096);
-        $table->insert('first', 'one');
-        $table->insert('second', 'two');
-        $table->insert('third', 'three');
+        $table->insert('first', 5, 'one', 3);
+        $table->insert('second', 6, 'two', 3);
+        $table->insert('third', 5, 'three', 5);
 
         $table->setMaxSize(strlen('third') + strlen('three') + 32 + strlen('second') + strlen('two') + 32);
 
@@ -98,7 +98,7 @@ final class DynamicTableTest extends TestCase
     public function testSearchFullMatch(): void
     {
         $table = new DynamicTable();
-        $table->insert('custom-key', 'custom-value');
+        $table->insert('custom-key', 10, 'custom-value', 12);
 
         $result = $table->search('custom-key', 'custom-value');
 
@@ -108,7 +108,7 @@ final class DynamicTableTest extends TestCase
     public function testSearchNameOnly(): void
     {
         $table = new DynamicTable();
-        $table->insert('custom-key', 'custom-value');
+        $table->insert('custom-key', 10, 'custom-value', 12);
 
         $result = $table->search('custom-key', 'other-value');
 
@@ -118,7 +118,7 @@ final class DynamicTableTest extends TestCase
     public function testSearchNoMatch(): void
     {
         $table = new DynamicTable();
-        $table->insert('custom-key', 'custom-value');
+        $table->insert('custom-key', 10, 'custom-value', 12);
 
         $result = $table->search('unknown', 'value');
 
@@ -145,7 +145,9 @@ final class DynamicTableTest extends TestCase
         $table = new DynamicTable();
 
         for ($i = 0; $i < 10; $i++) {
-            $table->insert('key' . $i, 'val' . $i);
+            $name = 'key' . $i;
+            $value = 'val' . $i;
+            $table->insert($name, strlen($name), $value, strlen($value));
         }
 
         static::assertSame(10, $table->count());
@@ -159,7 +161,7 @@ final class DynamicTableTest extends TestCase
         $table = new DynamicTable($entrySize);
 
         for ($i = 0; $i < 300; $i++) {
-            $table->insert('k', 'v');
+            $table->insert('k', 1, 'v', 1);
         }
 
         static::assertSame(1, $table->count());

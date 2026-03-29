@@ -108,7 +108,7 @@ final class Decoder
                     throw DecodingException::forTooManyTableSizeUpdates();
                 }
 
-                [$newSize, $offset] = IntegerCodec::decode($encoded, $offset, 5);
+                [$newSize, $offset] = IntegerCodec::decode($encoded, $offset, 5, $length);
 
                 if ($newSize > $this->maxTableSize) {
                     throw DecodingException::forTableSizeExceedsLimit();
@@ -122,41 +122,66 @@ final class Decoder
             $sensitive = false;
 
             if (($byte & 0b1000_0000) !== 0) {
-                [$index, $offset] = IntegerCodec::decode($encoded, $offset, 7);
+                // Indexed header field (Section 6.1), 7-bit prefix.
+                $index = $byte & 0x7F;
+                if ($index < 0x7F) {
+                    $offset++;
+                } else {
+                    [$index, $offset] = IntegerCodec::decode($encoded, $offset, 7, $length);
+                }
+
                 [$name, $value] = $this->lookupIndex($index);
             } elseif (($byte & 0b0100_0000) !== 0) {
-                [$index, $offset] = IntegerCodec::decode($encoded, $offset, 6);
+                // Literal with incremental indexing (Section 6.2.1), 6-bit prefix.
+                $index = $byte & 0x3F;
+                if ($index < 0x3F) {
+                    $offset++;
+                } else {
+                    [$index, $offset] = IntegerCodec::decode($encoded, $offset, 6, $length);
+                }
 
                 if ($index > 0) {
                     [$name, $_] = $this->lookupIndex($index);
                 } else {
                     /** @var non-empty-lowercase-string $name */
-                    [$name, $offset] = $this->decodeString($encoded, $offset);
+                    [$name, $offset] = $this->decodeString($encoded, $offset, $length);
                 }
 
-                [$value, $offset] = $this->decodeString($encoded, $offset);
-                $this->dynamicTable->insert($name, $value);
+                [$value, $offset] = $this->decodeString($encoded, $offset, $length);
+                $this->dynamicTable->insert($name, strlen($name), $value, strlen($value));
             } elseif (($byte & 0b1111_0000) === 0b0001_0000) {
-                [$index, $offset] = IntegerCodec::decode($encoded, $offset, 4);
+                // Literal never indexed (Section 6.2.3), 4-bit prefix.
+                $index = $byte & 0x0F;
+                if ($index < 0x0F) {
+                    $offset++;
+                } else {
+                    [$index, $offset] = IntegerCodec::decode($encoded, $offset, 4, $length);
+                }
 
                 if ($index > 0) {
                     [$name, $_] = $this->lookupIndex($index);
                 } else {
-                    [$name, $offset] = $this->decodeString($encoded, $offset);
+                    [$name, $offset] = $this->decodeString($encoded, $offset, $length);
                 }
 
-                [$value, $offset] = $this->decodeString($encoded, $offset);
+                [$value, $offset] = $this->decodeString($encoded, $offset, $length);
                 $sensitive = true;
             } else {
-                [$index, $offset] = IntegerCodec::decode($encoded, $offset, 4);
+                // Literal without indexing (Section 6.2.2), 4-bit prefix.
+                $index = $byte & 0x0F;
+                if ($index < 0x0F) {
+                    $offset++;
+                } else {
+                    [$index, $offset] = IntegerCodec::decode($encoded, $offset, 4, $length);
+                }
 
                 if ($index > 0) {
                     [$name, $_] = $this->lookupIndex($index);
                 } else {
-                    [$name, $offset] = $this->decodeString($encoded, $offset);
+                    [$name, $offset] = $this->decodeString($encoded, $offset, $length);
                 }
 
-                [$value, $offset] = $this->decodeString($encoded, $offset);
+                [$value, $offset] = $this->decodeString($encoded, $offset, $length);
             }
 
             $totalSize += strlen($name) + strlen($value) + 32;
@@ -232,16 +257,16 @@ final class Decoder
      * @throws DecodingException
      * @throws IntegerOverflowException
      */
-    private function decodeString(string $data, int $offset): array
+    private function decodeString(string $data, int $offset, int $dataLength): array
     {
-        if ($offset >= strlen($data)) {
+        if ($offset >= $dataLength) {
             throw DecodingException::forUnexpectedEndOfData();
         }
 
         $huffman = (ord($data[$offset]) & 0b1000_0000) !== 0;
-        [$stringLength, $offset] = IntegerCodec::decode($data, $offset, 7);
+        [$stringLength, $offset] = IntegerCodec::decode($data, $offset, 7, $dataLength);
 
-        if (($offset + $stringLength) > strlen($data)) {
+        if (($offset + $stringLength) > $dataLength) {
             throw DecodingException::forInvalidStringLength();
         }
 

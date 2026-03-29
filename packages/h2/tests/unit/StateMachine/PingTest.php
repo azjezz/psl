@@ -6,6 +6,7 @@ namespace Psl\H2\Tests\Unit\StateMachine;
 
 use PHPUnit\Framework\TestCase;
 use Psl\H2\Event\PingReceived;
+use Psl\H2\Frame;
 use Psl\H2\Frame\FrameType;
 use Psl\H2\Frame\PingFrame;
 use Psl\H2\Internal\StateMachine;
@@ -53,8 +54,12 @@ final class PingTest extends TestCase
         [$responseFrames, $events] = $sm->receive($pingRaw);
 
         static::assertCount(1, $responseFrames);
-        static::assertSame(FrameType::Ping->value, $responseFrames[0]->type);
-        static::assertSame(0x01, $responseFrames[0]->flags & 0x01);
+        $encoded = $responseFrames[0];
+        static::assertIsString($encoded);
+        static::assertSame(17, strlen($encoded));
+        [$ackFrame] = Frame\decode($encoded);
+        static::assertSame(FrameType::Ping->value, $ackFrame->type);
+        static::assertSame(0x01, $ackFrame->flags & 0x01);
 
         static::assertCount(1, $events);
         static::assertInstanceOf(PingReceived::class, $events[0]);
