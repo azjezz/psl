@@ -24,7 +24,6 @@ use Psl\H2\Exception\ProtocolException;
 use Psl\H2\Exception\StreamException;
 use Psl\H2\Frame\AltSvcFrame;
 use Psl\H2\Frame\ContinuationFrame;
-use Psl\H2\Frame\DataFrame;
 use Psl\H2\Frame\FrameType;
 use Psl\H2\Frame\GoAwayFrame;
 use Psl\H2\Frame\HeadersFrame;
@@ -48,6 +47,7 @@ use Psl\HPACK\Header;
 
 use function hrtime;
 use function max;
+use function ord;
 use function pack;
 use function str_repeat;
 use function strlen;
@@ -222,7 +222,7 @@ final class StateMachine
      * @throws FrameDecodingException For malformed frame data.
      * @throws FlowControlException For flow control violations.
      *
-     * @return array{list<RawFrame>, list<EventInterface>} A tuple of [response frames to send, events to dispatch].
+     * @return array{list<RawFrame|string>, list<EventInterface>} A tuple of [response frames to send, events to dispatch].
      */
     public function receive(RawFrame $rawFrame): array
     {
@@ -237,29 +237,30 @@ final class StateMachine
         $streamId = $rawFrame->streamId;
 
         if ($streamId !== 0) {
+            /** @var int $payloadLength */
             $payloadLength = strlen($rawFrame->payload);
             if ($payloadLength > $this->localMaxFrameSize) {
                 throw ProtocolException::forFrameSizeError($this->localMaxFrameSize, $payloadLength);
             }
-        }
 
-        if ($type === 4 || $type === 6 || $type === 7 || $type === 0xc || $type === 0x10) {
-            if ($streamId !== 0) {
+            // @mago-expect analysis:redundant-comparison,redundant-logical-operation - false positives!
+            if ($type === 2 && $payloadLength !== 5) {
+                throw FrameDecodingException::forInvalidPayload('PRIORITY', 'payload must be exactly 5 bytes');
+            }
+
+            if ($type === 4 || $type === 6 || $type === 7 || $type === 0xc || $type === 0x10) {
                 throw ProtocolException::forConnectionError(
                     'Frame type ' . $type . ' must be on stream 0, received on stream ' . $streamId,
                 );
             }
-        }
 
-        if ($type === 2) {
-            if ($streamId === 0) {
-                throw ProtocolException::forConnectionError('PRIORITY frame must not be on stream 0');
+            if (($type === 3 || $type === 8) && !$this->isStreamKnown($streamId)) {
+                throw ProtocolException::forConnectionError(
+                    'Received frame type ' . $type . ' on idle stream ' . $streamId,
+                );
             }
-
-            $payloadLength = strlen($rawFrame->payload);
-            if ($payloadLength !== 5) {
-                throw FrameDecodingException::forInvalidPayload('PRIORITY', 'payload must be exactly 5 bytes');
-            }
+        } else if ($type === 2) {
+            throw ProtocolException::forConnectionError('PRIORITY frame must not be on stream 0');
         }
 
         if ($type === 9 && !$this->assembling) {
@@ -268,16 +269,8 @@ final class StateMachine
             );
         }
 
-        if ($type === 3 || $type === 8) {
-            if ($streamId !== 0 && !$this->isStreamKnown($streamId)) {
-                throw ProtocolException::forConnectionError(
-                    'Received frame type ' . $type . ' on idle stream ' . $streamId,
-                );
-            }
-        }
-
         return match ($type) {
-            0 => $this->receiveData(DataFrame::fromRaw($rawFrame)),
+            0 => $this->receiveDataRaw($rawFrame),
             1 => $this->receiveHeaders(HeadersFrame::fromRaw($rawFrame)),
             8 => $this->receiveWindowUpdateRaw($rawFrame),
             9 => $this->receiveContinuation(ContinuationFrame::fromRaw($rawFrame)),
@@ -347,7 +340,7 @@ final class StateMachine
         bool $endStream = false,
     ): string {
         try {
-            $encoded = $this->hpackEncoder->encodeWithStatus($status, self::lowercaseHeadersIterable($headers));
+            $encoded = $this->hpackEncoder->encodeWithStatus($status, self::lowercaseHeaders($headers));
         } catch (HPACKException $e) {
             throw ProtocolException::forConnectionError($e->getMessage(), $e);
         }
@@ -1173,38 +1166,65 @@ final class StateMachine
      * @throws FlowControlException If the receive window is exhausted.
      * @throws ProtocolException If the empty DATA frame rate limit is exceeded.
      *
-     * @return array{list<RawFrame>, list<EventInterface>}
+     * @return array{list<RawFrame|string>, list<EventInterface>}
      */
-    private function receiveData(DataFrame $frame): array
+    private function receiveDataRaw(RawFrame $rawFrame): array
     {
-        $stream = $this->streams->get($frame->streamId);
+        $streamId = $rawFrame->streamId;
+        if ($streamId === 0) {
+            throw FrameDecodingException::forStreamIdRequired($rawFrame->type);
+        }
+
+        $stream = $this->streams->get($streamId);
         if (
             $stream === null
             || $stream->state !== StreamState::Open && $stream->state !== StreamState::HalfClosedLocal
         ) {
             throw StreamException::forInvalidState(
-                $frame->streamId,
+                $streamId,
                 'open or half-closed (local)',
                 $stream?->state->name ?? 'idle',
             );
         }
 
-        $dataLength = strlen($frame->data);
+        $payload = $rawFrame->payload;
+        $endStream = ($rawFrame->flags & 0x01) !== 0;
+
+        if (($rawFrame->flags & 0x08) !== 0) {
+            $payloadLength = strlen($payload);
+            if ($payloadLength < 1) {
+                throw FrameDecodingException::forInvalidPayload('DATA', 'missing pad length');
+            }
+
+            $padLength = ord($payload[0]);
+            if ($padLength >= $payloadLength) {
+                throw FrameDecodingException::forInvalidPaddingLength($padLength, $payloadLength);
+            }
+
+            $payload = substr($payload, 1, $payloadLength - 1 - $padLength);
+        }
+
+        $dataLength = strlen($payload);
         if ($dataLength > 0) {
             $this->flowController->consumeReceiveWindow($stream, $dataLength);
-        } elseif (!$frame->endStream) {
+        } elseif (!$endStream) {
             $this->rateLimiter?->record(RateLimiter::EMPTY_DATA_FRAME);
         }
 
-        $events = [new DataReceived($frame->streamId, $frame->data, $frame->endStream)];
+        $events = [new DataReceived($streamId, $payload, $endStream)];
         $responseFrames = [];
 
         if ($dataLength > 0) {
             if ($this->bdpEstimator !== null) {
-                $updates = $this->bdpEstimator->recordDataReceived($frame->streamId, $dataLength);
+                $updates = $this->bdpEstimator->recordDataReceived($streamId, $dataLength);
                 foreach ($updates as [$updateStreamId, $increment]) {
-                    $payload = pack('N', $increment & 0x7FFF_FFFF);
-                    $responseFrames[] = new RawFrame(FrameType::WindowUpdate->value, 0, $updateStreamId, $payload);
+                    $responseFrames[] = pack(
+                        'NCNN',
+                        (4 << 8) | FrameType::WindowUpdate->value,
+                        0,
+                        $updateStreamId & 0x7FFF_FFFF,
+                        $increment & 0x7FFF_FFFF,
+                    );
                     if ($updateStreamId === 0) {
                         $this->flowController->applyConnectionReceiveWindowUpdate($increment);
                     } else {
@@ -1215,26 +1235,22 @@ final class StateMachine
                     }
                 }
             } else {
-                $windowUpdatePayload = pack('N', $dataLength & 0x7FFF_FFFF);
-                $responseFrames[] = new RawFrame(FrameType::WindowUpdate->value, 0, 0, $windowUpdatePayload);
-                $responseFrames[] = new RawFrame(
-                    FrameType::WindowUpdate->value,
-                    0,
-                    $frame->streamId,
-                    $windowUpdatePayload,
-                );
+                $increment = $dataLength & 0x7FFF_FFFF;
+                $responseFrames[] =
+                    pack('NCNN', (4 << 8) | FrameType::WindowUpdate->value, 0, 0, $increment)
+                    . pack('NCNN', (4 << 8) | FrameType::WindowUpdate->value, 0, $streamId & 0x7FFF_FFFF, $increment);
                 $this->flowController->applyConnectionReceiveWindowUpdate($dataLength);
                 $stream->receiveWindow += $dataLength;
             }
         }
 
-        if ($frame->endStream) {
+        if ($endStream) {
             if ($stream->state === StreamState::Open) {
-                $this->streams->markHalfClosed($frame->streamId, StreamState::HalfClosedRemote);
+                $this->streams->markHalfClosed($streamId, StreamState::HalfClosedRemote);
             } else {
-                $this->streams->close($frame->streamId);
-                $this->bdpEstimator?->removeStream($frame->streamId);
-                $events[] = new StreamClosed($frame->streamId);
+                $this->streams->close($streamId);
+                $this->bdpEstimator?->removeStream($streamId);
+                $events[] = new StreamClosed($streamId);
             }
         }
 
@@ -1337,7 +1353,7 @@ final class StateMachine
      * @throws ProtocolException If rate limit exceeded.
      * @throws FlowControlException If the BDP window update causes overflow.
      *
-     * @return array{list<RawFrame>, list<EventInterface>}
+     * @return array{list<RawFrame|string>, list<EventInterface>}
      */
     private function receivePingRateLimited(PingFrame $frame): array
     {
@@ -1361,7 +1377,7 @@ final class StateMachine
     /**
      * @throws FlowControlException If the BDP window update causes overflow.
      *
-     * @return array{list<RawFrame>, list<EventInterface>}
+     * @return array{list<RawFrame|string>, list<EventInterface>}
      */
     private function receivePing(PingFrame $frame): array
     {
@@ -1370,8 +1386,13 @@ final class StateMachine
             if ($this->bdpEstimator !== null) {
                 $windowGrowth = $this->bdpEstimator->onPingAck((int) hrtime(true) / 1e9);
                 if ($windowGrowth !== null && $windowGrowth > 0) {
-                    $payload = pack('N', $windowGrowth & 0x7FFF_FFFF);
-                    $responseFrames[] = new RawFrame(FrameType::WindowUpdate->value, 0, 0, $payload);
+                    $responseFrames[] = pack(
+                        'NCNN',
+                        (4 << 8) | FrameType::WindowUpdate->value,
+                        0,
+                        0,
+                        $windowGrowth & 0x7FFF_FFFF,
+                    );
                     $this->flowController->applyConnectionReceiveWindowUpdate($windowGrowth);
                 }
             }
@@ -1379,7 +1400,8 @@ final class StateMachine
             return [$responseFrames, [new PingReceived($frame->opaqueData, true)]];
         }
 
-        $ack = new RawFrame(FrameType::Ping->value, 0x01, 0, $frame->opaqueData);
+        // PING ACK: 8-byte opaque data, type=6, flags=0x01 (ACK), stream=0
+        $ack = pack('NCN', (8 << 8) | FrameType::Ping->value, 0x01, 0) . $frame->opaqueData;
 
         return [[$ack], [new PingReceived($frame->opaqueData, false)]];
     }
@@ -1457,29 +1479,18 @@ final class StateMachine
     }
 
     /**
-     * @param list<Header> $headers
+     * @param iterable<Header> $headers
      *
      * @return list<Header>
      */
-    private static function lowercaseHeaders(array $headers): array
+    private static function lowercaseHeaders(iterable $headers): array
     {
         $result = [];
         foreach ($headers as $header) {
-            $result[] = new Header(strtolower($header->name), $header->value, $header->sensitive);
+            $lower = strtolower($header->name);
+            $result[] = $lower === $header->name ? $header : new Header($lower, $header->value, $header->sensitive);
         }
 
         return $result;
-    }
-
-    /**
-     * @param iterable<Header> $headers
-     *
-     * @return iterable<Header>
-     */
-    private static function lowercaseHeadersIterable(iterable $headers): iterable
-    {
-        foreach ($headers as $header) {
-            yield new Header(strtolower($header->name), $header->value, $header->sensitive);
-        }
     }
 }

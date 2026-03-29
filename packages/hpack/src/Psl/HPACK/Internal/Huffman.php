@@ -572,10 +572,9 @@ final class Huffman
      *
      * @return int The estimated number of bits.
      */
-    public static function estimateEncodedBits(string $data): int
+    public static function estimateEncodedBits(string $data, int $length): int
     {
         $bits = 0;
-        $length = strlen($data);
         for ($i = 0; $i < $length; $i++) {
             $bits += self::BIT_LENGTHS[ord($data[$i])];
         }

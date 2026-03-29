@@ -9,6 +9,7 @@ use IteratorAggregate;
 use Psl\Default\DefaultInterface;
 use Traversable;
 
+use function array_flip;
 use function count;
 use function strtolower;
 
@@ -202,11 +203,25 @@ final class FieldMap implements Countable, IteratorAggregate, DefaultInterface
      */
     public function with(string $name, string $value): self
     {
+        $lower = strtolower($name);
+        $indices = $this->buildIndex()[$lower] ?? null;
+
+        if ($indices === null) {
+            $fields = $this->fields;
+            $fields[] = [$name, $value];
+
+            return new self($fields);
+        }
+
+        if (count($indices) === 1 && $this->fields[$indices[0]][1] === $value) {
+            return $this;
+        }
+
+        $replaceSet = array_flip($indices);
         $result = [];
         $replaced = false;
-        $lower = strtolower($name);
-        foreach ($this->fields as $pair) {
-            if (strtolower($pair[0]) === $lower) {
+        foreach ($this->fields as $k => $pair) {
+            if (isset($replaceSet[$k])) {
                 if (!$replaced) {
                     $result[] = [$name, $value];
                     $replaced = true;
@@ -214,10 +229,6 @@ final class FieldMap implements Countable, IteratorAggregate, DefaultInterface
             } else {
                 $result[] = $pair;
             }
-        }
-
-        if (!$replaced) {
-            $result[] = [$name, $value];
         }
 
         return new self($result);
@@ -242,7 +253,15 @@ final class FieldMap implements Countable, IteratorAggregate, DefaultInterface
         $fields = $this->fields;
         $fields[] = [$name, $value];
 
-        return new self($fields);
+        $new = new self($fields);
+
+        if ($this->index !== null) {
+            $index = $this->index;
+            $index[strtolower($name)][] = count($this->fields);
+            $new->index = $index;
+        }
+
+        return $new;
     }
 
     /**
@@ -260,9 +279,16 @@ final class FieldMap implements Countable, IteratorAggregate, DefaultInterface
     public function without(string $name): self
     {
         $lower = strtolower($name);
+        $indices = $this->buildIndex()[$lower] ?? null;
+
+        if ($indices === null) {
+            return $this;
+        }
+
+        $removeSet = array_flip($indices);
         $result = [];
-        foreach ($this->fields as $pair) {
-            if (strtolower($pair[0]) === $lower) {
+        foreach ($this->fields as $k => $pair) {
+            if (isset($removeSet[$k])) {
                 continue;
             }
 

@@ -15,6 +15,8 @@ use Psl\H2\Internal\StateMachine;
 use Psl\HPACK\Encoder;
 use Psl\HPACK\Header;
 
+use function strlen;
+
 final class DataTest extends TestCase
 {
     /**
@@ -50,16 +52,10 @@ final class DataTest extends TestCase
         static::assertSame('hello', $events[0]->data);
         static::assertFalse($events[0]->endStream);
 
-        $windowUpdateCount = 0;
-        foreach ($responseFrames as $frame) {
-            if ($frame->type !== FrameType::WindowUpdate->value) {
-                continue;
-            }
-
-            $windowUpdateCount++;
-        }
-
-        static::assertSame(2, $windowUpdateCount);
+        static::assertCount(1, $responseFrames);
+        $encoded = $responseFrames[0];
+        static::assertIsString($encoded);
+        static::assertSame(26, strlen($encoded));
     }
 
     public function testReceiveDataEndStream(): void

@@ -44,6 +44,7 @@ use const Psl\H2\FRAME_HEADER_SIZE;
  * @require-implements ConnectionInterface
  *
  * @mago-expect lint:kan-defect
+ * @mago-expect lint:too-many-properties
  */
 trait ConnectionTrait
 {
@@ -54,6 +55,8 @@ trait ConnectionTrait
     private string $readBuffer = '';
 
     private int $readBufferLength = 0;
+
+    private int $readBufferOffset = 0;
 
     private string $writeBuffer = '';
 
@@ -168,10 +171,10 @@ trait ConnectionTrait
         if ($responseFrames !== []) {
             $data = '';
             foreach ($responseFrames as $frame) {
-                $data .= Frame\encode($frame);
+                $data .= $frame instanceof Frame\RawFrame ? Frame\encode($frame) : $frame;
             }
 
-            $this->write($data);
+            $this->write($data, $cancellation);
         }
 
         if ($this->windowWaiters !== []) {
@@ -445,7 +448,9 @@ trait ConnectionTrait
      */
     private function readFrame(CancellationTokenInterface $cancellation = new NullCancellationToken()): RawFrame
     {
-        while ($this->readBufferLength < FRAME_HEADER_SIZE) {
+        $available = $this->readBufferLength - $this->readBufferOffset;
+
+        while ($available < FRAME_HEADER_SIZE) {
             $chunk = $this->reader->read(cancellation: $cancellation);
             if ($chunk === '' && $this->reader->reachedEndOfDataSource()) {
                 throw ConnectionException::forConnectionClosed();
@@ -453,12 +458,15 @@ trait ConnectionTrait
 
             $this->readBuffer .= $chunk;
             $this->readBufferLength += strlen($chunk);
+            $available = $this->readBufferLength - $this->readBufferOffset;
         }
 
-        $length = (ord($this->readBuffer[0]) << 16) | (ord($this->readBuffer[1]) << 8) | ord($this->readBuffer[2]);
+        $o = $this->readBufferOffset;
+        $length =
+            (ord($this->readBuffer[$o]) << 16) | (ord($this->readBuffer[$o + 1]) << 8) | ord($this->readBuffer[$o + 2]);
         $totalNeeded = FRAME_HEADER_SIZE + $length;
 
-        while ($this->readBufferLength < $totalNeeded) {
+        while ($available < $totalNeeded) {
             $chunk = $this->reader->read(cancellation: $cancellation);
             if ($chunk === '' && $this->reader->reachedEndOfDataSource()) {
                 throw ConnectionException::forConnectionClosed();
@@ -466,15 +474,22 @@ trait ConnectionTrait
 
             $this->readBuffer .= $chunk;
             $this->readBufferLength += strlen($chunk);
+            $available = $this->readBufferLength - $this->readBufferOffset;
         }
 
-        $type = ord($this->readBuffer[3]);
-        $flags = ord($this->readBuffer[4]);
+        $type = ord($this->readBuffer[$o + 3]);
+        $flags = ord($this->readBuffer[$o + 4]);
         /** @var int<0, max> $streamId */
-        $streamId = unpack('N', $this->readBuffer, 5)[1] & 0x7FFF_FFFF;
-        $payload = $length > 0 ? substr($this->readBuffer, FRAME_HEADER_SIZE, $length) : '';
-        $this->readBuffer = substr($this->readBuffer, $totalNeeded);
-        $this->readBufferLength -= $totalNeeded;
+        $streamId = unpack('N', $this->readBuffer, $o + 5)[1] & 0x7FFF_FFFF;
+        $payload = $length > 0 ? substr($this->readBuffer, $o + FRAME_HEADER_SIZE, $length) : '';
+        $this->readBufferOffset += $totalNeeded;
+
+        // Compact the buffer when the consumed portion exceeds 64KB to bound memory usage.
+        if ($this->readBufferOffset > 65_536) {
+            $this->readBuffer = substr($this->readBuffer, $this->readBufferOffset);
+            $this->readBufferLength -= $this->readBufferOffset;
+            $this->readBufferOffset = 0;
+        }
 
         return new RawFrame($type, $flags, $streamId, $payload);
     }

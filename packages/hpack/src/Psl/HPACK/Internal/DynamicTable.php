@@ -67,9 +67,9 @@ final class DynamicTable
      * @param non-empty-lowercase-string $name The header field name.
      * @param string $value The header field value.
      */
-    public function insert(string $name, string $value): void
+    public function insert(string $name, int $nameLen, string $value, int $valueLen): void
     {
-        $entrySize = strlen($name) + strlen($value) + self::ENTRY_OVERHEAD;
+        $entrySize = $nameLen + $valueLen + self::ENTRY_OVERHEAD;
 
         if ($entrySize > $this->maxSize) {
             $this->entries = [];

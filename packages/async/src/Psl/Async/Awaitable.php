@@ -256,6 +256,15 @@ final readonly class Awaitable implements PromiseInterface
      */
     public function await(CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
     {
+        if ($this->state->isComplete()) {
+            if ($cancellation->cancellable) {
+                $cancellation->throwIfCancelled();
+            }
+
+            /** @var T */
+            return $this->state->getResult();
+        }
+
         $suspension = EventLoop::getSuspension();
 
         if ($cancellation->cancellable) {
