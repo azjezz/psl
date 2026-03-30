@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Fiber;
 use Psl\Async\Exception\CancelledException;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
@@ -16,6 +17,7 @@ use function array_shift;
 use function array_splice;
 use function array_sum;
 use function count;
+use function in_array;
 
 /**
  * Run an operation with a limit on number of ongoing asynchronous jobs for a specific key.
@@ -39,6 +41,14 @@ final class KeyedSemaphore
      * @var array<Tk, int<0, max>>
      */
     private array $ongoing = [];
+
+    /**
+     * Tracks which execution contexts (fibers or {main}) hold slots for
+     * each key, enabling re-entrant calls without deadlocking.
+     *
+     * @var array<Tk, list<Fiber|self>>
+     */
+    private array $holders = [];
 
     /**
      * @var array<Tk, list<Suspension>>
@@ -80,6 +90,27 @@ final class KeyedSemaphore
     ): mixed {
         $this->ongoing[$key] ??= 0;
         if ($this->ongoing[$key] === $this->concurrencyLimit) {
+            $currentContext = Fiber::getCurrent() ?? $this;
+            if (in_array($currentContext, $this->holders[$key] ?? [], true)) {
+                $this->ongoing[$key]++;
+                $this->holders[$key][] = $currentContext;
+
+                try {
+                    return ($this->operation)($key, $input);
+                } finally {
+                    $this->ongoing[$key]--;
+                    $index = array_search($currentContext, $this->holders[$key], true);
+                    if (false !== $index) {
+                        array_splice($this->holders[$key], $index, 1);
+                    }
+
+                    // @mago-expect analysis:impossible-condition,redundant-comparison - false positives ...
+                    if (0 === $this->ongoing[$key]) {
+                        unset($this->ongoing[$key], $this->holders[$key]);
+                    }
+                }
+            }
+
             if ($cancellation->cancellable) {
                 $cancellation->throwIfCancelled();
             }
@@ -111,11 +142,19 @@ final class KeyedSemaphore
             }
         }
 
+        $currentContext = Fiber::getCurrent() ?? $this;
         $this->ongoing[$key]++;
+        $this->holders[$key][] = $currentContext;
 
         try {
             return ($this->operation)($key, $input);
         } finally {
+            // @mago-expect analysis:redundant-null-coalesce - false positive
+            $index = array_search($currentContext, $this->holders[$key] ?? [], true);
+            if (false !== $index) {
+                array_splice($this->holders[$key], $index, 1);
+            }
+
             if (($this->pending[$key] ?? []) !== []) {
                 $suspension = array_shift($this->pending[$key]);
                 if ([] === $this->pending[$key]) {
@@ -136,7 +175,7 @@ final class KeyedSemaphore
 
                 $this->ongoing[$key]--;
                 if (0 === $this->ongoing[$key]) {
-                    unset($this->ongoing[$key]);
+                    unset($this->ongoing[$key], $this->holders[$key]);
                 }
             }
         }

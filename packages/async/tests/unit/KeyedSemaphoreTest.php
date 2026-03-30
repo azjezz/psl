@@ -452,4 +452,73 @@ final class KeyedSemaphoreTest extends TestCase
 
         static::assertSame('first-b', $other->await());
     }
+
+    public function testReentrantCallFromSameFiberDoesNotDeadlock(): void
+    {
+        $innerResult = null;
+
+        /** @var Async\KeyedSemaphore<string, string, string> */
+        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input) use (
+            &$ks,
+            &$innerResult,
+        ): string {
+            if ($input === 'outer') {
+                $innerResult = $ks->waitFor($key, 'inner');
+            }
+
+            return $input . '-done';
+        });
+
+        $result = $ks->waitFor('x', 'outer');
+
+        static::assertSame('outer-done', $result);
+        static::assertSame('inner-done', $innerResult);
+    }
+
+    public function testReentrantCallFromMainFiberDoesNotDeadlock(): void
+    {
+        $innerResult = null;
+
+        /** @var Async\KeyedSemaphore<string, int, int> */
+        $ks = new Async\KeyedSemaphore(1, static function (string $key, int $input) use (&$ks, &$innerResult): int {
+            if ($input === 1) {
+                $innerResult = $ks->waitFor($key, 2);
+            }
+
+            return $input * 10;
+        });
+
+        $result = $ks->waitFor('k', 1);
+
+        static::assertSame(10, $result);
+        static::assertSame(20, $innerResult);
+    }
+
+    public function testReentrantCallWithHigherConcurrencyDoesNotDeadlock(): void
+    {
+        $callCount = 0;
+
+        /** @var Async\KeyedSemaphore<string, string, string> */
+        $ks = new Async\KeyedSemaphore(2, static function (string $key, string $input) use (&$ks, &$callCount): string {
+            $callCount++;
+            if ($input === 'outer') {
+                return $ks->waitFor($key, 'inner');
+            }
+
+            return $input . '-done';
+        });
+
+        // Fill both slots, then one of them re-enters.
+        $a = Async\run(static fn(): string => $ks->waitFor('x', 'outer'));
+        $b = Async\run(static fn(): string => $ks->waitFor('x', 'filler'));
+
+        Async\later();
+
+        $resultA = $a->await();
+        $resultB = $b->await();
+
+        static::assertSame('inner-done', $resultA);
+        static::assertSame('filler-done', $resultB);
+        static::assertSame(3, $callCount); // outer, filler, inner (from outer's re-entry)
+    }
 }

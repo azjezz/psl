@@ -6,6 +6,7 @@ namespace Psl\Async;
 
 use Closure;
 use Exception;
+use Fiber;
 use Psl\Async\Exception\CancelledException;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
@@ -34,7 +35,10 @@ use function count;
 final class KeyedSequence
 {
     /**
-     * @var array<Tk, bool>
+     * Tracks the fiber that currently holds each key, enabling re-entrant
+     * calls from the same fiber without deadlocking.
+     *
+     * @var array<Tk, Fiber|static>
      */
     private array $ongoing = [];
 
@@ -73,6 +77,11 @@ final class KeyedSequence
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): mixed {
         if (array_key_exists($key, $this->ongoing)) {
+            $currentContext = Fiber::getCurrent() ?? $this;
+            if ($this->ongoing[$key] === $currentContext) {
+                return ($this->operation)($key, $input);
+            }
+
             if ($cancellation->cancellable) {
                 $cancellation->throwIfCancelled();
             }
@@ -104,7 +113,7 @@ final class KeyedSequence
             }
         }
 
-        $this->ongoing[$key] = true;
+        $this->ongoing[$key] = Fiber::getCurrent() ?? $this;
 
         try {
             return ($this->operation)($key, $input);
