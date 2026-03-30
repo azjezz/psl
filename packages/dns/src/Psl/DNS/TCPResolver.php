@@ -13,7 +13,6 @@ use Psl\DNS\Record\RecordType;
 use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
-use Psl\TLS;
 
 /**
  * DNS resolver that sends queries over pooled TCP connections.
@@ -21,8 +20,8 @@ use Psl\TLS;
  * Connections are pooled internally and reused across queries.
  * On failure the connection is discarded from the pool.
  *
- * When $tlsClientConfiguration is provided, connections are TLS-wrapped,
- * enabling DNS-over-TLS (DoT, RFC 7858).
+ * For DNS-over-TLS (DoT, RFC 7858), pass a TLS-enabled connector
+ * such as {@see \\Psl\\TLS\\TCPConnector}.
  *
  * @api
  */
@@ -39,24 +38,15 @@ final readonly class TCPResolver implements ResolverInterface
      * @param non-empty-string $host The nameserver hostname or IP address.
      * @param int<0, 65535> $port The nameserver port.
      * @param bool $dnssec Whether to set the DNSSEC OK (DO) flag in queries.
-     * @param TCP\ConnectConfiguration $connectConfiguration TCP connection settings.
-     * @param null|TLS\ClientConfiguration $tlsClientConfiguration TLS configuration; enables DNS-over-TLS when provided.
+     * @param TCP\ConnectorInterface $connector The connector used to establish TCP connections.
      */
     public function __construct(
         private string $host,
         private int $port = 53,
         private bool $dnssec = false,
-        TCP\ConnectConfiguration $connectConfiguration = new TCP\ConnectConfiguration(),
-        null|TLS\ClientConfiguration $tlsClientConfiguration = null,
+        TCP\ConnectorInterface $connector = new TCP\Connector(),
     ) {
-        $this->pool = new TCP\SocketPool(
-            $tlsClientConfiguration !== null
-                ? new TLS\TCPConnector(
-                    new TCP\Connector($connectConfiguration),
-                    new TLS\Connector($tlsClientConfiguration),
-                )
-                : new TCP\Connector($connectConfiguration),
-        );
+        $this->pool = new TCP\SocketPool($connector);
     }
 
     /**

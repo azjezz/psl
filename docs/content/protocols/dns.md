@@ -8,6 +8,10 @@ The `DNS` component provides async DNS resolution with connection pooling, EDNS0
 
 @example('protocols/dns-basic.php')
 
+By default, `SystemResolver` uses plain UDP with TCP fallback for each nameserver discovered from the OS. You can encrypt all system DNS traffic with DNS-over-TLS by disabling UDP and passing a TLS-enabled connector. With `udp: false`, all queries go directly over TCP — no plaintext UDP is sent. Combined with a TLS connector, this turns all system nameserver communication into DNS-over-TLS (DoT, RFC 7858) while still using the OS-configured nameserver addresses.
+
+@example('protocols/dns-system-dot.php')
+
 ## Resolver Types
 
 Resolvers can be composed for different strategies: direct UDP/TCP, fallback on truncation, racing multiple nameservers, DNS-over-TLS, or DNS-over-HTTPS.
