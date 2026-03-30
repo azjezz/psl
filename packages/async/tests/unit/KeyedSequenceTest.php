@@ -387,6 +387,61 @@ final class KeyedSequenceTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('key'));
     }
 
+    public function testReentrantCallFromSameFiberDoesNotDeadlock(): void
+    {
+        $innerResult = null;
+
+        /** @var Async\KeyedSequence<string, string, string> */
+        $ks = new Async\KeyedSequence(static function (string $key, string $input) use (&$ks, &$innerResult): string {
+            if ($input === 'outer') {
+                $innerResult = $ks->waitFor($key, 'inner');
+            }
+
+            return $input . '-done';
+        });
+
+        $result = $ks->waitFor('x', 'outer');
+
+        static::assertSame('outer-done', $result);
+        static::assertSame('inner-done', $innerResult);
+    }
+
+    public function testReentrantCallFromMainFiberDoesNotDeadlock(): void
+    {
+        $innerResult = null;
+
+        /** @var Async\KeyedSequence<string, int, int> */
+        $ks = new Async\KeyedSequence(static function (string $key, int $input) use (&$ks, &$innerResult): int {
+            if ($input === 1) {
+                $innerResult = $ks->waitFor($key, 2);
+            }
+
+            return $input * 10;
+        });
+
+        // Running from {main}, not inside a fiber.
+        $result = $ks->waitFor('k', 1);
+
+        static::assertSame(10, $result);
+        static::assertSame(20, $innerResult);
+    }
+
+    public function testReentrantCallWithDifferentKeyDoesNotDeadlock(): void
+    {
+        /** @var Async\KeyedSequence<string, string, string> */
+        $ks = new Async\KeyedSequence(static function (string $key, string $input) use (&$ks): string {
+            if ($input === 'outer') {
+                return $ks->waitFor('y', 'inner');
+            }
+
+            return $input . '-done';
+        });
+
+        $result = $ks->waitFor('x', 'outer');
+
+        static::assertSame('inner-done', $result);
+    }
+
     public function testCancelledWaitForOnOneKeyDoesNotAffectOtherKey(): void
     {
         $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
