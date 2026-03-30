@@ -42,27 +42,31 @@ final class SystemResolver implements ResolverInterface, DefaultInterface
 
     /**
      * @param bool $dnssec Whether to set the DNSSEC OK (DO) flag in queries.
-     * @param bool $tcpNoDelay Whether to enable TCP_NODELAY on TCP connections.
-     * @param int $udpPayloadSize Maximum UDP payload size for EDNS0.
+     * @param bool $udp Whether to try UDP before TCP. When false, only TCP is used, combine with a TLS connector for full DNS-over-TLS (DoT).
+     * @param int $udpPayloadSize Maximum UDP payload size for EDNS0 (ignored when $udp is false).
+     * @param TCP\ConnectorInterface $connector The connector used for TCP/DoT connections.
      *
      * @throws Exception\SystemException If the system configuration cannot be loaded.
      */
-    public function __construct(bool $dnssec = true, bool $tcpNoDelay = true, int $udpPayloadSize = 1232)
-    {
+    public function __construct(
+        bool $dnssec = true,
+        bool $udp = true,
+        int $udpPayloadSize = 1232,
+        TCP\ConnectorInterface $connector = new TCP\Connector(),
+    ) {
         $config = System\Settings::load();
 
         $globalResolvers = [];
         $routes = [];
         foreach ($config->nameservers as $entry) {
-            $entryResolver = new FallbackResolver([
-                new UDPResolver($entry->host, $entry->port, $dnssec, $udpPayloadSize),
-                new TCPResolver(
-                    $entry->host,
-                    $entry->port,
-                    $dnssec,
-                    new TCP\ConnectConfiguration(noDelay: $tcpNoDelay),
-                ),
-            ]);
+            $tcpResolver = new TCPResolver($entry->host, $entry->port, $dnssec, $connector);
+
+            $entryResolver = $udp
+                ? new FallbackResolver([
+                    new UDPResolver($entry->host, $entry->port, $dnssec, $udpPayloadSize),
+                    $tcpResolver,
+                ])
+                : $tcpResolver;
 
             if ($entry->forDomains === []) {
                 $globalResolvers[] = $entryResolver;

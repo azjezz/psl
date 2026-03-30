@@ -12,6 +12,7 @@ use Psl\DNS\Record\RecordType;
 use Psl\DNS\System\HostsFile\HostsFile;
 use Psl\IO;
 use Psl\IP\Address;
+use Psl\TCP;
 use Psl\TLS;
 
 $cache = new Cache\LocalStore();
@@ -41,12 +42,22 @@ $public = new DNS\RacingResolver([
     // Cloudflare DNS-over-TLS
     new DNS\FallbackResolver([
         new DNS\UDPResolver('1.1.1.1', dnssec: true),
-        new DNS\TCPResolver('1.1.1.1', port: 853, dnssec: true, tlsClientConfiguration: new TLS\ClientConfiguration()),
+        new DNS\TCPResolver(
+            '1.1.1.1',
+            port: 853,
+            dnssec: true,
+            connector: new TLS\TCPConnector(new TCP\Connector(), new TLS\Connector(new TLS\ClientConfiguration())),
+        ),
     ]),
     // Google DNS-over-TLS
     new DNS\FallbackResolver([
         new DNS\UDPResolver('8.8.8.8', dnssec: true),
-        new DNS\TCPResolver('8.8.8.8', port: 853, dnssec: true, tlsClientConfiguration: new TLS\ClientConfiguration()),
+        new DNS\TCPResolver(
+            '8.8.8.8',
+            port: 853,
+            dnssec: true,
+            connector: new TLS\TCPConnector(new TCP\Connector(), new TLS\Connector(new TLS\ClientConfiguration())),
+        ),
     ]),
     // Cloudflare secondary (plain TCP fallback)
     new DNS\FallbackResolver([

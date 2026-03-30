@@ -36,7 +36,6 @@
         "php-standard-library/process": "^6.0",
         "php-standard-library/punycode": "^6.0",
         "php-standard-library/tcp": "^6.0",
-        "php-standard-library/tls": "^6.0",
         "php-standard-library/udp": "^6.0",
         "php-standard-library/url": "^6.2"
     },
