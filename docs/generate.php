@@ -127,6 +127,7 @@ const CATEGORY_DISPLAY_NAMES = [
     'security' => 'Security',
     'system' => 'System',
     'other' => 'Other',
+    'tools' => 'Tools',
 ];
 
 /**

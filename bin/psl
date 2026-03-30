@@ -1,0 +1,244 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Psl\Dict;
+use Psl\Env;
+use Psl\File;
+use Psl\Filesystem;
+use Psl\IO;
+use Psl\Json;
+use Psl\Regex;
+use Psl\Str;
+use Psl\Type;
+use Psl\Vec;
+
+use function Psl\Internal\package_namespace_map;
+
+require (static function (): string {
+    if (isset($GLOBALS['_composer_autoload_path'])) {
+        return $GLOBALS['_composer_autoload_path'];
+    }
+
+    $path = __DIR__ . '/../vendor/autoload.php';
+    if (file_exists($path)) {
+        return $path;
+    }
+
+    fwrite(STDERR, "Could not find Composer autoloader.\n");
+    exit(1);
+})();
+
+/**
+ * @param list<string> $arguments
+ */
+function detect_packages_command(array $arguments): never
+{
+    $composer = false;
+    /** @var list<string> $srcPaths */
+    $srcPaths = [];
+    /** @var list<string> $devPaths */
+    $devPaths = [];
+    $mode = 'src';
+
+    foreach ($arguments as $arg) {
+        if ($arg === '--composer') {
+            $composer = true;
+        } elseif ($arg === '--src') {
+            $mode = 'src';
+        } elseif ($arg === '--dev') {
+            $mode = 'dev';
+        } elseif (!Str\starts_with($arg, '-')) {
+            if ($mode === 'dev') {
+                $devPaths[] = $arg;
+            } else {
+                $srcPaths[] = $arg;
+            }
+        }
+    }
+
+    if ($srcPaths === [] && $devPaths === []) {
+        IO\write_error_line('Usage: psl detect-packages <path>... [--dev <path>...] [--composer]');
+        IO\write_error_line('');
+        IO\write_error_line('Scan PHP files for PSL namespace usage and report which');
+        IO\write_error_line('php-standard-library/* packages are needed.');
+        IO\write_error_line('');
+        IO\write_error_line('Arguments:');
+        IO\write_error_line('  <path>...   Directories to scan (mapped to require)');
+        IO\write_error_line('');
+        IO\write_error_line('Options:');
+        IO\write_error_line('  --src       Mark following paths as require (default)');
+        IO\write_error_line('  --dev       Mark following paths as require-dev');
+        IO\write_error_line('  --composer  Output JSON snippet for composer.json');
+        IO\write_error_line('');
+        IO\write_error_line('Examples:');
+        IO\write_error_line('  psl detect-packages src/');
+        IO\write_error_line('  psl detect-packages src/ --dev tests/');
+        IO\write_error_line('  psl detect-packages src/ --dev tests/ --composer');
+        exit(1);
+    }
+
+    foreach (Vec\concat($srcPaths, $devPaths) as $path) {
+        if (!Filesystem\is_directory($path)) {
+            IO\write_error_line('Error: "%s" is not a directory.', $path);
+            exit(1);
+        }
+    }
+
+    $nsToDir = package_namespace_map();
+
+    /**
+     * @return array<string, true>
+     */
+    $scan = static function (string $directory) use ($nsToDir, &$scan): array {
+        /** @var array<string, true> $found */
+        $found = [];
+        foreach (Filesystem\read_directory($directory) as $entry) {
+            if (Filesystem\is_directory($entry)) {
+                $found = Dict\merge($found, $scan($entry));
+                continue;
+            }
+
+            if (Filesystem\get_extension($entry) !== 'php') {
+                continue;
+            }
+
+            $content = File\read($entry);
+            foreach ($nsToDir as $ns => $dir) {
+                $escapedNs = Str\replace($ns, '\\', '\\\\');
+                if (Regex\matches($content, '/Psl\\\\' . $escapedNs . '[\\\\\\s;,)]/')) {
+                    $found[$dir] = true;
+                }
+            }
+        }
+
+        return $found;
+    };
+
+    /** @var array<string, true> $requireDeps */
+    $requireDeps = [];
+    foreach ($srcPaths as $path) {
+        $requireDeps = Dict\merge($requireDeps, $scan($path));
+    }
+
+    /** @var array<string, true> $devDeps */
+    $devDeps = [];
+    foreach ($devPaths as $path) {
+        $devDeps = Dict\merge($devDeps, $scan($path));
+    }
+
+    $requireDevDeps = Dict\diff_by_key($devDeps, $requireDeps);
+
+    if ($requireDeps !== [] || $requireDevDeps !== []) {
+        $requireDeps['foundation'] = true;
+    }
+
+    $requireSlugs = Vec\sort(Vec\keys($requireDeps));
+    $devSlugs = Vec\sort(Vec\keys($requireDevDeps));
+
+    if ($composer) {
+        $constraint = resolve_version_constraint();
+
+        /** @var array<string, string> $require */
+        $require = [];
+        foreach ($requireSlugs as $slug) {
+            $require['php-standard-library/' . $slug] = $constraint;
+        }
+
+        /** @var array<string, string> $requireDev */
+        $requireDev = [];
+        foreach ($devSlugs as $slug) {
+            $requireDev['php-standard-library/' . $slug] = $constraint;
+        }
+
+        /** @var array<string, array<string, string>> $output */
+        $output = ['require' => $require];
+        if ($devSlugs !== []) {
+            $output['require-dev'] = $requireDev;
+        }
+
+        IO\write_line(Json\encode($output, pretty: true));
+        exit(0);
+    }
+
+    if ($requireSlugs === [] && $devSlugs === []) {
+        IO\write_line('No PSL packages detected.');
+        exit(0);
+    }
+
+    IO\write_line('Detected PSL packages:');
+    IO\write_line('');
+    IO\write_line('  require:');
+    foreach ($requireSlugs as $slug) {
+        IO\write_line('    php-standard-library/%s', $slug);
+    }
+
+    if ($devSlugs !== []) {
+        IO\write_line('');
+        IO\write_line('  require-dev:');
+        foreach ($devSlugs as $slug) {
+            IO\write_line('    php-standard-library/%s', $slug);
+        }
+    }
+
+    IO\write_line('');
+    IO\write_line('Run with --composer to get a JSON snippet for composer.json.');
+
+    exit(0);
+}
+
+/**
+ * Resolve a version constraint from the installed PSL package version.
+ *
+ * Reads the monorepo's composer.json branch-alias to derive the major version.
+ */
+function resolve_version_constraint(): string
+{
+    $path = __DIR__ . '/../composer.json';
+    $composer = Json\typed(
+        File\read($path),
+        Type\shape([
+            'extra' => Type\nullish(Type\shape([
+                'branch-alias' => Type\nullish(Type\dict(Type\string(), Type\string())),
+            ])),
+        ]),
+    );
+
+    foreach ($composer['extra']['branch-alias'] ?? [] as $alias) {
+        $match = Regex\first_match($alias, '/^(\d+\.\d+)/');
+        if ($match !== null) {
+            return '^' . $match[1];
+        }
+    }
+
+    return '*';
+}
+
+function help_command(): never
+{
+    IO\write_error_line('');
+    IO\write_error_line('Usage: psl <command> [options]');
+    IO\write_error_line('');
+    IO\write_error_line('Commands:');
+    IO\write_error_line('  detect-packages <path>... [--dev <path>...] [--composer]');
+    IO\write_error_line('    Detect PSL packages used in directories');
+    IO\write_error_line('    --src   Mark following paths as require dependencies (default)');
+    IO\write_error_line('    --dev   Mark following paths as require-dev dependencies');
+    IO\write_error_line('');
+    IO\write_error_line('  help');
+    IO\write_error_line('    Show this help');
+    IO\write_error_line('');
+
+    exit(1);
+}
+
+(static function (): never {
+    $arguments = Vec\slice(Env\args(), 1);
+    $command = $arguments[0] ?? 'help';
+
+    match ($command) {
+        'detect-packages' => detect_packages_command(Vec\slice($arguments, 1)),
+        default => help_command(),
+    };
+})();

@@ -9,6 +9,9 @@
             "email": "azjezz@protonmail.com"
         }
     ],
+    "bin": [
+        "bin/psl"
+    ],
     "require": {
         "php": "~8.4.0 || ~8.5.0",
         "ext-bcmath": "*",

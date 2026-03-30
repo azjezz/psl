@@ -14,6 +14,8 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
 
+use function Psl\Internal\package_namespace_map;
+
 /**
  * Verify that every package's composer.json `require` section matches actual source imports,
  * and that no source dependency is incorrectly placed in `require-dev`.
@@ -22,86 +24,11 @@ use Psl\Vec;
  *
  * @param list<Package> $packages
  *
- * @mago-expect lint:no-literal-password - Not really a password.
  * @mago-expect lint:excessive-nesting - :(
  */
 function verify(array $packages): bool
 {
-    $nsToDir = [
-        'Ansi' => 'ansi',
-        'Async' => 'async',
-        'Binary' => 'binary',
-        'Cache' => 'cache',
-        'Channel' => 'channel',
-        'CIDR' => 'cidr',
-        'Class' => 'class',
-        'Collection' => 'collection',
-        'Comparison' => 'comparison',
-        'Compression' => 'compression',
-        'Crypto' => 'crypto',
-        'DataStructure' => 'data-structure',
-        'DNS' => 'dns',
-        'DNSSEC' => 'dnssec',
-        'DateTime' => 'date-time',
-        'Default' => 'default',
-        'Dict' => 'dict',
-        'Either' => 'either',
-        'Encoding' => 'encoding',
-        'Env' => 'env',
-        'File' => 'file',
-        'Filesystem' => 'filesystem',
-        'Fun' => 'fun',
-        'Graph' => 'graph',
-        'H2' => 'h2',
-        'Hash' => 'hash',
-        'HPACK' => 'hpack',
-        'HTTP\\Client' => 'http-client',
-        'HTTP\\Message' => 'http-message',
-        'Html' => 'html',
-        'Interface' => 'interface',
-        'Interoperability' => 'interoperability',
-        'IO' => 'io',
-        'IP' => 'ip',
-        'IRI' => 'iri',
-        'Iter' => 'iter',
-        'Json' => 'json',
-        'Locale' => 'locale',
-        'MIME' => 'mime',
-        'Message' => 'message',
-        'Math' => 'math',
-        'Network' => 'network',
-        'Observer' => 'observer',
-        'Option' => 'option',
-        'OS' => 'os',
-        'Password' => 'password',
-        'Process' => 'process',
-        'Promise' => 'promise',
-        'PseudoRandom' => 'pseudo-random',
-        'Punycode' => 'punycode',
-        'RandomSequence' => 'random-sequence',
-        'Range' => 'range',
-        'Regex' => 'regex',
-        'Result' => 'result',
-        'Runtime' => 'runtime',
-        'SecureRandom' => 'secure-random',
-        'SMTP' => 'smtp',
-        'Shell' => 'shell',
-        'Socks' => 'socks',
-        'Str' => 'str',
-        'TCP' => 'tcp',
-        'Terminal' => 'terminal',
-        'TLS' => 'tls',
-        'Trait' => 'trait',
-        'Tree' => 'tree',
-        'Type' => 'type',
-        'UDP' => 'udp',
-        'Unix' => 'unix',
-        'URI' => 'uri',
-        'URL' => 'url',
-        'Vec' => 'vec',
-        'Exception' => 'foundation',
-        'Ref' => 'foundation',
-    ];
+    $nsToDir = package_namespace_map();
 
     $ok = true;
 
