@@ -152,8 +152,6 @@ final class LineWrapper
             $sliceLen = $sliceEnd - $sliceStart;
 
             if ($sliceLen > 0) {
-                /** @var non-negative-int $sliceStart */
-                /** @var non-negative-int $sliceLen */
                 $content = Str\slice($span->content, $sliceStart, $sliceLen);
                 $newSpans[] = $span->withContent($content);
             }
