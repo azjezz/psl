@@ -106,7 +106,7 @@ final class H2Session
             $this->streamWaiters[] = $suspension;
             $suspension->suspend();
 
-            if ($this->closed) { // @mago-expect analysis:impossible-condition - suspend could change "$this"
+            if ($this->closed) {
                 throw new RuntimeException('HTTP/2 connection is closed.');
             }
         }

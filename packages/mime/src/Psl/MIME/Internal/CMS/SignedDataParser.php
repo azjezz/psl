@@ -18,6 +18,11 @@ use function openssl_x509_parse;
 use function openssl_x509_verify;
 use function time;
 
+use const OPENSSL_ALGO_SHA1;
+use const OPENSSL_ALGO_SHA256;
+use const OPENSSL_ALGO_SHA384;
+use const OPENSSL_ALGO_SHA512;
+
 /**
  * Parses and verifies CMS SignedData structures per RFC 5652 section 5.
  *

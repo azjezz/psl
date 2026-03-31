@@ -96,7 +96,7 @@ final readonly class DateTime implements
         int $nanoseconds,
     ) {
         // @codeCoverageIgnoreStart
-        if ($nanoseconds < 0 || $nanoseconds >= NANOSECONDS_PER_SECOND) {
+        if ($nanoseconds < 0 || $nanoseconds >= namespace\NANOSECONDS_PER_SECOND) {
             throw Exception\InvalidArgumentException::forNanoseconds($nanoseconds);
         }
 
@@ -248,7 +248,7 @@ final readonly class DateTime implements
             throw Exception\UnexpectedValueException::forYear($year, $calendar->get(IntlCalendar::FIELD_YEAR));
         }
 
-        $timestampInSeconds = (int) ($calendar->getTime() / (float) MILLISECONDS_PER_SECOND);
+        $timestampInSeconds = (int) ($calendar->getTime() / (float) namespace\MILLISECONDS_PER_SECOND);
         $timestamp = Timestamp::fromParts($timestampInSeconds, $nanoseconds);
 
         return new self($timezone, $timestamp, $year, $month, $day, $hours, $minutes, $seconds, $nanoseconds);
@@ -273,7 +273,7 @@ final readonly class DateTime implements
         /** @var IntlCalendar $calendar */
         $calendar = IntlCalendar::createInstance(Internal\to_intl_timezone($timezone));
 
-        $calendar->setTime($timestamp->getSeconds() * MILLISECONDS_PER_SECOND);
+        $calendar->setTime($timestamp->getSeconds() * namespace\MILLISECONDS_PER_SECOND);
 
         $year = $calendar->get(IntlCalendar::FIELD_YEAR);
         $month = $calendar->get(IntlCalendar::FIELD_MONTH) + 1;
@@ -561,7 +561,7 @@ final readonly class DateTime implements
         $timezone = Timezone::from($tz->getName());
         $seconds = $value->getTimestamp();
         $microseconds = (int) $value->format('u');
-        $nanoseconds = $microseconds * NANOSECONDS_PER_MICROSECOND;
+        $nanoseconds = $microseconds * namespace\NANOSECONDS_PER_MICROSECOND;
 
         return self::fromTimestamp(Timestamp::fromParts($seconds, $nanoseconds), $timezone);
     }
@@ -578,7 +578,7 @@ final readonly class DateTime implements
     #[Override]
     public function toStdlib(): mixed
     {
-        $microseconds = (int) ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND);
+        $microseconds = (int) ($this->nanoseconds / namespace\NANOSECONDS_PER_MICROSECOND);
         $formatted = sprintf(
             '%04d-%02d-%02d %02d:%02d:%02d.%06d',
             $this->year,
@@ -609,9 +609,9 @@ final readonly class DateTime implements
         $timezoneId = $intlTz->getID();
         $timezone = Timezone::from($timezoneId);
         $millis = $value->getTime();
-        $seconds = (int) ($millis / MILLISECONDS_PER_SECOND);
-        $remainingMillis = $millis % MILLISECONDS_PER_SECOND;
-        $nanoseconds = (int) ($remainingMillis * NANOSECONDS_PER_MILLISECOND);
+        $seconds = (int) ($millis / namespace\MILLISECONDS_PER_SECOND);
+        $remainingMillis = $millis % namespace\MILLISECONDS_PER_SECOND;
+        $nanoseconds = (int) ($remainingMillis * namespace\NANOSECONDS_PER_MILLISECOND);
 
         return self::fromTimestamp(Timestamp::fromParts($seconds, $nanoseconds), $timezone);
     }

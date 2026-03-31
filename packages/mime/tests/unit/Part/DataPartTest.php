@@ -11,6 +11,8 @@ use Psl\MIME\ContentId;
 use Psl\MIME\MediaType;
 use Psl\MIME\Part\Data;
 
+use function trim;
+
 final class DataPartTest extends TestCase
 {
     public function testConstructDefaults(): void
@@ -86,7 +88,7 @@ final class DataPartTest extends TestCase
         $part = new Data(new IO\MemoryHandle($data));
 
         $encoded = $part->body()->readAll();
-        $decoded = Base64\decode(\trim($encoded));
+        $decoded = Base64\decode(trim($encoded));
         static::assertSame($data, $decoded);
     }
 }

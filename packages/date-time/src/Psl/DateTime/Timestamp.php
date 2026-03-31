@@ -58,21 +58,21 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
     public static function fromParts(int $seconds, int $nanoseconds = 0): Timestamp
     {
         // Check for potential overflow or underflow before doing any operation
-        if (PHP_INT_MAX === $seconds && $nanoseconds >= NANOSECONDS_PER_SECOND) {
+        if (PHP_INT_MAX === $seconds && $nanoseconds >= namespace\NANOSECONDS_PER_SECOND) {
             throw new Exception\OverflowException('Adding nanoseconds would cause an overflow.');
         }
 
-        if (PHP_INT_MIN === $seconds && $nanoseconds <= -NANOSECONDS_PER_SECOND) {
+        if (PHP_INT_MIN === $seconds && $nanoseconds <= -namespace\NANOSECONDS_PER_SECOND) {
             throw new Exception\UnderflowException('Subtracting nanoseconds would cause an underflow.');
         }
 
-        $secondsAdjustment = intdiv($nanoseconds, NANOSECONDS_PER_SECOND);
+        $secondsAdjustment = intdiv($nanoseconds, namespace\NANOSECONDS_PER_SECOND);
         $adjustedSeconds = $seconds + $secondsAdjustment;
 
-        $adjustedNanoseconds = $nanoseconds % NANOSECONDS_PER_SECOND;
+        $adjustedNanoseconds = $nanoseconds % namespace\NANOSECONDS_PER_SECOND;
         if ($adjustedNanoseconds < 0) {
             --$adjustedSeconds;
-            $adjustedNanoseconds += NANOSECONDS_PER_SECOND;
+            $adjustedNanoseconds += namespace\NANOSECONDS_PER_SECOND;
         }
 
         return new self($adjustedSeconds, $adjustedNanoseconds);
@@ -116,10 +116,10 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      */
     public static function fromMilliseconds(int $milliseconds): self
     {
-        $seconds = intdiv($milliseconds, MILLISECONDS_PER_SECOND);
-        $remainingMs = $milliseconds % MILLISECONDS_PER_SECOND;
+        $seconds = intdiv($milliseconds, namespace\MILLISECONDS_PER_SECOND);
+        $remainingMs = $milliseconds % namespace\MILLISECONDS_PER_SECOND;
 
-        return self::fromParts($seconds, $remainingMs * NANOSECONDS_PER_MILLISECOND);
+        return self::fromParts($seconds, $remainingMs * namespace\NANOSECONDS_PER_MILLISECOND);
     }
 
     /**
@@ -134,10 +134,10 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
      */
     public static function fromMicroseconds(int $microseconds): self
     {
-        $seconds = intdiv($microseconds, MICROSECONDS_PER_SECOND);
-        $remainingUs = $microseconds % MICROSECONDS_PER_SECOND;
+        $seconds = intdiv($microseconds, namespace\MICROSECONDS_PER_SECOND);
+        $remainingUs = $microseconds % namespace\MICROSECONDS_PER_SECOND;
 
-        return self::fromParts($seconds, $remainingUs * NANOSECONDS_PER_MICROSECOND);
+        return self::fromParts($seconds, $remainingUs * namespace\NANOSECONDS_PER_MICROSECOND);
     }
 
     /**
@@ -298,7 +298,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
         }
 
         [$h, $m, $s, $ns] = $amount->getParts();
-        $totalSeconds = (SECONDS_PER_MINUTE * $m) + (SECONDS_PER_HOUR * $h) + $s;
+        $totalSeconds = (namespace\SECONDS_PER_MINUTE * $m) + (namespace\SECONDS_PER_HOUR * $h) + $s;
         $newSeconds = $this->seconds + $totalSeconds;
         $newNanoseconds = $this->nanoseconds + $ns;
 
@@ -326,7 +326,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
         }
 
         [$h, $m, $s, $ns] = $amount->getParts();
-        $totalSeconds = (SECONDS_PER_MINUTE * $m) + (SECONDS_PER_HOUR * $h) + $s;
+        $totalSeconds = (namespace\SECONDS_PER_MINUTE * $m) + (namespace\SECONDS_PER_HOUR * $h) + $s;
         $newSeconds = $this->seconds - $totalSeconds;
         $newNanoseconds = $this->nanoseconds - $ns;
 
@@ -345,7 +345,7 @@ final readonly class Timestamp implements TemporalInterface, Interoperability\Fr
     {
         $seconds = $value->getTimestamp();
         $microseconds = (int) $value->format('u');
-        $nanoseconds = $microseconds * NANOSECONDS_PER_MICROSECOND;
+        $nanoseconds = $microseconds * namespace\NANOSECONDS_PER_MICROSECOND;
 
         return self::fromParts($seconds, $nanoseconds);
     }

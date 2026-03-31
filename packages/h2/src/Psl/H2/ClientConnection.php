@@ -50,7 +50,8 @@ final class ClientConnection implements ClientConnectionInterface
             $configuration->maxHeaderBlockSize,
             $maxReceiveWindowSize !== null
                 ? new Internal\BDPEstimator(
-                    $configuration->settings[Setting::InitialWindowSize->value] ?? DEFAULT_INITIAL_WINDOW_SIZE,
+                    $configuration->settings[Setting::InitialWindowSize->value]
+                    ?? namespace\DEFAULT_INITIAL_WINDOW_SIZE,
                     $maxReceiveWindowSize,
                 )
                 : null,
@@ -65,7 +66,7 @@ final class ClientConnection implements ClientConnectionInterface
     {
         $frames = $this->stateMachine->initialize();
 
-        $data = CONNECTION_PREFACE;
+        $data = namespace\CONNECTION_PREFACE;
         foreach ($frames as $frame) {
             $data .= Frame\encode($frame);
         }

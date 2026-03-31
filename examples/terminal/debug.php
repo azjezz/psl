@@ -16,6 +16,8 @@ use Psl\Terminal\Event;
 use Psl\Terminal\Layout;
 use Psl\Terminal\Widget;
 
+use const PHP_INT_MAX;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 final class DebugState

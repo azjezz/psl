@@ -75,8 +75,8 @@ $app->on(Event\Mouse::class, static function (Event\Mouse $event, DustState $sta
     }
 
     /** @var non-negative-int $idx */
-    $idx = PseudoRandom\int(0, Iter\count(SPARKLE_CHARS) - 1);
-    $char = SPARKLE_CHARS[$idx];
+    $idx = PseudoRandom\int(0, Iter\count(namespace\SPARKLE_CHARS) - 1);
+    $char = namespace\SPARKLE_CHARS[$idx];
     $state->particles[] = new Particle($event->column, $event->row, 0, $char);
     $state->total_spawned++;
 });

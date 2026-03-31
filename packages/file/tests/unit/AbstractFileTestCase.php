@@ -17,6 +17,9 @@ use function rmdir;
 use function scandir;
 use function unlink;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_OS_FAMILY;
+
 /**
  * Base test case that creates and cleans up a temporary directory.
  */

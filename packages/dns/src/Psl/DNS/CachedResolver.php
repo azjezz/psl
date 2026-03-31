@@ -16,6 +16,8 @@ use function min;
 use function serialize;
 use function strtolower;
 
+use const PHP_INT_MAX;
+
 /**
  * Caching decorator for any DNS resolver.
  *

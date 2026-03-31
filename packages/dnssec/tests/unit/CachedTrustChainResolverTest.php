@@ -8,6 +8,7 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
+use Psl\Cache\Exception\UnavailableItemException;
 use Psl\Cache\StoreInterface;
 use Psl\DateTime\Duration;
 use Psl\DNS\DNSSEC\Algorithm;
@@ -462,7 +463,7 @@ final class CachedTrustChainResolverTest extends TestCase
 
             public function get(string $key): mixed
             {
-                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+                throw new UnavailableItemException($key);
             }
 
             public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
@@ -497,7 +498,7 @@ final class CachedTrustChainResolverTest extends TestCase
                     return $this->data[$key];
                 }
 
-                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+                throw new UnavailableItemException($key);
             }
 
             public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
@@ -542,7 +543,7 @@ final class CachedTrustChainResolverTest extends TestCase
 
             public function get(string $key): mixed
             {
-                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+                throw new UnavailableItemException($key);
             }
 
             public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
@@ -577,7 +578,7 @@ final class CachedTrustChainResolverTest extends TestCase
 
             public function get(string $key): mixed
             {
-                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+                throw new UnavailableItemException($key);
             }
 
             public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed

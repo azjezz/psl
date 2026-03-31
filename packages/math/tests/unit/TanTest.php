@@ -8,6 +8,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
+use const PHP_FLOAT_EPSILON;
+
 final class TanTest extends TestCase
 {
     use FloatAsserts;

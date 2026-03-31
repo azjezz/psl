@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\HTTP\Client\Internal\H2;
 
+use Exception;
 use Psl\Async;
 use Psl\Async\SignalCancellationToken;
 use Psl\H2\ClientConnectionInterface;
@@ -147,7 +148,7 @@ final class H2Multiplexer
                 }
             } catch (Async\Exception\CancelledException) {
                 // @mago-expect lint:no-empty-catch-clause
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->session->markClosed();
                 $wrapped =
                     $e instanceof RuntimeException || $e instanceof ProtocolException

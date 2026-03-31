@@ -29,6 +29,9 @@ use function substr;
 use function time;
 use function trim;
 
+use const OPENSSL_ALGO_SHA256;
+use const SODIUM_CRYPTO_SIGN_SECRETKEYBYTES;
+
 /**
  * DKIM message signer that prepends a DKIM-Signature header to raw MIME messages.
  *

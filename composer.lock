@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7dbc9ca116fdae60a0fcc8ebbd7b9fb",
+    "content-hash": "b9e75778d5e404f6856b258cb792a775",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -82,16 +82,16 @@
     "packages-dev": [
         {
             "name": "carthage-software/mago",
-            "version": "1.16.0",
+            "version": "1.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "bf44827df56a0321075c1a6d17ecc1efbb67b45d"
+                "reference": "ec2d35d09fd941b129fb2f1d1505b9bde2a6af3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/bf44827df56a0321075c1a6d17ecc1efbb67b45d",
-                "reference": "bf44827df56a0321075c1a6d17ecc1efbb67b45d",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/ec2d35d09fd941b129fb2f1d1505b9bde2a6af3a",
+                "reference": "ec2d35d09fd941b129fb2f1d1505b9bde2a6af3a",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.16.0"
+                "source": "https://github.com/carthage-software/mago/tree/1.17.0"
             },
             "funding": [
                 {
@@ -134,7 +134,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-26T20:46:03+00:00"
+            "time": "2026-03-31T16:08:05+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -2355,16 +2355,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.0.5",
+            "version": "13.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "d57826e8921a534680c613924bfd921ded8047f4"
+                "reference": "9e426f7282c313c9138eeb9f25461e1a6be1e647"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d57826e8921a534680c613924bfd921ded8047f4",
-                "reference": "d57826e8921a534680c613924bfd921ded8047f4",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9e426f7282c313c9138eeb9f25461e1a6be1e647",
+                "reference": "9e426f7282c313c9138eeb9f25461e1a6be1e647",
                 "shasum": ""
             },
             "require": {
@@ -2386,7 +2386,7 @@
                 "sebastian/cli-parser": "^5.0.0",
                 "sebastian/comparator": "^8.0.0",
                 "sebastian/diff": "^8.0.0",
-                "sebastian/environment": "^9.0.0",
+                "sebastian/environment": "^9.1.0",
                 "sebastian/exporter": "^8.0.0",
                 "sebastian/global-state": "^9.0.0",
                 "sebastian/object-enumerator": "^8.0.0",
@@ -2433,31 +2433,15 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.0.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.0.6"
             },
             "funding": [
                 {
-                    "url": "https://phpunit.de/sponsors.html",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/sebastianbergmann",
-                    "type": "github"
-                },
-                {
-                    "url": "https://liberapay.com/sebastianbergmann",
-                    "type": "liberapay"
-                },
-                {
-                    "url": "https://thanks.dev/u/gh/sebastianbergmann",
-                    "type": "thanks_dev"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/phpunit/phpunit",
-                    "type": "tidelift"
+                    "url": "https://phpunit.de/sponsoring.html",
+                    "type": "other"
                 }
             ],
-            "time": "2026-02-18T12:40:03+00:00"
+            "time": "2026-03-31T06:44:39+00:00"
         },
         {
             "name": "psr/cache",

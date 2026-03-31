@@ -12,4 +12,4 @@ const ALPHABET = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 /**
  * @api
  */
-const ALPHABET_ALPHANUMERIC = '0123456789' . ALPHABET;
+const ALPHABET_ALPHANUMERIC = '0123456789' . namespace\ALPHABET;

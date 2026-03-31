@@ -10,6 +10,8 @@ use Psl\File;
 use Psl\Filesystem;
 use Psl\OS;
 
+use const DIRECTORY_SEPARATOR;
+
 final class WriteHandleTest extends TestCase
 {
     public function testMustCreateExistingFile(): void

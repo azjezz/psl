@@ -191,7 +191,7 @@ final class MisbehavingServerTest extends TestCase
         $body = $transaction->response->body;
         static::assertNotNull($body);
 
-        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('Connection closed during chunked transfer');
 
         $body->readAll();

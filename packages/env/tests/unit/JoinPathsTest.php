@@ -9,6 +9,8 @@ use Psl\Env;
 
 use function sprintf;
 
+use const PATH_SEPARATOR;
+
 final class JoinPathsTest extends TestCase
 {
     public function testJoinPaths(): void

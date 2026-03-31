@@ -18,6 +18,10 @@ use function str_repeat;
 use function stream_set_blocking;
 use function stream_socket_pair;
 
+use const STREAM_IPPROTO_IP;
+use const STREAM_PF_UNIX;
+use const STREAM_SOCK_STREAM;
+
 final class SocketTest extends TestCase
 {
     public function testBindAndGetLocalAddress(): void

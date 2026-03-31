@@ -7,6 +7,7 @@ namespace Psl\DNSSEC;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\Crypto\Exception\InvalidArgumentException;
+use Psl\DNS\Exception\InvalidArgumentException as DNSInvalidArgumentException;
 use Psl\DNS\Exception\ProtocolException;
 use Psl\DNS\Exception\RuntimeException;
 use Psl\DNS\Record\DNSKEYRecord;
@@ -275,7 +276,7 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
      *
      * @param array<string, list<DNSKEYRecord>> $validated
      *
-     * @throws \Psl\DNS\Exception\InvalidArgumentException If the zone name cannot be encoded.
+     * @throws DNSInvalidArgumentException If the zone name cannot be encoded.
      */
     private function validateDsNonExistence(string $zone, Response $dsResponse, array $validated): null|ChainFailure
     {
@@ -310,9 +311,7 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
 
         try {
             NSECProofValidator::validateDsNonExistence($zone, $authority);
-        } catch (
-            ProtocolException|\Psl\DNS\Exception\InvalidArgumentException|RuntimeException|Exception\RuntimeException
-        ) {
+        } catch (ProtocolException|DNSInvalidArgumentException|RuntimeException|Exception\RuntimeException) {
             return ChainFailure::MissingDs;
         }
 
@@ -325,7 +324,7 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
      * @param list<RecordInterface> $dsRecords
      * @param list<RecordInterface> $dnskeys
      *
-     * @throws \Psl\DNS\Exception\InvalidArgumentException If the zone name cannot be encoded to wire format.
+     * @throws DNSInvalidArgumentException If the zone name cannot be encoded to wire format.
      * @throws RuntimeException If the hash computation fails.
      */
     private static function matchDsToKey(array $dsRecords, array $dnskeys, string $zone): bool
@@ -367,7 +366,7 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
      * @param list<RecordInterface> $dnskeys
      * @param list<RecordInterface> $rrsigs
      *
-     * @throws \Psl\DNS\Exception\InvalidArgumentException If the zone name cannot be encoded.
+     * @throws DNSInvalidArgumentException If the zone name cannot be encoded.
      */
     private static function verifyDnskeyRrsig(array $dnskeys, array $rrsigs): null|ChainFailure
     {
@@ -418,7 +417,7 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
      * @param list<RecordInterface> $rrsigs
      * @param list<DNSKEYRecord>    $dnskeys
      *
-     * @throws \Psl\DNS\Exception\InvalidArgumentException If the zone name cannot be encoded.
+     * @throws DNSInvalidArgumentException If the zone name cannot be encoded.
      */
     private static function verifyRrsigs(array $answers, array $rrsigs, array $dnskeys): null|ChainFailure
     {

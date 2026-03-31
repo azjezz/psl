@@ -7,6 +7,8 @@ namespace Psl\Math\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Math;
 
+use const PHP_FLOAT_EPSILON;
+
 trait FloatAsserts
 {
     /**

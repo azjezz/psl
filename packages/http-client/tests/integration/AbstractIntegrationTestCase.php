@@ -16,6 +16,7 @@ use function ltrim;
 use function rtrim;
 use function strtolower;
 
+use const JSON_THROW_ON_ERROR;
 use const Psl\HTTP\Message\METHOD_GET;
 
 abstract class AbstractIntegrationTestCase extends TestCase

@@ -7,6 +7,8 @@ namespace Psl\Async\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\DateTime\Duration;
+use RuntimeException;
+use Throwable;
 
 use function gc_collect_cycles;
 
@@ -34,7 +36,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testThrowIfCancelledAfterTimeout(): void
     {
-        $previous = Async\run(static function (): \Throwable|null {
+        $previous = Async\run(static function (): Throwable|null {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
             Async\sleep(Duration::milliseconds(50));
@@ -112,7 +114,7 @@ final class TimeoutCancellationTokenTest extends TestCase
             try {
                 $token->throwIfCancelled();
 
-                throw new \RuntimeException('Expected CancelledException');
+                throw new RuntimeException('Expected CancelledException');
             } catch (Async\Exception\CancelledException $e) {
                 return $e->getToken();
             }

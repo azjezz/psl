@@ -11,6 +11,7 @@ use Psl\Message\MessageId;
 
 use function strlen;
 use function strpos;
+use function substr;
 
 final class MessageIdTest extends TestCase
 {
@@ -126,10 +127,10 @@ final class MessageIdTest extends TestCase
     {
         $id = MessageId::generate('example.com');
 
-        $atPos = \strpos($id->id, '@');
+        $atPos = strpos($id->id, '@');
         static::assertNotFalse($atPos);
 
-        $hexPart = \substr($id->id, 0, $atPos);
+        $hexPart = substr($id->id, 0, $atPos);
         static::assertSame(32, strlen($hexPart), 'The hex portion should be exactly 32 characters (16 bytes)');
     }
 

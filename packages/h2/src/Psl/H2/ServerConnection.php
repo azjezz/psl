@@ -55,7 +55,8 @@ final class ServerConnection implements ServerConnectionInterface
             $configuration->maxHeaderBlockSize,
             $maxReceiveWindowSize !== null
                 ? new BDPEstimator(
-                    $configuration->settings[Setting::InitialWindowSize->value] ?? DEFAULT_INITIAL_WINDOW_SIZE,
+                    $configuration->settings[Setting::InitialWindowSize->value]
+                    ?? namespace\DEFAULT_INITIAL_WINDOW_SIZE,
                     $maxReceiveWindowSize,
                 )
                 : null,
@@ -86,7 +87,7 @@ final class ServerConnection implements ServerConnectionInterface
     {
         $preface = '';
         $prefaceLength = 0;
-        $needed = strlen(CONNECTION_PREFACE);
+        $needed = strlen(namespace\CONNECTION_PREFACE);
         while ($prefaceLength < $needed) {
             $chunk = $this->reader->read(cancellation: $cancellation);
 
@@ -99,7 +100,7 @@ final class ServerConnection implements ServerConnectionInterface
         }
 
         $received = substr($preface, 0, $needed);
-        if ($received !== CONNECTION_PREFACE) {
+        if ($received !== namespace\CONNECTION_PREFACE) {
             throw ProtocolException::forConnectionError('Invalid client connection preface');
         }
 

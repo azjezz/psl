@@ -28,14 +28,14 @@ function encode(string $text, Encoding $charset = Encoding::Utf8): string
         return $text;
     }
 
-    $encoding = Internal\should_use_b_encoding($text) ? B_ENCODING : Q_ENCODING;
+    $encoding = Internal\should_use_b_encoding($text) ? namespace\B_ENCODING : namespace\Q_ENCODING;
 
     $prefix = '=?' . $charset->value . '?' . $encoding . '?';
     $suffix = '?=';
     $overhead = strlen($prefix) + strlen($suffix);
-    $maxPayload = MAX_ENCODED_WORD_LENGTH - $overhead;
+    $maxPayload = namespace\MAX_ENCODED_WORD_LENGTH - $overhead;
 
-    if ($encoding === B_ENCODING) {
+    if ($encoding === namespace\B_ENCODING) {
         return Internal\encode_b_words($text, $prefix, $suffix, $maxPayload);
     }
 

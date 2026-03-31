@@ -9,6 +9,8 @@ use Psl\DateTime;
 use Psl\IO;
 use Psl\Shell;
 
+use const PHP_BINARY;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 $start = DateTime\Timestamp::monotonic();

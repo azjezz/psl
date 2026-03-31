@@ -7,6 +7,8 @@ namespace Psl\DateTime\Internal;
 use IntlCalendar;
 use Psl\DateTime\Timezone;
 
+use const PHP_VERSION_ID;
+
 /**
  * @internal
  *

@@ -82,6 +82,8 @@ final class KeyedSemaphore
      * @return Tout
      *
      * @see Semaphore::cancel()
+     *
+     * @suspens-fiber
      */
     public function waitFor(
         string|int $key,
@@ -96,15 +98,15 @@ final class KeyedSemaphore
                 $this->holders[$key][] = $currentContext;
 
                 try {
-                    return ($this->operation)($key, $input);
+                    return $this->invoke($key, $input);
                 } finally {
+                    // @mago-expect analysis:invalid-property-assignment-value - true positive, no one will modify this.
                     $this->ongoing[$key]--;
                     $index = array_search($currentContext, $this->holders[$key], true);
                     if (false !== $index) {
                         array_splice($this->holders[$key], $index, 1);
                     }
 
-                    // @mago-expect analysis:impossible-condition,redundant-comparison - false positives ...
                     if (0 === $this->ongoing[$key]) {
                         unset($this->ongoing[$key], $this->holders[$key]);
                     }
@@ -147,9 +149,8 @@ final class KeyedSemaphore
         $this->holders[$key][] = $currentContext;
 
         try {
-            return ($this->operation)($key, $input);
+            return $this->invoke($key, $input);
         } finally {
-            // @mago-expect analysis:redundant-null-coalesce - false positive
             $index = array_search($currentContext, $this->holders[$key] ?? [], true);
             if (false !== $index) {
                 array_splice($this->holders[$key], $index, 1);
@@ -165,6 +166,7 @@ final class KeyedSemaphore
                     $suspension->resume();
                 }
 
+                // @mago-expect analysis:invalid-property-assignment-value - true positive, no one will modify this.
                 $this->ongoing[$key]--;
             } else {
                 foreach ($this->waits[$key] ?? [] as $suspension) {
@@ -173,6 +175,7 @@ final class KeyedSemaphore
 
                 unset($this->waits[$key]);
 
+                // @mago-expect analysis:invalid-property-assignment-value - true positive, no one will modify this.
                 $this->ongoing[$key]--;
                 if (0 === $this->ongoing[$key]) {
                     unset($this->ongoing[$key], $this->holders[$key]);
@@ -368,5 +371,20 @@ final class KeyedSemaphore
                 $cancellation->unsubscribe($id);
             }
         }
+    }
+
+    /**
+     * @param Tk $key
+     * @param Tin $input
+     *
+     * @return Tout
+     *
+     * @throws CancelledException If the cancellation token is cancelled while waiting.
+     *
+     * @suspens-fiber
+     */
+    private function invoke(string|int $key, mixed $input): mixed
+    {
+        return ($this->operation)($key, $input);
     }
 }

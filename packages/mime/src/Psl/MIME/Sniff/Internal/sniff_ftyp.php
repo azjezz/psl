@@ -30,5 +30,5 @@ function sniff_ftyp(string $content): null|string
 
     $brand = substr($content, 8, 4);
 
-    return FTYP_BRANDS[$brand] ?? 'video/mp4';
+    return namespace\FTYP_BRANDS[$brand] ?? 'video/mp4';
 }

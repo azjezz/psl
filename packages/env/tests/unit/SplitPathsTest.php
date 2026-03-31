@@ -9,6 +9,8 @@ use Psl\Env;
 
 use function sprintf;
 
+use const PATH_SEPARATOR;
+
 final class SplitPathsTest extends TestCase
 {
     public function testSplitPaths(): void

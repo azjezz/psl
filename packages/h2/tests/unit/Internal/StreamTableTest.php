@@ -9,6 +9,8 @@ use Psl\H2\Exception\FlowControlException;
 use Psl\H2\Internal\StreamTable;
 use Psl\H2\StreamState;
 
+use const PHP_INT_MAX;
+
 final class StreamTableTest extends TestCase
 {
     public function testOpenAndGet(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Iter;
 
+use function count as php_count;
 use function is_countable;
 
 /**
@@ -25,7 +26,7 @@ use function is_countable;
 function count(iterable $iterable): int
 {
     if (is_countable($iterable)) {
-        return \count($iterable);
+        return php_count($iterable);
     }
 
     $count = 0;

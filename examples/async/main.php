@@ -8,6 +8,8 @@ use Psl\Async;
 use Psl\IO;
 use Psl\Shell;
 
+use const SIGINT;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 $watcher = Async\Scheduler::onSignal(SIGINT, static function (): never {

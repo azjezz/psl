@@ -13,6 +13,8 @@ use Psl\Ref;
 use function min;
 use function strtolower;
 
+use const PHP_INT_MAX;
+
 /**
  * Caching decorator for any trust chain resolver.
  *

@@ -32,6 +32,7 @@ use Psl\Str;
 use Psl\Str\Byte;
 use Psl\Vec;
 use RuntimeException;
+use Throwable;
 
 use function array_filter;
 use function count;
@@ -569,7 +570,7 @@ final class TrustChainResolverAdditionalTest extends TestCase
         try {
             $resolver = new TrustChainResolver($inner, $anchor);
             $resolver->resolve('com');
-        } catch (\Throwable) {
+        } catch (Throwable) {
         }
 
         $dsQueryIdx = null;
@@ -632,7 +633,7 @@ final class TrustChainResolverAdditionalTest extends TestCase
         try {
             $resolver = new TrustChainResolver($inner, $anchor);
             $resolver->resolve('com.');
-        } catch (\Throwable) {
+        } catch (Throwable) {
         }
 
         foreach ($queriedNames as $name) {
@@ -686,7 +687,7 @@ final class TrustChainResolverAdditionalTest extends TestCase
         try {
             $resolver = new TrustChainResolver($inner, $anchor);
             $resolver->resolve('example.com');
-        } catch (\Throwable) {
+        } catch (Throwable) {
         }
 
         $dsNames = [];

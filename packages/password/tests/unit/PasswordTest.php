@@ -11,6 +11,11 @@ use Psl\SecureRandom;
 use Psl\Str;
 use SensitiveParameter;
 
+use const PASSWORD_ARGON2I;
+use const PASSWORD_ARGON2ID;
+use const PASSWORD_BCRYPT;
+use const PASSWORD_DEFAULT;
+
 final class PasswordTest extends TestCase
 {
     #[DataProvider('providePasswords')]

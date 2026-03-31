@@ -15,6 +15,7 @@ use Psl\Dict;
 use Psl\Exception\InvariantViolationException;
 use Psl\Str;
 use Revolt\EventLoop\UncaughtThrowable;
+use RuntimeException;
 use Throwable;
 
 final class AwaitableTest extends TestCase
@@ -268,7 +269,7 @@ final class AwaitableTest extends TestCase
     public function testAlwaysWithFailedAwaitable(): void
     {
         $called = false;
-        $awaitable = Awaitable::error(new \RuntimeException('fail'));
+        $awaitable = Awaitable::error(new RuntimeException('fail'));
         $result = $awaitable->always(static function () use (&$called): void {
             $called = true;
         });
@@ -276,7 +277,7 @@ final class AwaitableTest extends TestCase
         try {
             $result->await();
             static::fail('Expected RuntimeException');
-        } catch (\RuntimeException $e) {
+        } catch (RuntimeException $e) {
             static::assertSame('fail', $e->getMessage());
         }
 

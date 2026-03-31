@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Psl\IO\Tests\Unit;
 
 use Closure;
+use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
 final class ConcatReadHandleTest extends TestCase
@@ -137,22 +140,22 @@ final class ConcatReadHandleTest extends TestCase
         $nonCloseable = static fn(): IO\ReadHandleInterface => new class() implements IO\ReadHandleInterface {
             use IO\ReadHandleConvenienceMethodsTrait;
 
-            #[\Override]
+            #[Override]
             public function reachedEndOfDataSource(): bool
             {
                 return true;
             }
 
-            #[\Override]
+            #[Override]
             public function tryRead(null|int $maxBytes = null): string
             {
                 return '';
             }
 
-            #[\Override]
+            #[Override]
             public function read(
                 null|int $maxBytes = null,
-                \Psl\Async\CancellationTokenInterface $cancellation = new \Psl\Async\NullCancellationToken(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
                 return '';
             }

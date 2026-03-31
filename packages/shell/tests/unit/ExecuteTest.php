@@ -15,6 +15,9 @@ use Psl\Shell;
 
 use function pack;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_BINARY;
+
 final class ExecuteTest extends TestCase
 {
     public function testExecute(): void

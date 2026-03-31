@@ -486,7 +486,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function plusYears(int $years): static
     {
-        return $this->plusMonths($years * MONTHS_PER_YEAR);
+        return $this->plusMonths($years * namespace\MONTHS_PER_YEAR);
     }
 
     /**
@@ -498,7 +498,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function minusYears(int $years): static
     {
-        return $this->minusMonths($years * MONTHS_PER_YEAR);
+        return $this->minusMonths($years * namespace\MONTHS_PER_YEAR);
     }
 
     /**
@@ -518,13 +518,13 @@ trait DateTimeConvenienceMethodsTrait
             return $this->minusMonths(-$months);
         }
 
-        $plusYears = intdiv($months, MONTHS_PER_YEAR);
-        $monthsLeft = $months - ($plusYears * MONTHS_PER_YEAR);
+        $plusYears = intdiv($months, namespace\MONTHS_PER_YEAR);
+        $monthsLeft = $months - ($plusYears * namespace\MONTHS_PER_YEAR);
         $targetMonth = $this->getMonth() + $monthsLeft;
 
-        if ($targetMonth > MONTHS_PER_YEAR) {
+        if ($targetMonth > namespace\MONTHS_PER_YEAR) {
             $plusYears++;
-            $targetMonth -= MONTHS_PER_YEAR;
+            $targetMonth -= namespace\MONTHS_PER_YEAR;
         }
 
         $targetMonthEnum = Month::from($targetMonth);
@@ -553,13 +553,13 @@ trait DateTimeConvenienceMethodsTrait
             return $this->plusMonths(-$months);
         }
 
-        $minusYears = intdiv($months, MONTHS_PER_YEAR);
-        $monthsLeft = $months - ($minusYears * MONTHS_PER_YEAR);
+        $minusYears = intdiv($months, namespace\MONTHS_PER_YEAR);
+        $monthsLeft = $months - ($minusYears * namespace\MONTHS_PER_YEAR);
         $targetMonth = $this->getMonth() - $monthsLeft;
 
         if ($targetMonth <= 0) {
             $minusYears++;
-            $targetMonth = MONTHS_PER_YEAR - abs($targetMonth);
+            $targetMonth = namespace\MONTHS_PER_YEAR - abs($targetMonth);
         }
 
         $targetMonthEnum = Month::from($targetMonth);
@@ -581,7 +581,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function plusWeeks(int $weeks): static
     {
-        return $this->plusDays($weeks * DAYS_PER_WEEK);
+        return $this->plusDays($weeks * namespace\DAYS_PER_WEEK);
     }
 
     /**
@@ -594,7 +594,7 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function minusWeeks(int $weeks): static
     {
-        return $this->minusDays($weeks * DAYS_PER_WEEK);
+        return $this->minusDays($weeks * namespace\DAYS_PER_WEEK);
     }
 
     /**
@@ -607,7 +607,10 @@ trait DateTimeConvenienceMethodsTrait
      */
     public function plusDays(int $days): static
     {
-        return static::fromTimestamp($this->getTimestamp()->plusSeconds($days * SECONDS_PER_DAY), $this->getTimezone());
+        return static::fromTimestamp(
+            $this->getTimestamp()->plusSeconds($days * namespace\SECONDS_PER_DAY),
+            $this->getTimezone(),
+        );
     }
 
     /**
@@ -621,7 +624,7 @@ trait DateTimeConvenienceMethodsTrait
     public function minusDays(int $days): static
     {
         return static::fromTimestamp(
-            $this->getTimestamp()->minusSeconds($days * SECONDS_PER_DAY),
+            $this->getTimestamp()->minusSeconds($days * namespace\SECONDS_PER_DAY),
             $this->getTimezone(),
         );
     }
@@ -674,8 +677,8 @@ trait DateTimeConvenienceMethodsTrait
      */
     private function applyCalendarOffset(Period $period, int $sign): static
     {
-        $monthsToAdd = $sign * (($period->getYears() * MONTHS_PER_YEAR) + $period->getMonths());
-        $extraSeconds = $sign * ($period->getDays() * SECONDS_PER_DAY);
+        $monthsToAdd = $sign * (($period->getYears() * namespace\MONTHS_PER_YEAR) + $period->getMonths());
+        $extraSeconds = $sign * ($period->getDays() * namespace\SECONDS_PER_DAY);
 
         $hasMonths = 0 !== $monthsToAdd;
         $hasOffset = 0 !== $extraSeconds;
@@ -688,13 +691,13 @@ trait DateTimeConvenienceMethodsTrait
         $month = $this->getMonth();
         $day = $this->getDay();
         if ($hasMonths) {
-            $totalMonths = ($year * MONTHS_PER_YEAR) + $month - 1 + $monthsToAdd;
-            $year = intdiv($totalMonths, MONTHS_PER_YEAR);
-            $month = $totalMonths % MONTHS_PER_YEAR;
+            $totalMonths = ($year * namespace\MONTHS_PER_YEAR) + $month - 1 + $monthsToAdd;
+            $year = intdiv($totalMonths, namespace\MONTHS_PER_YEAR);
+            $month = $totalMonths % namespace\MONTHS_PER_YEAR;
             // @codeCoverageIgnoreStart
             if ($month < 0) {
                 $year--;
-                $month += MONTHS_PER_YEAR;
+                $month += namespace\MONTHS_PER_YEAR;
             }
 
             // @codeCoverageIgnoreEnd
@@ -713,7 +716,7 @@ trait DateTimeConvenienceMethodsTrait
                 $this->getMinutes(),
                 $this->getSeconds(),
             );
-            $baseSeconds = (int) ($calendar->getTime() / MILLISECONDS_PER_SECOND);
+            $baseSeconds = (int) ($calendar->getTime() / namespace\MILLISECONDS_PER_SECOND);
             $baseNanoseconds = $this->getNanoseconds();
         } else {
             $ts = $this->getTimestamp();
@@ -765,7 +768,7 @@ trait DateTimeConvenienceMethodsTrait
             $pattern,
             $timezone ?? $this->getTimezone(),
             $locale,
-        )->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND));
+        )->format($timestamp->getSeconds() + ($timestamp->getNanoseconds() / namespace\NANOSECONDS_PER_SECOND));
     }
 
     /**
