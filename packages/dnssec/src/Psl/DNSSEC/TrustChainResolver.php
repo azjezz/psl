@@ -205,11 +205,16 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
             return new TrustChainResult(TrustChainStatus::Bogus, [], $failure);
         }
 
-        /** @var list<DNSKEYRecord> */
-        $validated[$zone] = array_values(array_filter(
+        /** @var list<DNSKEYRecord> $records */
+        $records = array_values(array_filter(
             $dnskeys,
+            /**
+             * @phpstan-assert-if-true DNSKEYRecord $r
+             */
             static fn(RecordInterface $r): bool => $r instanceof DNSKEYRecord,
         ));
+
+        $validated[$zone] = $records;
         return null;
     }
 
@@ -249,11 +254,17 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
             return new TrustChainResult(TrustChainStatus::Bogus, [], $failure);
         }
 
-        /** @var list<DNSKEYRecord> */
-        $validated['.'] = array_values(array_filter(
+        /** @var list<DNSKEYRecord> $records */
+        $records = array_values(array_filter(
             $dnskeys,
+            /**
+             * @phpstan-assert-if-true DNSKEYRecord $r
+             */
             static fn(RecordInterface $r): bool => $r instanceof DNSKEYRecord,
         ));
+
+        $validated['.'] = $records;
+
         return null;
     }
 
