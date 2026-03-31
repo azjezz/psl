@@ -10,6 +10,7 @@ use Psl\IO\Exception\AlreadyClosedException;
 use Psl\Network;
 use Psl\SMTP\Capability;
 use Psl\SMTP\Client\Connection;
+use Psl\SMTP\Command;
 use Psl\SMTP\Exception\ConnectionException;
 use Psl\SMTP\Exception\ProtocolException;
 use Psl\Str\Byte;
@@ -563,7 +564,7 @@ final class ConnectionTest extends TestCase
             $serverStream->writeAll("250 OK\r\n");
         });
 
-        $cmd = new \Psl\SMTP\Command('MAIL', 'FROM:<user@example.com>');
+        $cmd = new Command('MAIL', 'FROM:<user@example.com>');
         $response = $connection->sendCommand($cmd);
 
         static::assertSame(250, $response->code);
@@ -602,7 +603,7 @@ final class ConnectionTest extends TestCase
             $serverStream->writeAll("221 Bye\r\n");
         });
 
-        $cmd = new \Psl\SMTP\Command('QUIT');
+        $cmd = new Command('QUIT');
         $connection->writeCommand($cmd);
         $response = $connection->readReply();
 

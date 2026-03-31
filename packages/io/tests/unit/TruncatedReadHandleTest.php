@@ -7,6 +7,8 @@ namespace Psl\IO\Tests\Unit;
 use Closure;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Psl\Async\CancellationTokenInterface;
+use Psl\Async\NullCancellationToken;
 use Psl\IO;
 
 final class TruncatedReadHandleTest extends TestCase
@@ -98,7 +100,7 @@ final class TruncatedReadHandleTest extends TestCase
 
             public function read(
                 null|int $maxBytes = null,
-                \Psl\Async\CancellationTokenInterface $cancellation = new \Psl\Async\NullCancellationToken(),
+                CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): string {
                 return '';
             }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\HTTP\Client\Internal\H2;
 
+use Closure;
 use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
@@ -97,11 +98,11 @@ final class H2Stream
 
     /**
      * @param int $streamId The HTTP/2 stream identifier assigned by the connection.
-     * @param null|(\Closure(Response): void) $onInformationalResponse Callback invoked for each 1xx response as it arrives.
+     * @param null|(Closure(Response): void) $onInformationalResponse Callback invoked for each 1xx response as it arrives.
      */
     public function __construct(
         public readonly int $streamId,
-        private readonly null|\Closure $onInformationalResponse = null,
+        private readonly null|Closure $onInformationalResponse = null,
     ) {
         /** @var Async\Deferred<array{int<100, 999>, FieldMap, bool}> */
         $this->responseDeferred = new Async\Deferred();

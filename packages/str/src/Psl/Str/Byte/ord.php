@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Str\Byte;
 
+use function ord as php_ord;
+
 /**
  * Return ASCII value of character.
  *
@@ -15,5 +17,5 @@ namespace Psl\Str\Byte;
  */
 function ord(string $character): int
 {
-    return $character !== '' ? \ord($character[0]) : 0;
+    return $character !== '' ? php_ord($character[0]) : 0;
 }

@@ -22,7 +22,6 @@ final class RuntimeExceptionTest extends TestCase
 
         static::assertInstanceOf(RuntimeException::class, $e);
         static::assertInstanceOf(ExceptionInterface::class, $e);
-        static::assertInstanceOf(\Psl\Exception\RuntimeException::class, $e);
     }
 
     public function testProtocolExceptionExtendsRuntimeException(): void

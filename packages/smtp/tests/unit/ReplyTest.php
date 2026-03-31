@@ -7,6 +7,7 @@ namespace Psl\SMTP\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\SMTP\EnhancedStatusCode;
 use Psl\SMTP\Reply;
+use Stringable;
 
 use function str_repeat;
 
@@ -432,7 +433,7 @@ final class ReplyTest extends TestCase
     {
         $response = new Reply(250, null, 'OK');
 
-        static::assertInstanceOf(\Stringable::class, $response);
+        static::assertInstanceOf(Stringable::class, $response);
     }
 
     public function testIsSyntaxCategoryCode199IsNotSyntax(): void

@@ -34,6 +34,7 @@ use Psl\DNSSEC\TrustChainResolverInterface;
 use Psl\DNSSEC\TrustChainResult;
 use Psl\DNSSEC\TrustChainStatus;
 use Psl\IP\Address;
+use Psl\Str;
 use Psl\Str\Byte;
 use RuntimeException;
 
@@ -911,7 +912,7 @@ final class SecureResolverAdditionalTest extends TestCase
 
         $ownerWire = Encoder::encodeName('example.com');
         $rdataWriter = new Writer();
-        foreach (\Psl\Str\Byte\split($aRecord->address->toString(), '.') as $part) {
+        foreach (Str\Byte\split($aRecord->address->toString(), '.') as $part) {
             $rdataWriter = $rdataWriter->u8((int) $part);
         }
 
@@ -1049,7 +1050,7 @@ final class SecureResolverAdditionalTest extends TestCase
 
         $ownerWire = Encoder::encodeName('example.com');
         $rdataWriter = new Writer();
-        foreach (\Psl\Str\Byte\split($aRecord->address->toString(), '.') as $part) {
+        foreach (Str\Byte\split($aRecord->address->toString(), '.') as $part) {
             $rdataWriter = $rdataWriter->u8((int) $part);
         }
 

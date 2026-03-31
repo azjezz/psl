@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\Filesystem;
 
+use function copy as php_copy;
 use function sprintf;
 
 /**
@@ -33,7 +34,7 @@ function copy(string $source, string $destination, bool $overwrite = false): voi
         throw Exception\NotReadableException::forFile($source);
     }
 
-    $result = \copy($source, $destination);
+    $result = php_copy($source, $destination);
     if (!$result) {
         throw new Exception\RuntimeException(sprintf(
             'Failed to copy source file "%s" to destination "%s".',

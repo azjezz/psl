@@ -55,6 +55,7 @@ use function strtolower;
 use function substr;
 use function unpack;
 
+use const PHP_INT_MAX;
 use const Psl\H2\DEFAULT_INITIAL_WINDOW_SIZE;
 use const Psl\H2\DEFAULT_MAX_FRAME_SIZE;
 use const Psl\H2\MAX_FRAME_SIZE_UPPER_BOUND;

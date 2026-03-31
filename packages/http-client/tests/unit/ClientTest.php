@@ -6,8 +6,10 @@ namespace Psl\HTTP\Client\Tests\Unit;
 
 use ArrayObject;
 use PHPUnit\Framework\TestCase;
+use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
+use Psl\Async\LinkedCancellationToken;
 use Psl\Async\NullCancellationToken;
 use Psl\DateTime\Duration;
 use Psl\HTTP\Client\Client;
@@ -446,7 +448,7 @@ final class ClientTest extends TestCase
 
                 $cancellation->throwIfCancelled();
 
-                \Psl\Async\sleep(Duration::seconds(5));
+                Async\sleep(Duration::seconds(5));
 
                 $cancellation->throwIfCancelled();
 
@@ -496,7 +498,7 @@ final class ClientTest extends TestCase
         }
 
         static::assertArrayHasKey('cancellation', (array) $capture);
-        static::assertInstanceOf(\Psl\Async\LinkedCancellationToken::class, $capture['cancellation']);
+        static::assertInstanceOf(LinkedCancellationToken::class, $capture['cancellation']);
         static::assertTrue($capture['cancellation']->cancellable);
     }
 

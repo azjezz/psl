@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\Message\Message;
+use Psl\Message\MessageId;
 use Psl\MIME\Headers;
 use Psl\MIME\Part;
 
@@ -326,8 +327,8 @@ final class MessageTest extends TestCase
     #[Test]
     public function withReferencesStoresAngleBracketForm(): void
     {
-        $id1 = \Psl\Message\MessageId::parse('<ref1@example.com>');
-        $id2 = \Psl\Message\MessageId::parse('<ref2@example.com>');
+        $id1 = MessageId::parse('<ref1@example.com>');
+        $id2 = MessageId::parse('<ref2@example.com>');
         $message = new Message();
         $message = $message->withReferences([$id1, $id2]);
 
@@ -343,8 +344,8 @@ final class MessageTest extends TestCase
     #[Test]
     public function withInReplyToStoresAngleBracketForm(): void
     {
-        $id1 = \Psl\Message\MessageId::parse('<parent@example.com>');
-        $id2 = \Psl\Message\MessageId::parse('<other@example.com>');
+        $id1 = MessageId::parse('<parent@example.com>');
+        $id2 = MessageId::parse('<other@example.com>');
         $message = new Message();
         $message = $message->withInReplyTo([$id1, $id2]);
 
@@ -359,7 +360,7 @@ final class MessageTest extends TestCase
     #[Test]
     public function withReferencesEmptyRemovesHeader(): void
     {
-        $id = \Psl\Message\MessageId::parse('<ref@example.com>');
+        $id = MessageId::parse('<ref@example.com>');
         $message = new Message();
         $message = $message->withReferences([$id]);
         static::assertNotNull($message->headers->get('References'));
@@ -371,7 +372,7 @@ final class MessageTest extends TestCase
     #[Test]
     public function withInReplyToEmptyRemovesHeader(): void
     {
-        $id = \Psl\Message\MessageId::parse('<reply@example.com>');
+        $id = MessageId::parse('<reply@example.com>');
         $message = new Message();
         $message = $message->withInReplyTo([$id]);
         static::assertNotNull($message->headers->get('In-Reply-To'));
@@ -403,7 +404,7 @@ final class MessageTest extends TestCase
     #[Test]
     public function withInReplyToHeaderContainsAngleBracketsFromToString(): void
     {
-        $id = \Psl\Message\MessageId::parse('<reply-id@example.com>');
+        $id = MessageId::parse('<reply-id@example.com>');
         $message = new Message()->withInReplyTo([$id]);
 
         $header = $message->headers->get('In-Reply-To');
@@ -413,8 +414,8 @@ final class MessageTest extends TestCase
     #[Test]
     public function withInReplyToMultipleIdsJoinedWithAngleBrackets(): void
     {
-        $id1 = \Psl\Message\MessageId::parse('<first@example.com>');
-        $id2 = \Psl\Message\MessageId::parse('<second@example.com>');
+        $id1 = MessageId::parse('<first@example.com>');
+        $id2 = MessageId::parse('<second@example.com>');
         $message = new Message()->withInReplyTo([$id1, $id2]);
 
         $header = $message->headers->get('In-Reply-To');
@@ -424,7 +425,7 @@ final class MessageTest extends TestCase
     #[Test]
     public function withInReplyToUsesToStringNotRawId(): void
     {
-        $id = \Psl\Message\MessageId::parse('bare@example.com');
+        $id = MessageId::parse('bare@example.com');
         $message = new Message()->withInReplyTo([$id]);
 
         $header = $message->headers->get('In-Reply-To');
@@ -499,8 +500,8 @@ final class MessageTest extends TestCase
     #[Test]
     public function withReferencesHeaderUsesToStringForEachId(): void
     {
-        $id1 = \Psl\Message\MessageId::parse('<ref-a@example.com>');
-        $id2 = \Psl\Message\MessageId::parse('<ref-b@example.com>');
+        $id1 = MessageId::parse('<ref-a@example.com>');
+        $id2 = MessageId::parse('<ref-b@example.com>');
         $message = new Message()->withReferences([$id1, $id2]);
 
         $header = $message->headers->get('References');
@@ -510,7 +511,7 @@ final class MessageTest extends TestCase
     #[Test]
     public function withReferencesHeaderContainsAngleBrackets(): void
     {
-        $id = \Psl\Message\MessageId::parse('bare-id@example.com');
+        $id = MessageId::parse('bare-id@example.com');
         $message = new Message()->withReferences([$id]);
 
         $header = $message->headers->get('References');
@@ -521,7 +522,7 @@ final class MessageTest extends TestCase
     #[Test]
     public function withReferencesSingleIdProducesCorrectHeader(): void
     {
-        $id = \Psl\Message\MessageId::parse('<single@example.com>');
+        $id = MessageId::parse('<single@example.com>');
         $message = new Message()->withReferences([$id]);
 
         $header = $message->headers->get('References');

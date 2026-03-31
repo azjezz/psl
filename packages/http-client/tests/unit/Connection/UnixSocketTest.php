@@ -26,6 +26,8 @@ use function getmypid;
 use function Psl\URL\parse;
 use function unlink;
 
+use const PHP_OS_FAMILY;
+
 /**
  * @mago-expect lint:excessive-nesting
  */
@@ -33,7 +35,7 @@ final class UnixSocketTest extends TestCase
 {
     protected function setUp(): void
     {
-        if (\PHP_OS_FAMILY === 'Windows') {
+        if (PHP_OS_FAMILY === 'Windows') {
             static::markTestSkipped('Unix sockets are not supported on Windows.');
         }
     }

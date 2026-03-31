@@ -10,6 +10,7 @@ use Psl\Comparison\Order;
 use Psl\IP\Address;
 use Psl\IP\Exception\InvalidArgumentException;
 use Psl\IP\Family;
+use Stringable;
 
 use function strlen;
 
@@ -597,7 +598,7 @@ final class AddressTest extends TestCase
     {
         $address = Address::v4('10.0.0.1');
 
-        static::assertInstanceOf(\Stringable::class, $address);
+        static::assertInstanceOf(Stringable::class, $address);
         static::assertSame($address->toString(), (string) $address);
     }
 }

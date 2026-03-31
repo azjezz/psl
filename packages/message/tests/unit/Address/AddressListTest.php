@@ -10,6 +10,8 @@ use Psl\Message\Address\AddressList;
 use Psl\Message\Address\Group;
 use Psl\Message\Address\Mailbox;
 
+use function array_key_first;
+
 final class AddressListTest extends TestCase
 {
     #[Test]
@@ -699,7 +701,7 @@ final class AddressListTest extends TestCase
         $list = AddressList::of(addr: $m);
 
         static::assertCount(1, $list);
-        static::assertSame(0, \array_key_first($list->addresses));
+        static::assertSame(0, array_key_first($list->addresses));
     }
 
     #[Test]

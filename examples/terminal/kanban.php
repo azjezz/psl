@@ -270,7 +270,7 @@ function render_column(
 ): void {
     $isActiveCol = $colIdx === $state->active_col;
     $cardCount = Iter\count($cards);
-    $colName = COLUMN_NAMES[$colIdx];
+    $colName = namespace\COLUMN_NAMES[$colIdx];
 
     $borderColor = $isActiveCol ? Color\bright_cyan() : Color\ansi256(240);
     $titleFg = $isActiveCol ? Color\bright_white() : Color\bright_black();
@@ -279,7 +279,7 @@ function render_column(
         ->title(" {$colName} ({$cardCount}) ")
         ->titleStyle(Ansi\foreground($titleFg), Style\bold())
         ->border(Widget\Border::rounded(Ansi\foreground($borderColor)))
-        ->padding(left: 1, right: 2);
+        ->padding(right: 2, left: 1);
 
     $colBlock->render($colRect, Widget\Paragraph::new([]), $buffer);
     $innerArea = $colBlock->innerArea($colRect);

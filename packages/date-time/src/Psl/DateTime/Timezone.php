@@ -528,7 +528,7 @@ enum Timezone: string implements
     public function getOffset(TemporalInterface $temporal, bool $local = false): Duration
     {
         $intlTimezone = Internal\to_intl_timezone($this);
-        $timestampMillis = $temporal->getTimestamp()->getSeconds() * MILLISECONDS_PER_SECOND;
+        $timestampMillis = $temporal->getTimestamp()->getSeconds() * namespace\MILLISECONDS_PER_SECOND;
         $intlTimezone->getOffset($timestampMillis, $local, $raw_offset, $dst_offset);
 
         return Duration::milliseconds($raw_offset + $dst_offset);
@@ -561,7 +561,7 @@ enum Timezone: string implements
     public function getDaylightSavingTimeOffset(TemporalInterface $temporal, bool $local = false): Duration
     {
         $intlTimezone = Internal\to_intl_timezone($this);
-        $timestampMillis = $temporal->getTimestamp()->getSeconds() * MILLISECONDS_PER_SECOND;
+        $timestampMillis = $temporal->getTimestamp()->getSeconds() * namespace\MILLISECONDS_PER_SECOND;
         $intlTimezone->getOffset($timestampMillis, $local, $_, $dst_offset);
 
         return Duration::milliseconds($dst_offset);

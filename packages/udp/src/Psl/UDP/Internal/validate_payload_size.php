@@ -24,9 +24,9 @@ const MAX_DATAGRAM_SIZE = 65_507;
  */
 function validate_payload_size(string $data): void
 {
-    if (strlen($data) > MAX_DATAGRAM_SIZE) {
+    if (strlen($data) > namespace\MAX_DATAGRAM_SIZE) {
         throw new Network\Exception\InvalidArgumentException(
-            'UDP datagram payload exceeds maximum size of ' . MAX_DATAGRAM_SIZE . ' bytes.',
+            'UDP datagram payload exceeds maximum size of ' . namespace\MAX_DATAGRAM_SIZE . ' bytes.',
         );
     }
 }

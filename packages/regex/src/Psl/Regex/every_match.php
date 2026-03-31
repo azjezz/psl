@@ -8,6 +8,8 @@ use Psl\Type;
 
 use function preg_match_all;
 
+use const PREG_SET_ORDER;
+
 /**
  * Determine if $subject matches the given $pattern and return every matches.
  *

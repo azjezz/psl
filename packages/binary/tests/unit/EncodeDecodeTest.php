@@ -13,6 +13,8 @@ use Psl\Math;
 
 use function is_nan;
 
+use const INF;
+use const NAN;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 

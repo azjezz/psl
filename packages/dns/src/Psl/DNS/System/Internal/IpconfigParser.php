@@ -17,6 +17,8 @@ use function strlen;
 use function substr;
 use function trim;
 
+use const PREG_OFFSET_CAPTURE;
+
 /**
  * Parses Windows `ipconfig /all` output for DNS server addresses.
  *

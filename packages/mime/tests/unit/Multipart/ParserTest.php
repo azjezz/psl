@@ -13,7 +13,10 @@ use Psl\MIME\MultiPart\Parser;
 use Psl\Str;
 
 use function iterator_to_array;
+use function str_pad;
 use function strpos;
+
+use const STR_PAD_LEFT;
 
 final class ParserTest extends TestCase
 {
@@ -1332,7 +1335,7 @@ final class ParserTest extends TestCase
     {
         $content = '';
         for ($i = 0; $i < 1000; $i++) {
-            $content .= \str_pad((string) $i, 10, '0', STR_PAD_LEFT);
+            $content .= str_pad((string) $i, 10, '0', STR_PAD_LEFT);
         }
 
         $body = "--boundary\r\nContent-Type: text/plain\r\n\r\n{$content}\r\n--boundary--\r\n";

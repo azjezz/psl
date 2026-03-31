@@ -14,6 +14,8 @@ use Psl\TCP;
 use Psl\TLS;
 use Throwable;
 
+use const SIGINT;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 const TLS_RESPONSE_FORMAT = <<<HTML
@@ -83,7 +85,7 @@ while (true) {
                 $keepAlive = Str\Byte\contains_ci($headers, 'connection: keep-alive');
                 $connectionHeader = $keepAlive ? 'keep-alive' : 'close';
 
-                $body = Str\format(TLS_RESPONSE_FORMAT, Html\encode_special_characters($headers));
+                $body = Str\format(namespace\TLS_RESPONSE_FORMAT, Html\encode_special_characters($headers));
                 $tls->writeAll(
                     "HTTP/1.1 200 OK\r\nConnection: {$connectionHeader}\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: "
                     . Str\Byte\length($body)

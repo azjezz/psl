@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\HTTP\Client\Tests\Unit;
 
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
@@ -259,7 +260,7 @@ final class MiddlewareTest extends TestCase
                         CancellationTokenInterface $cancellation = new NullCancellationToken(),
                     ): Transaction {
                         $this->exchangeCalled = true;
-                        throw new \LogicException('should not be called');
+                        throw new LogicException('should not be called');
                     }
 
                     public function finalize(Transaction $transaction): Transaction

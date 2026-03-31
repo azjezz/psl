@@ -10,6 +10,8 @@ use Psl\Filesystem;
 use Psl\IO;
 use Psl\Shell;
 
+use const PHP_BINARY;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 Async\main(static function (): int {

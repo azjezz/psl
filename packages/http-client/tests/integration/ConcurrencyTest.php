@@ -15,6 +15,7 @@ use function Psl\URL\parse;
 use function str_repeat;
 use function strlen;
 
+use const JSON_THROW_ON_ERROR;
 use const Psl\HTTP\Message\METHOD_DELETE;
 use const Psl\HTTP\Message\METHOD_GET;
 use const Psl\HTTP\Message\METHOD_HEAD;

@@ -29,6 +29,8 @@ use Psl\SMTP\Priority;
 use Psl\SMTP\Security;
 use Psl\Str\Byte;
 use Psl\TCP;
+use Throwable;
+use UnhandledMatchError;
 
 use function base64_decode;
 
@@ -2935,7 +2937,7 @@ final class TransportTest extends TestCase
 
         try {
             $transport->send($envelope, $message);
-        } catch (\UnhandledMatchError) {
+        } catch (UnhandledMatchError) {
             static::fail('Match arm for Security::None was removed');
         } catch (ExceptionInterface) {
             $this->addToAssertionCount(1);
@@ -2961,7 +2963,7 @@ final class TransportTest extends TestCase
 
         try {
             $transport->send($envelope, $message);
-        } catch (\UnhandledMatchError) {
+        } catch (UnhandledMatchError) {
             static::fail('Match arm for Security::StartTLS was removed');
         } catch (ExceptionInterface) {
             $this->addToAssertionCount(1);
@@ -2987,7 +2989,7 @@ final class TransportTest extends TestCase
 
         try {
             $transport->send($envelope, $message);
-        } catch (\UnhandledMatchError) {
+        } catch (UnhandledMatchError) {
             static::fail('Match arm for Security::TLS was removed');
         } catch (ExceptionInterface) {
             $this->addToAssertionCount(1);
@@ -4393,7 +4395,7 @@ final class TransportTest extends TestCase
             try {
                 $client = $server->accept();
                 $client->close();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 unset($e);
             }
         });

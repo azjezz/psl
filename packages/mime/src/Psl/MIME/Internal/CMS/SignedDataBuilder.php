@@ -14,6 +14,8 @@ use function openssl_digest;
 use function openssl_pkey_get_private;
 use function openssl_sign;
 
+use const OPENSSL_ALGO_SHA256;
+
 /**
  * Builds CMS SignedData structures per RFC 5652 section 5.
  *

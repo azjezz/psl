@@ -23,7 +23,7 @@ function match_signatures(string $content): null|string
 {
     $length = strlen($content);
 
-    foreach (SIGNATURES as [$offset, $magic, $mask, $type]) {
+    foreach (namespace\SIGNATURES as [$offset, $magic, $mask, $type]) {
         $magicLen = strlen($magic);
         if ($length < ($offset + $magicLen)) {
             continue;

@@ -78,7 +78,7 @@ final class EncryptorTest extends TestCase
         $ciphertext = $encryptor->seal('hello');
         $tampered = $ciphertext;
         $last = length($tampered) - 1;
-        $tampered[$last] = \Psl\Str\Byte\chr(\Psl\Str\Byte\ord($tampered[$last]) ^ 0x01);
+        $tampered[$last] = Str\Byte\chr(Str\Byte\ord($tampered[$last]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);
         $this->expectExceptionMessage('Asymmetric decryption failed.');

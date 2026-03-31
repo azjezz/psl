@@ -14,6 +14,9 @@ use function openssl_pkey_get_private;
 use function openssl_private_decrypt;
 use function strlen;
 
+use const OPENSSL_PKCS1_PADDING;
+use const OPENSSL_RAW_DATA;
+
 /**
  * Parses and decrypts CMS EnvelopedData structures per RFC 5652 section 6.
  *

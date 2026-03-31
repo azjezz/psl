@@ -427,7 +427,7 @@ final class ShapeTypeTest extends TypeTestCase
             'bio' => Type\nullish(Type\string()),
         ]);
 
-        $result = $type->coerce(new \ArrayIterator(['name' => 'saif']));
+        $result = $type->coerce(new ArrayIterator(['name' => 'saif']));
 
         static::assertSame(['name' => 'saif', 'bio' => null], $result);
     }

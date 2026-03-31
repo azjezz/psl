@@ -182,11 +182,12 @@ final class Iterator implements Countable, SeekableIterator
             return;
         }
 
-        if ($this->generator) {
+        $generator = $this->generator;
+        if ($generator) {
             do {
                 $this->save();
                 $this->next();
-                if (!$this->generator->valid()) {
+                if (!$generator->valid()) {
                     $this->generator = null;
                     throw new Exception\OutOfBoundsException('Position is out-of-bounds.');
                 }
@@ -228,15 +229,15 @@ final class Iterator implements Countable, SeekableIterator
     #[Override]
     public function count(): int
     {
-        if ($this->generator) {
+        $generator = $this->generator;
+        if ($generator) {
             $previous = $this->position;
             do {
                 $this->save();
                 $this->next();
-            } while ($this->generator->valid());
+            } while ($generator->valid());
 
             $this->position = $previous;
-
             $this->generator = null;
         }
 

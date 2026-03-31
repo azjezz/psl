@@ -290,7 +290,7 @@ trait TemporalConvenienceMethodsTrait
     ): string {
         $timestamp = $this->getTimestamp();
         return Internal\create_intl_date_formatter(null, null, $pattern, $timezone, $locale)->format(
-            $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
+            $timestamp->getSeconds() + ($timestamp->getNanoseconds() / namespace\NANOSECONDS_PER_SECOND),
         );
     }
 
@@ -361,7 +361,7 @@ trait TemporalConvenienceMethodsTrait
     ): string {
         $timestamp = $this->getTimestamp();
         return Internal\create_intl_date_formatter($dateStyle, $timeStyle, null, $timezone, $locale)->format(
-            $timestamp->getSeconds() + ($timestamp->getNanoseconds() / NANOSECONDS_PER_SECOND),
+            $timestamp->getSeconds() + ($timestamp->getNanoseconds() / namespace\NANOSECONDS_PER_SECOND),
         );
     }
 

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\DNS\Tests\Unit;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
+use Psl\Cache\Exception\UnavailableItemException;
 use Psl\Cache\LocalStore;
+use Psl\Cache\StoreInterface;
 use Psl\DateTime\Duration;
 use Psl\DNS\CachedResolver;
 use Psl\DNS\EDNS;
@@ -1377,9 +1380,9 @@ final class CachedResolverTest extends TestCase
     /**
      * @param list<array{key: string, ttl: Duration|null}> $updateCalls
      */
-    private static function createTrackingUpdateCacheStore(array &$updateCalls): \Psl\Cache\StoreInterface
+    private static function createTrackingUpdateCacheStore(array &$updateCalls): StoreInterface
     {
-        return new class($updateCalls) implements \Psl\Cache\StoreInterface {
+        return new class($updateCalls) implements StoreInterface {
             /** @var list<array{key: string, ttl: Duration|null}> */
             private array $calls;
 
@@ -1391,15 +1394,15 @@ final class CachedResolverTest extends TestCase
 
             public function get(string $key): mixed
             {
-                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+                throw new UnavailableItemException($key);
             }
 
-            public function compute(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
             {
                 return $computer();
             }
 
-            public function update(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
             {
                 $this->calls[] = ['key' => $key, 'ttl' => $ttl];
                 return $computer(null);
@@ -1412,9 +1415,9 @@ final class CachedResolverTest extends TestCase
     /**
      * @param list<Duration|null> $computeTtls
      */
-    private static function createComputeTrackingCacheStore(array &$computeTtls): \Psl\Cache\StoreInterface
+    private static function createComputeTrackingCacheStore(array &$computeTtls): StoreInterface
     {
-        return new class($computeTtls) implements \Psl\Cache\StoreInterface {
+        return new class($computeTtls) implements StoreInterface {
             /** @var list<Duration|null> */
             private array $ttls;
 
@@ -1426,16 +1429,16 @@ final class CachedResolverTest extends TestCase
 
             public function get(string $key): mixed
             {
-                throw new \Psl\Cache\Exception\UnavailableItemException($key);
+                throw new UnavailableItemException($key);
             }
 
-            public function compute(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
             {
                 $this->ttls[] = $ttl;
                 return $computer();
             }
 
-            public function update(string $key, \Closure $computer, null|Duration $ttl = null): mixed
+            public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
             {
                 return $computer(null);
             }
@@ -1445,15 +1448,15 @@ final class CachedResolverTest extends TestCase
     }
 
     /**
-     * @param \Closure(): Response $handler
+     * @param Closure(): Response $handler
      */
-    private static function countingResolver(\Closure $handler): object
+    private static function countingResolver(Closure $handler): object
     {
         return new class($handler) implements ResolverInterface {
-            /** @var \Closure(): Response */
-            private \Closure $handler;
+            /** @var Closure(): Response */
+            private Closure $handler;
 
-            public function __construct(\Closure $handler)
+            public function __construct(Closure $handler)
             {
                 $this->handler = $handler;
             }

@@ -136,7 +136,6 @@ final class IterableReadHandle implements ReadHandleInterface, CloseHandleInterf
 
         $this->advance();
 
-        /** @mago-expect analysis:impossible-condition */
         if ($this->eof) {
             return '';
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\Iter;
 
 use function array_values;
+use function count;
 use function is_array;
 use function iterator_to_array;
 use function mt_rand;
@@ -32,7 +33,7 @@ function random(iterable $iterable): mixed
         throw new Exception\InvalidArgumentException('Expected a non-empty iterable.');
     }
 
-    $size = \count($values);
+    $size = count($values);
     if (1 === $size) {
         return $values[0];
     }

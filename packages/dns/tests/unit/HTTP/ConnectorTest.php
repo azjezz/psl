@@ -25,6 +25,7 @@ use Psl\HTTP\Message\Response;
 use Psl\HTTP\Message\Transaction;
 use Psl\IP\Address;
 use Psl\Network;
+use Psl\Socks\Configuration;
 
 use function Psl\URL\parse;
 
@@ -507,7 +508,7 @@ final class ConnectorTest extends TestCase
         ]);
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
-        $config = new ClientConfiguration(socksConfiguration: new \Psl\Socks\Configuration('socks.local', 1080));
+        $config = new ClientConfiguration(socksConfiguration: new Configuration('socks.local', 1080));
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
@@ -540,7 +541,7 @@ final class ConnectorTest extends TestCase
         ]);
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
-        $config = new ClientConfiguration(socksConfiguration: new \Psl\Socks\Configuration('192.168.1.1', 1080));
+        $config = new ClientConfiguration(socksConfiguration: new Configuration('192.168.1.1', 1080));
 
         $connector->connect(
             new Origin('http', 'example.com', 80),

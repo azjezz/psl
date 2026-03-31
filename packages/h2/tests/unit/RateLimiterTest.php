@@ -13,6 +13,8 @@ use ReflectionProperty;
 
 use function usleep;
 
+use const PHP_OS_FAMILY;
+
 final class RateLimiterTest extends TestCase
 {
     public function testAllowsFramesWithinLimit(): void

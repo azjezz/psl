@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\IO\Tests\Unit;
 
+use ArrayIterator;
 use Closure;
 use Generator;
+use IteratorAggregate;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
+use RuntimeException;
 
 final class IterableReadHandleTest extends TestCase
 {
@@ -196,10 +199,10 @@ final class IterableReadHandleTest extends TestCase
 
     public function testIteratorAggregateSupport(): void
     {
-        $aggregate = new class implements \IteratorAggregate {
-            public function getIterator(): \ArrayIterator
+        $aggregate = new class implements IteratorAggregate {
+            public function getIterator(): ArrayIterator
             {
-                return new \ArrayIterator(['foo', 'bar']);
+                return new ArrayIterator(['foo', 'bar']);
             }
         };
 
@@ -213,7 +216,7 @@ final class IterableReadHandleTest extends TestCase
 
     public function testIteratorSupport(): void
     {
-        $iterator = new \ArrayIterator(['one', 'two']);
+        $iterator = new ArrayIterator(['one', 'two']);
 
         $handle = new IO\IterableReadHandle($iterator);
 
@@ -253,14 +256,14 @@ final class IterableReadHandleTest extends TestCase
     {
         $generator = (static function (): Generator {
             yield 'ok';
-            throw new \RuntimeException('iterator failed');
+            throw new RuntimeException('iterator failed');
         })();
 
         $handle = new IO\IterableReadHandle($generator);
 
         static::assertSame('ok', $handle->read());
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('iterator failed');
 
         $handle->read();

@@ -7,6 +7,7 @@ namespace Psl\H2\Internal;
 use Psl\H2\Exception\FlowControlException;
 use Psl\H2\StreamState;
 
+use const PHP_INT_MAX;
 use const Psl\H2\DEFAULT_INITIAL_WINDOW_SIZE;
 use const Psl\H2\MAX_WINDOW_SIZE;
 

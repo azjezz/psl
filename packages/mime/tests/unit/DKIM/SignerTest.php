@@ -15,6 +15,7 @@ use Psl\MIME\Tests\Fixture\Certificates;
 use ReflectionMethod;
 
 use function base64_decode;
+use function count;
 use function explode;
 use function hash;
 use function preg_match;
@@ -1311,7 +1312,7 @@ final class SignerTest extends TestCase
         }
 
         static::assertNotEmpty($nonEmptyLines);
-        $lastIdx = \count($nonEmptyLines) - 1;
+        $lastIdx = count($nonEmptyLines) - 1;
         foreach ($nonEmptyLines as $idx => $line) {
             if ($idx === $lastIdx) {
                 continue;

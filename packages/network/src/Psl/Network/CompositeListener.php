@@ -102,7 +102,6 @@ final class CompositeListener implements ListenerInterface
         }
 
         if ($this->backlog !== []) {
-            /** @mago-expect analysis:invalid-argument,never-return - false positives ! */
             return array_shift($this->backlog);
         }
 

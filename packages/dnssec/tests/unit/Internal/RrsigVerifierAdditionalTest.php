@@ -28,6 +28,7 @@ use Psl\DNS\Record\RRSIGRecord;
 use Psl\DNS\Record\SOARecord;
 use Psl\DNSSEC\Internal\KeyTag;
 use Psl\DNSSEC\Internal\RRSIG\RRSIGVerifier;
+use Psl\IP\Address;
 use Psl\Str\Byte;
 use RuntimeException;
 
@@ -461,7 +462,7 @@ final class RrsigVerifierAdditionalTest extends TestCase
         $dnskey = new DNSKEYRecord('example.com', Duration::seconds(3600), 257, 3, Algorithm::RSASHA256, $rawKey);
         $keyTag = KeyTag::compute($dnskey);
 
-        $aaaaRecord = new AAAARecord('example.com', Duration::seconds(300), \Psl\IP\Address::v6('2001:db8::1'));
+        $aaaaRecord = new AAAARecord('example.com', Duration::seconds(300), Address::v6('2001:db8::1'));
 
         $rdata = $aaaaRecord->address->toBytes();
 

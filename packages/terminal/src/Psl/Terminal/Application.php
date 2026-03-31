@@ -19,6 +19,9 @@ use function defined;
 use function is_resource;
 use function substr;
 
+use const SIGINT;
+use const SIGWINCH;
+
 /**
  * Terminal application managing the event loop, raw mode, and rendering lifecycle.
  *

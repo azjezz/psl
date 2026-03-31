@@ -26,5 +26,5 @@ function sniff_riff(string $content): null|string
 
     $subtype = substr($content, 8, 4);
 
-    return RIFF_SUBTYPES[$subtype] ?? null;
+    return namespace\RIFF_SUBTYPES[$subtype] ?? null;
 }

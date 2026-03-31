@@ -57,9 +57,9 @@ final readonly class Period implements TemporalAmountInterface
     public static function fromParts(int $years, int $months = 0, int $days = 0): self
     {
         // Normalize months into years.
-        $totalMonths = ($years * MONTHS_PER_YEAR) + $months;
-        $y = (int) ($totalMonths / MONTHS_PER_YEAR);
-        $m = $totalMonths % MONTHS_PER_YEAR;
+        $totalMonths = ($years * namespace\MONTHS_PER_YEAR) + $months;
+        $y = (int) ($totalMonths / namespace\MONTHS_PER_YEAR);
+        $m = $totalMonths % namespace\MONTHS_PER_YEAR;
 
         // Ensure sign coherence: all non-zero parts share the same sign.
         // If years+months net sign disagrees with days, we cannot normalize
@@ -68,10 +68,10 @@ final readonly class Period implements TemporalAmountInterface
         // @codeCoverageIgnoreStart
         if ($y > 0 && $m < 0) {
             --$y;
-            $m += MONTHS_PER_YEAR;
+            $m += namespace\MONTHS_PER_YEAR;
         } elseif ($y < 0 && $m > 0) {
             ++$y;
-            $m -= MONTHS_PER_YEAR;
+            $m -= namespace\MONTHS_PER_YEAR;
         }
 
         // @codeCoverageIgnoreEnd
@@ -110,7 +110,7 @@ final readonly class Period implements TemporalAmountInterface
      */
     public static function weeks(int $weeks): self
     {
-        return new self(0, 0, $weeks * DAYS_PER_WEEK);
+        return new self(0, 0, $weeks * namespace\DAYS_PER_WEEK);
     }
 
     /**
@@ -148,15 +148,15 @@ final readonly class Period implements TemporalAmountInterface
     public static function between(DateTimeInterface $start, DateTimeInterface $end): self
     {
         $totalMonths =
-            ($end->getYear() * MONTHS_PER_YEAR) + $end->getMonth()
-            - (($start->getYear() * MONTHS_PER_YEAR) + $start->getMonth());
+            ($end->getYear() * namespace\MONTHS_PER_YEAR) + $end->getMonth()
+            - (($start->getYear() * namespace\MONTHS_PER_YEAR) + $start->getMonth());
         $days = $end->getDay() - $start->getDay();
 
         if ($days < 0) {
             $totalMonths--;
             // Previous month: (endMonth + 10) % 12 + 1 maps 1→12, 2→1, 3→2, etc.
             $endMonth = $end->getMonth();
-            $days += Month::from((($endMonth + 10) % MONTHS_PER_YEAR) + 1)->getDaysForYear(
+            $days += Month::from((($endMonth + 10) % namespace\MONTHS_PER_YEAR) + 1)->getDaysForYear(
                 $end->getYear() - (int) (1 === $endMonth),
             );
         }

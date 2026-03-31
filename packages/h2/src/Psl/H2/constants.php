@@ -6,6 +6,8 @@ namespace Psl\H2;
 
 use Psl\H2\Frame\FrameType;
 
+use const PHP_INT_MAX;
+
 /**
  * The HTTP/2 client connection preface string (24 octets).
  *

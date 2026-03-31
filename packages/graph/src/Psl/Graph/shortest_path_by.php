@@ -11,6 +11,8 @@ use Psl\DataStructure\Queue;
 use function array_reverse;
 use function Psl\Graph\Internal\get_node_key;
 
+use const PHP_INT_MAX;
+
 /**
  * Finds the shortest path between two nodes with custom weight conversion.
  *

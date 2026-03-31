@@ -218,7 +218,7 @@ final class ChunkedBodyHandleTest extends TestCase
     {
         [$handle] = self::handle('');
 
-        $this->expectException(\Psl\HTTP\Client\Exception\ProtocolException::class);
+        $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('Connection closed before chunk size');
 
         $handle->readAll();

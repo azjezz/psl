@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\HTTP\Client\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Exception\RuntimeException;
 use Psl\HTTP\Client\Client;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Connection\Connector;
@@ -58,6 +59,6 @@ final class SocksProxyTest extends TestCase
 
     private function expectTransportError(): void
     {
-        $this->expectException(\Psl\Exception\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
     }
 }

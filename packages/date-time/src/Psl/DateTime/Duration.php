@@ -65,17 +65,17 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     {
         // This is where the normalization happens.
         $s =
-            (SECONDS_PER_HOUR * $hours)
-            + (SECONDS_PER_MINUTE * $minutes)
+            (namespace\SECONDS_PER_HOUR * $hours)
+            + (namespace\SECONDS_PER_MINUTE * $minutes)
             + $seconds
-            + (int) ($nanoseconds / NANOSECONDS_PER_SECOND);
-        $ns = $nanoseconds % NANOSECONDS_PER_SECOND;
+            + (int) ($nanoseconds / namespace\NANOSECONDS_PER_SECOND);
+        $ns = $nanoseconds % namespace\NANOSECONDS_PER_SECOND;
         if ($s < 0 && $ns > 0) {
             ++$s;
-            $ns -= NANOSECONDS_PER_SECOND;
+            $ns -= namespace\NANOSECONDS_PER_SECOND;
         } elseif ($s > 0 && $ns < 0) {
             --$s;
-            $ns += NANOSECONDS_PER_SECOND;
+            $ns += namespace\NANOSECONDS_PER_SECOND;
         }
 
         $m = (int) ($s / 60);
@@ -135,7 +135,7 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
      */
     public static function milliseconds(int $milliseconds): self
     {
-        return self::fromParts(0, 0, 0, NANOSECONDS_PER_MILLISECOND * $milliseconds);
+        return self::fromParts(0, 0, 0, namespace\NANOSECONDS_PER_MILLISECOND * $milliseconds);
     }
 
     /**
@@ -150,7 +150,7 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
      */
     public static function microseconds(int $microseconds): self
     {
-        return self::fromParts(0, 0, 0, NANOSECONDS_PER_MICROSECOND * $microseconds);
+        return self::fromParts(0, 0, 0, namespace\NANOSECONDS_PER_MICROSECOND * $microseconds);
     }
 
     /**
@@ -239,9 +239,9 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     {
         return (
             $this->hours
-            + ($this->minutes / MINUTES_PER_HOUR)
-            + ($this->seconds / SECONDS_PER_HOUR)
-            + ($this->nanoseconds / (SECONDS_PER_HOUR * NANOSECONDS_PER_SECOND))
+            + ($this->minutes / namespace\MINUTES_PER_HOUR)
+            + ($this->seconds / namespace\SECONDS_PER_HOUR)
+            + ($this->nanoseconds / (namespace\SECONDS_PER_HOUR * namespace\NANOSECONDS_PER_SECOND))
         );
     }
 
@@ -254,10 +254,10 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     public function getTotalMinutes(): float
     {
         return (
-            ($this->hours * MINUTES_PER_HOUR)
+            ($this->hours * namespace\MINUTES_PER_HOUR)
             + $this->minutes
-            + ($this->seconds / SECONDS_PER_MINUTE)
-            + ($this->nanoseconds / (SECONDS_PER_MINUTE * NANOSECONDS_PER_SECOND))
+            + ($this->seconds / namespace\SECONDS_PER_MINUTE)
+            + ($this->nanoseconds / (namespace\SECONDS_PER_MINUTE * namespace\NANOSECONDS_PER_SECOND))
         );
     }
 
@@ -271,9 +271,9 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     {
         return (
             $this->seconds
-            + ($this->minutes * SECONDS_PER_MINUTE)
-            + ($this->hours * SECONDS_PER_HOUR)
-            + ($this->nanoseconds / NANOSECONDS_PER_SECOND)
+            + ($this->minutes * namespace\SECONDS_PER_MINUTE)
+            + ($this->hours * namespace\SECONDS_PER_HOUR)
+            + ($this->nanoseconds / namespace\NANOSECONDS_PER_SECOND)
         );
     }
 
@@ -286,10 +286,10 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     public function getTotalMilliseconds(): float
     {
         return (
-            ($this->hours * SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND)
-            + ($this->minutes * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND)
-            + ($this->seconds * MILLISECONDS_PER_SECOND)
-            + ($this->nanoseconds / NANOSECONDS_PER_MILLISECOND)
+            ($this->hours * namespace\SECONDS_PER_HOUR * namespace\MILLISECONDS_PER_SECOND)
+            + ($this->minutes * namespace\SECONDS_PER_MINUTE * namespace\MILLISECONDS_PER_SECOND)
+            + ($this->seconds * namespace\MILLISECONDS_PER_SECOND)
+            + ($this->nanoseconds / namespace\NANOSECONDS_PER_MILLISECOND)
         );
     }
 
@@ -302,10 +302,10 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     public function getTotalMicroseconds(): float
     {
         return (
-            ($this->hours * SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND)
-            + ($this->minutes * SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND)
-            + ($this->seconds * MICROSECONDS_PER_SECOND)
-            + ($this->nanoseconds / NANOSECONDS_PER_MICROSECOND)
+            ($this->hours * namespace\SECONDS_PER_HOUR * namespace\MICROSECONDS_PER_SECOND)
+            + ($this->minutes * namespace\SECONDS_PER_MINUTE * namespace\MICROSECONDS_PER_SECOND)
+            + ($this->seconds * namespace\MICROSECONDS_PER_SECOND)
+            + ($this->nanoseconds / namespace\NANOSECONDS_PER_MICROSECOND)
         );
     }
 

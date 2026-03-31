@@ -19,6 +19,8 @@ use Psl\Process\Stdio;
 
 use function strlen;
 
+use const PHP_BINARY;
+
 final class ChildTest extends TestCase
 {
     /**

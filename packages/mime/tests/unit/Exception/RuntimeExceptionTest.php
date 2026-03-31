@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Psl\MIME\Tests\Unit\Exception;
 
 use PHPUnit\Framework\TestCase;
+use Psl\MIME\Exception\ExceptionInterface;
 use Psl\MIME\Exception\InvalidArgumentException;
 use Psl\MIME\Headers;
 
@@ -46,6 +47,6 @@ final class RuntimeExceptionTest extends TestCase
     {
         $exception = InvalidArgumentException::create('test');
 
-        static::assertInstanceOf(\Psl\MIME\Exception\ExceptionInterface::class, $exception);
+        static::assertInstanceOf(ExceptionInterface::class, $exception);
     }
 }

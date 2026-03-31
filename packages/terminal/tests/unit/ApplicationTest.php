@@ -11,6 +11,7 @@ use Psl\DateTime\Duration;
 use Psl\IO;
 use Psl\Terminal\Application;
 use Psl\Terminal\Event;
+use Psl\Terminal\Exception\RuntimeException;
 use Psl\Terminal\Frame;
 use stdClass;
 
@@ -554,7 +555,7 @@ final class ApplicationTest extends TestCase
 
         $app = Application::custom($state, $reader, $output, 80, 24);
 
-        $this->expectException(\Psl\Terminal\Exception\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Input handle must provide an underlying stream resource.');
 
         $app->run(static function (Frame $frame, object $state): void {});

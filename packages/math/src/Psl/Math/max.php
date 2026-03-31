@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Math;
 
+use function max as php_max;
+
 /**
  * Returns the largest element of the given list, or null if the
  * list is empty.
@@ -24,5 +26,5 @@ function max(array $numbers): null|int|float
         return null;
     }
 
-    return \max($numbers);
+    return php_max($numbers);
 }

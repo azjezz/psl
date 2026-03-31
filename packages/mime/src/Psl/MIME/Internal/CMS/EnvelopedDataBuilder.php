@@ -16,6 +16,9 @@ use function openssl_pkey_get_public;
 use function openssl_public_encrypt;
 use function random_bytes;
 
+use const OPENSSL_PKCS1_PADDING;
+use const OPENSSL_RAW_DATA;
+
 /**
  * Builds CMS EnvelopedData structures per RFC 5652 section 6.
  *

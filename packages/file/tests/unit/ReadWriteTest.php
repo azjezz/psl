@@ -11,6 +11,8 @@ use Psl\Filesystem;
 use Psl\OS;
 use Psl\Str;
 
+use const DIRECTORY_SEPARATOR;
+
 final class ReadWriteTest extends AbstractFileTestCase
 {
     protected string $function = 'file';

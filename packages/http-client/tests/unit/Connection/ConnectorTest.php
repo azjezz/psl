@@ -34,6 +34,8 @@ use function strpos;
 use function substr;
 use function unlink;
 
+use const PHP_OS_FAMILY;
+
 /**
  * @mago-expect lint:excessive-nesting
  */
@@ -349,7 +351,7 @@ final class ConnectorTest extends TestCase
 
     public function testConnectUnixSocketH1(): void
     {
-        if (\PHP_OS_FAMILY === 'Windows') {
+        if (PHP_OS_FAMILY === 'Windows') {
             static::markTestSkipped('Unix sockets are not supported on Windows.');
         }
 
@@ -442,7 +444,7 @@ final class ConnectorTest extends TestCase
 
     public function testConnectUnixSocketH2PriorKnowledge(): void
     {
-        if (\PHP_OS_FAMILY === 'Windows') {
+        if (PHP_OS_FAMILY === 'Windows') {
             static::markTestSkipped('Unix sockets are not supported on Windows.');
         }
 

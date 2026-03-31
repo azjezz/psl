@@ -19,6 +19,8 @@ use Psl\Terminal\Layout;
 use Psl\Terminal\Widget;
 use Psl\Vec;
 
+use const PHP_INT_MAX;
+
 require __DIR__ . '/../../vendor/autoload.php';
 
 /**
@@ -168,12 +170,12 @@ function format_message(Message $message): array
 function filter_commands(string $input): array
 {
     if ($input === '/') {
-        return COMMANDS;
+        return namespace\COMMANDS;
     }
 
     $prefix = Str\lowercase($input);
 
-    return Vec\filter(COMMANDS, static fn(array $cmd): bool => Str\starts_with($cmd[0], $prefix));
+    return Vec\filter(namespace\COMMANDS, static fn(array $cmd): bool => Str\starts_with($cmd[0], $prefix));
 }
 
 function handle_autocomplete(Event\Key $event, PhpCodeState $state): bool
@@ -229,7 +231,7 @@ function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application
     if ($prompt === '/help') {
         $state->messages[] = new Message(Role::User, $prompt);
         $state->messages[] = new Message(Role::System, 'Available commands:');
-        foreach (COMMANDS as [$name, $desc]) {
+        foreach (namespace\COMMANDS as [$name, $desc]) {
             $state->messages[] = new Message(Role::System, "  {$name} — {$desc}");
         }
 

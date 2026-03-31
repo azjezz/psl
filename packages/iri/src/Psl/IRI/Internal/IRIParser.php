@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Psl\IRI\Internal;
 
+use Normalizer as IntlNormalizer;
 use Psl\IP;
 use Psl\IP\Address;
 use Psl\IRI\Exception\InvalidIRIException;
@@ -47,7 +48,7 @@ final class IRIParser
      */
     public static function parse(string $input): IRI
     {
-        $normalized = \Normalizer::normalize($input, \Normalizer::FORM_C);
+        $normalized = IntlNormalizer::normalize($input, IntlNormalizer::FORM_C);
         if ($normalized !== false) {
             $input = $normalized;
         }

@@ -6,6 +6,7 @@ namespace Psl\DNSSEC;
 
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
+use Psl\Crypto\Exception\InvalidArgumentException as CryptoInvalidArgumentException;
 use Psl\DNS\Exception\InvalidArgumentException;
 use Psl\DNS\Exception\ProtocolException;
 use Psl\DNS\Exception\RuntimeException;
@@ -291,7 +292,7 @@ final readonly class SecureResolver implements ResolverInterface
                         break;
                     }
                 } catch (
-                    InvalidArgumentException|SignatureFailedException|\Psl\Crypto\Exception\InvalidArgumentException|LogicException
+                    InvalidArgumentException|SignatureFailedException|CryptoInvalidArgumentException|LogicException
                 ) {
                     // @mago-expect lint:no-empty-catch-clause - continue to the next key
                 }

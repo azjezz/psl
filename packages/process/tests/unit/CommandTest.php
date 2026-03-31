@@ -14,6 +14,8 @@ use function Psl\Env\temp_dir;
 use function Psl\Filesystem\canonicalize;
 use function Psl\IO\pipe;
 
+use const PHP_BINARY;
+
 final class CommandTest extends TestCase
 {
     /**
