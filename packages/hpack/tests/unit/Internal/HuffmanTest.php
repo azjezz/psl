@@ -119,6 +119,28 @@ final class HuffmanTest extends TestCase
         static::assertLessThan(strlen($input), strlen($encoded));
     }
 
+    public function testEstimateEncodedBitsMatchesActualEncoding(): void
+    {
+        $strings = [
+            'www.example.com',
+            'no-cache',
+            'GET',
+            '/index.html',
+            'text/html; charset=utf-8',
+            'authorization',
+            'cookie',
+        ];
+
+        foreach ($strings as $string) {
+            $estimatedBits = Huffman::estimateEncodedBits($string, strlen($string));
+            $encoded = Huffman::encode($string);
+            $actualBits = strlen($encoded) * 8;
+
+            static::assertLessThanOrEqual(7, $actualBits - $estimatedBits, "Estimate too low for '$string'");
+            static::assertGreaterThanOrEqual(0, $actualBits - $estimatedBits, "Estimate too high for '$string'");
+        }
+    }
+
     public function testDecodeTruncatedData(): void
     {
         $this->expectException(DecodingException::class);
