@@ -33,6 +33,8 @@ use function substr;
  * @internal
  *
  * @codeCoverageIgnore
+ *
+ * @mago-expect lint:cyclomatic-complexity
  */
 class ResourceHandle implements
     IO\ReadHandleInterface,
@@ -53,7 +55,7 @@ class ResourceHandle implements
     protected mixed $stream;
 
     /**
-     * @var null|Async\Sequence<array{string, Async\CancellationTokenInterface}, int<0, max>>
+     * @var null|Async\Sequence<array{string, Async\CancellationTokenInterface, bool}, int<0, max>>
      */
     private null|Async\Sequence $writeSequence = null;
     private null|Suspension $writeSuspension = null;
@@ -139,14 +141,30 @@ class ResourceHandle implements
 
             $this->writeSequence = new Async\Sequence(
                 /**
-                 * @param array{string, Async\CancellationTokenInterface} $input
+                 * @param array{string, Async\CancellationTokenInterface, bool} $input
                  *
                  * @return int<0, max>
                  */
                 function (array $input): int {
-                    [$bytes, $cancellation] = $input;
+                    [$bytes, $cancellation, $atomic] = $input;
+                    if (!$atomic) {
+                        return $this->doWrite($bytes, $cancellation);
+                    }
 
-                    return $this->doWrite($bytes, $cancellation);
+                    $total = 0;
+                    while ('' !== $bytes) {
+                        $chunk = $this->doWrite($bytes, $cancellation);
+                        if (0 === $chunk) {
+                            throw new Exception\RuntimeException(
+                                'writeAll: stream reported writable but accepted no data',
+                            );
+                        }
+
+                        $total += $chunk;
+                        $bytes = substr($bytes, $chunk);
+                    }
+
+                    return $total;
                 },
             );
             EventLoop::disable($this->writeWatcher);
@@ -294,7 +312,22 @@ class ResourceHandle implements
             Psl\invariant_violation('The resource handle is not writable.');
         }
 
-        return $this->writeSequence->waitFor([$bytes, $cancellation]);
+        return $this->writeSequence->waitFor([$bytes, $cancellation, false]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function writeAll(
+        string $bytes,
+        Async\CancellationTokenInterface $cancellation = new Async\NullCancellationToken(),
+    ): void {
+        if (null === $this->writeSequence) {
+            Psl\invariant_violation('The resource handle is not writable.');
+        }
+
+        $this->writeSequence->waitFor([$bytes, $cancellation, true]);
     }
 
     /**

@@ -94,4 +94,15 @@ final readonly class WriteHandle extends Internal\AbstractHandleWrapper implemen
     {
         return $this->writeHandle->write($bytes, $cancellation);
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
+        $this->writeHandle->writeAll($bytes, $cancellation);
+    }
 }
