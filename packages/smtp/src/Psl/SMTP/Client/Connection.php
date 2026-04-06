@@ -244,6 +244,13 @@ final class Connection implements ConnectionInterface
         return $this->stream->write($bytes, $cancellation);
     }
 
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
+        $this->stream->writeAll($bytes, $cancellation);
+    }
+
     /**
      * {@inheritDoc}
      */

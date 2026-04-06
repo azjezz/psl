@@ -144,4 +144,15 @@ final readonly class ReadWriteHandle extends Internal\AbstractHandleWrapper impl
     {
         return $this->readWriteHandle->write($bytes, $cancellation);
     }
+
+    /**
+     * @inheritDoc
+     */
+    #[Override]
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
+        $this->readWriteHandle->writeAll($bytes, $cancellation);
+    }
 }

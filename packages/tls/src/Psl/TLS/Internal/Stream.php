@@ -90,6 +90,14 @@ final class Stream implements TLS\StreamInterface
         return $this->inner->write($bytes, $cancellation);
     }
 
+    #[Override]
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
+        $this->inner->writeAll($bytes, $cancellation);
+    }
+
     /**
      * @return resource|object|null
      */

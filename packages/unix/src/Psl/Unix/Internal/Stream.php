@@ -112,6 +112,14 @@ final class Stream implements Unix\StreamInterface
         return $this->handle->write($bytes, $cancellation);
     }
 
+    #[Override]
+    public function writeAll(
+        string $bytes,
+        CancellationTokenInterface $cancellation = new NullCancellationToken(),
+    ): void {
+        $this->handle->writeAll($bytes, $cancellation);
+    }
+
     /**
      * @return resource|object|null
      */
