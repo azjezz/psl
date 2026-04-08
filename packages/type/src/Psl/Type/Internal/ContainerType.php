@@ -30,8 +30,8 @@ final readonly class ContainerType extends Type\Type
      * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private readonly Type\TypeInterface $keyType,
-        private readonly Type\TypeInterface $valueType,
+        private Type\TypeInterface $keyType,
+        private Type\TypeInterface $valueType,
     ) {}
 
     /**

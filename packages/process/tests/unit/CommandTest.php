@@ -231,11 +231,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Working directory does not exist.');
 
-        self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('echo "hello";')
-            ->withWorkingDirectory('')
-            ->spawn();
+        self::phpCommand()->withArgument('-r')->withArgument('echo "hello";')->withWorkingDirectory('')->spawn();
     }
 
     public function testNullByteInCommand(): void
@@ -251,10 +247,7 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('Command line contains NULL bytes.');
 
-        self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument("echo\0injected;")
-            ->spawn();
+        self::phpCommand()->withArgument('-r')->withArgument("echo\0injected;")->spawn();
     }
 
     public function testStdinPiped(): void
@@ -448,10 +441,6 @@ final class CommandTest extends TestCase
         $this->expectException(Exception\RuntimeException::class);
         $this->expectExceptionMessage('TTY is not supported on Windows.');
 
-        self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('echo "test";')
-            ->withStdout(Stdio::tty())
-            ->spawn();
+        self::phpCommand()->withArgument('-r')->withArgument('echo "test";')->withStdout(Stdio::tty())->spawn();
     }
 }

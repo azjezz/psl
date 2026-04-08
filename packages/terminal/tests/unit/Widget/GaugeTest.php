@@ -19,10 +19,7 @@ final class GaugeTest extends TestCase
         $buffer = new Buffer(30, 1);
         $area = new Rect(0, 0, 30, 1);
 
-        Gauge::new()
-            ->ratio(0.5)
-            ->label('CPU')
-            ->render($area, $buffer);
+        Gauge::new()->ratio(0.5)->label('CPU')->render($area, $buffer);
 
         static::assertSame('C', $buffer->get(0, 0)?->grapheme);
         static::assertSame('P', $buffer->get(1, 0)?->grapheme);
@@ -98,10 +95,7 @@ final class GaugeTest extends TestCase
 
         $fg = Ansi\foreground(Color\bright_green());
 
-        Gauge::new()
-            ->ratio(0.5)
-            ->filledStyle($fg)
-            ->render($area, $buffer);
+        Gauge::new()->ratio(0.5)->filledStyle($fg)->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
@@ -116,10 +110,7 @@ final class GaugeTest extends TestCase
 
         $fg = Ansi\foreground(Color\bright_black());
 
-        Gauge::new()
-            ->ratio(0.0)
-            ->emptyStyle($fg)
-            ->render($area, $buffer);
+        Gauge::new()->ratio(0.0)->emptyStyle($fg)->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
@@ -132,10 +123,7 @@ final class GaugeTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 0, 0);
 
-        Gauge::new()
-            ->ratio(0.5)
-            ->label('CPU')
-            ->render($area, $buffer);
+        Gauge::new()->ratio(0.5)->label('CPU')->render($area, $buffer);
 
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
     }
@@ -187,10 +175,7 @@ final class GaugeTest extends TestCase
         $buffer = new Buffer(30, 1);
         $area = new Rect(2, 0, 28, 1);
 
-        Gauge::new()
-            ->ratio(0.5)
-            ->label('CPU')
-            ->render($area, $buffer);
+        Gauge::new()->ratio(0.5)->label('CPU')->render($area, $buffer);
 
         static::assertSame('C', $buffer->get(2, 0)?->grapheme);
         static::assertSame('P', $buffer->get(3, 0)?->grapheme);
@@ -271,10 +256,7 @@ final class GaugeTest extends TestCase
         $buffer = new Buffer(5, 1);
         $area = new Rect(0, 0, 5, 1);
 
-        Gauge::new()
-            ->ratio(0.0)
-            ->label('VERY LONG LABEL')
-            ->render($area, $buffer);
+        Gauge::new()->ratio(0.0)->label('VERY LONG LABEL')->render($area, $buffer);
 
         static::assertSame('V', $buffer->get(0, 0)?->grapheme);
     }

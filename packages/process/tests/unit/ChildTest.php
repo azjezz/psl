@@ -64,10 +64,7 @@ final class ChildTest extends TestCase
 
     public function testCommandOutput(): void
     {
-        $output = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('echo "hello world";')
-            ->output();
+        $output = self::phpCommand()->withArgument('-r')->withArgument('echo "hello world";')->output();
 
         static::assertSame('hello world', $output->stdout);
         static::assertSame('', $output->stderr);
@@ -76,20 +73,14 @@ final class ChildTest extends TestCase
 
     public function testCommandStatus(): void
     {
-        $status = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('exit(0);')
-            ->status();
+        $status = self::phpCommand()->withArgument('-r')->withArgument('exit(0);')->status();
 
         static::assertTrue($status->isSuccessful());
     }
 
     public function testCommandStatusWithNonZeroExit(): void
     {
-        $status = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('exit(42);')
-            ->status();
+        $status = self::phpCommand()->withArgument('-r')->withArgument('exit(42);')->status();
 
         static::assertFalse($status->isSuccessful());
         static::assertSame(42, $status->getCode());
@@ -97,10 +88,7 @@ final class ChildTest extends TestCase
 
     public function testGetProcessId(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('usleep(100000);')
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('usleep(100000);')->spawn();
 
         $pid = $child->getProcessId();
         static::assertGreaterThan(0, $pid);
@@ -110,10 +98,7 @@ final class ChildTest extends TestCase
 
     public function testIsRunning(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('usleep(500000);')
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('usleep(500000);')->spawn();
 
         static::assertTrue($child->isRunning());
 
@@ -204,10 +189,7 @@ final class ChildTest extends TestCase
 
     public function testWaitWithOutputTimeout(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('sleep(60);')
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('sleep(60);')->spawn();
 
         $this->expectException(Async\Exception\CancelledException::class);
 
@@ -269,10 +251,7 @@ final class ChildTest extends TestCase
 
     public function testStdinUnavailable(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('exit(0);')
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('exit(0);')->spawn();
 
         $this->expectException(Exception\StreamUnavailableException::class);
         $this->expectExceptionMessage('Stdin is not available');
@@ -282,11 +261,7 @@ final class ChildTest extends TestCase
 
     public function testStdoutUnavailableWhenNull(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('exit(0);')
-            ->withStdout(Stdio::null())
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('exit(0);')->withStdout(Stdio::null())->spawn();
 
         $this->expectException(Exception\StreamUnavailableException::class);
 
@@ -295,11 +270,7 @@ final class ChildTest extends TestCase
 
     public function testStderrUnavailableWhenNull(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('exit(0);')
-            ->withStderr(Stdio::null())
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('exit(0);')->withStderr(Stdio::null())->spawn();
 
         $this->expectException(Exception\StreamUnavailableException::class);
 
@@ -407,10 +378,7 @@ final class ChildTest extends TestCase
 
     public function testLargeOutput(): void
     {
-        $output = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('echo str_repeat("x", 100000);')
-            ->output();
+        $output = self::phpCommand()->withArgument('-r')->withArgument('echo str_repeat("x", 100000);')->output();
 
         static::assertSame(100_000, strlen($output->stdout));
         static::assertTrue($output->status->isSuccessful());
@@ -459,10 +427,7 @@ final class ChildTest extends TestCase
 
     public function testWaitWithOutputTimeoutKillsProcess(): void
     {
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('sleep(60);')
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('sleep(60);')->spawn();
 
         try {
             $child->waitWithOutput(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
@@ -679,10 +644,7 @@ final class ChildTest extends TestCase
             );
         }
 
-        $child = self::phpCommand()
-            ->withArgument('-r')
-            ->withArgument('echo "partial"; sleep(2);')
-            ->spawn();
+        $child = self::phpCommand()->withArgument('-r')->withArgument('echo "partial"; sleep(2);')->spawn();
 
         try {
             $child->waitWithOutput(new Async\TimeoutCancellationToken(Duration::milliseconds(200)));
@@ -695,10 +657,7 @@ final class ChildTest extends TestCase
     public function testConcurrentOutput(): void
     {
         $run = static function (): void {
-            self::phpCommand()
-                ->withArgument('-r')
-                ->withArgument('usleep(100000); echo "done";')
-                ->output();
+            self::phpCommand()->withArgument('-r')->withArgument('usleep(100000); echo "done";')->output();
         };
 
         $start = DateTime\Timestamp::monotonic();
@@ -711,10 +670,7 @@ final class ChildTest extends TestCase
     public function testConcurrentStatus(): void
     {
         $run = static function (): void {
-            self::phpCommand()
-                ->withArgument('-r')
-                ->withArgument('usleep(100000);')
-                ->status();
+            self::phpCommand()->withArgument('-r')->withArgument('usleep(100000);')->status();
         };
 
         $start = DateTime\Timestamp::monotonic();

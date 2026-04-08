@@ -31,7 +31,8 @@ $default = TLS\ServerConfiguration::create(TLS\Certificate::create(
 while (true) {
     $stream = $listener->accept();
     $hello = $lazy->accept($stream);
-    $config = $configs[$hello->getServerName()] ?? $default;
+    $server = $hello->getServerName();
+    $config = $server === null ? $default : $configs[$server] ?? $default;
     $tls = $hello->complete($config);
     // ... handle connection
 }

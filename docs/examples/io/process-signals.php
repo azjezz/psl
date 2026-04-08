@@ -9,11 +9,7 @@ use Psl\Process\Command;
 use Psl\Process\Signal;
 use Psl\Process\Stdio;
 
-$child = Command::create('sleep')
-    ->withArgument('60')
-    ->withStdout(Stdio::null())
-    ->withStderr(Stdio::null())
-    ->spawn();
+$child = Command::create('sleep')->withArgument('60')->withStdout(Stdio::null())->withStderr(Stdio::null())->spawn();
 
 // Allow the child process to start before signaling
 usleep(50_000);

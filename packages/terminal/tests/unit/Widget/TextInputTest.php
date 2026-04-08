@@ -20,10 +20,7 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        TextInput::new()
-            ->value('hello')
-            ->cursor(5)
-            ->render($area, $buffer);
+        TextInput::new()->value('hello')->cursor(5)->render($area, $buffer);
 
         static::assertSame('h', $buffer->get(0, 0)?->grapheme);
         static::assertSame('e', $buffer->get(1, 0)?->grapheme);
@@ -41,10 +38,7 @@ final class TextInputTest extends TestCase
 
         $placeholderFg = Ansi\foreground(Color\bright_black());
 
-        TextInput::new()
-            ->placeholder('Type here...')
-            ->placeholderStyle($placeholderFg)
-            ->render($area, $buffer);
+        TextInput::new()->placeholder('Type here...')->placeholderStyle($placeholderFg)->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
@@ -59,11 +53,7 @@ final class TextInputTest extends TestCase
 
         $cursorFg = Ansi\foreground(Color\bright_green());
 
-        TextInput::new()
-            ->value('abcde')
-            ->cursor(2)
-            ->cursorStyle($cursorFg)
-            ->render($area, $buffer);
+        TextInput::new()->value('abcde')->cursor(2)->cursorStyle($cursorFg)->render($area, $buffer);
 
         $cell = $buffer->get(2, 0);
         static::assertNotNull($cell);
@@ -77,10 +67,7 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(5, 1);
         $area = new Rect(0, 0, 5, 1);
 
-        TextInput::new()
-            ->value('abcdefghij')
-            ->cursor(8)
-            ->render($area, $buffer);
+        TextInput::new()->value('abcdefghij')->cursor(8)->render($area, $buffer);
 
         static::assertSame('e', $buffer->get(0, 0)?->grapheme);
         static::assertSame('f', $buffer->get(1, 0)?->grapheme);
@@ -106,11 +93,7 @@ final class TextInputTest extends TestCase
 
         $fg = Ansi\foreground(Color\bright_white());
 
-        TextInput::new()
-            ->value('hello')
-            ->cursor(0)
-            ->style($fg)
-            ->render($area, $buffer);
+        TextInput::new()->value('hello')->cursor(0)->style($fg)->render($area, $buffer);
 
         $cell = $buffer->get(1, 0);
         static::assertNotNull($cell);
@@ -169,10 +152,7 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        TextInput::new()
-            ->value('Hello')
-            ->cursor(0)
-            ->render($area, $buffer);
+        TextInput::new()->value('Hello')->cursor(0)->render($area, $buffer);
 
         static::assertSame('H', $buffer->get(0, 0)?->grapheme);
     }
@@ -195,10 +175,7 @@ final class TextInputTest extends TestCase
 
         $fg = Ansi\foreground(Color\bright_white());
 
-        TextInput::new()
-            ->placeholder('Type here')
-            ->cursorStyle($fg)
-            ->render($area, $buffer);
+        TextInput::new()->placeholder('Type here')->cursorStyle($fg)->render($area, $buffer);
 
         $cell = $buffer->get(0, 0);
         static::assertNotNull($cell);
@@ -210,10 +187,7 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(5, 1);
         $area = new Rect(0, 0, 5, 1);
 
-        TextInput::new()
-            ->value('ABCDEFGHIJ')
-            ->cursor(7)
-            ->render($area, $buffer);
+        TextInput::new()->value('ABCDEFGHIJ')->cursor(7)->render($area, $buffer);
 
         static::assertSame('D', $buffer->get(0, 0)?->grapheme);
     }
@@ -225,11 +199,7 @@ final class TextInputTest extends TestCase
 
         $fg = Ansi\foreground(Color\red());
 
-        TextInput::new()
-            ->value('Hello')
-            ->cursor(2)
-            ->cursorStyle($fg)
-            ->render($area, $buffer);
+        TextInput::new()->value('Hello')->cursor(2)->cursorStyle($fg)->render($area, $buffer);
 
         $cell = $buffer->get(2, 0);
         static::assertNotNull($cell);
@@ -242,10 +212,7 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(20, 1);
         $area = new Rect(0, 0, 20, 1);
 
-        TextInput::new()
-            ->value('Hello')
-            ->placeholder('Type here')
-            ->render($area, $buffer);
+        TextInput::new()->value('Hello')->placeholder('Type here')->render($area, $buffer);
 
         static::assertSame('H', $buffer->get(0, 0)?->grapheme);
     }
@@ -257,11 +224,7 @@ final class TextInputTest extends TestCase
 
         $fg = Ansi\foreground(Color\red());
 
-        TextInput::new()
-            ->value("\u{4e16}\u{754c}Hi")
-            ->cursor(2)
-            ->cursorStyle($fg)
-            ->render($area, $buffer);
+        TextInput::new()->value("\u{4e16}\u{754c}Hi")->cursor(2)->cursorStyle($fg)->render($area, $buffer);
 
         static::assertSame("\u{4e16}", $buffer->get(0, 0)?->grapheme);
         static::assertSame('', $buffer->get(1, 0)?->grapheme);
@@ -279,10 +242,7 @@ final class TextInputTest extends TestCase
         $buffer = new Buffer(5, 1);
         $area = new Rect(0, 0, 5, 1);
 
-        TextInput::new()
-            ->value("\u{4e16}\u{754c}\u{4f60}\u{597d}")
-            ->cursor(3)
-            ->render($area, $buffer);
+        TextInput::new()->value("\u{4e16}\u{754c}\u{4f60}\u{597d}")->cursor(3)->render($area, $buffer);
 
         $cursorCell = $buffer->get(4, 0);
         static::assertNotNull($cursorCell);

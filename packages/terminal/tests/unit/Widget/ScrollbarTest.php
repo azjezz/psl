@@ -19,11 +19,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 5);
         $area = new Rect(0, 0, 1, 5);
 
-        Scrollbar::new()
-            ->contentLength(3)
-            ->viewportLength(5)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(3)->viewportLength(5)->position(0)->render($area, $buffer);
 
         for ($i = 0; $i < 5; $i++) {
             static::assertSame("\u{2503}", $buffer->get(0, $i)?->grapheme, "Row {$i}");
@@ -35,11 +31,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 10);
         $area = new Rect(0, 0, 1, 10);
 
-        Scrollbar::new()
-            ->contentLength(100)
-            ->viewportLength(10)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(100)->viewportLength(10)->position(0)->render($area, $buffer);
 
         static::assertSame("\u{2503}", $buffer->get(0, 0)?->grapheme);
         static::assertSame("\u{2502}", $buffer->get(0, 9)?->grapheme);
@@ -50,11 +42,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 10);
         $area = new Rect(0, 0, 1, 10);
 
-        Scrollbar::new()
-            ->contentLength(100)
-            ->viewportLength(10)
-            ->position(90)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(100)->viewportLength(10)->position(90)->render($area, $buffer);
 
         static::assertSame("\u{2502}", $buffer->get(0, 0)?->grapheme);
         static::assertSame("\u{2503}", $buffer->get(0, 9)?->grapheme);
@@ -103,11 +91,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 1);
         $area = new Rect(0, 0, 0, 0);
 
-        Scrollbar::new()
-            ->contentLength(100)
-            ->viewportLength(10)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(100)->viewportLength(10)->position(0)->render($area, $buffer);
 
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
     }
@@ -117,11 +101,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 5);
         $area = new Rect(0, 0, 1, 5);
 
-        Scrollbar::new()
-            ->contentLength(0)
-            ->viewportLength(5)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(0)->viewportLength(5)->position(0)->render($area, $buffer);
 
         for ($i = 0; $i < 5; $i++) {
             static::assertSame("\u{2503}", $buffer->get(0, $i)?->grapheme, "Row {$i}");
@@ -167,11 +147,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 10);
         $area = new Rect(0, 0, 1, 10);
 
-        Scrollbar::new()
-            ->contentLength(50)
-            ->viewportLength(10)
-            ->position(20)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(50)->viewportLength(10)->position(20)->render($area, $buffer);
 
         $thumbCount = 0;
         $trackCount = 0;
@@ -199,11 +175,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 5);
         $area = new Rect(0, 0, 1, 5);
 
-        Scrollbar::new()
-            ->contentLength(0)
-            ->viewportLength(5)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(0)->viewportLength(5)->position(0)->render($area, $buffer);
 
         for ($i = 0; $i < 5; $i++) {
             static::assertSame("\u{2503}", $buffer->get(0, $i)?->grapheme);
@@ -215,11 +187,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 5);
         $area = new Rect(0, 0, 1, 5);
 
-        Scrollbar::new()
-            ->contentLength(5)
-            ->viewportLength(0)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(5)->viewportLength(0)->position(0)->render($area, $buffer);
 
         static::assertSame("\u{2503}", $buffer->get(0, 0)?->grapheme);
     }
@@ -229,11 +197,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 10);
         $area = new Rect(0, 0, 1, 10);
 
-        Scrollbar::new()
-            ->contentLength(100)
-            ->viewportLength(10)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(100)->viewportLength(10)->position(0)->render($area, $buffer);
 
         static::assertSame("\u{2503}", $buffer->get(0, 0)?->grapheme);
     }
@@ -243,11 +207,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 3);
         $area = new Rect(0, 0, 1, 3);
 
-        Scrollbar::new()
-            ->contentLength(3)
-            ->viewportLength(3)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(3)->viewportLength(3)->position(0)->render($area, $buffer);
 
         static::assertSame("\u{2503}", $buffer->get(0, 0)?->grapheme);
         static::assertSame("\u{2503}", $buffer->get(0, 2)?->grapheme);
@@ -259,11 +219,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 10);
         $area = new Rect(0, 0, 1, 10);
 
-        Scrollbar::new()
-            ->contentLength(100)
-            ->viewportLength(10)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(100)->viewportLength(10)->position(0)->render($area, $buffer);
 
         static::assertSame("\u{2503}", $buffer->get(0, 0)?->grapheme);
 
@@ -287,11 +243,7 @@ final class ScrollbarTest extends TestCase
         $buffer = new Buffer(1, 5);
         $area = new Rect(0, 0, 1, 5);
 
-        Scrollbar::new()
-            ->contentLength(5)
-            ->viewportLength(5)
-            ->position(0)
-            ->render($area, $buffer);
+        Scrollbar::new()->contentLength(5)->viewportLength(5)->position(0)->render($area, $buffer);
 
         for ($i = 0; $i < 5; $i++) {
             static::assertSame("\u{2503}", $buffer->get(0, $i)?->grapheme);

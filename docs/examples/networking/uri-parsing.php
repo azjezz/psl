@@ -12,7 +12,7 @@ $uri = URI\parse('https://Example.COM:443/foo/../bar?q=1#frag');
 // "https"
 IO\write_line('%s', $uri->scheme ?? '<unknown>');
 // "example.com" - lowercased
-IO\write_line('%s', $uri->authority->host?->toString() ?? '<unknown>');
+IO\write_line('%s', $uri->authority?->host?->toString() ?? '<unknown>');
 // 443
 IO\write_line('%d', $uri->authority->port ?? 0);
 // "/bar" - dot segments removed

@@ -56,10 +56,7 @@ final class BindConfigurationTest extends TestCase
 
     public function testChaining(): void
     {
-        $config = UDP\BindConfiguration::default()
-            ->withReuseAddress(true)
-            ->withReusePort(true)
-            ->withBroadcast(true);
+        $config = UDP\BindConfiguration::default()->withReuseAddress(true)->withReusePort(true)->withBroadcast(true);
 
         static::assertTrue($config->reuseAddress);
         static::assertTrue($config->reusePort);

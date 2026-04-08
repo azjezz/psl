@@ -34,10 +34,7 @@ IO\write_line('Payload: %s', $payload); // Hello, PSL!
 IO\write_line('Status: %s', $status); // OK
 
 // skip() advances the reader without returning the data
-$data2 = Writer::default()
-    ->u32(0xDEAD) // header we want to skip
-    ->u32PrefixedBytes('Important')
-    ->toString();
+$data2 = Writer::default()->u32(0xDEAD)->u32PrefixedBytes('Important')->toString(); // header we want to skip
 
 $reader2 = new Reader($data2);
 $reader2->skip(4); // skip the 4-byte header

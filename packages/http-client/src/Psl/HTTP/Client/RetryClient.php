@@ -173,8 +173,7 @@ final readonly class RetryClient implements ClientInterface
                 }
 
                 $delayMs = (int) (
-                    $this->backoff->getTotalMilliseconds()
-                    * ($this->backoffMultiplier ** ($attempt - 1))
+                    $this->backoff->getTotalMilliseconds() * ($this->backoffMultiplier ** ($attempt - 1))
                 );
 
                 Async\sleep(Duration::milliseconds($delayMs), $cancellation);
