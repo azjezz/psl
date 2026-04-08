@@ -27,7 +27,7 @@ final readonly class BackedEnumType extends Type\Type
      * @param enum-string<T> $enum
      */
     public function __construct(
-        private readonly string $enum,
+        private string $enum,
     ) {}
 
     #[Override]

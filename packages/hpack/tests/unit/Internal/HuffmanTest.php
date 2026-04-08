@@ -136,8 +136,8 @@ final class HuffmanTest extends TestCase
             $encoded = Huffman::encode($string);
             $actualBits = strlen($encoded) * 8;
 
-            static::assertLessThanOrEqual(7, $actualBits - $estimatedBits, "Estimate too low for '$string'");
-            static::assertGreaterThanOrEqual(0, $actualBits - $estimatedBits, "Estimate too high for '$string'");
+            static::assertLessThanOrEqual(7, $actualBits - $estimatedBits, "Estimate too low for '{$string}'");
+            static::assertGreaterThanOrEqual(0, $actualBits - $estimatedBits, "Estimate too high for '{$string}'");
         }
     }
 

@@ -21,11 +21,7 @@ final class TableTest extends TestCase
         $buffer = new Buffer(30, 10);
         $area = new Rect(0, 0, 30, 10);
 
-        Table::new()
-            ->headers(['PID', 'NAME'])
-            ->widths([8, 20])
-            ->rows([])
-            ->render($area, $buffer);
+        Table::new()->headers(['PID', 'NAME'])->widths([8, 20])->rows([])->render($area, $buffer);
 
         static::assertSame('P', $buffer->get(0, 0)?->grapheme);
         static::assertSame('I', $buffer->get(1, 0)?->grapheme);
@@ -42,11 +38,7 @@ final class TableTest extends TestCase
         $buffer = new Buffer(20, 5);
         $area = new Rect(0, 0, 20, 5);
 
-        Table::new()
-            ->headers(['COL'])
-            ->widths([20])
-            ->rows([])
-            ->render($area, $buffer);
+        Table::new()->headers(['COL'])->widths([20])->rows([])->render($area, $buffer);
 
         static::assertSame("\u{2500}", $buffer->get(0, 1)?->grapheme);
         static::assertSame("\u{2500}", $buffer->get(10, 1)?->grapheme);

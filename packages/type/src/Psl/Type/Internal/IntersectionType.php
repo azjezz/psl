@@ -31,8 +31,8 @@ final readonly class IntersectionType extends Type
      * @param TypeInterface<Tr> $right_type
      */
     public function __construct(
-        private readonly TypeInterface $left_type,
-        private readonly TypeInterface $right_type,
+        private TypeInterface $left_type,
+        private TypeInterface $right_type,
     ) {}
 
     /**

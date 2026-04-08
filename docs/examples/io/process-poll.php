@@ -8,11 +8,7 @@ use Psl\IO;
 use Psl\Process\Command;
 use Psl\Process\Stdio;
 
-$child = Command::create('sleep')
-    ->withArgument('0.1')
-    ->withStdout(Stdio::null())
-    ->withStderr(Stdio::null())
-    ->spawn();
+$child = Command::create('sleep')->withArgument('0.1')->withStdout(Stdio::null())->withStderr(Stdio::null())->spawn();
 
 $status = $child->tryWait(); // null (still running)
 IO\write_line('Still running: %s', $status === null ? 'true' : 'false');

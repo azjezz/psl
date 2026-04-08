@@ -29,8 +29,8 @@ readonly class UnionType extends Type\Type
      * @param Type\TypeInterface<Tr> $right_type
      */
     public function __construct(
-        private readonly Type\TypeInterface $left_type,
-        private readonly Type\TypeInterface $right_type,
+        private Type\TypeInterface $left_type,
+        private Type\TypeInterface $right_type,
     ) {}
 
     /**

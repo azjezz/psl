@@ -12,7 +12,7 @@ $iri = IRI\parse('https://münchen.de/straße?q=ünited#§ion');
 // "https"
 IO\write_line('%s', $iri->scheme ?? '<unknown>');
 // "münchen.de"
-IO\write_line('%s', $iri->authority->host?->toString() ?? '<unknown>');
+IO\write_line('%s', $iri->authority?->host?->toString() ?? '<unknown>');
 // "/straße"
 IO\write_line('%s', $iri->path);
 // "q=ünited"

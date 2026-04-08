@@ -20,10 +20,7 @@ final class TabsTest extends TestCase
         $buffer = new Buffer(30, 1);
         $area = new Rect(0, 0, 30, 1);
 
-        Tabs::new()
-            ->titles(['Tab1', 'Tab2', 'Tab3'])
-            ->highlight(0)
-            ->render($area, $buffer);
+        Tabs::new()->titles(['Tab1', 'Tab2', 'Tab3'])->highlight(0)->render($area, $buffer);
 
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
         static::assertSame('T', $buffer->get(1, 0)?->grapheme);
@@ -61,11 +58,7 @@ final class TabsTest extends TestCase
 
         $inactiveFg = Ansi\foreground(Color\bright_black());
 
-        Tabs::new()
-            ->titles(['First', 'Second'])
-            ->highlight(0)
-            ->inactiveStyle($inactiveFg)
-            ->render($area, $buffer);
+        Tabs::new()->titles(['First', 'Second'])->highlight(0)->inactiveStyle($inactiveFg)->render($area, $buffer);
 
         $cell = $buffer->get(9, 0);
         static::assertNotNull($cell);
@@ -116,10 +109,7 @@ final class TabsTest extends TestCase
         $buffer = new Buffer(10, 1);
         $area = new Rect(0, 0, 10, 1);
 
-        Tabs::new()
-            ->titles(['LongTab1', 'LongTab2'])
-            ->highlight(0)
-            ->render($area, $buffer);
+        Tabs::new()->titles(['LongTab1', 'LongTab2'])->highlight(0)->render($area, $buffer);
 
         static::assertSame(' ', $buffer->get(0, 0)?->grapheme);
         static::assertSame('L', $buffer->get(1, 0)?->grapheme);

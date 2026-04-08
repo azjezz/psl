@@ -207,8 +207,7 @@ final readonly class Address implements Stringable, Comparable, Equable
             return (
                 $this->bytes[0] === "\x0a"
                 || $this->bytes[0] === "\xac"
-                && (ord($this->bytes[1]) & 0xf0)
-                === 0x10
+                && (ord($this->bytes[1]) & 0xf0) === 0x10
                 || $this->bytes[0] === "\xc0"
                 && $this->bytes[1] === "\xa8"
             );

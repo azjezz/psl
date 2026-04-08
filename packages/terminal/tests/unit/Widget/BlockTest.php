@@ -75,10 +75,7 @@ final class BlockTest extends TestCase
         $buffer = new Buffer(20, 5);
         $area = new Rect(0, 0, 20, 5);
 
-        Block::new()
-            ->title(' Chat ')
-            ->border(Border::rounded())
-            ->render($area, Paragraph::new([]), $buffer);
+        Block::new()->title(' Chat ')->border(Border::rounded())->render($area, Paragraph::new([]), $buffer);
 
         static::assertSame(' ', $buffer->get(1, 0)?->grapheme);
         static::assertSame('C', $buffer->get(2, 0)?->grapheme);
@@ -180,10 +177,7 @@ final class BlockTest extends TestCase
 
         $bg = Color\bright_black();
 
-        Block::new()
-            ->border(Border::rounded())
-            ->background($bg)
-            ->render($area, Paragraph::new([]), $buffer);
+        Block::new()->border(Border::rounded())->background($bg)->render($area, Paragraph::new([]), $buffer);
 
         $cell = $buffer->get(1, 1);
         static::assertNotNull($cell);
@@ -320,10 +314,7 @@ final class BlockTest extends TestCase
 
         $bg = Color\blue();
 
-        Block::new()
-            ->border(Border::rounded())
-            ->background($bg)
-            ->render($area, Paragraph::new([]), $buffer);
+        Block::new()->border(Border::rounded())->background($bg)->render($area, Paragraph::new([]), $buffer);
 
         // Border cells should not have background style applied (background fills inner area only)
         static::assertSame([], $buffer->get(1, 0)?->style);
@@ -402,10 +393,7 @@ final class BlockTest extends TestCase
         $buffer = new Buffer(6, 3);
         $area = new Rect(0, 0, 6, 3);
 
-        Block::new()
-            ->title('ABCDEFGH')
-            ->border(Border::rounded())
-            ->render($area, Paragraph::new([]), $buffer);
+        Block::new()->title('ABCDEFGH')->border(Border::rounded())->render($area, Paragraph::new([]), $buffer);
 
         static::assertSame('A', $buffer->get(1, 0)?->grapheme);
         static::assertSame('B', $buffer->get(2, 0)?->grapheme);
@@ -419,10 +407,7 @@ final class BlockTest extends TestCase
         $buffer = new Buffer(8, 3);
         $area = new Rect(0, 0, 8, 3);
 
-        Block::new()
-            ->title("\u{6F22}\u{5B57}")
-            ->border(Border::rounded())
-            ->render($area, Paragraph::new([]), $buffer);
+        Block::new()->title("\u{6F22}\u{5B57}")->border(Border::rounded())->render($area, Paragraph::new([]), $buffer);
 
         static::assertSame("\u{6F22}", $buffer->get(1, 0)?->grapheme);
         static::assertSame('', $buffer->get(2, 0)?->grapheme);
@@ -489,10 +474,7 @@ final class BlockTest extends TestCase
         $buffer = new Buffer(2, 3);
         $area = new Rect(0, 0, 2, 3);
 
-        Block::new()
-            ->title('Test')
-            ->border(Border::rounded())
-            ->render($area, Paragraph::new([]), $buffer);
+        Block::new()->title('Test')->border(Border::rounded())->render($area, Paragraph::new([]), $buffer);
 
         static::assertSame("\u{256D}", $buffer->get(0, 0)?->grapheme);
         static::assertSame("\u{256E}", $buffer->get(1, 0)?->grapheme);

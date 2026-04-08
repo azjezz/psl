@@ -8,10 +8,7 @@ use Psl\IO;
 use Psl\TCP;
 
 // Configuration objects are immutable with fluent with* builder methods
-$config = TCP\ListenConfiguration::default()
-    ->withNoDelay(true)
-    ->withBacklog(2048)
-    ->withIdleConnections(128);
+$config = TCP\ListenConfiguration::default()->withNoDelay(true)->withBacklog(2048)->withIdleConnections(128);
 
 $listener = TCP\listen('127.0.0.1', 0, $config);
 
