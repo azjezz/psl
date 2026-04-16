@@ -18,7 +18,9 @@ final class Types
     /**
      * Map from file extension (without leading dot) to its preferred MIME type.
      *
-     * @var array<non-empty-string, non-empty-string>
+     * @var array<int|non-empty-string, non-empty-string>
+     *
+     * Note: key is `int|string` due to `123` coercing to integer.
      */
     public const array EXTENSION_TO_TYPE = [
         '123' => 'application/vnd.lotus-1-2-3',
