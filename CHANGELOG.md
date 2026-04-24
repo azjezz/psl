@@ -4,6 +4,8 @@
 
 ### features
 
+- feat(either-or-both): introduce `EitherOrBoth` component - a three-variant disjoint union (`Left` / `Right` / `Both`) for values that may be present on either or both of two sides, inspired by Rust's `itertools::EitherOrBoth` and Haskell's `Data.These`. Primary use case: three-way diff of two collections (insert / delete / update events). Secondary: layered config merge, multi-source enrichment, dual-validation, snapshot comparison. Full `map` / `mapLeft` / `mapRight` / `mapAny` / `swap` / `proceed` / `apply` / `containsLeft` / `containsRight` surface; `left()` / `right()` / `both()` free constructors.
+- feat(iter): add `Iter\merge_join_by` and `Iter\merge_join_by_key` - full-outer-join stream producers that yield `EitherOrBoth` events as a rewindable `Iter\Iterator`. `merge_join_by` is a lazy two-cursor merge over sorted inputs (O(1) memory on first traversal, `Psl\Comparison\Order`-returning comparator, matching Rust's `itertools::merge_join_by`); `merge_join_by_key` is a hash-based variant for keyed inputs that do not need to be pre-sorted (O(|right|) memory).
 - feat(io): add `IO\IterableReadHandle` - a streaming `ReadHandleInterface` that lazily consumes an `iterable<string>` without buffering the entire content in memory
 - feat(io): add `IO\ConcatReadHandle` - reads from two handles in sequence, switching to the second when the first reaches EOF
 - feat(io): add `IO\JoinedReadWriteHandle` - joins a `ReadHandleInterface` and `WriteHandleInterface` into a single read-write handle, delegating all operations to the respective underlying handle

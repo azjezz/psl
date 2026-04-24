@@ -66,6 +66,12 @@ Use the concrete classes or the `left()` / `right()` / `both()` free functions:
 
 @example('types/either-or-both-apply.php')
 
+### Composing with iter producers
+
+`EitherOrBoth` is the element type of `Psl\Iter\merge_join_by` (sorted inputs, O(1) memory on first traversal) and `Psl\Iter\merge_join_by_key` (keyed inputs, O(|right|) memory). Both return a rewindable `Iter\Iterator`. The four most common composition patterns -- side effects, pure mapping, filtering before dispatch, and per-side transformation -- all fall out naturally:
+
+@example('types/either-or-both-composing.php')
+
 ## When to Use EitherOrBoth vs Either
 
 - **Either** -- two mutually exclusive outcomes; one is the primary/success path, the other is secondary/error.
