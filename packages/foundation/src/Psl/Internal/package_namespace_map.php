@@ -34,6 +34,7 @@ function package_namespace_map(): array
         'Default' => 'default',
         'Dict' => 'dict',
         'Either' => 'either',
+        'EitherOrBoth' => 'either-or-both',
         'Encoding' => 'encoding',
         'Env' => 'env',
         'File' => 'file',
