@@ -11,8 +11,8 @@ use Throwable;
 /**
  * Represents the result of failed operation.
  *
- * @template    T
- * @template    Te of Throwable
+ * @template-covariant    T
+ * @template-covariant    Te of Throwable
  *
  * @implements  ResultInterface<T>
  *

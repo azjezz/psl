@@ -16,7 +16,7 @@ use Throwable;
  * This is an interface. You get generally `ResultInterface<T>` by calling `wrap<T>()`, passing in
  * the `(Closure(): T)`, and a `Success<T>` or `Failure<Te>` is returned.
  *
- * @template T
+ * @template-covariant T
  *
  * @extends Psl\Promise\PromiseInterface<T>
  *

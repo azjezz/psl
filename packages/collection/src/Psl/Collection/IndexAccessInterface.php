@@ -7,8 +7,8 @@ namespace Psl\Collection;
 /**
  * The interface for all keyed collections to enable access its values.
  *
- * @template Tk of array-key
- * @template Tv
+ * @template-covariant Tk of array-key
+ * @template-covariant Tv
  *
  * @api
  */

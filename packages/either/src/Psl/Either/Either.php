@@ -15,8 +15,8 @@ use Psl\Option;
  *
  * By convention, Left represents the failure/error case and Right represents the success case.
  *
- * @template TLeft
- * @template TRight
+ * @template-covariant TLeft
+ * @template-covariant TRight
  *
  * @extends Comparison\Comparable<Either<TLeft, TRight>>
  * @extends Comparison\Equable<Either<TLeft, TRight>>

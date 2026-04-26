@@ -13,7 +13,7 @@ use Psl\Option;
  *
  * By convention, Right represents the success case.
  *
- * @template TRight
+ * @template-covariant TRight
  *
  * @implements Either<never, TRight>
  *

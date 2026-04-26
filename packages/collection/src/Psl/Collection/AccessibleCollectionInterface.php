@@ -12,8 +12,8 @@ use Override;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
+ * @template-covariant Tk of array-key
+ * @template-covariant Tv
  *
  * @extends CollectionInterface<Tk, Tv>
  * @extends IndexAccessInterface<Tk, Tv>

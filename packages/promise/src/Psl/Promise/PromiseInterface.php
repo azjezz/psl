@@ -8,7 +8,7 @@ use Closure;
 use Throwable;
 
 /**
- * @template T
+ * @template-covariant T
  *
  * @api
  */

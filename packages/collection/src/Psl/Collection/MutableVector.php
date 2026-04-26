@@ -131,7 +131,7 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Retrieve an external iterator.
      *
-     * @return Iterator<int<0, max>, T>
+     * @return Iterator<int, T>
      */
     #[Override]
     public function getIterator(): Iterator
