@@ -2,6 +2,9 @@
     "phpUnit": {
         "customPath": "../vendor/bin/phpunit"
     },
+    "mago": {
+        "customPath": "../vendor/bin/mago"
+    },
     "initialTestsPhpOptions": "-dopcache.enable=0",
     "source": {
         "directories": [
