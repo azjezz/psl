@@ -110,7 +110,6 @@ final class StaticTable
 
         $nameMatch = null;
         foreach ($nameIndex[$name] as $i) {
-            /** @mago-expect analysis:mismatched-array-index */
             if (self::ENTRIES[$i][1] === $value) {
                 return [$i + 1, true];
             }

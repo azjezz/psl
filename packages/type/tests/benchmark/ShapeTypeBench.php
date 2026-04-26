@@ -143,10 +143,12 @@ final class ShapeTypeBench extends GenericTypeBench
                             ],
                         ],
                     ]],
-                    'dictionary' => ['key' => [[
-                        'title' => 'ok',
-                        'content' => 'ok',
-                    ]]],
+                    'dictionary' => [
+                        'key' => [[
+                            'title' => 'ok',
+                            'content' => 'ok',
+                        ]],
+                    ],
                 ],
             ],
         ];
@@ -241,10 +243,12 @@ final class ShapeTypeBench extends GenericTypeBench
                             ],
                         ],
                     ]],
-                    'dictionary' => ['key' => [[
-                        'title' => 'ok',
-                        'content' => 'ok',
-                    ]]],
+                    'dictionary' => [
+                        'key' => [[
+                            'title' => 'ok',
+                            'content' => 'ok',
+                        ]],
+                    ],
                 ],
             ],
         ];

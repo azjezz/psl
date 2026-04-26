@@ -74,11 +74,13 @@ final class Socket implements Network\SocketInterface, IO\StreamHandleInterface
         int $port = 0,
         BindConfiguration $configuration = new BindConfiguration(),
     ): self {
-        $context = ['socket' => [
-            'so_reuseaddr' => $configuration->reuseAddress,
-            'so_reuseport' => $configuration->reusePort,
-            'so_broadcast' => $configuration->broadcast,
-        ]];
+        $context = [
+            'socket' => [
+                'so_reuseaddr' => $configuration->reuseAddress,
+                'so_reuseport' => $configuration->reusePort,
+                'so_broadcast' => $configuration->broadcast,
+            ],
+        ];
 
         $ctx = stream_context_create($context);
         $errno = 0;

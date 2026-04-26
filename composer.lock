@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7475deba4f553b5cf89bbe509f5b95ba",
+    "content-hash": "fd7e527acec84f2fc2ec364121db6ed4",
     "packages": [
         {
             "name": "revolt/event-loop",
@@ -82,16 +82,16 @@
     "packages-dev": [
         {
             "name": "carthage-software/mago",
-            "version": "1.20.1",
+            "version": "1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/carthage-software/mago.git",
-                "reference": "c0453e95b56d78d1d6c520cfe927fbdf167fe552"
+                "reference": "ff885e99abe97222bb8b84dc346b59bddbe3a307"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/carthage-software/mago/zipball/c0453e95b56d78d1d6c520cfe927fbdf167fe552",
-                "reference": "c0453e95b56d78d1d6c520cfe927fbdf167fe552",
+                "url": "https://api.github.com/repos/carthage-software/mago/zipball/ff885e99abe97222bb8b84dc346b59bddbe3a307",
+                "reference": "ff885e99abe97222bb8b84dc346b59bddbe3a307",
                 "shasum": ""
             },
             "require": {
@@ -126,7 +126,7 @@
             ],
             "support": {
                 "issues": "https://github.com/carthage-software/mago/issues",
-                "source": "https://github.com/carthage-software/mago/tree/1.20.1"
+                "source": "https://github.com/carthage-software/mago/tree/1.24.0"
             },
             "funding": [
                 {
@@ -134,7 +134,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-15T01:10:46+00:00"
+            "time": "2026-04-22T07:00:59+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -1089,16 +1089,16 @@
         },
         {
             "name": "infection/infection",
-            "version": "0.32.6",
+            "version": "0.32.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infection/infection.git",
-                "reference": "4ed769947eaf2ecf42203027301bad2bedf037e5"
+                "reference": "066ee69f1e8e6dec8965a79d5ba020656c590b5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infection/infection/zipball/4ed769947eaf2ecf42203027301bad2bedf037e5",
-                "reference": "4ed769947eaf2ecf42203027301bad2bedf037e5",
+                "url": "https://api.github.com/repos/infection/infection/zipball/066ee69f1e8e6dec8965a79d5ba020656c590b5e",
+                "reference": "066ee69f1e8e6dec8965a79d5ba020656c590b5e",
                 "shasum": ""
             },
             "require": {
@@ -1117,7 +1117,7 @@
                 "justinrainbow/json-schema": "^6.0",
                 "nikic/php-parser": "^5.6.2",
                 "ondram/ci-detector": "^4.1.0",
-                "php": "^8.2",
+                "php": "^8.3",
                 "psr/log": "^2.0 || ^3.0",
                 "sanmai/di-container": "^0.1.12",
                 "sanmai/duoclock": "^0.1.0",
@@ -1137,9 +1137,11 @@
                 "dg/bypass-finals": "<1.4.1"
             },
             "require-dev": {
+                "carthage-software/mago": "^1.20",
                 "ext-simplexml": "*",
                 "fidry/makefile": "^1.0",
                 "fig/log-test": "^1.2",
+                "phpat/phpat": "^0.12.4",
                 "phpbench/phpbench": "^1.4",
                 "phpstan/extension-installer": "^1.4",
                 "phpstan/phpstan": "^2.1",
@@ -1148,7 +1150,7 @@
                 "phpstan/phpstan-webmozart-assert": "^2.0",
                 "phpunit/phpunit": "^11.5.27",
                 "rector/rector": "^2.2.4",
-                "shipmonk/dead-code-detector": "^0.14.0",
+                "shipmonk/dead-code-detector": "^0.15",
                 "shipmonk/name-collision-detector": "^2.1",
                 "sidz/phpstan-rules": "^0.5.1",
                 "symfony/yaml": "^6.4 || ^7.0 || ^8.0",
@@ -1209,7 +1211,7 @@
             ],
             "support": {
                 "issues": "https://github.com/infection/infection/issues",
-                "source": "https://github.com/infection/infection/tree/0.32.6"
+                "source": "https://github.com/infection/infection/tree/0.32.7"
             },
             "funding": [
                 {
@@ -1221,7 +1223,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2026-02-26T14:34:26+00:00"
+            "time": "2026-04-23T21:11:41+00:00"
         },
         {
             "name": "infection/mutator",
@@ -1973,21 +1975,22 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.1.2",
+            "version": "14.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "c9023486f88a48dd870361591bd7caef6d2406c3"
+                "reference": "4991e47adce8e31e554aee8fdaabfc3b1d60707d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/c9023486f88a48dd870361591bd7caef6d2406c3",
-                "reference": "c9023486f88a48dd870361591bd7caef6d2406c3",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/4991e47adce8e31e554aee8fdaabfc3b1d60707d",
+                "reference": "4991e47adce8e31e554aee8fdaabfc3b1d60707d",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "ext-libxml": "*",
+                "ext-mbstring": "*",
                 "ext-xmlwriter": "*",
                 "nikic/php-parser": "^5.7.0",
                 "php": ">=8.4",
@@ -2038,7 +2041,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.1.2"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.1.6"
             },
             "funding": [
                 {
@@ -2058,7 +2061,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-15T08:27:13+00:00"
+            "time": "2026-04-24T13:10:08+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -2355,16 +2358,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "13.1.5",
+            "version": "13.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "89adcba73441b38db31d5c0473b61e2907311db0"
+                "reference": "ddd6401641861cdef94b922ef10d484f436e8dcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/89adcba73441b38db31d5c0473b61e2907311db0",
-                "reference": "89adcba73441b38db31d5c0473b61e2907311db0",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/ddd6401641861cdef94b922ef10d484f436e8dcd",
+                "reference": "ddd6401641861cdef94b922ef10d484f436e8dcd",
                 "shasum": ""
             },
             "require": {
@@ -2378,7 +2381,7 @@
                 "phar-io/manifest": "^2.0.4",
                 "phar-io/version": "^3.2.1",
                 "php": ">=8.4.1",
-                "phpunit/php-code-coverage": "^14.1.2",
+                "phpunit/php-code-coverage": "^14.1.3",
                 "phpunit/php-file-iterator": "^7.0.0",
                 "phpunit/php-invoker": "^7.0.0",
                 "phpunit/php-text-template": "^6.0.0",
@@ -2434,7 +2437,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/13.1.7"
             },
             "funding": [
                 {
@@ -2442,7 +2445,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-04-16T04:58:40+00:00"
+            "time": "2026-04-18T06:14:52+00:00"
         },
         {
             "name": "psr/cache",

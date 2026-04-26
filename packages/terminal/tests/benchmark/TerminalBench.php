@@ -135,27 +135,31 @@ final class TerminalBench
      */
     public function provideLayoutData(): iterable
     {
-        yield 'few_fixed' => ['constraints' => [
-            Constraint::fixed(20),
-            Constraint::fixed(30),
-            Constraint::fixed(50),
-        ]];
+        yield 'few_fixed' => [
+            'constraints' => [
+                Constraint::fixed(20),
+                Constraint::fixed(30),
+                Constraint::fixed(50),
+            ],
+        ];
         yield 'few_mixed' => ['constraints' => [
             Constraint::fixed(20),
             Constraint::fill(),
             Constraint::fixed(30),
         ]];
-        yield 'many_mixed' => ['constraints' => [
-            Constraint::fixed(10),
-            Constraint::fill(),
-            Constraint::fixed(10),
-            Constraint::fill(),
-            Constraint::fixed(10),
-            Constraint::fill(),
-            Constraint::fixed(10),
-            Constraint::fill(),
-            Constraint::fixed(10),
-            Constraint::fill(),
-        ]];
+        yield 'many_mixed' => [
+            'constraints' => [
+                Constraint::fixed(10),
+                Constraint::fill(),
+                Constraint::fixed(10),
+                Constraint::fill(),
+                Constraint::fixed(10),
+                Constraint::fill(),
+                Constraint::fixed(10),
+                Constraint::fill(),
+                Constraint::fixed(10),
+                Constraint::fill(),
+            ],
+        ];
     }
 }

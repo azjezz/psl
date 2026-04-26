@@ -60,9 +60,11 @@ final class TrustChainResolverAdditionalTest extends TestCase
 
         $dsRecord = self::buildDsRecord('com', $childDnskey, $childKeyTag);
 
-        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
-            $dsRecord,
-        ]]);
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: [
+            'com' => [
+                $dsRecord,
+            ],
+        ]);
 
         $resolver = new TrustChainResolver($inner, $anchor);
         $result = $resolver->resolve('com');
@@ -96,10 +98,12 @@ final class TrustChainResolverAdditionalTest extends TestCase
             'dummy-signature',
         );
 
-        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
-            $dsRecord,
-            $dsRrsig,
-        ]]);
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: [
+            'com' => [
+                $dsRecord,
+                $dsRrsig,
+            ],
+        ]);
 
         $resolver = new TrustChainResolver($inner, $anchor);
         $result = $resolver->resolve('com');
@@ -365,10 +369,12 @@ final class TrustChainResolverAdditionalTest extends TestCase
             'invalid-signature-data',
         );
 
-        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
-            $dsRecord,
-            $dsRrsig,
-        ]]);
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: [
+            'com' => [
+                $dsRecord,
+                $dsRrsig,
+            ],
+        ]);
 
         $resolver = new TrustChainResolver($inner, $anchor);
         $result = $resolver->resolve('com');
@@ -730,10 +736,12 @@ final class TrustChainResolverAdditionalTest extends TestCase
             'dummy-signature',
         );
 
-        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
-            $dsRecord,
-            $dsRrsig,
-        ]]);
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: [
+            'com' => [
+                $dsRecord,
+                $dsRrsig,
+            ],
+        ]);
 
         $resolver = new TrustChainResolver($inner, $anchor);
         $result = $resolver->resolve('com');
@@ -875,10 +883,12 @@ final class TrustChainResolverAdditionalTest extends TestCase
             $dsSignature,
         );
 
-        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
-            $dsRecord,
-            $dsRrsigWithDotSigner,
-        ]]);
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: [
+            'com' => [
+                $dsRecord,
+                $dsRrsigWithDotSigner,
+            ],
+        ]);
 
         $resolver = new TrustChainResolver($inner, $anchor);
         $result = $resolver->resolve('com');
@@ -959,10 +969,12 @@ final class TrustChainResolverAdditionalTest extends TestCase
             'dummy',
         );
 
-        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: ['com' => [
-            $dsRecord,
-            $dsRrsig,
-        ]]);
+        $inner = self::createFullChainResolver(rootDnskey: $rootDnskey, rootRrsig: $rootRrsig, dsAnswers: [
+            'com' => [
+                $dsRecord,
+                $dsRrsig,
+            ],
+        ]);
 
         $resolver = new TrustChainResolver($inner, $anchor);
         $result = $resolver->resolve('com');
