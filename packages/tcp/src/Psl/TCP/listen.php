@@ -23,14 +23,16 @@ function listen(
     int $port = 0,
     ListenConfiguration $configuration = new ListenConfiguration(),
 ): ListenerInterface {
-    $socketContext = ['socket' => [
-        'ipv6_v6only' => true,
-        'so_reuseaddr' => PHP_OS_FAMILY === 'Windows' ? $configuration->reusePort : $configuration->reuseAddress,
-        'so_reuseport' => $configuration->reusePort,
-        'so_broadcast' => false,
-        'tcp_nodelay' => $configuration->noDelay,
-        'backlog' => $configuration->backlog,
-    ]];
+    $socketContext = [
+        'socket' => [
+            'ipv6_v6only' => true,
+            'so_reuseaddr' => PHP_OS_FAMILY === 'Windows' ? $configuration->reusePort : $configuration->reuseAddress,
+            'so_reuseport' => $configuration->reusePort,
+            'so_broadcast' => false,
+            'tcp_nodelay' => $configuration->noDelay,
+            'backlog' => $configuration->backlog,
+        ],
+    ];
 
     if (null !== $configuration->bindTo) {
         $socketContext['socket']['bindto'] = $configuration->bindTo;

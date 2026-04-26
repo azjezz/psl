@@ -125,7 +125,6 @@ $frames = Iter\rewindable(
                     $level = (Math\sin(($b * 0.6) + ($f * 0.18)) * 0.5) + 0.5;
                     $idx = (int) ($level * 7);
                     $hue = (($b * 11) + ($f * 5)) % 360;
-                    // @mago-expect analysis:mismatched-array-index
                     $out .= Ansi\apply($barChars[$idx], Style\bold(), Ansi\foreground($rainbow($hue)));
                 }
 
