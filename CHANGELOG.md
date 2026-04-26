@@ -115,6 +115,18 @@
 - feat(tcp): add `withBindTo()` fluent builder method to both `ConnectConfiguration` and `ListenConfiguration`
 - feat(tcp): `connect()` now respects `ConnectConfiguration::$bindTo` by setting the `socket.bindto` stream context option
 
+### type system
+
+- chore(types): annotate read-only template parameters with `@template-covariant` across the library, allowing values to flow into wider declarations:
+    - `Async\Awaitable<T>`, `Promise\PromiseInterface<T>`
+    - `Result\ResultInterface<T>`, `Result\Success<T>`, `Result\Failure<T, Te>`
+    - `Option\Option<T>`
+    - `Either\Either<TLeft, TRight>`, `Either\Left<TLeft>`, `Either\Right<TRight>`
+    - `Tree\NodeInterface<T>`, `Tree\LeafNode<T>`, `Tree\TreeNode<T>`
+- chore(collection): annotate immutable collection template parameters with `@template-covariant` (`CollectionInterface`, `AccessibleCollectionInterface`, `IndexAccessInterface`, `MapInterface`, `Map`, `SetInterface`, `Set`, `VectorInterface`, `Vector`); mutable collections remain invariant.
+- chore(async): annotate `Sequence`, `KeyedSequence`, `Semaphore`, `KeyedSemaphore` template parameters with the correct variance; keys/inputs are `@template-contravariant` (write-position only) and outputs are `@template-covariant` (read-position only).
+- chore(collection): relax `Vector::getIterator()` and `MutableVector::getIterator()` return type from `Iterator<int<0, max>, T>` to `Iterator<int, T>`.
+
 ### fixes
 
 - fix(io): `IO\copy()` now flushes the writer after copying if it implements `BufferedWriteHandleInterface`, ensuring no data remains in an internal buffer

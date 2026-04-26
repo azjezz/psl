@@ -9,7 +9,7 @@ use Override;
 /**
  * Immutable leaf node implementation (node with no children).
  *
- * @template T
+ * @template-covariant T
  *
  * @implements NodeInterface<T>
  *

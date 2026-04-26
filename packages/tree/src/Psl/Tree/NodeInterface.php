@@ -9,7 +9,7 @@ use JsonSerializable;
 /**
  * Base interface for all tree nodes.
  *
- * @template T
+ * @template-covariant T
  *
  * @psalm-inheritors LeafNode|TreeNode
  *

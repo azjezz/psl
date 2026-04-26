@@ -12,7 +12,7 @@ use Psl;
 /**
  * Represents the result of successful operation.
  *
- * @template    T
+ * @template-covariant    T
  *
  * @implements  ResultInterface<T>
  *

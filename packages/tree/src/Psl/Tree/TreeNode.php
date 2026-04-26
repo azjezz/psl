@@ -9,7 +9,7 @@ use Override;
 /**
  * Immutable tree node implementation (node with children).
  *
- * @template T
+ * @template-covariant T
  *
  * @implements NodeInterface<T>
  *

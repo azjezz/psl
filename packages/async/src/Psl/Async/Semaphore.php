@@ -22,8 +22,8 @@ use function count;
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
- * @template Tin
- * @template Tout
+ * @template-contravariant Tin
+ * @template-covariant Tout
  *
  * @api
  */

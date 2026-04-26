@@ -27,9 +27,9 @@ use function in_array;
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
- * @template Tk of array-key
- * @template Tin
- * @template Tout
+ * @template-contravariant Tk of array-key
+ * @template-contravariant Tin
+ * @template-covariant Tout
  *
  * @mago-expect lint:excessive-nesting
  *

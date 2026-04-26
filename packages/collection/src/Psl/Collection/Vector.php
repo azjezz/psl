@@ -24,7 +24,7 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template T
+ * @template-covariant T
  *
  * @implements VectorInterface<T>
  *
@@ -128,7 +128,7 @@ final readonly class Vector implements VectorInterface
     /**
      * Retrieve an external iterator.
      *
-     * @return Iterator<int<0, max>, T>
+     * @return Iterator<int, T>
      */
     #[Override]
     public function getIterator(): Iterator

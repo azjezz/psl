@@ -22,9 +22,9 @@ use function count;
  *
  * Just like {@see KeyedSemaphore}, all operations must have the same input type (Tin) and output type (Tout), and be processed by the same function;
  *
- * @template Tk of array-key
- * @template Tin
- * @template Tout
+ * @template-contravariant Tk of array-key
+ * @template-contravariant Tin
+ * @template-covariant Tout
  *
  * @see KeyedSemaphore
  *

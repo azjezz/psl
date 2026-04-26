@@ -13,7 +13,7 @@ use Psl\Option;
  *
  * By convention, Left represents the failure/error case.
  *
- * @template TLeft
+ * @template-covariant TLeft
  *
  * @implements Either<TLeft, never>
  *

@@ -25,7 +25,7 @@ use function is_array;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template T
+ * @template-covariant T
  *
  * @implements PromiseInterface<T>
  *

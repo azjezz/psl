@@ -8,8 +8,8 @@ use Closure;
 use Override;
 
 /**
- * @template Tk of array-key
- * @template Tv
+ * @template-covariant Tk of array-key
+ * @template-covariant Tv
  *
  * @extends AccessibleCollectionInterface<Tk, Tv>
  *

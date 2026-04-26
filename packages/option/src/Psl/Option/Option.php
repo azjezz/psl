@@ -9,7 +9,7 @@ use Override;
 use Psl\Comparison;
 
 /**
- * @template T
+ * @template-covariant T
  *
  * @implements Comparison\Comparable<Option<T>>
  * @implements Comparison\Equable<Option<T>>
