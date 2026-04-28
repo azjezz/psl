@@ -32,6 +32,10 @@ final class Buffer
      */
     private null|array $previous = null;
 
+    /**
+     * @param positive-int $width
+     * @param positive-int $height
+     */
     public function __construct(
         private int $width,
         private int $height,
@@ -125,6 +129,9 @@ final class Buffer
 
     /**
      * Resize the buffer to new dimensions, clearing all content.
+     *
+     * @param positive-int $width
+     * @param positive-int $height
      */
     public function resize(int $width, int $height): void
     {
@@ -210,6 +217,9 @@ final class Buffer
     }
 
     /**
+     * @param positive-int $width
+     * @param positive-int $height
+     *
      * @return array<non-negative-int, array<non-negative-int, Cell>>
      */
     private static function createGrid(int $width, int $height): array

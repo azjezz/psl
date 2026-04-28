@@ -15,8 +15,8 @@ namespace Psl\Terminal;
 final readonly class StaticWindowSizeProvider implements WindowSizeProviderInterface
 {
     /**
-     * @param int $width Number of columns.
-     * @param int $height Number of rows.
+     * @param positive-int $width Number of columns.
+     * @param positive-int $height Number of rows.
      */
     public function __construct(
         private int $width,

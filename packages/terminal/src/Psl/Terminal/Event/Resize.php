@@ -13,6 +13,10 @@ namespace Psl\Terminal\Event;
  */
 final readonly class Resize
 {
+    /**
+     * @param positive-int $width
+     * @param positive-int $height
+     */
     public function __construct(
         public int $width,
         public int $height,
