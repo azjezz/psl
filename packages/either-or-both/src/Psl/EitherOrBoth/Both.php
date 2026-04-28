@@ -11,8 +11,8 @@ use Psl\Option;
 /**
  * The Both variant of {@see EitherOrBoth}: a left value and a right value are both present.
  *
- * @template TLeft
- * @template TRight
+ * @template-covariant TLeft
+ * @template-covariant TRight
  *
  * @implements EitherOrBoth<TLeft, TRight>
  *

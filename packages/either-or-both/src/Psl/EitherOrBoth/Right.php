@@ -11,7 +11,7 @@ use Psl\Option;
 /**
  * The Right variant of {@see EitherOrBoth}: only a right value is present.
  *
- * @template TRight
+ * @template-covariant TRight
  *
  * @implements EitherOrBoth<never, TRight>
  *
