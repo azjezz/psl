@@ -122,8 +122,8 @@ final class Application
      * @param T $state Application state object, passed to all callbacks.
      * @param ReadHandleInterface&StreamHandleInterface $input
      * @param WriteHandleInterface $output
-     * @param int $width Initial terminal width (columns).
-     * @param int $height Initial terminal height (rows).
+     * @param positive-int $width Initial terminal width (columns).
+     * @param positive-int $height Initial terminal height (rows).
      * @param Duration|null $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
      *
      * @return self<T>

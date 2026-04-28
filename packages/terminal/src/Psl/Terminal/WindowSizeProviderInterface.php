@@ -14,7 +14,7 @@ interface WindowSizeProviderInterface
     /**
      * Returns the current terminal size as [columns, rows].
      *
-     * @return array{int, int}
+     * @return array{positive-int, positive-int}
      */
     public function get(): array;
 }

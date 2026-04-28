@@ -12,7 +12,7 @@ namespace Psl\Terminal;
 final readonly class LocalWindowSizeProvider implements WindowSizeProviderInterface
 {
     /**
-     * @return array{int, int} [columns, rows]
+     * @return array{positive-int, positive-int} [columns, rows]
      */
     public function get(): array
     {

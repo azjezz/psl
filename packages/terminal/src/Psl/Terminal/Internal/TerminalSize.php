@@ -26,9 +26,7 @@ final class TerminalSize
     /**
      * Returns the current terminal size as [columns, rows].
      *
-     * @return array{int, int}
-     *
-     * @throws Exception\RuntimeException If unable to determine terminal size.
+     * @return array{positive-int, positive-int}
      */
     public static function get(): array
     {
@@ -40,7 +38,7 @@ final class TerminalSize
     }
 
     /**
-     * @return array{int, int}
+     * @return array{positive-int, positive-int}
      */
     private static function getUnix(): array
     {
@@ -60,7 +58,7 @@ final class TerminalSize
     /**
      * Try to get terminal size via stty.
      *
-     * @return null|array{int, int}
+     * @return null|array{positive-int, positive-int}
      */
     private static function tryStty(): null|array
     {
@@ -94,7 +92,7 @@ final class TerminalSize
     /**
      * Try to get terminal size via tput.
      *
-     * @return null|array{int, int}
+     * @return null|array{positive-int, positive-int}
      */
     private static function tryTput(): null|array
     {
@@ -128,7 +126,7 @@ final class TerminalSize
     }
 
     /**
-     * @return array{int, int}
+     * @return array{positive-int, positive-int}
      */
     private static function getWindows(): array
     {
