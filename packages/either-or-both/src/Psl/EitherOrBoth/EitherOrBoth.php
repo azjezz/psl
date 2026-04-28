@@ -17,8 +17,8 @@ use Psl\Option;
  * the three positions are equal citizens. Primary use case: three-way diff of two
  * collections (insert / delete / update events).
  *
- * @template TLeft
- * @template TRight
+ * @template-covariant TLeft
+ * @template-covariant TRight
  *
  * @extends Comparison\Equable<EitherOrBoth<TLeft, TRight>>
  *
