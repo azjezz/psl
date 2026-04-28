@@ -196,7 +196,7 @@ final class IterableReadHandle implements ReadHandleInterface, CloseHandleInterf
             }
 
             $value = $this->iterator->current();
-            if ($value !== '') {
+            if ($value !== null && $value !== '') {
                 $this->buffer = $value;
                 return;
             }
