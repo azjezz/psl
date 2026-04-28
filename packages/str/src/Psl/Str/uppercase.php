@@ -12,6 +12,8 @@ use function mb_strtoupper;
  * @pure
  *
  * @api
+ *
+ * @return ($string is non-empty-string ? non-empty-uppercase-string : uppercase-string)
  */
 function uppercase(string $string, Encoding $encoding = Encoding::Utf8): string
 {

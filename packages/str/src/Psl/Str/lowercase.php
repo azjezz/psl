@@ -25,7 +25,7 @@ use function mb_strtolower;
  *      Str\lowercase('سيف')
  *      => Str('سيف')
  *
- * @return lowercase-string
+ * @return ($string is non-empty-string ? non-empty-lowercase-string : lowercase-string)
  *
  * @pure
  *
