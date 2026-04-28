@@ -58,6 +58,7 @@ const SLUG_TO_PACKAGE = [
     'dnssec' => 'php-standard-library/dnssec',
     'dict' => 'php-standard-library/dict',
     'either' => 'php-standard-library/either',
+    'either-or-both' => 'php-standard-library/either-or-both',
     'encoding' => 'php-standard-library/encoding',
     'env' => 'php-standard-library/env',
     'file' => 'php-standard-library/file',

@@ -57,4 +57,8 @@ Run a closure on the contained value without changing the `Either`:
 - **Result** -- The operation can succeed or throw. You want to capture exceptions as values.
 - **Either** -- The operation has two valid outcomes. Both sides carry meaningful domain values, not exceptions.
 
+## When to Use Either vs EitherOrBoth
+
+If both sides can be present at the same time (for example, three-way diff events on two partially-overlapping collections), reach for [EitherOrBoth](#either-or-both) instead. `Either` is the right type when exactly one side is present; `EitherOrBoth` is the right type when either or both can be.
+
 See `src/Psl/Either/` for the full API.

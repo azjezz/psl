@@ -28,6 +28,14 @@ Use **Vec** or **Dict** when you need a transformed array as output (mapping, fi
 
 @example('basics/iter-side-effects.php')
 
+## Joining Two Iterables
+
+`Iter\merge_join_by` and `Iter\merge_join_by_key` perform a full outer join of two iterables, yielding an `EitherOrBoth` event for each element that is present on the left only, the right only, or both. The sorted variant is lazy and uses O(1) memory on first traversal; the keyed variant materializes the right-hand side into a lookup and streams the left. Both return a rewindable `Iter\Iterator` -- a second iteration replays the cached events without re-walking the inputs.
+
+@example('basics/iter-joining.php')
+
+See the [EitherOrBoth](#either-or-both) page for the shape of the events and patterns for consuming them.
+
 ## Rewindable Iterators
 
 Generators in PHP can only be iterated once. The `Iter\Iterator` class wraps a generator so it can be rewound and iterated multiple times without re-executing the generator.
