@@ -14,7 +14,7 @@ fmt-check:
     ./vendor/bin/mago --config config/mago.toml fmt --check
 
 lint:
-    ./vendor/bin/mago --config config/mago.toml lint
+    ./vendor/bin/mago --config config/mago.toml lint --minimum-fail-level warning
 
 fix:
     ./vendor/bin/mago --config config/mago.toml analyze --fix
@@ -22,7 +22,7 @@ fix:
     ./vendor/bin/mago --config config/mago.toml fmt
 
 analyze:
-    ./vendor/bin/mago --config config/mago.toml analyze
+    ./vendor/bin/mago --config config/mago.toml analyze --minimum-fail-level warning
 
 bench:
     ./vendor/bin/phpbench run --config config/phpbench.json
