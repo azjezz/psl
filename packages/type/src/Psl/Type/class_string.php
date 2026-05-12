@@ -9,13 +9,13 @@ namespace Psl\Type;
  *
  * @template T
  *
- * @param class-string<T> $classname
+ * @param class-string<T>|null $classname
  *
- * @return TypeInterface<class-string<T>>
+ * @return ($classname is null ? TypeInterface<class-string> : TypeInterface<class-string<T>>)
  *
  * @api
  */
-function class_string(string $classname): TypeInterface
+function class_string(string|null $classname = null): TypeInterface
 {
     return new Internal\ClassStringType($classname);
 }

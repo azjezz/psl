@@ -116,6 +116,7 @@
 - feat(tcp): add `bindTo` option to `ListenConfiguration` for binding to a specific local address before listening
 - feat(tcp): add `withBindTo()` fluent builder method to both `ConnectConfiguration` and `ListenConfiguration`
 - feat(tcp): `connect()` now respects `ConnectConfiguration::$bindTo` by setting the `socket.bindto` stream context option
+- feat(type): Allow null argument to `Type\class_string` to assert or coerce bare `class-string`
 
 ### type system
 
