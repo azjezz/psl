@@ -9,6 +9,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
+use function class_exists;
 use function is_a;
 use function is_string;
 
@@ -22,16 +23,16 @@ use function is_string;
 final readonly class ClassStringType extends Type
 {
     /**
-     * @var class-string<T> $classname
+     * @var class-string<T>|null $classname
      */
-    private string $classname;
+    private string|null $classname;
 
     /**
      * @psalm-mutation-free
      *
-     * @param class-string<T> $classname
+     * @param class-string<T>|null $classname
      */
-    public function __construct(string $classname)
+    public function __construct(string|null $classname)
     {
         $this->classname = $classname;
     }
@@ -42,6 +43,10 @@ final readonly class ClassStringType extends Type
     #[Override]
     public function matches(mixed $value): bool
     {
+        if ($this->classname === null) {
+            return is_string($value) && class_exists($value);
+        }
+
         return is_string($value) && is_a($value, $this->classname, true);
     }
 
@@ -53,8 +58,7 @@ final readonly class ClassStringType extends Type
     #[Override]
     public function coerce(mixed $value): string
     {
-        if (is_string($value) && is_a($value, $this->classname, true)) {
-            /** @var class-string<T> */
+        if ($this->matches($value)) {
             return $value;
         }
 
@@ -71,8 +75,7 @@ final readonly class ClassStringType extends Type
     #[Override]
     public function assert(mixed $value): string
     {
-        if (is_string($value) && is_a($value, $this->classname, true)) {
-            /** @var class-string<T> */
+        if ($this->matches($value)) {
             return $value;
         }
 
@@ -82,6 +85,6 @@ final readonly class ClassStringType extends Type
     #[Override]
     public function toString(): string
     {
-        return 'class-string<' . $this->classname . '>';
+        return $this->classname !== null ? 'class-string<' . $this->classname . '>' : 'class-string';
     }
 }
