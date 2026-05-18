@@ -20,7 +20,7 @@ use Stringable;
  * @inheritors Duration|Period
  *
  * @extends Comparison\Equable<TemporalAmountInterface>
- * @implements Interoperability\ToStdlib<DateInterval>
+ * @extends Interoperability\ToStdlib<DateInterval>
  *
  * @api
  */

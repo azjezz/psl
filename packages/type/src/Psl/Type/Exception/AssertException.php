@@ -53,7 +53,6 @@ final class AssertException extends Exception
         null|Throwable $previous = null,
     ): self {
         $paths = $previous instanceof Exception ? [$path, ...$previous->getPaths()] : [$path];
-        /** @var list<string> $paths */
         $paths = array_values(array_filter($paths, static fn($v) => $v !== null));
 
         return new self(get_debug_type($value), $expectedType, $paths, $previous);

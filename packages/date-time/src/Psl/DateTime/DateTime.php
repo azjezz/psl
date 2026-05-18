@@ -556,7 +556,6 @@ final readonly class DateTime implements
     #[Override]
     public static function fromStdlib(mixed $value): static
     {
-        /** @var DateTimeZone $tz */
         $tz = $value->getTimezone();
         $timezone = Timezone::from($tz->getName());
         $seconds = $value->getTimestamp();
