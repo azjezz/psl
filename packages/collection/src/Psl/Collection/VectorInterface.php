@@ -8,7 +8,7 @@ use Closure;
 use Override;
 
 /**
- * @template-covariant T
+ * @template T
  *
  * @extends AccessibleCollectionInterface<int<0, max>, T>
  *

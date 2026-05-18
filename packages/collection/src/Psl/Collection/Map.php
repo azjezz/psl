@@ -25,8 +25,8 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template-covariant Tk of array-key
- * @template-covariant Tv
+ * @template Tk of array-key
+ * @template Tv
  *
  * @implements MapInterface<Tk, Tv>
  *

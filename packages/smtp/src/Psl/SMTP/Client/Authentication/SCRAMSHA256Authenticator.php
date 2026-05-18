@@ -93,10 +93,6 @@ final readonly class SCRAMSHA256Authenticator implements AuthenticatorInterface
         $authMessage = $clientFirstBare . ',' . $serverFirstMessage . ',' . $clientFinalWithoutProof;
 
         $clientSignature = hash_hmac('sha256', $authMessage, $storedKey, true);
-        /**
-         * @mago-expect analysis:invalid-operand,invalid-operand - string ^ string is ok.
-         * @var string $clientProof
-         */
         $clientProof = $clientKey ^ $clientSignature;
 
         $clientFinalMessage = $clientFinalWithoutProof . ',p=' . base64_encode($clientProof);

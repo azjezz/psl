@@ -206,7 +206,6 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
             return new TrustChainResult(TrustChainStatus::Bogus, [], $failure);
         }
 
-        /** @var list<DNSKEYRecord> $records */
         $records = array_values(array_filter(
             $dnskeys,
             /**
@@ -255,7 +254,6 @@ final readonly class TrustChainResolver implements TrustChainResolverInterface
             return new TrustChainResult(TrustChainStatus::Bogus, [], $failure);
         }
 
-        /** @var list<DNSKEYRecord> $records */
         $records = array_values(array_filter(
             $dnskeys,
             /**

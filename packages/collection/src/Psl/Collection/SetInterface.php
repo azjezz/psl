@@ -8,7 +8,7 @@ use Closure;
 use Override;
 
 /**
- * @template-covariant T of array-key
+ * @template T of array-key
  *
  * @extends AccessibleCollectionInterface<T, T>
  *

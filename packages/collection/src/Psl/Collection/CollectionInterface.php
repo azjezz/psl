@@ -16,8 +16,8 @@ use Psl\Default\DefaultInterface;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @template-covariant Tk of array-key
- * @template-covariant Tv
+ * @template Tk of array-key
+ * @template Tv
  *
  * @extends IteratorAggregate<Tk, Tv>
  *

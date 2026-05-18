@@ -96,10 +96,6 @@ final class Context
             $dataChunk = substr($data, $offset, $use);
             $keyChunk = substr($this->keystreamBuffer, 0, $use);
 
-            /**
-             * @mago-expect analysis:invalid-operand,invalid-operand - mago does not like string ^ string
-             * @var string $xored
-             */
             $xored = $dataChunk ^ $keyChunk;
             $result .= $xored;
 

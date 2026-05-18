@@ -24,7 +24,7 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @template-covariant T of array-key
+ * @template T of array-key
  *
  * @implements SetInterface<T>
  *

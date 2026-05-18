@@ -24,7 +24,7 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template-covariant T
+ * @template T
  *
  * @implements VectorInterface<T>
  *
