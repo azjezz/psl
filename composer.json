@@ -24,7 +24,7 @@
     },
     "require-dev": {
         "ext-brotli": "*",
-        "carthage-software/mago": "^1.24.0",
+        "carthage-software/mago": "^1.28.0",
         "infection/infection": "^0.32.6",
         "php-coveralls/php-coveralls": "^2.9.1",
         "phpbench/phpbench": "^1.6.0",

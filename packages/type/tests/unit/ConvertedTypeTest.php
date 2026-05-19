@@ -25,8 +25,8 @@ final class ConvertedTypeTest extends TypeTestCase
                 self::DATE_FORMAT,
                 $value,
             ))
-                ? $dt
-                : throw new RuntimeException('Unable to parse date format'),
+                    ? $dt
+                    : throw new RuntimeException('Unable to parse date format'),
         );
     }
 
