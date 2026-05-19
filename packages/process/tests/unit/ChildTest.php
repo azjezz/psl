@@ -489,8 +489,9 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 =>
-                $child->getStdout()], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
+            foreach (IO\streaming([
+                1 => $child->getStdout(),
+            ], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -561,8 +562,9 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 =>
-                $child->getStdout()], new Async\TimeoutCancellationToken(Duration::milliseconds(200))) as $chunk) {
+            foreach (IO\streaming([
+                1 => $child->getStdout(),
+            ], new Async\TimeoutCancellationToken(Duration::milliseconds(200))) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
@@ -618,8 +620,9 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([1 =>
-                $child->getStdout()], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
+            foreach (IO\streaming([
+                1 => $child->getStdout(),
+            ], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
                     continue;
                 }
