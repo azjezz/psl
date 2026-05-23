@@ -7,7 +7,6 @@ namespace Psl\Graph;
 use Psl\DataStructure\Stack;
 
 use function count;
-use function Psl\Graph\Internal\get_node_key;
 
 /**
  * Performs depth-first search starting from a given node.
@@ -47,7 +46,7 @@ function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
 
     while ($stack->count() !== 0) {
         $node = $stack->pop();
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
 
         if (isset($visited[$key])) {
             continue;
@@ -59,7 +58,7 @@ function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
         // Push neighbors in reverse order to maintain left-to-right traversal
         $neighborsList = namespace\neighbors($graph, $node);
         for ($i = count($neighborsList) - 1; $i >= 0; $i--) {
-            $neighborKey = get_node_key($neighborsList[$i]);
+            $neighborKey = Internal\get_node_key($neighborsList[$i]);
             if (!isset($visited[$neighborKey])) {
                 $stack->push($neighborsList[$i]);
             }

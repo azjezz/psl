@@ -6,8 +6,8 @@ namespace Psl\HTTP\Client\Tests\Integration;
 
 use Psl\HTTP\Message\Request;
 use Psl\IO\MemoryHandle;
+use Psl\URL;
 
-use function Psl\URL\parse;
 use function str_repeat;
 use function strlen;
 
@@ -87,7 +87,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testRequestHeadersSent(): void
     {
-        $request = new Request(method: METHOD_GET, url: parse($this->getUrlString('/headers')));
+        $request = new Request(method: METHOD_GET, url: URL\parse($this->getUrlString('/headers')));
         $request = $request->withHeader('X-Test-Header', 'test-value');
         $tx = $this->client->send($request);
 
@@ -100,7 +100,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testMultipleCustomHeaders(): void
     {
-        $request = new Request(method: METHOD_GET, url: parse($this->getUrlString('/headers')));
+        $request = new Request(method: METHOD_GET, url: URL\parse($this->getUrlString('/headers')));
         $request = $request->withHeader('X-One', 'value-one');
         $request = $request->withHeader('X-Two', 'value-two');
         $tx = $this->client->send($request);
@@ -114,7 +114,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testHostHeader(): void
     {
-        $request = new Request(method: METHOD_GET, url: parse($this->getUrlString('/headers')));
+        $request = new Request(method: METHOD_GET, url: URL\parse($this->getUrlString('/headers')));
         $tx = $this->client->send($request);
 
         static::assertSame(200, $tx->response->status);
@@ -147,7 +147,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testPostFormBody(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post')));
         $request = $request->withHeader('Content-Type', 'application/x-www-form-urlencoded');
         $request = $request->withBody(new MemoryHandle('name=value&other=test'));
         $tx = $this->client->send($request);
@@ -161,7 +161,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testPostJsonBody(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post')));
         $request = $request->withHeader('Content-Type', 'application/json');
         $request = $request->withBody(new MemoryHandle('{"key":"value"}'));
         $tx = $this->client->send($request);
@@ -174,7 +174,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testPostRawBody(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post')));
         $request = $request->withHeader('Content-Type', 'text/plain');
         $request = $request->withBody(new MemoryHandle('hello raw body'));
         $tx = $this->client->send($request);
@@ -187,7 +187,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testPayloadEcho(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/payload')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/payload')));
         $request = $request->withBody(new MemoryHandle('hello world'));
         $tx = $this->client->send($request);
 
@@ -198,7 +198,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testPayloadEchoPreservesContentType(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/payload')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/payload')));
         $request = $request->withHeader('Content-Type', 'text/plain');
         $request = $request->withBody(new MemoryHandle('typed payload'));
         $tx = $this->client->send($request);
@@ -211,7 +211,7 @@ final class MethodTest extends AbstractIntegrationTestCase
 
     public function testEmptyPostBody(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post')));
         $request = $request->withBody(new MemoryHandle(''));
         $tx = $this->client->send($request);
 
@@ -223,7 +223,7 @@ final class MethodTest extends AbstractIntegrationTestCase
     public function testLargeRequestBody(): void
     {
         $payload = str_repeat('A', 9000);
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/payload')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/payload')));
         $request = $request->withBody(new MemoryHandle($payload));
         $tx = $this->client->send($request);
 

@@ -8,8 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\SMTP\Exception\ConnectionException;
 use Psl\SMTP\Exception\ProtocolException;
-
-use function Psl\SMTP\Internal\read_greeting;
+use Psl\SMTP\Internal;
 
 final class ReadGreetingTest extends TestCase
 {
@@ -17,7 +16,7 @@ final class ReadGreetingTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220 mail.example.com ESMTP\r\n"));
 
-        $response = read_greeting($reader);
+        $response = Internal\read_greeting($reader);
 
         static::assertSame(220, $response->code);
         static::assertSame('mail.example.com ESMTP', $response->message);
@@ -27,7 +26,7 @@ final class ReadGreetingTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220-mail.example.com ESMTP\r\n220 Ready\r\n"));
 
-        $response = read_greeting($reader);
+        $response = Internal\read_greeting($reader);
 
         static::assertSame(220, $response->code);
         static::assertStringContainsString('Ready', $response->message);
@@ -39,7 +38,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testTemporaryFailureGreeting(): void
@@ -48,7 +47,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testMalformedGreeting(): void
@@ -57,7 +56,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testEmptyStreamGreeting(): void
@@ -66,14 +65,14 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreeting220WithEnhancedStatus(): void
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220 2.0.0 mail.example.com ESMTP\r\n"));
 
-        $response = read_greeting($reader);
+        $response = Internal\read_greeting($reader);
 
         static::assertSame(220, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -86,7 +85,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreeting451(): void
@@ -95,7 +94,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreeting550(): void
@@ -104,7 +103,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreetingCode250(): void
@@ -113,7 +112,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreetingCode354(): void
@@ -122,7 +121,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreetingCode500(): void
@@ -131,7 +130,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testGreetingCode100(): void
@@ -140,14 +139,14 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ConnectionException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testMultilineGreetingContainsFullMessage(): void
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220-mail.example.com\r\n220-Welcome\r\n220 Service ready\r\n"));
 
-        $response = read_greeting($reader);
+        $response = Internal\read_greeting($reader);
 
         static::assertSame(220, $response->code);
         static::assertStringContainsString('mail.example.com', $response->message);
@@ -159,7 +158,7 @@ final class ReadGreetingTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220 mail.test.com ESMTP Postfix\r\n"));
 
-        $response = read_greeting($reader);
+        $response = Internal\read_greeting($reader);
 
         static::assertSame(220, $response->code);
         static::assertSame('mail.test.com ESMTP Postfix', $response->message);
@@ -173,7 +172,7 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 
     public function testMalformedGreetingNonNumeric(): void
@@ -182,6 +181,6 @@ final class ReadGreetingTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        read_greeting($reader);
+        Internal\read_greeting($reader);
     }
 }

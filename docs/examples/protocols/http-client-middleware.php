@@ -39,7 +39,8 @@ final readonly class TimingMiddleware implements MiddlewareInterface
 // Middleware that short-circuits the chain (returns a cached response)
 final readonly class CacheMiddleware implements MiddlewareInterface
 {
-    public function __construct(/** @var array<string, Message\Response> */
+    public function __construct(
+        /** @var array<string, Message\Response> */
         private array $cache = [],
     ) {}
 

@@ -6,8 +6,6 @@ namespace Psl\Graph;
 
 use Psl\DataStructure\Queue;
 
-use function Psl\Graph\Internal\get_node_key;
-
 /**
  * Checks if there is a path from one node to another.
  *
@@ -43,7 +41,7 @@ function has_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to):
     $visited = [];
     $queue = new Queue();
     $queue->enqueue($from);
-    $visited[get_node_key($from)] = true;
+    $visited[Internal\get_node_key($from)] = true;
 
     while ($queue->count() !== 0) {
         $node = $queue->dequeue();
@@ -53,7 +51,7 @@ function has_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to):
                 return true;
             }
 
-            $key = get_node_key($neighbor);
+            $key = Internal\get_node_key($neighbor);
             if (!isset($visited[$key])) {
                 $visited[$key] = true;
                 $queue->enqueue($neighbor);

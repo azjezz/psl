@@ -17,8 +17,7 @@ use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
 use Psl\HTTP\Message\Response;
 use Psl\TCP;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class CallbackIntegrationTest extends TestCase
 {
@@ -279,6 +278,6 @@ final class CallbackIntegrationTest extends TestCase
     {
         $address = $listener->getLocalAddress();
 
-        return new Request(method: 'GET', url: parse('http://127.0.0.1:' . $address->port . '/'));
+        return new Request(method: 'GET', url: URL\parse('http://127.0.0.1:' . $address->port . '/'));
     }
 }

@@ -6,15 +6,14 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-
-use function Psl\HTTP\Client\Internal\merge_paths;
+use Psl\HTTP\Client\Internal;
 
 final class MergePathsTest extends TestCase
 {
     #[DataProvider('mergePathsProvider')]
     public function testMergePaths(string $basePath, string $relativePath, string $expected): void
     {
-        static::assertSame($expected, merge_paths($basePath, $relativePath));
+        static::assertSame($expected, Internal\merge_paths($basePath, $relativePath));
     }
 
     /**

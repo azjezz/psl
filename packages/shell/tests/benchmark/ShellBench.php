@@ -6,9 +6,9 @@ namespace Psl\Shell\Tests\Benchmark;
 
 use PhpBench\Attributes\Groups;
 use PhpBench\Attributes\ParamProviders;
+use Psl\Shell;
 
 use function pack;
-use function Psl\Shell\stream_unpack;
 use function str_repeat;
 use function strlen;
 
@@ -23,7 +23,7 @@ final class ShellBench
     #[ParamProviders('providePackedData')]
     public function benchStreamUnpack(array $params): void
     {
-        foreach (stream_unpack($params['content']) as $_ => $_chunk) {
+        foreach (Shell\stream_unpack($params['content']) as $_ => $_chunk) {
             // @mago-expect lint:no-empty-loop - consume generator
         }
     }

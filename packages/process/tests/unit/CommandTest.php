@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Psl\Process\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Psl\Env;
+use Psl\Filesystem;
+use Psl\IO;
 use Psl\OS;
 use Psl\Process\Command;
 use Psl\Process\Exception;
 use Psl\Process\Stdio;
-
-use function Psl\Env\temp_dir;
-use function Psl\Filesystem\canonicalize;
-use function Psl\IO\pipe;
 
 use const PHP_BINARY;
 
@@ -172,7 +171,7 @@ final class CommandTest extends TestCase
 
     public function testWorkingDirectoryIsUsed(): void
     {
-        $tempDir = temp_dir();
+        $tempDir = Env\temp_dir();
 
         $output = self::phpCommand()
             ->withArgument('-r')
@@ -180,7 +179,7 @@ final class CommandTest extends TestCase
             ->withWorkingDirectory($tempDir)
             ->output();
 
-        static::assertSame(canonicalize($tempDir), canonicalize($output->stdout));
+        static::assertSame(Filesystem\canonicalize($tempDir), Filesystem\canonicalize($output->stdout));
     }
 
     public function testImmutability(): void
@@ -353,7 +352,7 @@ final class CommandTest extends TestCase
             );
         }
 
-        [$read, $write] = pipe();
+        [$read, $write] = IO\pipe();
         $write->writeAll("handle_input\n");
         $write->close();
 
@@ -372,7 +371,7 @@ final class CommandTest extends TestCase
 
     public function testHandleStdioClosedThrows(): void
     {
-        [$read, $write] = pipe();
+        [$read, $write] = IO\pipe();
         $read->close();
         $write->close();
 

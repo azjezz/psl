@@ -23,9 +23,9 @@ use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
 use Psl\TLS;
+use Psl\URL;
 
 use function extension_loaded;
-use function Psl\URL\parse;
 use function str_contains;
 
 /**
@@ -114,7 +114,7 @@ final class PooledConnectorTlsTest extends TestCase
                     protocolVersions: [ProtocolVersion::V20, ProtocolVersion::V11],
                 );
 
-                $url = parse('https://127.0.0.1:' . $port . '/');
+                $url = URL\parse('https://127.0.0.1:' . $port . '/');
                 $request = new Request(method: 'GET', url: $url);
                 $origin = Origin::fromUrl($request->url);
 
@@ -185,7 +185,7 @@ final class PooledConnectorTlsTest extends TestCase
                     protocolVersions: [ProtocolVersion::V20, ProtocolVersion::V11],
                 );
 
-                $url = parse('https://127.0.0.1:' . $port . '/');
+                $url = URL\parse('https://127.0.0.1:' . $port . '/');
                 $request = new Request(method: 'GET', url: $url);
                 $origin = Origin::fromUrl($request->url);
 
@@ -269,7 +269,7 @@ final class PooledConnectorTlsTest extends TestCase
                 );
 
                 $client = new Client(connector: $connector, configuration: $configuration);
-                $url = parse('https://127.0.0.1:' . $port . '/');
+                $url = URL\parse('https://127.0.0.1:' . $port . '/');
 
                 $tx1 = $client->send(new Request(method: 'GET', url: $url));
                 static::assertSame(200, $tx1->response->status);
@@ -350,7 +350,7 @@ final class PooledConnectorTlsTest extends TestCase
                     ),
                 );
 
-                $url = parse('https://127.0.0.1:' . $port . '/');
+                $url = URL\parse('https://127.0.0.1:' . $port . '/');
                 $tasks = [];
                 for ($i = 0; $i < 3; $i++) {
                     $tasks[] = static function () use ($client, $url): string {
@@ -420,7 +420,7 @@ final class PooledConnectorTlsTest extends TestCase
                     protocolVersions: [ProtocolVersion::V20, ProtocolVersion::V11],
                 );
 
-                $url = parse('https://127.0.0.1:' . $port . '/');
+                $url = URL\parse('https://127.0.0.1:' . $port . '/');
                 $request = new Request(method: 'GET', url: $url);
                 $origin = Origin::fromUrl($request->url);
 
@@ -528,7 +528,7 @@ final class PooledConnectorTlsTest extends TestCase
                 );
                 $client = new Client(connector: $connector, configuration: $configuration);
 
-                $url = parse('https://127.0.0.1:' . $port . '/');
+                $url = URL\parse('https://127.0.0.1:' . $port . '/');
 
                 $tx1 = $client->send(new Request(method: 'GET', url: $url));
                 static::assertSame(200, $tx1->response->status);
@@ -590,10 +590,10 @@ final class PooledConnectorTlsTest extends TestCase
                         ->withPeerVerification(false)
                         ->withAllowSelfSigned(true),
                     protocolVersions: [ProtocolVersion::V11],
-                    proxyConfiguration: new ProxyConfiguration(parse("https://127.0.0.1:{$proxyPort}")),
+                    proxyConfiguration: new ProxyConfiguration(URL\parse("https://127.0.0.1:{$proxyPort}")),
                 );
 
-                $url = parse('http://target.example.com:8080/');
+                $url = URL\parse('http://target.example.com:8080/');
                 $request = new Request(method: 'GET', url: $url);
                 $origin = Origin::fromUrl($request->url);
 
@@ -733,10 +733,10 @@ final class PooledConnectorTlsTest extends TestCase
                         ->withPeerVerification(false)
                         ->withAllowSelfSigned(true),
                     protocolVersions: [ProtocolVersion::V11],
-                    proxyConfiguration: new ProxyConfiguration(parse("http://127.0.0.1:{$proxyPort}")),
+                    proxyConfiguration: new ProxyConfiguration(URL\parse("http://127.0.0.1:{$proxyPort}")),
                 );
 
-                $url = parse("https://127.0.0.1:{$targetPort}/");
+                $url = URL\parse("https://127.0.0.1:{$targetPort}/");
                 $request = new Request(method: 'GET', url: $url);
                 $origin = Origin::fromUrl($request->url);
 

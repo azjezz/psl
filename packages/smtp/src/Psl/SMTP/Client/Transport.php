@@ -15,6 +15,7 @@ use Psl\Message\Address\Mailbox;
 use Psl\Message\Envelope;
 use Psl\Message\MessageInterface;
 use Psl\Network;
+use Psl\Punycode;
 use Psl\SMTP\Capability;
 use Psl\SMTP\Command;
 use Psl\SMTP\Exception;
@@ -27,7 +28,6 @@ use WeakMap;
 
 use function array_shift;
 use function explode;
-use function Psl\Punycode\encode;
 use function str_contains;
 use function strlen;
 
@@ -369,7 +369,7 @@ final class Transport implements TransportInterface
 
         [$local, $domain] = explode('@', $address, 2);
 
-        return $local . '@' . encode($domain);
+        return $local . '@' . Punycode\encode($domain);
     }
 
     /**

@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 use Psl\Type\TypeInterface;
 
-use function Psl\Regex\capture_groups;
-
 final class FirstMatchTest extends TestCase
 {
     /**
@@ -50,7 +48,7 @@ final class FirstMatchTest extends TestCase
         $this->expectException(Regex\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Invalid capture groups');
 
-        Regex\first_match('hello', '/(hello)/', capture_groups(['doesnotexist']));
+        Regex\first_match('hello', '/(hello)/', Regex\capture_groups(['doesnotexist']));
     }
 
     public static function provideMatchingData(): iterable
@@ -62,7 +60,7 @@ final class FirstMatchTest extends TestCase
             ],
             'PHP is the web scripting language of choice.',
             '/(php)/i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [
@@ -71,7 +69,7 @@ final class FirstMatchTest extends TestCase
             ],
             'Hello world is the web scripting language of choice.',
             '/(hello) world/i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [
@@ -80,7 +78,7 @@ final class FirstMatchTest extends TestCase
             ],
             'PHP is the web scripting language of choice.',
             '/(\bweb\b)/i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [
@@ -97,7 +95,7 @@ final class FirstMatchTest extends TestCase
             ],
             'PHP is the web scripting language of choice.',
             '/(?P<language>PHP)/',
-            capture_groups(['language']),
+            Regex\capture_groups(['language']),
         ];
         yield [
             [
@@ -106,7 +104,7 @@ final class FirstMatchTest extends TestCase
             ],
             'http://www.php.net/index.html',
             '@^(?:http://)?([^/]+)@i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [

@@ -7,10 +7,9 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal;
 use PHPUnit\Framework\TestCase;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Exception\ProtocolException;
+use Psl\HTTP\Client\Internal;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
-
-use function Psl\HTTP\Client\Internal\resolve_protocol_versions;
 
 final class ResolveProtocolVersionsTest extends TestCase
 {
@@ -19,7 +18,7 @@ final class ResolveProtocolVersionsTest extends TestCase
         $request = new Request(method: 'GET', url: null, protocolVersion: ProtocolVersion::V11);
         $config = new ClientConfiguration(protocolVersions: [ProtocolVersion::V20, ProtocolVersion::V11]);
 
-        $result = resolve_protocol_versions($request, $config);
+        $result = Internal\resolve_protocol_versions($request, $config);
 
         static::assertSame([ProtocolVersion::V20, ProtocolVersion::V11], $result);
     }
@@ -29,7 +28,7 @@ final class ResolveProtocolVersionsTest extends TestCase
         $request = new Request(method: 'GET', url: null, protocolVersion: ProtocolVersion::V20);
         $config = new ClientConfiguration(protocolVersions: [ProtocolVersion::V20, ProtocolVersion::V11]);
 
-        $result = resolve_protocol_versions($request, $config);
+        $result = Internal\resolve_protocol_versions($request, $config);
 
         static::assertSame([ProtocolVersion::V20], $result);
     }
@@ -42,7 +41,7 @@ final class ResolveProtocolVersionsTest extends TestCase
         $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('Unsupported protocol version');
 
-        resolve_protocol_versions($request, $config);
+        Internal\resolve_protocol_versions($request, $config);
     }
 
     public function testExplicitH3Throws(): void
@@ -53,7 +52,7 @@ final class ResolveProtocolVersionsTest extends TestCase
         $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('Unsupported protocol version');
 
-        resolve_protocol_versions($request, $config);
+        Internal\resolve_protocol_versions($request, $config);
     }
 
     public function testEmptyConfigVersionsThrows(): void
@@ -64,7 +63,7 @@ final class ResolveProtocolVersionsTest extends TestCase
         $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('No protocol versions configured');
 
-        resolve_protocol_versions($request, $config);
+        Internal\resolve_protocol_versions($request, $config);
     }
 
     public function testV10Explicit(): void
@@ -72,7 +71,7 @@ final class ResolveProtocolVersionsTest extends TestCase
         $request = new Request(method: 'GET', url: null, protocolVersion: ProtocolVersion::V10);
         $config = new ClientConfiguration(protocolVersions: [ProtocolVersion::V10]);
 
-        $result = resolve_protocol_versions($request, $config);
+        $result = Internal\resolve_protocol_versions($request, $config);
 
         static::assertSame([ProtocolVersion::V10], $result);
     }

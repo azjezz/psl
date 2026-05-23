@@ -20,10 +20,10 @@ use Psl\HTTP\Message\Request;
 use Psl\IO;
 use Psl\Network;
 use Psl\Unix;
+use Psl\URL;
 
 use function file_exists;
 use function getmypid;
-use function Psl\URL\parse;
 use function unlink;
 
 use const PHP_OS_FAMILY;
@@ -77,7 +77,7 @@ final class UnixSocketTest extends TestCase
                 ),
             );
 
-            $tx = $client->send(new Request(method: 'GET', url: parse('http://localhost/')));
+            $tx = $client->send(new Request(method: 'GET', url: URL\parse('http://localhost/')));
 
             static::assertSame(200, $tx->response->status);
             $body = $tx->response->body?->readAll() ?? '';
@@ -120,7 +120,7 @@ final class UnixSocketTest extends TestCase
                 ),
             );
 
-            $tx = $client->send(new Request(method: 'GET', url: parse('http://localhost/')));
+            $tx = $client->send(new Request(method: 'GET', url: URL\parse('http://localhost/')));
 
             static::assertSame(200, $tx->response->status);
             $body = $tx->response->body?->readAll() ?? '';
@@ -162,7 +162,7 @@ final class UnixSocketTest extends TestCase
                 ),
             );
 
-            $tx = $client->send(new Request(method: 'GET', url: parse('http://localhost/')));
+            $tx = $client->send(new Request(method: 'GET', url: URL\parse('http://localhost/')));
 
             static::assertSame(200, $tx->response->status);
             static::assertSame(ProtocolVersion::V20, $tx->response->protocolVersion);

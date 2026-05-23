@@ -6,14 +6,12 @@ namespace Psl\Option\Tests\StaticAnalysis;
 
 use Psl\Option\Option;
 
-use function Psl\Option\from_nullable;
-
 /**
  * @return Option<string>
  */
 function test_some(): Option
 {
-    return from_nullable('hello');
+    return Option\from_nullable('hello');
 }
 
 /**
@@ -21,7 +19,7 @@ function test_some(): Option
  */
 function test_none(): Option
 {
-    return from_nullable(null);
+    return Option\from_nullable(null);
 }
 
 /**
@@ -33,7 +31,7 @@ function test_none(): Option
  */
 function test_generic(mixed $param): Option
 {
-    return from_nullable($param);
+    return Option\from_nullable($param);
 }
 
 /**

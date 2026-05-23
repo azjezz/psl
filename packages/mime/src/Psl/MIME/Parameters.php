@@ -71,7 +71,6 @@ final readonly class Parameters implements Countable, IteratorAggregate, Stringa
             $name = strtolower($name);
             self::validateParameterName($name);
 
-            /** @var non-empty-lowercase-string $name */
             $normalized[] = [$name, $value];
         }
 

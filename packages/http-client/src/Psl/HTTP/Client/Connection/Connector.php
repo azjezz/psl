@@ -10,6 +10,7 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
 use Psl\HTTP\Client\ClientConfiguration;
 use Psl\HTTP\Client\Exception;
+use Psl\HTTP\Client\Internal;
 use Psl\HTTP\Client\Internal\H1\H1Connection;
 use Psl\HTTP\Client\Internal\H2\H2Connection;
 use Psl\HTTP\Client\Internal\H2\H2Session;
@@ -24,8 +25,6 @@ use Psl\TLS;
 use Psl\Unix;
 
 use function in_array;
-use function Psl\HTTP\Client\Internal\resolve_protocol_versions;
-use function Psl\HTTP\Client\Internal\should_tunnel;
 
 /**
  * Direct connector that creates a fresh connection for each request without pooling or reuse.
@@ -128,7 +127,7 @@ final readonly class Connector implements ConnectorInterface
     ): ConnectionInterface {
         $cancellation->throwIfCancelled();
 
-        $versions = resolve_protocol_versions($request, $configuration);
+        $versions = Internal\resolve_protocol_versions($request, $configuration);
 
         if ($configuration->unixSocket !== null) {
             return $this->connectUnix($configuration->unixSocket, $versions, $cancellation, $configuration);
@@ -181,7 +180,7 @@ final readonly class Connector implements ConnectorInterface
     ): ConnectionInterface {
         $connector = $this->resolveTcpConnector($configuration);
         $proxyConfiguration = $configuration->proxyConfiguration;
-        if ($proxyConfiguration !== null && should_tunnel($origin->host, $proxyConfiguration->skipProxyFor)) {
+        if ($proxyConfiguration !== null && Internal\should_tunnel($origin->host, $proxyConfiguration->skipProxyFor)) {
             return $this->connectViaForwardProxy($connector, $proxyConfiguration, $configuration, $cancellation);
         }
 
@@ -281,7 +280,7 @@ final readonly class Connector implements ConnectorInterface
 
         if (
             $configuration->proxyConfiguration !== null
-            && should_tunnel($origin->host, $configuration->proxyConfiguration->skipProxyFor)
+            && Internal\should_tunnel($origin->host, $configuration->proxyConfiguration->skipProxyFor)
         ) {
             $tcpStream = HttpTunnel::connect(
                 $connector,

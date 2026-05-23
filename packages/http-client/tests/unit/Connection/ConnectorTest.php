@@ -24,11 +24,11 @@ use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
 use Psl\Unix;
+use Psl\URL;
 
 use function explode;
 use function file_exists;
 use function getmypid;
-use function Psl\URL\parse;
 use function str_contains;
 use function strpos;
 use function substr;
@@ -62,7 +62,7 @@ final class ConnectorTest extends TestCase
         try {
             $connector = new Connector();
             $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
-            $request = new Request(method: 'GET', url: parse("http://127.0.0.1:{$port}/"));
+            $request = new Request(method: 'GET', url: URL\parse("http://127.0.0.1:{$port}/"));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
@@ -109,12 +109,12 @@ final class ConnectorTest extends TestCase
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
                 proxyConfiguration: new ProxyConfiguration(
-                    parse("http://127.0.0.1:{$proxyPort}"),
+                    URL\parse("http://127.0.0.1:{$proxyPort}"),
                     authorization: 'Basic dXNlcjpwYXNz',
                 ),
             );
 
-            $request = new Request(method: 'GET', url: parse('http://target.example.com:9090/'));
+            $request = new Request(method: 'GET', url: URL\parse('http://target.example.com:9090/'));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
@@ -160,10 +160,10 @@ final class ConnectorTest extends TestCase
             $connector = new Connector();
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                proxyConfiguration: new ProxyConfiguration(parse("http://127.0.0.1:{$proxyPort}")),
+                proxyConfiguration: new ProxyConfiguration(URL\parse("http://127.0.0.1:{$proxyPort}")),
             );
 
-            $request = new Request(method: 'GET', url: parse('http://example.com/'));
+            $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
@@ -227,12 +227,12 @@ final class ConnectorTest extends TestCase
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
                 proxyConfiguration: new ProxyConfiguration(
-                    parse("http://127.0.0.1:{$proxyPort}"),
+                    URL\parse("http://127.0.0.1:{$proxyPort}"),
                     skipProxyFor: ['127.0.0.1'],
                 ),
             );
 
-            $request = new Request(method: 'GET', url: parse("http://127.0.0.1:{$targetPort}/"));
+            $request = new Request(method: 'GET', url: URL\parse("http://127.0.0.1:{$targetPort}/"));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
@@ -322,13 +322,13 @@ final class ConnectorTest extends TestCase
                 configuration: new ClientConfiguration(
                     protocolVersions: [ProtocolVersion::V11],
                     proxyConfiguration: new ProxyConfiguration(
-                        parse("http://127.0.0.1:{$proxyPort}"),
+                        URL\parse("http://127.0.0.1:{$proxyPort}"),
                         authorization: 'Basic cHJveHk6cGFzcw==',
                     ),
                 ),
             );
 
-            $tx = $client->send(new Request(method: 'GET', url: parse('http://target.example.com/resource')));
+            $tx = $client->send(new Request(method: 'GET', url: URL\parse('http://target.example.com/resource')));
 
             static::assertSame(200, $tx->response->status);
             $body = $tx->response->body;
@@ -380,7 +380,7 @@ final class ConnectorTest extends TestCase
                 ),
             );
 
-            $tx = $client->send(new Request(method: 'GET', url: parse('http://localhost/')));
+            $tx = $client->send(new Request(method: 'GET', url: URL\parse('http://localhost/')));
 
             static::assertSame(200, $tx->response->status);
             $body = $tx->response->body?->readAll() ?? '';
@@ -416,10 +416,10 @@ final class ConnectorTest extends TestCase
             $connector = new Connector();
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                proxyConfiguration: new ProxyConfiguration(parse("http://127.0.0.1:{$proxyPort}")),
+                proxyConfiguration: new ProxyConfiguration(URL\parse("http://127.0.0.1:{$proxyPort}")),
             );
 
-            $request = new Request(method: 'GET', url: parse('http://example.com/'));
+            $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
@@ -474,7 +474,7 @@ final class ConnectorTest extends TestCase
                 ),
             );
 
-            $tx = $client->send(new Request(method: 'GET', url: parse('http://localhost/')));
+            $tx = $client->send(new Request(method: 'GET', url: URL\parse('http://localhost/')));
 
             static::assertSame(200, $tx->response->status);
             static::assertSame(ProtocolVersion::V20, $tx->response->protocolVersion);
@@ -538,7 +538,7 @@ final class ConnectorTest extends TestCase
         try {
             $connector = new Connector();
             $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V20]);
-            $request = new Request(method: 'GET', url: parse("http://127.0.0.1:{$port}/"));
+            $request = new Request(method: 'GET', url: URL\parse("http://127.0.0.1:{$port}/"));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),

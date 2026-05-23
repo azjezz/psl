@@ -12,9 +12,9 @@ use Psl\Terminal\Internal\CsiKeyMap;
 use Psl\Terminal\Internal\EventParser;
 use Psl\Terminal\Internal\SgrMouseParser;
 use Psl\Terminal\Layout\Constraint;
+use Psl\Terminal\Layout\Internal;
 use Psl\Terminal\Rect;
 
-use function Psl\Terminal\Layout\Internal\solve;
 use function str_repeat;
 
 #[Groups(['terminal'])]
@@ -127,7 +127,7 @@ final class TerminalBench
     public function benchLayoutSolve(array $params): void
     {
         $rect = new Rect(0, 0, 200, 100);
-        solve($rect, $params['constraints'], false);
+        Internal\solve($rect, $params['constraints'], false);
     }
 
     /**

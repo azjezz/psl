@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Psl\HTTP\Client\Tests\Integration;
 
+use Psl\Async;
 use Psl\HTTP\Message\Request;
 use Psl\HTTP\Message\Transaction;
 use Psl\IO\MemoryHandle;
+use Psl\URL;
 
 use function json_decode;
 use function microtime;
-use function Psl\Async\concurrently;
-use function Psl\URL\parse;
 use function str_repeat;
 use function strlen;
 
@@ -34,7 +34,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -49,7 +49,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(50, $results);
         foreach ($results as $tx) {
@@ -65,7 +65,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet($path);
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(5, $results);
         foreach ($results as $tx) {
@@ -81,7 +81,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendRequest($method, '/any');
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(4, $results);
         foreach ($results as $i => $tx) {
@@ -99,7 +99,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/status/' . $code);
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(4, $results);
         foreach ($results as $i => $tx) {
@@ -113,14 +113,14 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         for ($i = 0; $i < 10; $i++) {
             $body = 'request-' . $i;
             $tasks[$i] = function () use ($body): Transaction {
-                $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post')));
+                $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post')));
                 $request = $request->withBody(new MemoryHandle($body));
 
                 return $this->client->send($request);
             };
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -135,7 +135,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -174,14 +174,14 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         for ($i = 0; $i < 10; $i++) {
             $id = 'req-' . $i;
             $tasks[$i] = function () use ($id): Transaction {
-                $request = new Request(method: METHOD_GET, url: parse($this->getUrlString('/headers')));
+                $request = new Request(method: METHOD_GET, url: URL\parse($this->getUrlString('/headers')));
                 $request = $request->withHeader('X-Request-Id', $id);
 
                 return $this->client->send($request);
             };
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $i => $tx) {
@@ -243,7 +243,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         }
 
         $start = microtime(true);
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
         $elapsed = microtime(true) - $start;
 
         static::assertCount(5, $results);
@@ -308,14 +308,14 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         for ($i = 0; $i < 5; $i++) {
             $payload = str_repeat('X', 5000);
             $tasks[$i] = function () use ($payload): Transaction {
-                $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/payload')));
+                $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/payload')));
                 $request = $request->withBody(new MemoryHandle($payload));
 
                 return $this->client->send($request);
             };
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(5, $results);
         foreach ($results as $tx) {
@@ -332,26 +332,26 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         $tasks[0] = fn(): Transaction => $this->sendGet('/get');
 
         $tasks[1] = function (): Transaction {
-            $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post')));
+            $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post')));
             $request = $request->withBody(new MemoryHandle('post-body'));
 
             return $this->client->send($request);
         };
 
         $tasks[2] = function (): Transaction {
-            $request = new Request(method: METHOD_PUT, url: parse($this->getUrlString('/any')));
+            $request = new Request(method: METHOD_PUT, url: URL\parse($this->getUrlString('/any')));
             $request = $request->withBody(new MemoryHandle('put-body'));
 
             return $this->client->send($request);
         };
 
         $tasks[3] = function (): Transaction {
-            $request = new Request(method: METHOD_DELETE, url: parse($this->getUrlString('/any')));
+            $request = new Request(method: METHOD_DELETE, url: URL\parse($this->getUrlString('/any')));
 
             return $this->client->send($request);
         };
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(4, $results);
         foreach ($results as $tx) {
@@ -363,7 +363,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
     {
         for ($i = 0; $i < 5; $i++) {
             $payload = 'body-' . $i;
-            $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/payload')));
+            $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/payload')));
             $request = $request->withBody(new MemoryHandle($payload));
             $tx = $this->client->send($request);
 
@@ -418,7 +418,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -436,7 +436,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
 
     public function testRequestWithQueryAndHeaders(): void
     {
-        $request = new Request(method: METHOD_GET, url: parse($this->getUrlString('/get?foo=bar')));
+        $request = new Request(method: METHOD_GET, url: URL\parse($this->getUrlString('/get?foo=bar')));
         $request = $request->withHeader('X-Custom', 'test');
         $tx = $this->client->send($request);
 
@@ -453,7 +453,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
 
     public function testPostWithQueryParams(): void
     {
-        $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/post?key=value')));
+        $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/post?key=value')));
         $request = $request->withHeader('Content-Type', 'text/plain');
         $request = $request->withBody(new MemoryHandle('post-data'));
         $tx = $this->client->send($request);
@@ -475,7 +475,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/ip');
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(100, $results);
         foreach ($results as $tx) {
@@ -489,14 +489,14 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         for ($i = 0; $i < 20; $i++) {
             $payload = 'payload-' . $i;
             $tasks[$i] = function () use ($payload): Transaction {
-                $request = new Request(method: METHOD_POST, url: parse($this->getUrlString('/payload')));
+                $request = new Request(method: METHOD_POST, url: URL\parse($this->getUrlString('/payload')));
                 $request = $request->withBody(new MemoryHandle($payload));
 
                 return $this->client->send($request);
             };
         }
 
-        $results = concurrently($tasks);
+        $results = Async\concurrently($tasks);
 
         static::assertCount(20, $results);
         foreach ($results as $i => $tx) {

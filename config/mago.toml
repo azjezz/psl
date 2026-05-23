@@ -17,7 +17,7 @@ integrations = ["php-unit"]
 [linter.rules]
 ambiguous-function-call = { enabled = true }
 ambiguous-constant-access = { enabled = true }
-no-fully-qualified-global-function = { enabled = true }
+no-fully-qualified-global-function = { enabled = true, namespaced = true }
 no-fully-qualified-global-constant = { enabled = true }
 no-fully-qualified-global-class-like = { enabled = true }
 cyclomatic-complexity = { threshold = 48 }

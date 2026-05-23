@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Psl\Async;
 
+use Psl;
 use Psl\Exception\InvariantViolationException;
 use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 use function array_search;
 use function array_splice;
-use function Psl\invariant_violation;
 
 /**
  * A counter-based synchronization primitive.
@@ -54,7 +54,7 @@ final class WaitGroup
     public function done(): void
     {
         if (0 === $this->count) {
-            invariant_violation('WaitGroup counter is already zero.');
+            Psl\invariant_violation('WaitGroup counter is already zero.');
         }
 
         $this->count--;

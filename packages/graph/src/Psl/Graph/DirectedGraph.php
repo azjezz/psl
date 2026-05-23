@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Graph;
 
 use function array_values;
-use function Psl\Graph\Internal\get_node_key;
 
 /**
  * Immutable directed graph using adjacency list representation.
@@ -55,7 +54,7 @@ final readonly class DirectedGraph implements GraphInterface
      */
     public function getEdgesFrom(mixed $from): array
     {
-        $key = get_node_key($from);
+        $key = Internal\get_node_key($from);
         return $this->edges[$key] ?? [];
     }
 
@@ -68,7 +67,7 @@ final readonly class DirectedGraph implements GraphInterface
      */
     public function hasNode(mixed $node): bool
     {
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         return isset($this->nodes[$key]);
     }
 
@@ -82,7 +81,7 @@ final readonly class DirectedGraph implements GraphInterface
      */
     public function hasEdge(mixed $from, mixed $to): bool
     {
-        $key = get_node_key($from);
+        $key = Internal\get_node_key($from);
         if (!isset($this->edges[$key])) {
             return false;
         }
@@ -115,7 +114,7 @@ final readonly class DirectedGraph implements GraphInterface
             return $this;
         }
 
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         $nodes = $this->nodes;
         $edges = $this->edges;
         $nodes[$key] = $node;
@@ -138,7 +137,7 @@ final readonly class DirectedGraph implements GraphInterface
      */
     public function withEdge(mixed $from, Edge $edge): DirectedGraph
     {
-        $key = get_node_key($from);
+        $key = Internal\get_node_key($from);
         $edges = $this->edges;
         $edges[$key] ??= [];
         $edges[$key][] = $edge;
@@ -164,12 +163,12 @@ final readonly class DirectedGraph implements GraphInterface
              * @param TNode $node
              */
             function (mixed $node) use (&$visited, &$recursionStack, &$dfsCheck): bool {
-                $key = get_node_key($node);
+                $key = Internal\get_node_key($node);
                 $visited[$key] = true;
                 $recursionStack[$key] = true;
 
                 foreach ($this->getEdgesFrom($node) as $edge) {
-                    $neighborKey = get_node_key($edge->to);
+                    $neighborKey = Internal\get_node_key($edge->to);
 
                     if (!isset($visited[$neighborKey])) {
                         if ($dfsCheck($edge->to)) {
@@ -190,7 +189,7 @@ final readonly class DirectedGraph implements GraphInterface
             };
 
         foreach ($this->getNodes() as $node) {
-            $key = get_node_key($node);
+            $key = Internal\get_node_key($node);
             if (!isset($visited[$key])) {
                 if ($dfsCheck($node)) {
                     return true;

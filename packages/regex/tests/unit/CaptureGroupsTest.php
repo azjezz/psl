@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Psl\Regex\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-
-use function Psl\Regex\capture_groups;
+use Psl\Regex;
 
 final class CaptureGroupsTest extends TestCase
 {
     public function testItAlwaysAddsZeroCaptureResult(): void
     {
         $data = [0 => 'Hello', 1 => 'World'];
-        $shape = capture_groups([1]);
+        $shape = Regex\capture_groups([1]);
         $actual = $shape->coerce($data);
 
         static::assertSame($actual, $data);

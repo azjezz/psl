@@ -6,15 +6,14 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-
-use function Psl\HTTP\Client\Internal\remove_dot_segments;
+use Psl\HTTP\Client\Internal;
 
 final class RemoveDotSegmentsTest extends TestCase
 {
     #[DataProvider('dotSegmentProvider')]
     public function testRemoveDotSegments(string $input, string $expected): void
     {
-        static::assertSame($expected, remove_dot_segments($input));
+        static::assertSame($expected, Internal\remove_dot_segments($input));
     }
 
     /**
