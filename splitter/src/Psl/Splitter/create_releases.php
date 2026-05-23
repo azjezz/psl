@@ -68,7 +68,7 @@ function create_releases(Client\Client $httpClient, MonolithicRepository $monore
             ])),
         ));
 
-        if ($transaction->response->status !== Message\STATUS_OK) {
+        if ($transaction->response->status >= 300) {
             $content = $transaction->response->body?->readAll() ?? '';
             $body = Json\typed($content, $errorType);
             Log\error('%s release failed: %s', $package->name, $body['message']);
@@ -99,7 +99,7 @@ function create_releases(Client\Client $httpClient, MonolithicRepository $monore
         ])),
     ));
 
-    if ($transaction->response->status !== Message\STATUS_OK) {
+    if ($transaction->response->status >= 300) {
         $content = $transaction->response->body?->readAll() ?? '';
         $body = Json\typed($content, $errorType);
         Log\error('main repo release failed: %s', $body['message']);
