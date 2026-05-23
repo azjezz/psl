@@ -18,9 +18,9 @@ use Psl\HTTP\Message\Request;
 use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
+use Psl\URL;
 
 use function preg_match;
-use function Psl\URL\parse;
 use function str_contains;
 use function strlen;
 use function strpos;
@@ -140,7 +140,7 @@ final class PooledConnectorEvictionTest extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         $tx1 = $client->send(new Request(method: 'GET', url: $url));
         static::assertSame(200, $tx1->response->status);
@@ -175,8 +175,8 @@ final class PooledConnectorEvictionTest extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url1 = parse('http://127.0.0.1:' . $port1 . '/');
-        $url2 = parse('http://127.0.0.1:' . $port2 . '/');
+        $url1 = URL\parse('http://127.0.0.1:' . $port1 . '/');
+        $url2 = URL\parse('http://127.0.0.1:' . $port2 . '/');
 
         $tx1 = $client->send(new Request(method: 'GET', url: $url1));
         static::assertSame(200, $tx1->response->status);
@@ -211,7 +211,7 @@ final class PooledConnectorEvictionTest extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         $tx1 = $client->send(new Request(method: 'GET', url: $url));
         static::assertSame(200, $tx1->response->status);
@@ -235,7 +235,7 @@ final class PooledConnectorEvictionTest extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         $tx1 = $client->send(new Request(method: 'GET', url: $url));
         static::assertSame(200, $tx1->response->status);
@@ -298,7 +298,7 @@ final class PooledConnectorEvictionTest extends TestCase
             return $acceptCount;
         });
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
         $request = new Request(method: 'GET', url: $url);
         $origin = Origin::fromUrl($request->url);
 
@@ -376,7 +376,7 @@ final class PooledConnectorEvictionTest extends TestCase
         $connector = new PooledConnector(maxIdleConnectionsPerHost: 1, maxIdleConnections: 256);
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         $tasks = [];
         for ($i = 0; $i < 3; $i++) {
@@ -459,9 +459,9 @@ final class PooledConnectorEvictionTest extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url1 = parse('http://127.0.0.1:' . $port1 . '/');
-        $url2 = parse('http://127.0.0.1:' . $port2 . '/');
-        $url3 = parse('http://127.0.0.1:' . $port3 . '/');
+        $url1 = URL\parse('http://127.0.0.1:' . $port1 . '/');
+        $url2 = URL\parse('http://127.0.0.1:' . $port2 . '/');
+        $url3 = URL\parse('http://127.0.0.1:' . $port3 . '/');
 
         $tx1 = $client->send(new Request(method: 'GET', url: $url1));
         static::assertSame(200, $tx1->response->status);

@@ -45,7 +45,6 @@ use function is_string;
 use function openssl_pkey_get_details;
 use function openssl_pkey_new;
 use function openssl_sign;
-use function Psl\Str\Byte\length;
 
 use const OPENSSL_ALGO_SHA256;
 use const OPENSSL_KEYTYPE_RSA;
@@ -573,7 +572,7 @@ final class SecureResolverAdditionalTest extends TestCase
             ->u16(RecordType::NSEC->value)
             ->u16(1)
             ->u32(3600)
-            ->u16(length($rdata))
+            ->u16(Byte\length($rdata))
             ->bytes($rdata)
             ->toString();
 
@@ -605,7 +604,7 @@ final class SecureResolverAdditionalTest extends TestCase
 
         $exponent = $details['rsa']['e'];
         $modulus = $details['rsa']['n'];
-        $expLen = length($exponent);
+        $expLen = Byte\length($exponent);
 
         if ($expLen < 256) {
             return [$key, Byte\chr($expLen) . $exponent . $modulus];
@@ -922,7 +921,7 @@ final class SecureResolverAdditionalTest extends TestCase
             ->u16(RecordType::A->value)
             ->u16(1)
             ->u32(300)
-            ->u16(length($rdata))
+            ->u16(Byte\length($rdata))
             ->bytes($rdata)
             ->toString();
 
@@ -1060,7 +1059,7 @@ final class SecureResolverAdditionalTest extends TestCase
             ->u16(RecordType::A->value)
             ->u16(1)
             ->u32(300)
-            ->u16(length($rdata))
+            ->u16(Byte\length($rdata))
             ->bytes($rdata)
             ->toString();
 

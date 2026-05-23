@@ -9,12 +9,12 @@ use Psl\Async\CancellationTokenInterface;
 use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 use Psl\HTTP\Client\Exception\ProtocolException;
+use Psl\HTTP\Client\Internal;
 use Psl\HTTP\Message\FieldMap;
 use Psl\IO;
 
 use function ctype_xdigit;
 use function intval;
-use function Psl\HTTP\Client\Internal\consume_buffer;
 use function strlen;
 use function strpos;
 use function substr;
@@ -70,7 +70,7 @@ final class ChunkedBodyHandle implements IO\ReadHandleInterface
             return '';
         }
 
-        return consume_buffer($this->buffer, $maxBytes);
+        return Internal\consume_buffer($this->buffer, $maxBytes);
     }
 
     /**
@@ -85,7 +85,7 @@ final class ChunkedBodyHandle implements IO\ReadHandleInterface
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): string {
         if ($this->buffer !== '') {
-            return consume_buffer($this->buffer, $maxBytes);
+            return Internal\consume_buffer($this->buffer, $maxBytes);
         }
 
         if ($this->completed) {
@@ -94,7 +94,7 @@ final class ChunkedBodyHandle implements IO\ReadHandleInterface
 
         $this->fillBuffer($cancellation);
 
-        return consume_buffer($this->buffer, $maxBytes);
+        return Internal\consume_buffer($this->buffer, $maxBytes);
     }
 
     /**

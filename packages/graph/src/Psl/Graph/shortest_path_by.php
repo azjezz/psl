@@ -9,7 +9,6 @@ use Psl\DataStructure\PriorityQueue;
 use Psl\DataStructure\Queue;
 
 use function array_reverse;
-use function Psl\Graph\Internal\get_node_key;
 
 use const PHP_INT_MAX;
 
@@ -81,7 +80,7 @@ function shortest_path_by(
         $visited = [];
         $queue = new Queue();
         $queue->enqueue($from);
-        $fromKey = get_node_key($from);
+        $fromKey = Internal\get_node_key($from);
         $visited[$fromKey] = true;
         $parent[$fromKey] = null;
 
@@ -94,7 +93,7 @@ function shortest_path_by(
                 $current = $to;
                 while (null !== $current) {
                     $path[] = $current;
-                    $currentKey = get_node_key($current);
+                    $currentKey = Internal\get_node_key($current);
                     $current = $parent[$currentKey];
                 }
 
@@ -102,7 +101,7 @@ function shortest_path_by(
             }
 
             foreach (namespace\neighbors($graph, $node) as $neighbor) {
-                $neighborKey = get_node_key($neighbor);
+                $neighborKey = Internal\get_node_key($neighbor);
                 if (!isset($visited[$neighborKey])) {
                     $visited[$neighborKey] = true;
                     $parent[$neighborKey] = $node;
@@ -123,18 +122,18 @@ function shortest_path_by(
     $pq = new PriorityQueue();
 
     foreach (namespace\nodes($graph) as $node) {
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         $distances[$key] = PHP_INT_MAX;
         $parent[$key] = null;
     }
 
-    $fromKey = get_node_key($from);
+    $fromKey = Internal\get_node_key($from);
     $distances[$fromKey] = 0;
     $pq->enqueue([0, $from], 0);
 
     while ($pq->count() !== 0) {
         [$currentDist, $node] = $pq->dequeue();
-        $nodeKey = get_node_key($node);
+        $nodeKey = Internal\get_node_key($node);
 
         if (isset($visited[$nodeKey])) {
             continue;
@@ -148,7 +147,7 @@ function shortest_path_by(
             $current = $to;
             while (null !== $current) {
                 $path[] = $current;
-                $currentKey = get_node_key($current);
+                $currentKey = Internal\get_node_key($current);
                 $current = $parent[$currentKey];
             }
 
@@ -156,7 +155,7 @@ function shortest_path_by(
         }
 
         foreach ($graph->getEdgesFrom($node) as $edge) {
-            $neighborKey = get_node_key($edge->to);
+            $neighborKey = Internal\get_node_key($edge->to);
             if (isset($visited[$neighborKey])) {
                 continue;
             }

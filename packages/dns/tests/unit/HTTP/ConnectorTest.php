@@ -26,8 +26,7 @@ use Psl\HTTP\Message\Transaction;
 use Psl\IP\Address;
 use Psl\Network;
 use Psl\Socks\Configuration;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class ConnectorTest extends TestCase
 {
@@ -50,7 +49,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
 
         $origin = new Origin('https', 'example.com', 443);
-        $request = new Request(method: 'GET', url: parse('https://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('https://example.com/'));
 
         $connector->connect($origin, $request, new ClientConfiguration());
 
@@ -79,7 +78,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('https', 'example.com', 443),
-            new Request(method: 'GET', url: parse('https://example.com/')),
+            new Request(method: 'GET', url: URL\parse('https://example.com/')),
             new ClientConfiguration(),
         );
 
@@ -100,7 +99,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('http', '127.0.0.1', 8080),
-            new Request(method: 'GET', url: parse('http://127.0.0.1:8080/')),
+            new Request(method: 'GET', url: URL\parse('http://127.0.0.1:8080/')),
             new ClientConfiguration(),
         );
 
@@ -122,7 +121,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('http', '::1', 8080),
-            new Request(method: 'GET', url: parse('http://[::1]:8080/')),
+            new Request(method: 'GET', url: URL\parse('http://[::1]:8080/')),
             new ClientConfiguration(),
         );
 
@@ -150,7 +149,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('https', 'ipv6only.example.com', 443),
-            new Request(method: 'GET', url: parse('https://ipv6only.example.com/')),
+            new Request(method: 'GET', url: URL\parse('https://ipv6only.example.com/')),
             new ClientConfiguration(),
         );
 
@@ -178,7 +177,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('http', 'v6.example.com', 8080),
-            new Request(method: 'GET', url: parse('http://v6.example.com:8080/')),
+            new Request(method: 'GET', url: URL\parse('http://v6.example.com:8080/')),
             new ClientConfiguration(),
         );
 
@@ -207,7 +206,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('http', 'v4.example.com', 8080),
-            new Request(method: 'GET', url: parse('http://v4.example.com:8080/')),
+            new Request(method: 'GET', url: URL\parse('http://v4.example.com:8080/')),
             new ClientConfiguration(),
         );
 
@@ -238,7 +237,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('https', 'dual.example.com', 443),
-            new Request(method: 'GET', url: parse('https://dual.example.com/')),
+            new Request(method: 'GET', url: URL\parse('https://dual.example.com/')),
             new ClientConfiguration(),
         );
 
@@ -259,7 +258,7 @@ final class ConnectorTest extends TestCase
 
         $connector->connect(
             new Origin('https', 'nonexistent.example.com', 443),
-            new Request(method: 'GET', url: parse('https://nonexistent.example.com/')),
+            new Request(method: 'GET', url: URL\parse('https://nonexistent.example.com/')),
             new ClientConfiguration(),
         );
     }
@@ -283,7 +282,7 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $connector->connect(
             new Origin('http', 'custom.example.com', 9090),
-            new Request(method: 'GET', url: parse('http://custom.example.com:9090/')),
+            new Request(method: 'GET', url: URL\parse('http://custom.example.com:9090/')),
             new ClientConfiguration(),
         );
 
@@ -316,7 +315,7 @@ final class ConnectorTest extends TestCase
         ]);
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
-        $request = new Request(method: 'POST', url: parse('https://example.com/api'));
+        $request = new Request(method: 'POST', url: URL\parse('https://example.com/api'));
         $config = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
 
         $connector->connect(new Origin('https', 'example.com', 443), $request, $config);
@@ -349,13 +348,13 @@ final class ConnectorTest extends TestCase
         ]);
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
-        $config = new ClientConfiguration(proxyConfiguration: new ProxyConfiguration(parse(
+        $config = new ClientConfiguration(proxyConfiguration: new ProxyConfiguration(URL\parse(
             'http://myproxy.local:3128',
         )));
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             $config,
         );
 
@@ -392,14 +391,14 @@ final class ConnectorTest extends TestCase
         $connector = new DNS\HTTP\Connector($inner, $resolver);
         $config = new ClientConfiguration(
             proxyConfiguration: new ProxyConfiguration(
-                parse('http://proxy.local:8080'),
+                URL\parse('http://proxy.local:8080'),
                 authorization: 'Basic dXNlcjpwYXNz',
             ),
         );
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             $config,
         );
 
@@ -435,13 +434,13 @@ final class ConnectorTest extends TestCase
         ]);
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
-        $config = new ClientConfiguration(proxyConfiguration: new ProxyConfiguration(parse(
+        $config = new ClientConfiguration(proxyConfiguration: new ProxyConfiguration(URL\parse(
             'https://secure-proxy.example.com:443',
         )));
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             $config,
         );
 
@@ -471,12 +470,12 @@ final class ConnectorTest extends TestCase
         ]);
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
-        $proxy = new ProxyConfiguration(parse('http://10.0.0.1:3128'));
+        $proxy = new ProxyConfiguration(URL\parse('http://10.0.0.1:3128'));
         $config = new ClientConfiguration(proxyConfiguration: $proxy);
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             $config,
         );
 
@@ -512,7 +511,7 @@ final class ConnectorTest extends TestCase
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             $config,
         );
 
@@ -545,7 +544,7 @@ final class ConnectorTest extends TestCase
 
         $connector->connect(
             new Origin('http', 'example.com', 80),
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             $config,
         );
 
@@ -566,7 +565,7 @@ final class ConnectorTest extends TestCase
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
 
-        $request = new Request(method: 'GET', url: parse('http://docker/v1.24/containers/json'));
+        $request = new Request(method: 'GET', url: URL\parse('http://docker/v1.24/containers/json'));
         $origin = Origin::fromUrl($request->url);
         $config = new ClientConfiguration(unixSocket: '/var/run/docker.sock');
 
@@ -592,9 +591,9 @@ final class ConnectorTest extends TestCase
 
         $connector = new DNS\HTTP\Connector($inner, $resolver);
 
-        $request = new Request(method: 'GET', url: parse('http://docker/v1.24/info'));
+        $request = new Request(method: 'GET', url: URL\parse('http://docker/v1.24/info'));
         $origin = Origin::fromUrl($request->url);
-        $proxyConfig = new ProxyConfiguration(url: parse('http://unresolvable-proxy:8080'));
+        $proxyConfig = new ProxyConfiguration(url: URL\parse('http://unresolvable-proxy:8080'));
         $config = new ClientConfiguration(unixSocket: '/var/run/docker.sock', proxyConfiguration: $proxyConfig);
 
         $connector->connect($origin, $request, $config);

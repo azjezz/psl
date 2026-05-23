@@ -6,8 +6,6 @@ namespace Psl\Graph;
 
 use Psl\DataStructure\Queue;
 
-use function Psl\Graph\Internal\get_node_key;
-
 /**
  * Performs breadth-first search starting from a given node.
  *
@@ -43,14 +41,14 @@ function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
     $result = [];
     $queue = new Queue();
     $queue->enqueue($start);
-    $visited[get_node_key($start)] = true;
+    $visited[Internal\get_node_key($start)] = true;
 
     while ($queue->count() !== 0) {
         $node = $queue->dequeue();
         $result[] = $node;
 
         foreach (namespace\neighbors($graph, $node) as $neighbor) {
-            $key = get_node_key($neighbor);
+            $key = Internal\get_node_key($neighbor);
             if (!isset($visited[$key])) {
                 $visited[$key] = true;
                 $queue->enqueue($neighbor);

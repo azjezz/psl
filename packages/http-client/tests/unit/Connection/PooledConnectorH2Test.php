@@ -23,9 +23,9 @@ use Psl\HTTP\Message\Request;
 use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
+use Psl\URL;
 
 use function count;
-use function Psl\URL\parse;
 
 /**
  * @mago-expect lint:excessive-nesting
@@ -53,7 +53,7 @@ final class PooledConnectorH2Test extends TestCase
             configuration: new ClientConfiguration(protocolVersions: [ProtocolVersion::V20]),
         );
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         $tx1 = $client->send(new Request(method: 'GET', url: $url));
         static::assertSame(200, $tx1->response->status);
@@ -85,7 +85,7 @@ final class PooledConnectorH2Test extends TestCase
         });
 
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V20]);
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
         $request = new Request(method: 'GET', url: $url);
         $origin = Origin::fromUrl($request->url);
 
@@ -119,7 +119,7 @@ final class PooledConnectorH2Test extends TestCase
         $connector = new PooledConnector();
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V20]);
 
-        $url1 = parse('http://127.0.0.1:' . $port1 . '/');
+        $url1 = URL\parse('http://127.0.0.1:' . $port1 . '/');
         $request1 = new Request(method: 'GET', url: $url1);
         $origin1 = Origin::fromUrl($request1->url);
 
@@ -141,7 +141,7 @@ final class PooledConnectorH2Test extends TestCase
             $server->sendData($event->streamId, 'second', endStream: true);
         });
 
-        $url2 = parse('http://127.0.0.1:' . $port2 . '/');
+        $url2 = URL\parse('http://127.0.0.1:' . $port2 . '/');
         $request2 = new Request(method: 'GET', url: $url2);
         $origin2 = Origin::fromUrl($request2->url);
 
@@ -168,7 +168,7 @@ final class PooledConnectorH2Test extends TestCase
             $server->sendData($event->streamId, 'a', endStream: true);
         });
 
-        $url1 = parse('http://127.0.0.1:' . $port1 . '/');
+        $url1 = URL\parse('http://127.0.0.1:' . $port1 . '/');
         $request1 = new Request(method: 'GET', url: $url1);
         $origin1 = Origin::fromUrl($request1->url);
 
@@ -185,7 +185,7 @@ final class PooledConnectorH2Test extends TestCase
             $server->sendData($event->streamId, 'b', endStream: true);
         });
 
-        $url2 = parse('http://127.0.0.1:' . $port2 . '/');
+        $url2 = URL\parse('http://127.0.0.1:' . $port2 . '/');
         $request2 = new Request(method: 'GET', url: $url2);
         $origin2 = Origin::fromUrl($request2->url);
 
@@ -216,7 +216,7 @@ final class PooledConnectorH2Test extends TestCase
             configuration: new ClientConfiguration(protocolVersions: [ProtocolVersion::V20]),
         );
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
         $tasks = [];
         for ($i = 0; $i < 3; $i++) {
             $tasks[] = static function () use ($client, $url): string {
@@ -249,7 +249,7 @@ final class PooledConnectorH2Test extends TestCase
 
         $connector = new PooledConnector();
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V20]);
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
         $request = new Request(method: 'GET', url: $url);
         $origin = Origin::fromUrl($request->url);
 

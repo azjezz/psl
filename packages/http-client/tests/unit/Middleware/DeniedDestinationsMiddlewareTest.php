@@ -22,8 +22,7 @@ use Psl\IO;
 use Psl\IP;
 use Psl\Network;
 use Psl\Network\Address;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class DeniedDestinationsMiddlewareTest extends TestCase
 {
@@ -77,7 +76,7 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
     {
         $middleware = DeniedDestinationsMiddleware::forPrivateNetworkRanges();
         $connection = self::createConnection('192.168.1.1');
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $handler = self::createHandler();
 
         $this->expectException(RuntimeException::class);
@@ -89,7 +88,7 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
     {
         $middleware = DeniedDestinationsMiddleware::forPrivateNetworkRanges();
         $connection = self::createConnection('127.0.0.1');
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $handler = self::createHandler();
 
         $this->expectException(RuntimeException::class);
@@ -101,7 +100,7 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
     {
         $middleware = DeniedDestinationsMiddleware::forPrivateNetworkRanges();
         $connection = self::createConnection('93.184.216.34');
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $handler = self::createHandler();
 
         $transaction = $middleware->process($connection, $request, new ClientConfiguration(), $handler);
@@ -115,7 +114,7 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
             IP\Address::v4('10.0.0.5'),
         ]);
         $connection = self::createConnection('10.0.0.5');
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $handler = self::createHandler();
 
         $this->expectException(RuntimeException::class);
@@ -129,7 +128,7 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
             IP\Address::v4('10.0.0.5'),
         ]);
         $connection = self::createConnection('93.184.216.34');
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $handler = self::createHandler();
 
         $transaction = $middleware->process($connection, $request, new ClientConfiguration(), $handler);
@@ -143,7 +142,7 @@ final class DeniedDestinationsMiddlewareTest extends TestCase
             new CIDR\Block('172.16.0.0/12'),
         ]);
         $connection = self::createConnection('172.20.1.1');
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $handler = self::createHandler();
 
         $this->expectException(RuntimeException::class);

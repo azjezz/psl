@@ -20,6 +20,7 @@ use Psl\HTTP\Client\Connection\ConnectorInterface;
 use Psl\HTTP\Client\Connection\Origin;
 use Psl\HTTP\Client\Exception\ProtocolException;
 use Psl\HTTP\Client\Exception\RequestException;
+use Psl\HTTP\Client\Internal;
 use Psl\HTTP\Client\SendConfiguration;
 use Psl\HTTP\Message\FieldMap;
 use Psl\HTTP\Message\ProtocolVersion;
@@ -29,9 +30,7 @@ use Psl\HTTP\Message\Transaction;
 use Psl\IO;
 use Psl\Network;
 use Psl\Network\Exception\RuntimeException;
-
-use function Psl\HTTP\Client\Internal\resolve_protocol_versions;
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class ClientTest extends TestCase
 {
@@ -66,7 +65,7 @@ final class ClientTest extends TestCase
 
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/path?q=1'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/path?q=1'));
 
         try {
             $client->send($request);
@@ -89,7 +88,7 @@ final class ClientTest extends TestCase
                 ClientConfiguration $configuration,
                 CancellationTokenInterface $cancellation = new NullCancellationToken(),
             ): ConnectionInterface {
-                resolve_protocol_versions($request, $configuration);
+                Internal\resolve_protocol_versions($request, $configuration);
 
                 throw new RuntimeException('should not reach here');
             }
@@ -97,7 +96,11 @@ final class ClientTest extends TestCase
 
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/'), protocolVersion: ProtocolVersion::V30);
+        $request = new Request(
+            method: 'GET',
+            url: URL\parse('http://example.com/'),
+            protocolVersion: ProtocolVersion::V30,
+        );
 
         $this->expectException(ProtocolException::class);
         $this->expectExceptionMessage('Unsupported protocol version');
@@ -121,7 +124,7 @@ final class ClientTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('connection refused');
-        $client->send(new Request(method: 'GET', url: parse('http://example.com/')));
+        $client->send(new Request(method: 'GET', url: URL\parse('http://example.com/')));
     }
 
     public function testBaseUrlResolvesRelativeTarget(): void
@@ -142,7 +145,7 @@ final class ClientTest extends TestCase
 
         $client = new Client(
             connector: $connector,
-            configuration: new ClientConfiguration(baseUrl: parse('https://example.com')),
+            configuration: new ClientConfiguration(baseUrl: URL\parse('https://example.com')),
         );
 
         $request = new Request(method: 'GET', url: null, requestTarget: '/api/users');
@@ -176,7 +179,7 @@ final class ClientTest extends TestCase
 
         $client = new Client(
             connector: $connector,
-            configuration: new ClientConfiguration(baseUrl: parse('https://example.com')),
+            configuration: new ClientConfiguration(baseUrl: URL\parse('https://example.com')),
         );
 
         $request = new Request(method: 'GET', url: null, requestTarget: '://');
@@ -203,13 +206,13 @@ final class ClientTest extends TestCase
 
         $client = new Client(
             connector: $connector,
-            configuration: new ClientConfiguration(baseUrl: parse('https://default.example.com')),
+            configuration: new ClientConfiguration(baseUrl: URL\parse('https://default.example.com')),
         );
 
         $request = new Request(method: 'GET', url: null, requestTarget: '/v2/resource');
 
         try {
-            $client->send($request, new SendConfiguration(baseUrl: parse('https://override.example.com')));
+            $client->send($request, new SendConfiguration(baseUrl: URL\parse('https://override.example.com')));
         } catch (RuntimeException) {
             static::addToAssertionCount(1);
         }
@@ -248,7 +251,7 @@ final class ClientTest extends TestCase
         $connector = $this->createCapturingConnector($capture);
 
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
-        $client->send(new Request(method: 'GET', url: parse('http://example.com/')));
+        $client->send(new Request(method: 'GET', url: URL\parse('http://example.com/')));
 
         static::assertArrayHasKey('request', (array) $capture);
         $request = $capture['request'];
@@ -264,7 +267,7 @@ final class ClientTest extends TestCase
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
         $client->send(new Request(
             method: 'GET',
-            url: parse('http://example.com/'),
+            url: URL\parse('http://example.com/'),
             headers: FieldMap::from([['user-agent', 'my-custom-agent']]),
         ));
 
@@ -281,7 +284,7 @@ final class ClientTest extends TestCase
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
         $client->send(new Request(
             method: 'GET',
-            url: parse('http://example.com/'),
+            url: URL\parse('http://example.com/'),
             headers: FieldMap::from([['User-Agent', 'my-custom-agent']]),
         ));
 
@@ -298,7 +301,7 @@ final class ClientTest extends TestCase
 
         $client->send(new Request(
             method: 'HEAD',
-            url: parse('http://example.com/'),
+            url: URL\parse('http://example.com/'),
             body: new IO\MemoryHandle('data'),
         ));
 
@@ -318,7 +321,7 @@ final class ClientTest extends TestCase
 
         $client->send(new Request(
             method: 'TRACE',
-            url: parse('http://example.com/'),
+            url: URL\parse('http://example.com/'),
             body: new IO\MemoryHandle('data'),
         ));
     }
@@ -329,7 +332,7 @@ final class ClientTest extends TestCase
         $connector = $this->createCapturingConnector($capture);
 
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
-        $tx = $client->send(new Request(method: 'HEAD', url: parse('http://example.com/')));
+        $tx = $client->send(new Request(method: 'HEAD', url: URL\parse('http://example.com/')));
 
         static::assertSame(200, $tx->response->status);
     }
@@ -391,7 +394,7 @@ final class ClientTest extends TestCase
 
         $receivedMetadata = null;
         $client->send(
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             new SendConfiguration(onConnection: static function (ConnectionMetadata $metadata) use (
                 &$receivedMetadata,
             ): void {
@@ -410,7 +413,7 @@ final class ClientTest extends TestCase
         $client = new Client(connector: $connector, configuration: new ClientConfiguration());
 
         $client->send(
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             new SendConfiguration(onConnection: null),
         );
 
@@ -420,7 +423,7 @@ final class ClientTest extends TestCase
     public function testInvalidRequestTargetWithBaseUrlThrowsWithPreviousException(): void
     {
         $connector = $this->createStub(ConnectorInterface::class);
-        $config = new ClientConfiguration(baseUrl: parse('http://example.com/'));
+        $config = new ClientConfiguration(baseUrl: URL\parse('http://example.com/'));
         $client = new Client(connector: $connector, configuration: $config);
 
         $request = new Request(method: 'GET', url: null, requestTarget: 'bad://[invalid url');
@@ -461,7 +464,7 @@ final class ClientTest extends TestCase
         $this->expectException(CancelledException::class);
 
         $client->send(
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             new SendConfiguration(connectionTimeout: Duration::milliseconds(10)),
         );
     }
@@ -490,7 +493,7 @@ final class ClientTest extends TestCase
 
         try {
             $client->send(
-                new Request(method: 'GET', url: parse('http://example.com/')),
+                new Request(method: 'GET', url: URL\parse('http://example.com/')),
                 new SendConfiguration(connectionTimeout: Duration::seconds(30)),
             );
         } catch (RuntimeException) {
@@ -527,7 +530,7 @@ final class ClientTest extends TestCase
 
         try {
             $client->send(
-                new Request(method: 'GET', url: parse('http://example.com/')),
+                new Request(method: 'GET', url: URL\parse('http://example.com/')),
                 new SendConfiguration(),
                 $originalCancellation,
             );

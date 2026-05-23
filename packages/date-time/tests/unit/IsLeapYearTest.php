@@ -6,8 +6,7 @@ namespace Psl\DateTime\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-
-use function Psl\DateTime\is_leap_year;
+use Psl\DateTime;
 
 final class IsLeapYearTest extends TestCase
 {
@@ -29,6 +28,6 @@ final class IsLeapYearTest extends TestCase
     #[DataProvider('provideLeapYearData')]
     public function testIsLeapYear(int $year, bool $expected): void
     {
-        static::assertSame($expected, is_leap_year($year));
+        static::assertSame($expected, DateTime\is_leap_year($year));
     }
 }

@@ -6,8 +6,7 @@ namespace Psl\HTTP\Client\Tests\Unit\Internal;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-
-use function Psl\HTTP\Client\Internal\should_tunnel;
+use Psl\HTTP\Client\Internal;
 
 final class ShouldTunnelTest extends TestCase
 {
@@ -17,7 +16,7 @@ final class ShouldTunnelTest extends TestCase
     #[DataProvider('shouldTunnelProvider')]
     public function testShouldTunnel(string $host, array $skipProxyFor, bool $expected): void
     {
-        static::assertSame($expected, should_tunnel($host, $skipProxyFor));
+        static::assertSame($expected, Internal\should_tunnel($host, $skipProxyFor));
     }
 
     /**

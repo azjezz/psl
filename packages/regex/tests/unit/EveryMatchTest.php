@@ -9,8 +9,6 @@ use PHPUnit\Framework\TestCase;
 use Psl\Regex;
 use Psl\Type\TypeInterface;
 
-use function Psl\Regex\capture_groups;
-
 final class EveryMatchTest extends TestCase
 {
     #[DataProvider('provideMatchingData')]
@@ -43,7 +41,7 @@ final class EveryMatchTest extends TestCase
         $this->expectException(Regex\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Invalid capture groups');
 
-        Regex\every_match('hello', '/(hello)/', capture_groups(['doesnotexist']));
+        Regex\every_match('hello', '/(hello)/', Regex\capture_groups(['doesnotexist']));
     }
 
     public static function provideMatchingData(): iterable
@@ -55,7 +53,7 @@ final class EveryMatchTest extends TestCase
             ]],
             'PHP is the web scripting language of choice.',
             '/(php)/i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [[
@@ -64,7 +62,7 @@ final class EveryMatchTest extends TestCase
             ]],
             'Hello world is the web scripting language of choice.',
             '/(hello) world/i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [[
@@ -73,7 +71,7 @@ final class EveryMatchTest extends TestCase
             ]],
             'PHP is the web scripting language of choice.',
             '/(\bweb\b)/i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [[
@@ -90,7 +88,7 @@ final class EveryMatchTest extends TestCase
             ]],
             'PHP is the web scripting language of choice.',
             '/(?P<language>PHP)/',
-            capture_groups(['language']),
+            Regex\capture_groups(['language']),
         ];
         yield [
             [[
@@ -108,7 +106,7 @@ final class EveryMatchTest extends TestCase
             ]],
             'http://www.php.net/index.html',
             '@^(?:http://)?([^/]+)@i',
-            capture_groups([1]),
+            Regex\capture_groups([1]),
         ];
         yield [
             [
@@ -134,7 +132,7 @@ final class EveryMatchTest extends TestCase
             c: 3
             FOO,
             '@(\w+): (\d+)@i',
-            capture_groups([1, 2]),
+            Regex\capture_groups([1, 2]),
         ];
         yield [
             [
@@ -160,7 +158,7 @@ final class EveryMatchTest extends TestCase
             c: 3
             FOO,
             '@(?P<name>\w+): (?P<digit>\d+)@i',
-            capture_groups(['name', 'digit']),
+            Regex\capture_groups(['name', 'digit']),
         ];
     }
 

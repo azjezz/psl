@@ -7,7 +7,6 @@ namespace Psl\Graph;
 use Psl\DataStructure\Queue;
 
 use function count;
-use function Psl\Graph\Internal\get_node_key;
 
 /**
  * Performs topological sort on a directed acyclic graph (DAG).
@@ -42,14 +41,14 @@ function topological_sort(DirectedGraph $graph): null|array
 
     // Initialize in-degree for all nodes
     foreach ($allNodes as $node) {
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         $inDegree[$key] = 0;
     }
 
     // Calculate in-degree for each node
     foreach ($allNodes as $node) {
         foreach (namespace\neighbors($graph, $node) as $neighbor) {
-            $key = get_node_key($neighbor);
+            $key = Internal\get_node_key($neighbor);
             $inDegree[$key]++;
         }
     }
@@ -57,7 +56,7 @@ function topological_sort(DirectedGraph $graph): null|array
     // Start with nodes that have no incoming edges
     $queue = new Queue();
     foreach ($allNodes as $node) {
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         if ($inDegree[$key] === 0) {
             $queue->enqueue($node);
         }
@@ -70,7 +69,7 @@ function topological_sort(DirectedGraph $graph): null|array
 
         // Reduce in-degree for all neighbors
         foreach (namespace\neighbors($graph, $node) as $neighbor) {
-            $key = get_node_key($neighbor);
+            $key = Internal\get_node_key($neighbor);
             $inDegree[$key]--;
             if ($inDegree[$key] === 0) {
                 $queue->enqueue($neighbor);

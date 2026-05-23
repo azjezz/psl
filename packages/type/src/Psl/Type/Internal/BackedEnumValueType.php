@@ -6,11 +6,12 @@ namespace Psl\Type\Internal;
 
 use BackedEnum;
 use Override;
+use Psl;
 use Psl\Exception\InvariantViolationException;
 use Psl\Exception\RuntimeException;
+use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
-use Psl\Type\Type;
 use ReflectionEnum;
 use ReflectionException;
 use ReflectionNamedType;
@@ -18,18 +19,15 @@ use ReflectionNamedType;
 use function is_a;
 use function is_int;
 use function is_string;
-use function Psl\invariant;
-use function Psl\Type\int;
-use function Psl\Type\string;
 
 /**
  * @template T of BackedEnum
  *
- * @extends Type<value-of<T>>
+ * @extends Type\Type<value-of<T>>
  *
  * @internal
  */
-final readonly class BackedEnumValueType extends Type
+final readonly class BackedEnumValueType extends Type\Type
 {
     private bool $isStringBacked;
 
@@ -55,7 +53,7 @@ final readonly class BackedEnumValueType extends Type
      */
     private function hasStringBackingType(string $enum): bool
     {
-        invariant(is_a($enum, BackedEnum::class, true), 'A BackedEnum enum-string is required');
+        Psl\invariant(is_a($enum, BackedEnum::class, true), 'A BackedEnum enum-string is required');
 
         // If the enum has any cases, detect its type by inspecting the first case found
         $case = $enum::cases()[0] ?? null;
@@ -67,7 +65,7 @@ final readonly class BackedEnumValueType extends Type
         try {
             $reflection = new ReflectionEnum($enum);
             $type = $reflection->getBackingType();
-            invariant($type instanceof ReflectionNamedType, 'Unexpected type');
+            Psl\invariant($type instanceof ReflectionNamedType, 'Unexpected type');
             return $type->getName() === 'string';
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
@@ -99,7 +97,7 @@ final readonly class BackedEnumValueType extends Type
     public function coerce(mixed $value): string|int
     {
         try {
-            $case = $this->isStringBacked ? string()->coerce($value) : int()->coerce($value);
+            $case = $this->isStringBacked ? Type\string()->coerce($value) : Type\int()->coerce($value);
 
             if ($this->matches($case)) { // @mago-expect analysis:redundant-type-comparison
                 return $case;

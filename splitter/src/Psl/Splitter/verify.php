@@ -7,14 +7,13 @@ namespace Psl\Splitter;
 use Psl\Dict;
 use Psl\File;
 use Psl\Filesystem;
+use Psl\Internal;
 use Psl\Iter;
 use Psl\Json;
 use Psl\Regex;
 use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
-
-use function Psl\Internal\package_namespace_map;
 
 /**
  * Verify that every package's composer.json `require` section matches actual source imports,
@@ -28,7 +27,7 @@ use function Psl\Internal\package_namespace_map;
  */
 function verify(array $packages): bool
 {
-    $nsToDir = package_namespace_map();
+    $nsToDir = Internal\package_namespace_map();
 
     $ok = true;
 

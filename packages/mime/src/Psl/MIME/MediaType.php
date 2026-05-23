@@ -90,9 +90,7 @@ final readonly class MediaType implements Stringable
             throw InvalidMediaTypeComponentException::forSubtype($subtype);
         });
 
-        /** @var non-empty-lowercase-string $type */
         $this->type = $type;
-        /** @var non-empty-lowercase-string $subtype */
         $this->subtype = $subtype;
         $this->parameters = $parameters ?? Parameters::default();
         $this->suffix = self::extractSuffix($subtype);

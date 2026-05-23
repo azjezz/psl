@@ -23,8 +23,7 @@ use Psl\HTTP\Message\Transaction;
 use Psl\IO;
 use Psl\Network;
 use Psl\Network\Address;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class MiddlewareTest extends TestCase
 {
@@ -119,7 +118,7 @@ final class MiddlewareTest extends TestCase
 
     public function testMiddlewareCanModifyRequest(): void
     {
-        $capturedRequest = new Request(method: 'GET', url: parse('http://example.com/'));
+        $capturedRequest = new Request(method: 'GET', url: URL\parse('http://example.com/'));
 
         $middleware = new class() implements MiddlewareInterface {
             public function process(
@@ -142,7 +141,7 @@ final class MiddlewareTest extends TestCase
             middleware: [$middleware],
         );
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $client->send($request);
 
         static::assertSame('true', $capturedRequest->headers->get('X-Modified'));
@@ -175,7 +174,7 @@ final class MiddlewareTest extends TestCase
             middleware: [$middleware],
         );
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $transaction = $client->send($request);
 
         static::assertSame('true', $transaction->response->headers->get('X-After'));
@@ -183,7 +182,7 @@ final class MiddlewareTest extends TestCase
 
     public function testMiddlewareOrderIsPreserved(): void
     {
-        $capturedRequest = new Request(method: 'GET', url: parse('http://example.com/'));
+        $capturedRequest = new Request(method: 'GET', url: URL\parse('http://example.com/'));
 
         $first = new class() implements MiddlewareInterface {
             public function process(
@@ -220,7 +219,7 @@ final class MiddlewareTest extends TestCase
             middleware: [$first, $second],
         );
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $client->send($request);
 
         static::assertSame('1', $capturedRequest->headers->get('X-First'));
@@ -293,7 +292,7 @@ final class MiddlewareTest extends TestCase
             middleware: [$middleware],
         );
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $transaction = $client->send($request);
 
         static::assertSame(403, $transaction->response->status);
@@ -302,7 +301,7 @@ final class MiddlewareTest extends TestCase
 
     public function testMiddlewareExecutionOrderMatters(): void
     {
-        $capturedRequest = new Request(method: 'GET', url: parse('http://example.com/'));
+        $capturedRequest = new Request(method: 'GET', url: URL\parse('http://example.com/'));
 
         $first = new class() implements MiddlewareInterface {
             public function process(
@@ -339,7 +338,7 @@ final class MiddlewareTest extends TestCase
             middleware: [$first, $second],
         );
 
-        $request = new Request(method: 'GET', url: parse('http://example.com/'));
+        $request = new Request(method: 'GET', url: URL\parse('http://example.com/'));
         $client->send($request);
 
         static::assertSame('second', $capturedRequest->headers->get('X-Order'));

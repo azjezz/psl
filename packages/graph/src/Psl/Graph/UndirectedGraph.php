@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\Graph;
 
 use function array_values;
-use function Psl\Graph\Internal\get_node_key;
 
 /**
  * Immutable undirected graph using adjacency list representation.
@@ -57,7 +56,7 @@ final readonly class UndirectedGraph implements GraphInterface
      */
     public function getEdgesFrom(mixed $from): array
     {
-        $key = get_node_key($from);
+        $key = Internal\get_node_key($from);
         return $this->edges[$key] ?? [];
     }
 
@@ -70,7 +69,7 @@ final readonly class UndirectedGraph implements GraphInterface
      */
     public function hasNode(mixed $node): bool
     {
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         return isset($this->nodes[$key]);
     }
 
@@ -84,7 +83,7 @@ final readonly class UndirectedGraph implements GraphInterface
      */
     public function hasEdge(mixed $node1, mixed $node2): bool
     {
-        $key = get_node_key($node1);
+        $key = Internal\get_node_key($node1);
         if (!isset($this->edges[$key])) {
             return false;
         }
@@ -117,7 +116,7 @@ final readonly class UndirectedGraph implements GraphInterface
             return $this;
         }
 
-        $key = get_node_key($node);
+        $key = Internal\get_node_key($node);
         $nodes = $this->nodes;
         $edges = $this->edges;
         $nodes[$key] = $node;
@@ -140,7 +139,7 @@ final readonly class UndirectedGraph implements GraphInterface
      */
     public function withEdge(mixed $from, Edge $edge): UndirectedGraph
     {
-        $key = get_node_key($from);
+        $key = Internal\get_node_key($from);
         $edges = $this->edges;
         $edges[$key] ??= [];
         $edges[$key][] = $edge;
@@ -166,11 +165,11 @@ final readonly class UndirectedGraph implements GraphInterface
              * @param TNode|null $parent
              */
             function (mixed $node, mixed $parent) use (&$visited, &$dfsCheck): bool {
-                $key = get_node_key($node);
+                $key = Internal\get_node_key($node);
                 $visited[$key] = true;
 
                 foreach ($this->getEdgesFrom($node) as $edge) {
-                    $neighborKey = get_node_key($edge->to);
+                    $neighborKey = Internal\get_node_key($edge->to);
 
                     if (!isset($visited[$neighborKey])) {
                         if ($dfsCheck($edge->to, $node)) {
@@ -189,7 +188,7 @@ final readonly class UndirectedGraph implements GraphInterface
             };
 
         foreach ($this->getNodes() as $node) {
-            $key = get_node_key($node);
+            $key = Internal\get_node_key($node);
             if (!isset($visited[$key])) {
                 if ($dfsCheck($node, null)) {
                     return true;

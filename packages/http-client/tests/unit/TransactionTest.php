@@ -11,8 +11,7 @@ use Psl\HTTP\Message\FieldMap;
 use Psl\HTTP\Message\Request;
 use Psl\HTTP\Message\Response;
 use Psl\HTTP\Message\Transaction;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class TransactionTest extends TestCase
 {
@@ -26,7 +25,7 @@ final class TransactionTest extends TestCase
     public function testCustomPushedExchanges(): void
     {
         $exchange = new Exchange(
-            new Request(method: 'GET', url: parse('http://example.com/')),
+            new Request(method: 'GET', url: URL\parse('http://example.com/')),
             new Response(status: 200, headers: FieldMap::default()),
         );
 

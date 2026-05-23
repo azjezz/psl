@@ -16,8 +16,7 @@ use Psl\IO\Reader;
 use Psl\Network;
 use Psl\TCP;
 use Psl\TLS;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class HttpTunnelTest extends TestCase
 {
@@ -64,7 +63,7 @@ final class HttpTunnelTest extends TestCase
             $port = $address->port;
             $stream = HttpTunnel::connect(
                 $connector,
-                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                new ProxyConfiguration(URL\parse("http://127.0.0.1:{$port}")),
                 'example.com',
                 443,
                 $cancellation,
@@ -127,7 +126,7 @@ final class HttpTunnelTest extends TestCase
             $port = $address->port;
             $stream = HttpTunnel::connect(
                 $connector,
-                new ProxyConfiguration(parse("http://127.0.0.1:{$port}"), authorization: 'Basic dXNlcjpwYXNz'),
+                new ProxyConfiguration(URL\parse("http://127.0.0.1:{$port}"), authorization: 'Basic dXNlcjpwYXNz'),
                 'example.com',
                 443,
                 $cancellation,
@@ -184,7 +183,7 @@ final class HttpTunnelTest extends TestCase
 
             HttpTunnel::connect(
                 $connector,
-                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                new ProxyConfiguration(URL\parse("http://127.0.0.1:{$port}")),
                 'example.com',
                 443,
                 $cancellation,
@@ -236,7 +235,7 @@ final class HttpTunnelTest extends TestCase
 
             HttpTunnel::connect(
                 $connector,
-                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                new ProxyConfiguration(URL\parse("http://127.0.0.1:{$port}")),
                 'example.com',
                 443,
                 $cancellation,
@@ -289,7 +288,7 @@ final class HttpTunnelTest extends TestCase
 
             HttpTunnel::connect(
                 $connector,
-                new ProxyConfiguration(parse("http://127.0.0.1:{$port}")),
+                new ProxyConfiguration(URL\parse("http://127.0.0.1:{$port}")),
                 'example.com',
                 443,
                 $cancellation,

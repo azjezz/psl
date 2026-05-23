@@ -7,8 +7,8 @@ namespace Psl\SMTP\Tests\Unit\Internal;
 use PHPUnit\Framework\TestCase;
 use Psl\IO;
 use Psl\SMTP\Exception\ProtocolException;
+use Psl\SMTP\Internal;
 
-use function Psl\SMTP\Internal\parse_reply;
 use function str_repeat;
 
 final class ParseReplyTest extends TestCase
@@ -17,7 +17,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame('OK', $response->message);
@@ -28,7 +28,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250-mail.example.com\r\n250-SIZE 10485760\r\n250 PIPELINING\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertStringContainsString('mail.example.com', $response->message);
@@ -40,7 +40,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 User not found\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(550, $response->code);
         static::assertSame('User not found', $response->message);
@@ -51,7 +51,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame('', $response->message);
@@ -61,7 +61,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 \r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame('', $response->message);
@@ -73,7 +73,7 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testMalformedResponseNonNumericCode(): void
@@ -82,7 +82,7 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testMalformedResponseCodeTooLow(): void
@@ -91,7 +91,7 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testMalformedResponseCodeTooHigh(): void
@@ -100,7 +100,7 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testMalformedResponseInvalidSeparator(): void
@@ -109,7 +109,7 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testMalformedResponseInconsistentMultilineCodes(): void
@@ -118,7 +118,7 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testMalformedResponseStreamClosed(): void
@@ -128,14 +128,14 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testResponseCodeBoundary100(): void
     {
         $reader = new IO\Reader(new IO\MemoryHandle("100 Continue\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(100, $response->code);
         static::assertFalse($response->isPositiveCompletion());
@@ -148,7 +148,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("599 Error\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(599, $response->code);
         static::assertTrue($response->isPermanentNegativeCompletion());
@@ -158,7 +158,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("399 Intermediate\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(399, $response->code);
         static::assertTrue($response->isPositiveIntermediate());
@@ -169,7 +169,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("400 Negative\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(400, $response->code);
         static::assertTrue($response->isTransientNegativeCompletion());
@@ -180,11 +180,11 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 First\r\n354 Second\r\n"));
 
-        $first = parse_reply($reader);
+        $first = Internal\parse_reply($reader);
         static::assertSame(250, $first->code);
         static::assertSame('First', $first->message);
 
-        $second = parse_reply($reader);
+        $second = Internal\parse_reply($reader);
         static::assertSame(354, $second->code);
         static::assertSame('Second', $second->message);
     }
@@ -193,7 +193,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220 mail.example.com ESMTP Postfix\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(220, $response->code);
         static::assertSame('mail.example.com ESMTP Postfix', $response->message);
@@ -203,7 +203,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220-mail.example.com ESMTP\r\n220 Service ready\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(220, $response->code);
         static::assertStringContainsString('mail.example.com ESMTP', $response->message);
@@ -216,14 +216,14 @@ final class ParseReplyTest extends TestCase
 
         $this->expectException(ProtocolException::class);
 
-        parse_reply($reader);
+        Internal\parse_reply($reader);
     }
 
     public function testEnhancedStatusCodeParsed(): void
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 2.1.0 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -237,7 +237,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.2.1 Mailbox full\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(550, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -251,7 +251,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("421 4.3.2 Service not available\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(421, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -265,7 +265,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 2.0.0\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -279,7 +279,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNull($response->enhancedStatus);
         static::assertSame('OK', $response->message);
@@ -289,7 +289,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 2.99.0 Custom\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(2, $response->enhancedStatus->class);
@@ -302,7 +302,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 3.1.0 Weird\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(3, $response->enhancedStatus->class);
@@ -315,7 +315,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("535 5.7.8 Authentication credentials invalid\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(535, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -329,7 +329,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.1.100 Address rejected\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(100, $response->enhancedStatus->detail);
@@ -340,7 +340,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 002.001.000 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(2, $response->enhancedStatus->class);
@@ -353,7 +353,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.07.09 Rejected\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(5, $response->enhancedStatus->class);
@@ -366,7 +366,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 2.0.0 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertTrue($response->enhancedStatus->isSuccess());
@@ -378,7 +378,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("450 4.2.1 Mailbox busy\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertTrue($response->enhancedStatus->isPersistentTransientFailure());
@@ -388,7 +388,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.1.1 User unknown\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertTrue($response->enhancedStatus->isPermanentFailure());
@@ -398,7 +398,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 2.0.0 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(0, $response->enhancedStatus->subject);
@@ -408,7 +408,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 2.1.0 Originator OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(1, $response->enhancedStatus->subject);
@@ -418,7 +418,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.2.1 Mailbox full\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(2, $response->enhancedStatus->subject);
@@ -428,7 +428,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("421 4.3.2 System not accepting\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(3, $response->enhancedStatus->subject);
@@ -438,7 +438,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("452 4.4.5 System congested\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(4, $response->enhancedStatus->subject);
@@ -448,7 +448,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.5.0 Protocol error\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(5, $response->enhancedStatus->subject);
@@ -458,7 +458,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.6.0 Media error\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(6, $response->enhancedStatus->subject);
@@ -468,7 +468,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("535 5.7.8 Auth credentials invalid\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(7, $response->enhancedStatus->subject);
@@ -478,7 +478,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 5.1.999 Very specific error\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertNotNull($response->enhancedStatus);
         static::assertSame(999, $response->enhancedStatus->detail);
@@ -489,7 +489,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250-2.0.0 First line\r\n250 Second line\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertNotNull($response->enhancedStatus);
@@ -501,7 +501,7 @@ final class ParseReplyTest extends TestCase
         $longMsg = str_repeat('A', 1000);
         $reader = new IO\Reader(new IO\MemoryHandle('250 ' . $longMsg . "\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame($longMsg, $response->message);
@@ -511,7 +511,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame('', $response->message);
@@ -522,7 +522,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("200 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(200, $response->code);
         static::assertTrue($response->isPositiveCompletion());
@@ -532,7 +532,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("220 Ready\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(220, $response->code);
         static::assertTrue($response->isConnectionsCategory());
@@ -542,7 +542,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("221 Bye\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(221, $response->code);
     }
@@ -551,7 +551,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("235 Authentication successful\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(235, $response->code);
         static::assertTrue($response->isPositiveCompletion());
@@ -561,7 +561,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("334 VXNlcm5hbWU6\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(334, $response->code);
         static::assertTrue($response->isPositiveIntermediate());
@@ -571,7 +571,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("354 End data with .<CR><LF>\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(354, $response->code);
         static::assertTrue($response->isPositiveIntermediate());
@@ -581,7 +581,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("421 Service not available\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(421, $response->code);
         static::assertTrue($response->isTransientNegativeCompletion());
@@ -591,7 +591,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("450 Mailbox busy\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(450, $response->code);
         static::assertTrue($response->isTransientNegativeCompletion());
@@ -601,7 +601,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("451 Requested action aborted\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(451, $response->code);
     }
@@ -610,7 +610,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("452 Insufficient storage\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(452, $response->code);
     }
@@ -619,7 +619,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("500 Syntax error\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(500, $response->code);
         static::assertTrue($response->isPermanentNegativeCompletion());
@@ -629,7 +629,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("501 Syntax error in parameters\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(501, $response->code);
     }
@@ -638,7 +638,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("502 Command not implemented\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(502, $response->code);
     }
@@ -647,7 +647,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("503 Bad sequence of commands\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(503, $response->code);
     }
@@ -656,7 +656,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("550 Mailbox not found\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(550, $response->code);
         static::assertTrue($response->isPermanentNegativeCompletion());
@@ -666,7 +666,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("553 Mailbox name not allowed\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(553, $response->code);
     }
@@ -675,7 +675,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("554 Transaction failed\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(554, $response->code);
     }
@@ -684,7 +684,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250-First\r\n250-\r\n250 Last\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertStringContainsString('First', $response->message);
@@ -695,7 +695,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250-Line1\r\n250-Line2\r\n250 Line3\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame("Line1\nLine2\nLine3", $response->message);
@@ -705,7 +705,7 @@ final class ParseReplyTest extends TestCase
     {
         $reader = new IO\Reader(new IO\MemoryHandle("250 OK\r\n"));
 
-        $response = parse_reply($reader);
+        $response = Internal\parse_reply($reader);
 
         static::assertSame(250, $response->code);
         static::assertSame('OK', $response->message);

@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Psl\HTTP\Client\Tests\Unit\Internal;
 
 use PHPUnit\Framework\TestCase;
+use Psl\HTTP\Client\Internal;
 use Psl\URL;
-
-use function Psl\HTTP\Client\Internal\resolve_url;
 
 final class ResolveUrlTest extends TestCase
 {
@@ -15,7 +14,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/old/path?q=1#f');
 
-        $result = resolve_url('https://other.com/new/path?x=2#y', $base);
+        $result = Internal\resolve_url('https://other.com/new/path?x=2#y', $base);
 
         static::assertSame('https://other.com/new/path?x=2#y', $result->toString());
     }
@@ -24,7 +23,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/old/path?oldquery');
 
-        $result = resolve_url('?newquery', $base);
+        $result = Internal\resolve_url('?newquery', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('/old/path', $result->path);
@@ -36,7 +35,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/old/path?oldquery');
 
-        $result = resolve_url('#frag', $base);
+        $result = Internal\resolve_url('#frag', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('/old/path', $result->path);
@@ -48,7 +47,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/old/path?q=1');
 
-        $result = resolve_url('/new/path', $base);
+        $result = Internal\resolve_url('/new/path', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('example.com', $result->authority->toString());
@@ -61,7 +60,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/a/b');
 
-        $result = resolve_url('relative/path', $base);
+        $result = Internal\resolve_url('relative/path', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('example.com', $result->authority->toString());
@@ -73,7 +72,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/a/b/');
 
-        $result = resolve_url('../sibling', $base);
+        $result = Internal\resolve_url('../sibling', $base);
 
         static::assertSame('/a/sibling', $result->path);
     }
@@ -82,7 +81,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/base');
 
-        $result = resolve_url('/new/path#section', $base);
+        $result = Internal\resolve_url('/new/path#section', $base);
 
         static::assertSame('/new/path', $result->path);
         static::assertSame('section', $result->fragment);
@@ -93,7 +92,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/a/b');
 
-        $result = resolve_url('c?key=val#frag', $base);
+        $result = Internal\resolve_url('c?key=val#frag', $base);
 
         static::assertSame('/a/c', $result->path);
         static::assertSame('key=val', $result->query);
@@ -104,7 +103,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/old/path');
 
-        $result = resolve_url('//other.com/new/path', $base);
+        $result = Internal\resolve_url('//other.com/new/path', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('other.com', $result->authority->host->toString());
@@ -115,7 +114,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('http://example.com/page');
 
-        $result = resolve_url('//cdn.example.com/asset.js', $base);
+        $result = Internal\resolve_url('//cdn.example.com/asset.js', $base);
 
         static::assertSame('http', $result->scheme);
         static::assertSame('cdn.example.com', $result->authority->host->toString());
@@ -126,7 +125,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/page');
 
-        $result = resolve_url('//other.com:8080/path', $base);
+        $result = Internal\resolve_url('//other.com:8080/path', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('other.com', $result->authority->host->toString());
@@ -138,7 +137,7 @@ final class ResolveUrlTest extends TestCase
     {
         $base = URL\parse('https://example.com/page');
 
-        $result = resolve_url('//other.com/path?q=1#frag', $base);
+        $result = Internal\resolve_url('//other.com/path?q=1#frag', $base);
 
         static::assertSame('https', $result->scheme);
         static::assertSame('other.com', $result->authority->host->toString());

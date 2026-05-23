@@ -18,9 +18,9 @@ use Psl\IO;
 use Psl\IO\Exception\RuntimeException;
 use Psl\Network;
 use Psl\TCP;
+use Psl\URL;
 
 use function preg_match;
-use function Psl\URL\parse;
 use function str_contains;
 use function strlen;
 use function strpos;
@@ -162,7 +162,7 @@ final class PooledConnectorH1Test extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url = parse('http://127.0.0.1:' . $port . '/first');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/first');
 
         // First request: establish a fresh connection.
         $tx1 = $client->send(new Request(method: 'GET', url: $url));
@@ -201,7 +201,7 @@ final class PooledConnectorH1Test extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         // First request.
         $tx1 = $client->send(new Request(method: 'GET', url: $url));
@@ -240,7 +240,7 @@ final class PooledConnectorH1Test extends TestCase
         $configuration = new ClientConfiguration(protocolVersions: [ProtocolVersion::V11]);
         $client = new Client(connector: $connector, configuration: $configuration);
 
-        $url = parse('http://127.0.0.1:' . $port . '/');
+        $url = URL\parse('http://127.0.0.1:' . $port . '/');
 
         // First request: gets a connection, body consumption returns
         // the stream to the pool.

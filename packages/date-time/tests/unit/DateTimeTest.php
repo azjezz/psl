@@ -14,6 +14,7 @@ use Psl\DateTime\DateTime;
 use Psl\DateTime\Exception\InvalidArgumentException;
 use Psl\DateTime\Exception\UnexpectedValueException;
 use Psl\DateTime\FormatPattern;
+use Psl\DateTime\Internal;
 use Psl\DateTime\Meridiem;
 use Psl\DateTime\Month;
 use Psl\DateTime\Period;
@@ -23,7 +24,6 @@ use Psl\DateTime\Weekday;
 use Psl\Json;
 use Psl\Locale\Locale;
 
-use function Psl\DateTime\Internal\create_intl_date_formatter;
 use function time;
 
 final class DateTimeTest extends TestCase
@@ -203,7 +203,8 @@ final class DateTimeTest extends TestCase
 
         // Formatting depends on version of intl - so compare with intl version instead of hardcoding a label:
         static::assertSame(
-            create_intl_date_formatter(locale: Locale::DutchBelgium)->format($datetime->getTimestamp()->getSeconds()),
+            Internal\create_intl_date_formatter(locale: Locale::DutchBelgium)
+                ->format($datetime->getTimestamp()->getSeconds()),
             $datetime->toString(locale: Locale::DutchBelgium),
         );
     }
@@ -219,7 +220,8 @@ final class DateTimeTest extends TestCase
 
         // Formatting depends on version of intl - so compare with intl version instead of hardcoding a label:
         static::assertSame(
-            create_intl_date_formatter(locale: Locale::DutchBelgium)->format($datetime->getTimestamp()->getSeconds()),
+            Internal\create_intl_date_formatter(locale: Locale::DutchBelgium)
+                ->format($datetime->getTimestamp()->getSeconds()),
             $datetime->toString(locale: Locale::DutchBelgium),
         );
     }

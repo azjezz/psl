@@ -7,13 +7,11 @@ namespace Psl\Network\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Psl\Network;
 
-use function Psl\Network\socket_pair;
-
 final class SocketPairTest extends TestCase
 {
     public function testBidirectionalCommunication(): void
     {
-        [$a, $b] = socket_pair();
+        [$a, $b] = Network\socket_pair();
 
         $a->writeAll('hello from A');
         $data = $b->read();
@@ -29,7 +27,7 @@ final class SocketPairTest extends TestCase
 
     public function testCloseOneEndDetectsEof(): void
     {
-        [$a, $b] = socket_pair();
+        [$a, $b] = Network\socket_pair();
 
         $a->writeAll('message');
         $a->close();
@@ -42,7 +40,7 @@ final class SocketPairTest extends TestCase
 
     public function testReturnsStreamInterfaces(): void
     {
-        [$a, $b] = socket_pair();
+        [$a, $b] = Network\socket_pair();
 
         static::assertInstanceOf(Network\StreamInterface::class, $a);
         static::assertInstanceOf(Network\StreamInterface::class, $b);

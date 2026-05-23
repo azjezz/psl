@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psl\Async;
 use Psl\Async\CancellationTokenInterface;
 use Psl\Async\NullCancellationToken;
+use Psl\Binary;
 use Psl\Binary\Endianness;
 use Psl\Binary\Exception;
 use Psl\Binary\HandleReader;
@@ -17,8 +18,6 @@ use Psl\Binary\Writer;
 use Psl\IO;
 use Psl\IO\MemoryHandle;
 
-use function Psl\Binary\encode_f32;
-use function Psl\Binary\encode_f64;
 use function strlen;
 use function substr;
 
@@ -109,7 +108,7 @@ final class HandleReaderTest extends TestCase
 
     public function testF32PerCallEndianness(): void
     {
-        $bytes = encode_f32(1.0, Endianness::Little);
+        $bytes = Binary\encode_f32(1.0, Endianness::Little);
         $handle = new MemoryHandle($bytes);
         $reader = new HandleReader($handle, Endianness::Big);
         static::assertSame(1.0, $reader->f32(Endianness::Little));
@@ -117,7 +116,7 @@ final class HandleReaderTest extends TestCase
 
     public function testF64PerCallEndianness(): void
     {
-        $bytes = encode_f64(1.0, Endianness::Little);
+        $bytes = Binary\encode_f64(1.0, Endianness::Little);
         $handle = new MemoryHandle($bytes);
         $reader = new HandleReader($handle, Endianness::Big);
         static::assertSame(1.0, $reader->f64(Endianness::Little));

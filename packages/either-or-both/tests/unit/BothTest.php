@@ -7,13 +7,12 @@ namespace Psl\EitherOrBoth\Tests\Unit;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psl\Comparison\Equable;
+use Psl\EitherOrBoth;
 use Psl\EitherOrBoth\Both;
 use Psl\EitherOrBoth\Left;
 use Psl\EitherOrBoth\Right;
 use Psl\Ref;
 use Psl\Str;
-
-use function Psl\EitherOrBoth\both;
 
 #[CoversClass(Both::class)]
 final class BothTest extends TestCase
@@ -213,7 +212,7 @@ final class BothTest extends TestCase
 
     public function testBothFactoryFunction(): void
     {
-        $result = both('l', 'r');
+        $result = EitherOrBoth\both('l', 'r');
 
         static::assertInstanceOf(Both::class, $result);
         static::assertSame('l', $result->getLeft());

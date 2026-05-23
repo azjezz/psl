@@ -14,8 +14,6 @@ use Psl\EitherOrBoth\Right;
 use Psl\Ref;
 use Psl\Str;
 
-use function Psl\EitherOrBoth\right;
-
 #[CoversClass(Right::class)]
 final class RightTest extends TestCase
 {
@@ -199,7 +197,7 @@ final class RightTest extends TestCase
 
     public function testRightFactoryFunction(): void
     {
-        $result = right('hello');
+        $result = EitherOrBoth\right('hello');
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame('hello', $result->getRight());

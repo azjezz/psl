@@ -13,8 +13,7 @@ use Psl\HTTP\Client\Connection\PooledConnector;
 use Psl\HTTP\Message\ProtocolVersion;
 use Psl\HTTP\Message\Request;
 use Psl\Socks;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class SocksProxyTest extends TestCase
 {
@@ -29,7 +28,7 @@ final class SocksProxyTest extends TestCase
         );
 
         $this->expectTransportError();
-        $client->send(new Request(method: 'GET', url: parse('https://example.com/')));
+        $client->send(new Request(method: 'GET', url: URL\parse('https://example.com/')));
     }
 
     public function testNonPooledConnectorUsesProxyForConnection(): void
@@ -43,7 +42,7 @@ final class SocksProxyTest extends TestCase
         );
 
         $this->expectTransportError();
-        $client->send(new Request(method: 'GET', url: parse('https://example.com/')));
+        $client->send(new Request(method: 'GET', url: URL\parse('https://example.com/')));
     }
 
     public function testProxyNotUsedWhenNull(): void
@@ -54,7 +53,7 @@ final class SocksProxyTest extends TestCase
         );
 
         $this->expectTransportError();
-        $client->send(new Request(method: 'GET', url: parse('http://127.0.0.1:1/')));
+        $client->send(new Request(method: 'GET', url: URL\parse('http://127.0.0.1:1/')));
     }
 
     private function expectTransportError(): void

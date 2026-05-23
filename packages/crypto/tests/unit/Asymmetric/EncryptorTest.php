@@ -10,8 +10,7 @@ use Psl\Crypto\EncryptorInterface;
 use Psl\Crypto\Exception;
 use Psl\SecureRandom;
 use Psl\Str;
-
-use function Psl\Str\Byte\length;
+use Psl\Str\Byte;
 
 final class EncryptorTest extends TestCase
 {
@@ -77,7 +76,7 @@ final class EncryptorTest extends TestCase
 
         $ciphertext = $encryptor->seal('hello');
         $tampered = $ciphertext;
-        $last = length($tampered) - 1;
+        $last = Byte\length($tampered) - 1;
         $tampered[$last] = Str\Byte\chr(Str\Byte\ord($tampered[$last]) ^ 0x01);
 
         $this->expectException(Exception\DecryptionException::class);

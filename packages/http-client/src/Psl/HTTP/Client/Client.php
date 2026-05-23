@@ -24,7 +24,6 @@ use Psl\Network;
 use Psl\URL;
 
 use function array_reverse;
-use function Psl\HTTP\Client\Internal\resolve_url;
 
 /**
  * Default HTTP client implementation with connection pooling and middleware support.
@@ -177,7 +176,7 @@ final class Client implements ClientInterface
 
         if ($configuration->baseUrl !== null) {
             try {
-                return resolve_url($request->requestTarget, $configuration->baseUrl);
+                return Internal\resolve_url($request->requestTarget, $configuration->baseUrl);
             } catch (URL\Exception\InvalidURLException $e) {
                 throw Exception\RequestException::forMissingUrl($e);
             }

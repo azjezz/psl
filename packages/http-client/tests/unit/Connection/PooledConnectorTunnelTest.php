@@ -18,8 +18,7 @@ use Psl\HTTP\Message\Request;
 use Psl\IO;
 use Psl\Network;
 use Psl\TCP;
-
-use function Psl\URL\parse;
+use Psl\URL;
 
 final class PooledConnectorTunnelTest extends TestCase
 {
@@ -44,10 +43,10 @@ final class PooledConnectorTunnelTest extends TestCase
             $connector = new PooledConnector();
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
-                proxyConfiguration: new ProxyConfiguration(parse("http://127.0.0.1:{$tunnelPort}")),
+                proxyConfiguration: new ProxyConfiguration(URL\parse("http://127.0.0.1:{$tunnelPort}")),
             );
 
-            $request = new Request(method: 'GET', url: parse('http://target.example.com:8080/'));
+            $request = new Request(method: 'GET', url: URL\parse('http://target.example.com:8080/'));
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
                 $request,
@@ -114,12 +113,12 @@ final class PooledConnectorTunnelTest extends TestCase
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
                 proxyConfiguration: new ProxyConfiguration(
-                    parse("http://127.0.0.1:{$tunnelPort}"),
+                    URL\parse("http://127.0.0.1:{$tunnelPort}"),
                     skipProxyFor: ['127.0.0.1'],
                 ),
             );
 
-            $request = new Request(method: 'GET', url: parse("http://127.0.0.1:{$targetPort}/"));
+            $request = new Request(method: 'GET', url: URL\parse("http://127.0.0.1:{$targetPort}/"));
 
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
@@ -177,12 +176,12 @@ final class PooledConnectorTunnelTest extends TestCase
             $configuration = new ClientConfiguration(
                 protocolVersions: [ProtocolVersion::V11],
                 proxyConfiguration: new ProxyConfiguration(
-                    parse("http://127.0.0.1:{$proxyPort}"),
+                    URL\parse("http://127.0.0.1:{$proxyPort}"),
                     skipProxyFor: ['other.host'],
                 ),
             );
 
-            $request = new Request(method: 'GET', url: parse('http://target.example.com:9090/'));
+            $request = new Request(method: 'GET', url: URL\parse('http://target.example.com:9090/'));
             $connection = $connector->connect(
                 Origin::fromUrl($request->url),
                 $request,
