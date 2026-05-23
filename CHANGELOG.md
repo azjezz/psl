@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.2.1
+
+### security
+
+- fix(h2): validate `content-length` header against received DATA on server connections, preventing HTTP/2 request smuggling on `Psl\H2\ServerConnection` (GHSA-pw9p-jvrm-f7rm)
+
 ## 6.2.0
 
 ### features
