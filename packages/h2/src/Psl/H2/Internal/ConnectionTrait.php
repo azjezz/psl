@@ -310,6 +310,16 @@ trait ConnectionTrait
         }
 
         $cancellation->throwIfCancelled();
+
+        // Flush pending buffered writes before suspending; otherwise frames written
+        // inside a buffered() block never reach the wire and a peer that only sends
+        // WINDOW_UPDATE after seeing our DATA would deadlock.
+        if ($this->writeBuffer !== '') {
+            $data = $this->writeBuffer;
+            $this->writeBuffer = '';
+            $this->handle->writeAll($data, $cancellation);
+        }
+
         $suspension = EventLoop::getSuspension();
 
         $this->windowWaiters[$streamId] ??= [];

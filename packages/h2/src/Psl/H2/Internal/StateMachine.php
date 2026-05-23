@@ -46,6 +46,7 @@ use Psl\HPACK\Exception\ExceptionInterface as HPACKException;
 use Psl\HPACK\Exception\InvalidSizeException;
 use Psl\HPACK\Header;
 
+use function ctype_digit;
 use function hrtime;
 use function max;
 use function pack;
@@ -1085,7 +1086,36 @@ final class StateMachine
                 $stream->state = StreamState::HalfClosedLocal;
             }
 
+            // RFC 9113 §8.1.1: only servers validate content-length on incoming requests.
+            // HEAD responses may declare content-length without sending DATA.
+            if (!$isTrailing && !$this->isClient) {
+                foreach ($headers as $header) {
+                    if ($header->name !== 'content-length') {
+                        continue;
+                    }
+
+                    if ($header->value === '' || !ctype_digit($header->value)) {
+                        throw StreamException::forMalformedContentLength($streamId, $header->value);
+                    }
+
+                    $stream->declaredContentLength = (int) $header->value;
+
+                    break;
+                }
+            }
+
             if ($endStream) {
+                if (
+                    $stream->declaredContentLength !== null
+                    && $stream->declaredContentLength !== $stream->receivedDataLength
+                ) {
+                    throw StreamException::forContentLengthMismatch(
+                        $streamId,
+                        $stream->declaredContentLength,
+                        $stream->receivedDataLength,
+                    );
+                }
+
                 if ($stream->state === StreamState::Open) {
                     $this->streams->markHalfClosed($streamId, StreamState::HalfClosedRemote);
                 } elseif ($stream->state === StreamState::HalfClosedLocal) {
@@ -1142,6 +1172,26 @@ final class StateMachine
             $this->flowController->consumeReceiveWindow($stream, $dataLength);
         } elseif (!$frame->endStream) {
             $this->rateLimiter?->record(RateLimiter::EMPTY_DATA_FRAME);
+        }
+
+        // RFC 9113 §8.1.1: validate received DATA against declared content-length.
+        if ($stream->declaredContentLength !== null) {
+            $stream->receivedDataLength += $dataLength;
+            if ($stream->receivedDataLength > $stream->declaredContentLength) {
+                throw StreamException::forContentLengthMismatch(
+                    $frame->streamId,
+                    $stream->declaredContentLength,
+                    $stream->receivedDataLength,
+                );
+            }
+
+            if ($frame->endStream && $stream->receivedDataLength !== $stream->declaredContentLength) {
+                throw StreamException::forContentLengthMismatch(
+                    $frame->streamId,
+                    $stream->declaredContentLength,
+                    $stream->receivedDataLength,
+                );
+            }
         }
 
         $events = [new DataReceived($frame->streamId, $frame->data, $frame->endStream)];
