@@ -35,6 +35,17 @@ final class StreamEntry
      */
     public bool $receivedHeaders = false;
 
+    /**
+     * Value of the content-length header declared by the peer in the initial
+     * HEADERS block, or null if absent (RFC 9113 §8.1.1).
+     */
+    public null|int $declaredContentLength = null;
+
+    /**
+     * Total bytes received in DATA frames on this stream so far.
+     */
+    public int $receivedDataLength = 0;
+
     public function __construct(
         int $initialSendWindow = DEFAULT_INITIAL_WINDOW_SIZE,
         int $initialReceiveWindow = DEFAULT_INITIAL_WINDOW_SIZE,
