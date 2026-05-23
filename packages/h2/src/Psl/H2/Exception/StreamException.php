@@ -70,4 +70,38 @@ final class StreamException extends RuntimeException
     {
         return new self('Stream ' . $streamId . ' was reset with error code ' . $errorCode . '.');
     }
+
+    /**
+     * Create a stream exception when the total bytes received in DATA frames
+     * do not match the content-length header declared by the peer
+     * (RFC 9113 §8.1.1 and §8.1.2.6).
+     *
+     * @param int $streamId The stream identifier.
+     * @param int $declared The content-length declared in the HEADERS frame.
+     * @param int $actual The actual total bytes received.
+     */
+    public static function forContentLengthMismatch(int $streamId, int $declared, int $actual): self
+    {
+        return new self(
+            'Stream '
+            . $streamId
+            . ' content-length mismatch: declared '
+            . $declared
+            . ' bytes, received '
+            . $actual
+            . ' bytes.',
+        );
+    }
+
+    /**
+     * Create a stream exception when the content-length header contains a
+     * value that is not a non-negative decimal integer (RFC 9110 §8.6).
+     *
+     * @param int $streamId The stream identifier.
+     * @param string $value The malformed content-length value.
+     */
+    public static function forMalformedContentLength(int $streamId, string $value): self
+    {
+        return new self('Stream ' . $streamId . ' has malformed content-length: "' . $value . '".');
+    }
 }
