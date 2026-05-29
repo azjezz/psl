@@ -6,6 +6,26 @@
     padding: 0;
 }
 
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+    background: var(--fg);
+    color: var(--bg);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 0;
+}
+
+#content:focus {
+    outline: none;
+}
+
 :root {
     --fg: #000;
     --bg: #fff;
@@ -96,7 +116,7 @@ a:hover {
     margin-bottom: 1.5rem;
 }
 
-.sidebar-header h1 {
+.sidebar-header .sidebar-brand {
     font-size: 2rem;
     font-weight: 900;
     letter-spacing: -0.04em;
@@ -104,7 +124,12 @@ a:hover {
     margin-bottom: 0.15rem;
 }
 
-.sidebar-header p {
+.sidebar-header .sidebar-brand a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar-header .sidebar-tagline {
     font-size: 0.7rem;
     color: var(--muted);
     text-transform: uppercase;

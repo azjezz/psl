@@ -1,0 +1,22 @@
+{
+    "name": "php-standard-library/documentation",
+    "description": "Documentation site generator for PHP Standard Library",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "~8.4.0 || ~8.5.0",
+        "php-standard-library/php-standard-library": "dev-next",
+        "league/commonmark": "^2.8"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "..",
+            "options": {
+                "versions": {
+                    "php-standard-library/php-standard-library": "dev-next"
+                }
+            }
+        }
+    ]
+}
