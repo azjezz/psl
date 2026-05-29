@@ -153,6 +153,10 @@ jobs:
           if [ -f "${LATEST}/llms.txt" ]; then cp "${LATEST}/llms.txt" llms.txt; fi
           if [ -f "${LATEST}/llms-full.txt" ]; then cp "${LATEST}/llms-full.txt" llms-full.txt; fi
 
+          # Custom domain for GitHub Pages (kept in sync in case gh-pages was ever
+          # rebuilt from scratch and lost the CNAME).
+          echo "php-standard-library.dev" > CNAME
+
           # Ensure Jekyll is disabled
           touch .nojekyll
         env:

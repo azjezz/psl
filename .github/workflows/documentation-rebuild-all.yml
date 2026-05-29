@@ -154,6 +154,10 @@ jobs:
           if [ -f "${LATEST}/llms.txt" ]; then cp "${LATEST}/llms.txt" llms.txt; fi
           if [ -f "${LATEST}/llms-full.txt" ]; then cp "${LATEST}/llms-full.txt" llms-full.txt; fi
 
+          # Custom domain for GitHub Pages. This workflow rebuilds gh-pages from scratch,
+          # so the CNAME must be re-created or the custom domain is dropped.
+          echo "php-standard-library.dev" > CNAME
+
           touch .nojekyll
 
       - name: "commit and force-push gh-pages"
