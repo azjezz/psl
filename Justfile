@@ -43,8 +43,11 @@ coverage:
     php -dmemory_limit=-1 ./vendor/bin/phpunit -c config/phpunit.xml.dist --coverage-clover var/clover.xml
     php -dmemory_limit=-1 ./vendor/bin/php-coveralls -x var/clover.xml -o var/coveralls-upload.json -v
 
-docs:
-    php docs/generate.php
+docs-install:
+    cd docs && composer install
+
+docs: docs-install
+    cd docs && php generate.php
 
 docs-serve: docs
     php -S localhost:8000 -t docs/dist

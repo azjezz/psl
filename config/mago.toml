@@ -3,7 +3,7 @@ php-version = "8.4"
 [source]
 paths = ["packages", "splitter", "examples", "docs"]
 includes = ["vendor/revolt"]
-excludes = ["splitter/vendor", "*/packages/**/vendor/*"]
+excludes = ["splitter/vendor", "docs/vendor", "*/packages/**/vendor/*"]
 
 [formatter]
 null-type-hint = "pipe"
@@ -41,7 +41,10 @@ file-name = { exclude = ["examples", "docs"] }
 no-else-clause = { enabled = false }
 
 [analyzer]
-excludes = ["*/packages/**/tests/*"]
+# docs/generate.php is a build script that depends on league/commonmark, which lives in
+# the isolated docs/vendor (excluded from the source tree). mago cannot resolve those
+# symbols without analyzing the whole third-party tree, so the build script is not analyzed.
+excludes = ["*/packages/**/tests/*", "docs/generate.php"]
 ignore = [
   { code = "possibly-static-access-on-interface", in = "packages/" },
   { code = "unused-statement", in = ["docs"] },

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{TITLE}}</title>
+        <meta name="description" content="{{DESCRIPTION}}">
+        <link rel="canonical" href="{{CANONICAL}}">
+        <meta property="og:title" content="{{TITLE}}">
+        <meta property="og:description" content="{{DESCRIPTION}}">
+        <meta property="og:image" content="https://php-standard-library.dev/assets/banner.png">
+        <meta property="og:url" content="{{CANONICAL}}">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{TITLE}}">
+        <meta name="twitter:description" content="{{DESCRIPTION}}">
+        <meta name="twitter:image" content="https://php-standard-library.dev/assets/banner.png">
+{{HEAD_EXTRA}}
+        <link rel="stylesheet" href="{{REL}}assets/style.css">
+    </head>
+    <body>
+        <a class="skip-link" href="#content">Skip to content</a>
+        <button id="hamburger" aria-label="Menu">&#9776;</button>
+        <div id="overlay"></div>
+        <nav id="sidebar">
+            <div class="sidebar-header">
+            <p class="sidebar-brand"><a href="{{HOME}}">PSL</a></p>
+            <p class="sidebar-tagline">PHP Standard Library</p>
+            <input type="text" id="search" placeholder="Search... ( / )" aria-label="Search components">
+            <select id="version-select" aria-label="Version"></select>
+            <button id="theme-toggle" aria-label="Toggle dark mode">Dark</button>
+            </div>
+            <div id="nav-links">{{NAV}}</div>
+        </nav>
+        <main id="content" tabindex="-1"><article id="rendered">{{BODY}}</article></main>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/monokai-sublime.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/languages/php.min.js"></script>
+        <script>
+            const CURRENT_VERSION={{VERSION}};
+{{INLINE_DATA}}
+        </script>
+        <script src="{{REL}}assets/app.js"></script>
+    </body>
+</html>

@@ -1,0 +1,169 @@
+name: "documentation rebuild all"
+
+# Manually-triggered, idempotent full rebuild: regenerate EVERY buildable version in the
+# current static format and force-push gh-pages. Safe to re-run at any time (e.g. after a
+# template/generator change, or to fold in newly-tagged versions) — each run wipes and
+# rebuilds the whole tree from scratch. The normal "documentation deploy" workflow keeps
+# things current on each push/tag in between rebuilds.
+#
+# For each tag that has docs/content, a worktree is checked out and the CURRENT generator
+# + templates are overlaid onto that tag's own content, so every version renders its own
+# historical docs in the new layout. `next` is built from the checked-out ref.
+
+on:
+  workflow_dispatch:
+    inputs:
+      push:
+        description: "Force-push the rebuilt gh-pages. Set false for a dry run (build + log only, no deploy)."
+        type: boolean
+        default: true
+
+permissions:
+  contents: "write"
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  rebuild:
+    name: "rebuild all versions"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v6"
+        with:
+          fetch-depth: 0
+
+      - name: "installing PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "8.5"
+          ini-values: memory_limit=-1
+          tools: composer:v2
+          extensions: bcmath, mbstring, intl, sodium, json, brotli
+
+      - uses: extractions/setup-just@v3
+
+      - name: "installing dependencies"
+        run: just install
+
+      - name: "installing documentation dependencies"
+        run: cd docs && composer install
+
+      - name: "rebuild every version in the new format"
+        run: |
+          set -euo pipefail
+          REPO="$PWD"
+          DOCS_VENDOR="$REPO/docs/vendor"
+          OUT="$REPO/gh-pages"
+          rm -rf "$OUT"; mkdir -p "$OUT"
+
+          build_into() {
+            # $1 = docs dir to run the generator in, $2 = version label, $3 = dest under gh-pages
+            local docs_dir="$1" version="$2" dest="$3"
+            ( cd "$docs_dir" && rm -rf dist && GITHUB_REF_NAME="$version" php generate.php )
+            mkdir -p "$dest"
+            cp -r "$docs_dir/dist/." "$dest/"
+            echo "  -> $version: $(find "$dest" -name index.html -not -path "$dest/index.html" | wc -l | tr -d ' ') pages"
+          }
+
+          # next: build from the checked-out ref's own docs
+          echo "Building next..."
+          build_into "$REPO/docs" "next" "$OUT/next"
+
+          # tags that actually have docs/content
+          ALL_VERSIONS="next"
+          for tag in $(git tag); do
+            if git ls-tree -r --name-only "$tag" -- docs/content 2>/dev/null | grep -q '\.md$'; then
+              echo "Building $tag..."
+              WT="$(mktemp -d)/wt"
+              git worktree add --detach "$WT" "$tag" >/dev/null
+              # overlay the current generator + templates onto the tag's own content
+              cp "$REPO/docs/generate.php"        "$WT/docs/generate.php"
+              cp "$REPO/docs/resources/page.html"  "$WT/docs/resources/page.html"
+              cp "$REPO/docs/resources/app.js"     "$WT/docs/resources/app.js"
+              cp "$REPO/docs/resources/style.css"  "$WT/docs/resources/style.css"
+              ln -sfn "$DOCS_VENDOR" "$WT/docs/vendor"
+              build_into "$WT/docs" "$tag" "$OUT/$tag"
+              git worktree remove --force "$WT"
+            fi
+          done
+          git worktree prune
+
+          # versions.json (next first, tags descending; latest = highest stable tag)
+          ALL_VERSIONS="$(ls -1 "$OUT" | while read -r v; do [ -d "$OUT/$v" ] && echo "$v"; done)"
+          export ALL_VERSIONS
+          php -r '
+            $versions = array_values(array_unique(array_filter(array_map("trim", explode("\n", getenv("ALL_VERSIONS"))))));
+            $tags = array_values(array_filter($versions, fn($v) => $v !== "next" && !str_contains($v, "-")));
+            usort($tags, fn($a, $b) => version_compare($b, $a));
+            $latest = $tags[0] ?? "next";
+            usort($versions, function ($a, $b) {
+              if ($a === "next") return -1;
+              if ($b === "next") return 1;
+              return version_compare($b, $a);
+            });
+            // Per-version component slugs, so the switcher only deep-links where a target version has the component.
+            $components = [];
+            foreach ($versions as $v) {
+              $dir = "gh-pages/$v";
+              $slugs = [];
+              if (is_dir($dir)) {
+                foreach (scandir($dir) as $e) {
+                  if ($e === "." || $e === ".." || $e === "assets") continue;
+                  if (is_dir("$dir/$e") && is_file("$dir/$e/index.html")) $slugs[] = $e;
+                }
+              }
+              sort($slugs);
+              $components[$v] = $slugs;
+            }
+            file_put_contents("gh-pages/versions.json", json_encode(["latest" => $latest, "versions" => $versions, "components" => $components], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            file_put_contents("gh-pages/.latest", $latest);
+          '
+          LATEST="$(cat "$OUT/.latest")"; rm -f "$OUT/.latest"
+          echo "Latest stable: $LATEST"
+
+          cd "$OUT"
+
+          # Root redirect to the latest stable version
+          cat > index.html <<REDIRECT
+          <!DOCTYPE html>
+          <html>
+          <head><meta http-equiv="refresh" content="0;url=/${LATEST}/"></head>
+          <body>Redirecting to <a href="/${LATEST}/">/${LATEST}/</a></body>
+          </html>
+          REDIRECT
+
+          # robots.txt + root sitemap index
+          cat > robots.txt <<ROBOTS
+          User-agent: *
+          Allow: /
+          Sitemap: https://php-standard-library.dev/sitemap.xml
+          ROBOTS
+
+          BUILD_DATE=$(date -u +%Y-%m-%d)
+          cat > sitemap.xml <<SITEMAP
+          <?xml version="1.0" encoding="UTF-8"?>
+          <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <sitemap><loc>https://php-standard-library.dev/${LATEST}/sitemap.xml</loc><lastmod>${BUILD_DATE}</lastmod></sitemap>
+          </sitemapindex>
+          SITEMAP
+
+          # Expose the latest version's llms.txt / llms-full.txt at the domain root
+          if [ -f "${LATEST}/llms.txt" ]; then cp "${LATEST}/llms.txt" llms.txt; fi
+          if [ -f "${LATEST}/llms-full.txt" ]; then cp "${LATEST}/llms-full.txt" llms-full.txt; fi
+
+          touch .nojekyll
+
+      - name: "commit and force-push gh-pages"
+        if: ${{ inputs.push }}
+        run: |
+          cd gh-pages
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "deploy: rebuild all versions in static format"
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git push origin HEAD:gh-pages --force

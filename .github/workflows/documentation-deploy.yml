@@ -72,11 +72,11 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           IS_TAG="${{ steps.version.outputs.is_tag }}"
 
+          # Replace the version directory with the freshly generated static tree
+          # (front page, one dir per component, per-version assets and sitemap).
+          rm -rf "gh-pages/${VERSION}"
           mkdir -p "gh-pages/${VERSION}"
-          cp docs/dist/index.html "gh-pages/${VERSION}/index.html"
-
-          rm -rf gh-pages/assets
-          cp -r docs/dist/assets gh-pages/assets
+          cp -r docs/dist/. "gh-pages/${VERSION}/"
 
           # Update versions.json
           cd gh-pages
@@ -102,6 +102,19 @@ jobs:
               if ($b === "next") return 1;
               return version_compare($b, $a);
             });
+            // Refresh this version'\''s component slugs (cwd is gh-pages; the version dir was just copied),
+            // so the switcher only deep-links where a target version actually has the component.
+            $components = $m["components"] ?? [];
+            $slugs = [];
+            if (is_dir($version)) {
+              foreach (scandir($version) as $e) {
+                if ($e === "." || $e === ".." || $e === "assets") continue;
+                if (is_dir("$version/$e") && is_file("$version/$e/index.html")) $slugs[] = $e;
+              }
+            }
+            sort($slugs);
+            $components[$version] = $slugs;
+            $m["components"] = $components;
             echo json_encode($m, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
           ')
           echo "$MANIFEST" > versions.json
@@ -118,6 +131,27 @@ jobs:
           <body>Redirecting to <a href="/${LATEST}/">/${LATEST}/</a></body>
           </html>
           REDIRECT
+
+          # robots.txt (only honored at the domain root) pointing at the root sitemap.
+          cat > robots.txt <<ROBOTS
+          User-agent: *
+          Allow: /
+          Sitemap: https://php-standard-library.dev/sitemap.xml
+          ROBOTS
+
+          # Root sitemap index referencing the latest version's per-version sitemap.
+          BUILD_DATE=$(date -u +%Y-%m-%d)
+          cat > sitemap.xml <<SITEMAP
+          <?xml version="1.0" encoding="UTF-8"?>
+          <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <sitemap><loc>https://php-standard-library.dev/${LATEST}/sitemap.xml</loc><lastmod>${BUILD_DATE}</lastmod></sitemap>
+          </sitemapindex>
+          SITEMAP
+
+          # Expose the latest version's llms.txt / llms-full.txt at the domain root,
+          # which is where coding agents look. They use absolute URLs, so the copy stays valid.
+          if [ -f "${LATEST}/llms.txt" ]; then cp "${LATEST}/llms.txt" llms.txt; fi
+          if [ -f "${LATEST}/llms-full.txt" ]; then cp "${LATEST}/llms-full.txt" llms-full.txt; fi
 
           # Ensure Jekyll is disabled
           touch .nojekyll
