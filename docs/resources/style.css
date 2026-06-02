@@ -283,17 +283,26 @@ article h4 {
 }
 
 /* Section headings get a permalink anchor (CommonMark HeadingPermalink) linking to the
-   heading's URL fragment. */
+   heading's URL fragment. The anchor renders a GitHub-style link icon in the left gutter,
+   revealed when the heading is hovered or the anchor is focused. */
 article h2,
 article h3,
 article h4 {
+    position: relative;
     scroll-margin-top: 1rem;
 }
 
 .heading-permalink {
-    margin-left: 0.3em;
-    text-decoration: none;
-    color: var(--muted);
+    position: absolute;
+    left: -1.4em;
+    top: 0;
+    bottom: 0;
+    width: 1em;
+    margin: auto 0;
+    height: 1em;
+    background-color: var(--muted);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M7.775 3.275a.75.75 0 0 0 1.06 1.06l1.25-1.25a2 2 0 1 1 2.83 2.83l-2.5 2.5a2 2 0 0 1-2.83 0 .75.75 0 0 0-1.06 1.06 3.5 3.5 0 0 0 4.95 0l2.5-2.5a3.5 3.5 0 0 0-4.95-4.95l-1.25 1.25Zm-4.69 9.64a2 2 0 0 1 0-2.83l2.5-2.5a2 2 0 0 1 2.83 0 .75.75 0 0 0 1.06-1.06 3.5 3.5 0 0 0-4.95 0l-2.5 2.5a3.5 3.5 0 0 0 4.95 4.95l1.25-1.25a.75.75 0 0 0-1.06-1.06l-1.25 1.25a2 2 0 0 1-2.83 0Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M7.775 3.275a.75.75 0 0 0 1.06 1.06l1.25-1.25a2 2 0 1 1 2.83 2.83l-2.5 2.5a2 2 0 0 1-2.83 0 .75.75 0 0 0-1.06 1.06 3.5 3.5 0 0 0 4.95 0l2.5-2.5a3.5 3.5 0 0 0-4.95-4.95l-1.25 1.25Zm-4.69 9.64a2 2 0 0 1 0-2.83l2.5-2.5a2 2 0 0 1 2.83 0 .75.75 0 0 0 1.06-1.06 3.5 3.5 0 0 0-4.95 0l-2.5 2.5a3.5 3.5 0 0 0 4.95 4.95l1.25-1.25a.75.75 0 0 0-1.06-1.06l-1.25 1.25a2 2 0 0 1-2.83 0Z'/%3E%3C/svg%3E") center / contain no-repeat;
     opacity: 0;
     transition: opacity 0.15s ease;
 }
@@ -303,7 +312,7 @@ article h3:hover .heading-permalink,
 article h4:hover .heading-permalink,
 .heading-permalink:focus-visible {
     opacity: 1;
-    color: var(--fg);
+    background-color: var(--fg);
 }
 
 article p {
