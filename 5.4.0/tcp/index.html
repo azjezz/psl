@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TCP - PSL</title>
+        <meta name="description" content="The TCP component provides a non-blocking API for TCP client and server connections, built on top...">
+        <link rel="canonical" href="https://php-standard-library.dev/5.4.0/tcp/">
+        <meta property="og:title" content="TCP - PSL">
+        <meta property="og:description" content="The TCP component provides a non-blocking API for TCP client and server connections, built on top...">
+        <meta property="og:image" content="https://php-standard-library.dev/assets/banner.png">
+        <meta property="og:url" content="https://php-standard-library.dev/5.4.0/tcp/">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="TCP - PSL">
+        <meta name="twitter:description" content="The TCP component provides a non-blocking API for TCP client and server connections, built on top...">
+        <meta name="twitter:image" content="https://php-standard-library.dev/assets/banner.png">
+        <link rel="alternate" type="text/markdown" href="index.md" title="Markdown source">
+        <link rel="stylesheet" href="../assets/style.css">
+    </head>
+    <body>
+        <a class="skip-link" href="#content">Skip to content</a>
+        <button id="hamburger" aria-label="Menu">&#9776;</button>
+        <div id="overlay"></div>
+        <nav id="sidebar">
+            <div class="sidebar-header">
+            <p class="sidebar-brand"><a href="../">PSL</a></p>
+            <p class="sidebar-tagline">PHP Standard Library</p>
+            <input type="text" id="search" placeholder="Search... ( / )" aria-label="Search components">
+            <select id="version-select" aria-label="Version"></select>
+            <button id="theme-toggle" aria-label="Toggle dark mode">Dark</button>
+            </div>
+            <div id="nav-links"><a class="nav-link" href="../" data-slug="">Home</a><div class="nav-category">Basics</div><a class="nav-link" href="../dict/" data-slug="dict">Dict</a><a class="nav-link" href="../fun/" data-slug="fun">Fun</a><a class="nav-link" href="../iter/" data-slug="iter">Iter</a><a class="nav-link" href="../math/" data-slug="math">Math</a><a class="nav-link" href="../psl/" data-slug="psl">Psl</a><a class="nav-link" href="../str/" data-slug="str">Str</a><a class="nav-link" href="../vec/" data-slug="vec">Vec</a><div class="nav-category">Types &amp; Error Handling</div><a class="nav-link" href="../comparison/" data-slug="comparison">Comparison</a><a class="nav-link" href="../default/" data-slug="default">Default</a><a class="nav-link" href="../either/" data-slug="either">Either</a><a class="nav-link" href="../option/" data-slug="option">Option</a><a class="nav-link" href="../result/" data-slug="result">Result</a><a class="nav-link" href="../type/" data-slug="type">Type</a><div class="nav-category">Async</div><a class="nav-link" href="../async/" data-slug="async">Async</a><a class="nav-link" href="../channel/" data-slug="channel">Channel</a><a class="nav-link" href="../promise/" data-slug="promise">Promise</a><div class="nav-category">Collections</div><a class="nav-link" href="../collection/" data-slug="collection">Collection</a><a class="nav-link" href="../data-structure/" data-slug="data-structure">DataStructure</a><a class="nav-link" href="../graph/" data-slug="graph">Graph</a><a class="nav-link" href="../range/" data-slug="range">Range</a><a class="nav-link" href="../tree/" data-slug="tree">Tree</a><div class="nav-category">Text &amp; Encoding</div><a class="nav-link" href="../binary/" data-slug="binary">Binary</a><a class="nav-link" href="../encoding/" data-slug="encoding">Encoding</a><a class="nav-link" href="../html/" data-slug="html">Html</a><a class="nav-link" href="../json/" data-slug="json">Json</a><a class="nav-link" href="../regex/" data-slug="regex">Regex</a><div class="nav-category">I/O</div><a class="nav-link" href="../file/" data-slug="file">File</a><a class="nav-link" href="../filesystem/" data-slug="filesystem">Filesystem</a><a class="nav-link" href="../io/" data-slug="io">IO</a><a class="nav-link" href="../process/" data-slug="process">Process</a><a class="nav-link" href="../shell/" data-slug="shell">Shell</a><div class="nav-category">Networking</div><a class="nav-link" href="../cidr/" data-slug="cidr">CIDR</a><a class="nav-link" href="../ip/" data-slug="ip">IP</a><a class="nav-link" href="../network/" data-slug="network">Network</a><a class="nav-link" href="../socks/" data-slug="socks">Socks</a><a class="nav-link active" href="../tcp/" data-slug="tcp">TCP</a><a class="nav-link" href="../tls/" data-slug="tls">TLS</a><a class="nav-link" href="../udp/" data-slug="udp">UDP</a><a class="nav-link" href="../unix/" data-slug="unix">Unix</a><div class="nav-category">Terminal</div><a class="nav-link" href="../ansi/" data-slug="ansi">Ansi</a><a class="nav-link" href="../terminal/" data-slug="terminal">Terminal</a><div class="nav-category">Security</div><a class="nav-link" href="../crypto/" data-slug="crypto">Crypto</a><a class="nav-link" href="../hash/" data-slug="hash">Hash</a><a class="nav-link" href="../password/" data-slug="password">Password</a><a class="nav-link" href="../pseudo-random/" data-slug="pseudo-random">PseudoRandom</a><a class="nav-link" href="../random-sequence/" data-slug="random-sequence">RandomSequence</a><a class="nav-link" href="../secure-random/" data-slug="secure-random">SecureRandom</a><div class="nav-category">System</div><a class="nav-link" href="../date-time/" data-slug="date-time">DateTime</a><a class="nav-link" href="../env/" data-slug="env">Env</a><a class="nav-link" href="../locale/" data-slug="locale">Locale</a><a class="nav-link" href="../os/" data-slug="os">OS</a><a class="nav-link" href="../runtime/" data-slug="runtime">Runtime</a><div class="nav-category">Other</div><a class="nav-link" href="../interoperability/" data-slug="interoperability">Interoperability</a><a class="nav-link" href="../observer/" data-slug="observer">Observer</a><a class="nav-link" href="../reflection/" data-slug="reflection">Reflection</a></div>
+        </nav>
+        <main id="content" tabindex="-1"><article id="rendered"><h1>TCP</h1><div class="install-box-wrapper"><div class="install-box">composer require php-standard-library/tcp</div></div>
+<p>The <code>TCP</code> component provides a non-blocking API for TCP client and server connections, built on top of PSL's IO and Network abstractions.</p>
+<h2 id="usage"><a href="#usage" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Usage</h2>
+<pre><code class="language-php">use Psl\Async;
+use Psl\TCP;
+
+$listener = TCP\listen('127.0.0.1');
+
+Async\concurrently([
+    'server' =&gt; static function () use ($listener): void {
+        $connection = $listener-&gt;accept();
+        $request = $connection-&gt;readAll();
+        $connection-&gt;writeAll(&quot;echo: {$request}&quot;);
+        $connection-&gt;close();
+        $listener-&gt;close();
+    },
+    'client' =&gt; static function () use ($listener): void {
+        $address = $listener-&gt;getLocalAddress();
+        $client = TCP\connect($address-&gt;host, $address-&gt;port ?? 0);
+        $client-&gt;writeAll('hello');
+        $client-&gt;shutdown();
+        $response = $client-&gt;readAll();
+        $client-&gt;close();
+    },
+]);
+</code></pre>
+<h2 id="design"><a href="#design" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Design</h2>
+<h3 id="connectorinterface"><a href="#connectorinterface" class="heading-permalink" aria-hidden="true" title="Permalink"></a>ConnectorInterface</h3>
+<p>All TCP connectors implement <code>ConnectorInterface</code>, making them interchangeable and composable. The built-in connectors are:</p>
+<ul>
+<li><strong><code>Connector</code></strong> -- the default connector wrapping <code>TCP\connect()</code>.</li>
+<li><strong><code>RetryConnector</code></strong> -- wraps any connector with exponential backoff retry on failure.</li>
+<li><strong><code>StaticConnector</code></strong> -- redirects all connections to a fixed host and port (useful for testing).</li>
+</ul>
+<h3 id="socketpool"><a href="#socketpool" class="heading-permalink" aria-hidden="true" title="Permalink"></a>SocketPool</h3>
+<p><code>SocketPool</code> reuses idle TCP connections. Checked-in connections stay alive for a configurable idle timeout before being closed.</p>
+<pre><code class="language-php">use Psl\Async;
+use Psl\TCP;
+
+$listener = TCP\listen('127.0.0.1');
+$address = $listener-&gt;getLocalAddress();
+
+Async\concurrently([
+    'server' =&gt; static function () use ($listener): void {
+        $connection = $listener-&gt;accept();
+        // Keep connection open until client is done
+        $connection-&gt;readAll();
+        $connection-&gt;close();
+        $listener-&gt;close();
+    },
+    'client' =&gt; static function () use ($address): void {
+        $pool = new TCP\SocketPool();
+        $stream = $pool-&gt;checkout($address-&gt;host, $address-&gt;port ?? 0);
+        // ... use stream ...
+        $pool-&gt;checkin($stream);
+
+        // Later -- reuses the same connection
+        $stream = $pool-&gt;checkout($address-&gt;host, $address-&gt;port ?? 0);
+        $pool-&gt;clear($stream);
+        $pool-&gt;close();
+    },
+]);
+</code></pre>
+<h3 id="backlog"><a href="#backlog" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Backlog</h3>
+<p><code>TCP\listen()</code> accepts a <code>backlog</code> parameter (default 512) to configure the OS-level queue of pending connections. A larger backlog helps high-connection-rate servers avoid dropped connections.</p>
+<pre><code class="language-php">use Psl\TCP;
+
+// Default backlog of 512
+$listener = TCP\listen('127.0.0.1', 8080);
+
+// High-throughput server with larger backlog
+$listener = TCP\listen('127.0.0.1', 8080, backlog: 4096);
+</code></pre>
+<h3 id="low-level-socket"><a href="#low-level-socket" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Low-Level Socket</h3>
+<p><code>Socket</code> gives you fine-grained control over socket options before connecting or listening. Create a socket, configure it, then consume it:</p>
+<pre><code class="language-php">use Psl\Async;
+use Psl\TCP\Socket;
+
+$socket = Socket::createV4();
+$socket-&gt;setReuseAddress(true);
+$socket-&gt;setReusePort(true);
+$socket-&gt;setNoDelay(true);
+$socket-&gt;bind('127.0.0.1', 0);
+
+$listener = $socket-&gt;listen();
+
+Async\concurrently([
+    'server' =&gt; static function () use ($listener): void {
+        $connection = $listener-&gt;accept();
+        $data = $connection-&gt;readAll();
+        $connection-&gt;writeAll($data);
+        $connection-&gt;close();
+        $listener-&gt;close();
+    },
+    'client' =&gt; static function () use ($listener): void {
+        $address = $listener-&gt;getLocalAddress();
+        $client = \Psl\TCP\connect($address-&gt;host, $address-&gt;port ?? 0);
+        $client-&gt;writeAll('test');
+        $client-&gt;shutdown();
+        $response = $client-&gt;readAll();
+        $client-&gt;close();
+    },
+]);
+</code></pre>
+<h2 id="examples"><a href="#examples" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Examples</h2>
+<h3 id="echo-server"><a href="#echo-server" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Echo Server</h3>
+<pre><code class="language-php">use Psl\Async;
+use Psl\TCP;
+
+$listener = TCP\listen('127.0.0.1');
+
+Async\concurrently([
+    'server' =&gt; static function () use ($listener): void {
+        echo &quot;Listening on {$listener-&gt;getLocalAddress()-&gt;toString()}\n&quot;;
+
+        // Accept one connection then shut down
+        $connection = $listener-&gt;accept();
+        Async\run(static function () use ($connection): void {
+            $data = $connection-&gt;readAll();
+            $connection-&gt;writeAll($data);
+            $connection-&gt;close();
+        })-&gt;await();
+
+        $listener-&gt;close();
+    },
+    'client' =&gt; static function () use ($listener): void {
+        $address = $listener-&gt;getLocalAddress();
+        $client = TCP\connect($address-&gt;host, $address-&gt;port ?? 0);
+        $client-&gt;writeAll('hello from client');
+        $client-&gt;shutdown();
+        $response = $client-&gt;readAll();
+        echo &quot;Got: {$response}\n&quot;;
+        $client-&gt;close();
+    },
+]);
+</code></pre>
+<h3 id="client-with-timeout"><a href="#client-with-timeout" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Client with Timeout</h3>
+<pre><code class="language-php">use Psl\Async;
+use Psl\DateTime\Duration;
+use Psl\TCP;
+
+$listener = TCP\listen('127.0.0.1');
+
+Async\concurrently([
+    'server' =&gt; static function () use ($listener): void {
+        $connection = $listener-&gt;accept();
+        $_request = $connection-&gt;readAll();
+        $connection-&gt;writeAll(&quot;HTTP/1.0 200 OK\r\n\r\nHello&quot;);
+        $connection-&gt;close();
+        $listener-&gt;close();
+    },
+    'client' =&gt; static function () use ($listener): void {
+        $address = $listener-&gt;getLocalAddress();
+        $client = TCP\connect($address-&gt;host, $address-&gt;port ?? 0, timeout: Duration::seconds(5));
+        $client-&gt;writeAll(&quot;GET / HTTP/1.0\r\nHost: localhost\r\n\r\n&quot;);
+        $client-&gt;shutdown();
+        $_response = $client-&gt;readAll();
+        $client-&gt;close();
+    },
+]);
+</code></pre>
+<h3 id="retry-with-backoff"><a href="#retry-with-backoff" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Retry with Backoff</h3>
+<pre><code class="language-php">use Psl\Async;
+use Psl\DateTime\Duration;
+use Psl\TCP;
+
+// Create a retry connector with exponential backoff
+$connector = new TCP\RetryConnector(
+    new TCP\Connector(noDelay: true),
+    maxAttempts: 5,
+    backoff: Duration::milliseconds(500),
+);
+
+// Demonstrate by connecting to a local server
+$listener = TCP\listen('127.0.0.1');
+
+Async\concurrently([
+    'server' =&gt; static function () use ($listener): void {
+        $connection = $listener-&gt;accept();
+        $connection-&gt;writeAll('connected');
+        $connection-&gt;close();
+        $listener-&gt;close();
+    },
+    'client' =&gt; static function () use ($connector, $listener): void {
+        $address = $listener-&gt;getLocalAddress();
+        $stream = $connector-&gt;connect($address-&gt;host, $address-&gt;port ?? 0);
+        $data = $stream-&gt;readAll();
+        $stream-&gt;close();
+    },
+]);
+</code></pre>
+<p>See <a href="https://github.com/php-standard-library/php-standard-library/tree/5.4.0/src/Psl/TCP/">src/Psl/TCP/</a> for the full API.</p>
+</article></main>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/styles/monokai-sublime.min.css">
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/highlight.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11/build/languages/php.min.js"></script>
+        <script>
+            const CURRENT_VERSION="5.4.0";
+
+        </script>
+        <script src="../assets/app.js"></script>
+    </body>
+</html>
