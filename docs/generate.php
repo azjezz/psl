@@ -343,7 +343,11 @@ function make_converter(): MarkdownConverter
         'renderer' => ['soft_break' => "\n"],
         'heading_permalink' => [
             'min_heading_level' => 2, // skip the h1 page title
-            'insert' => 'after',
+            'insert' => 'before', // anchor sits in the left gutter, GitHub-style
+            'id_prefix' => '', // clean fragments like #architecture
+            'fragment_prefix' => '', // keep the href fragment in sync with the id
+            'apply_id_to_heading' => true, // id on the heading so scroll-margin applies
+            'symbol' => '', // no glyph; the link icon is drawn in CSS
         ],
     ]);
     $environment->addExtension(new CommonMarkCoreExtension());
