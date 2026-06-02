@@ -282,6 +282,30 @@ article h4 {
     margin-bottom: 0.4rem;
 }
 
+/* Section headings get a permalink anchor (CommonMark HeadingPermalink) linking to the
+   heading's URL fragment. */
+article h2,
+article h3,
+article h4 {
+    scroll-margin-top: 1rem;
+}
+
+.heading-permalink {
+    margin-left: 0.3em;
+    text-decoration: none;
+    color: var(--muted);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+article h2:hover .heading-permalink,
+article h3:hover .heading-permalink,
+article h4:hover .heading-permalink,
+.heading-permalink:focus-visible {
+    opacity: 1;
+    color: var(--fg);
+}
+
 article p {
     font-size: 0.9rem;
     line-height: 1.7;

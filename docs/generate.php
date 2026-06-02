@@ -7,6 +7,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\Autolink\AutolinkExtension;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
 use League\CommonMark\Extension\Table\TableExtension;
 use League\CommonMark\MarkdownConverter;
 use Psl\Async;
@@ -338,10 +339,17 @@ function extract_description(string $markdown): string
  */
 function make_converter(): MarkdownConverter
 {
-    $environment = new Environment(['renderer' => ['soft_break' => "\n"]]);
+    $environment = new Environment([
+        'renderer' => ['soft_break' => "\n"],
+        'heading_permalink' => [
+            'min_heading_level' => 2, // skip the h1 page title
+            'insert' => 'after',
+        ],
+    ]);
     $environment->addExtension(new CommonMarkCoreExtension());
     $environment->addExtension(new TableExtension());
     $environment->addExtension(new AutolinkExtension());
+    $environment->addExtension(new HeadingPermalinkExtension());
 
     return new MarkdownConverter($environment);
 }
