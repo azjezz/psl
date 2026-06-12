@@ -9,6 +9,6 @@ use Psl\Async;
 /** @var Async\Awaitable<string> $promise */
 $promise = Async\run(static fn() => 'hello world');
 
-$result = $promise->then(fn(string $value) => ['value' => $value], fn(\Throwable $e) => ['error' => $e->getMessage()]);
+$result = $promise->then(fn(string $value) => ['value' => $value], fn(Throwable $e) => ['error' => $e->getMessage()]);
 
 $result->await(); // ['value' => 'hello world']

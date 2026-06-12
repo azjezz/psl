@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\DateTime;
 use Psl\IO;
 
-$native = new \DateTimeImmutable('2025-03-15 12:00:00', new \DateTimeZone('UTC'));
+$native = new DateTimeImmutable('2025-03-15 12:00:00', new DateTimeZone('UTC'));
 $dt = DateTime\DateTime::fromStdlib($native);
 $back = $dt->toStdlib(); // DateTimeImmutable
 

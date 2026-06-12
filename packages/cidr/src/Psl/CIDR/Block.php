@@ -75,7 +75,11 @@ final readonly class Block
             );
         }
 
-        // Build the bitmask
+        /**
+         * Build the bitmask
+         *
+         * @var non-negative-int $fullBytes
+         */
         $fullBytes = (int) ($prefix / 8);
         $remainingBits = $prefix % 8;
 

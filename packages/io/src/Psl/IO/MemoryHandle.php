@@ -144,7 +144,9 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
         if ($this->offset >= $length) {
             // Fast-path: appending at or past end of buffer
             if ($this->offset > $length) {
-                $this->buffer .= str_repeat("\0", $this->offset - $length);
+                /** @var non-negative-int $times */
+                $times = $this->offset - $length;
+                $this->buffer .= str_repeat("\0", $times);
             }
 
             $this->buffer .= $bytes;

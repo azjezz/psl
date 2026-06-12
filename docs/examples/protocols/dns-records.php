@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\DNS;
 use Psl\DNS\Record;
+use Psl\IP\Address;
 
 $resolver = new DNS\SystemResolver();
 
@@ -29,7 +30,7 @@ foreach ($mx->getAnswerRecords(Record\MXRecord::class) as $record) {
 }
 
 // Reverse lookup
-$ptr = $resolver->reverseQuery(\Psl\IP\Address::parse('8.8.8.8'));
+$ptr = $resolver->reverseQuery(Address::parse('8.8.8.8'));
 foreach ($ptr->getAnswerRecords(Record\PTRRecord::class) as $record) {
     $record->target; // "dns.google"
 }

@@ -9,7 +9,7 @@ use Psl\Async;
 /** @var Async\Awaitable<string> $promise */
 $promise = Async\run(static fn() => 'hello world');
 
-$result = $promise->map(fn(string $value) => ['value' => $value])->catch(fn(\Throwable $e) => [
+$result = $promise->map(fn(string $value) => ['value' => $value])->catch(fn(Throwable $e) => [
     'error' => $e->getMessage(),
 ]);
 
