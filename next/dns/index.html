@@ -102,6 +102,7 @@ $racing = new DNS\RacingResolver([
 <p>Over 20 DNS record types are supported. Responses provide typed access via <code>getAnswerRecords()</code> and <code>getFirstAnswerRecord()</code>.</p>
 <pre><code class="language-php">use Psl\DNS;
 use Psl\DNS\Record;
+use Psl\IP\Address;
 
 $resolver = new DNS\SystemResolver();
 
@@ -125,7 +126,7 @@ foreach ($mx-&gt;getAnswerRecords(Record\MXRecord::class) as $record) {
 }
 
 // Reverse lookup
-$ptr = $resolver-&gt;reverseQuery(\Psl\IP\Address::parse('8.8.8.8'));
+$ptr = $resolver-&gt;reverseQuery(Address::parse('8.8.8.8'));
 foreach ($ptr-&gt;getAnswerRecords(Record\PTRRecord::class) as $record) {
     $record-&gt;target; // &quot;dns.google&quot;
 }

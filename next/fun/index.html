@@ -107,8 +107,8 @@ $fn(42); // 42
 $handler = Fun\rethrow();
 
 try {
-    $handler(new \RuntimeException('boom'));
-} catch (\RuntimeException $e) {
+    $handler(new RuntimeException('boom'));
+} catch (RuntimeException $e) {
     echo $e-&gt;getMessage(); // 'boom'
 }
 </code></pre>

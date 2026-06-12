@@ -78,7 +78,7 @@ $safe-&gt;await(); // 'default response'
 /** @var Async\Awaitable&lt;string&gt; $promise */
 $promise = Async\run(static fn() =&gt; 'hello world');
 
-$result = $promise-&gt;then(fn(string $value) =&gt; ['value' =&gt; $value], fn(\Throwable $e) =&gt; ['error' =&gt; $e-&gt;getMessage()]);
+$result = $promise-&gt;then(fn(string $value) =&gt; ['value' =&gt; $value], fn(Throwable $e) =&gt; ['error' =&gt; $e-&gt;getMessage()]);
 
 $result-&gt;await(); // ['value' =&gt; 'hello world']
 </code></pre>
@@ -88,7 +88,7 @@ $result-&gt;await(); // ['value' =&gt; 'hello world']
 /** @var Async\Awaitable&lt;string&gt; $promise */
 $promise = Async\run(static fn() =&gt; 'hello world');
 
-$result = $promise-&gt;map(fn(string $value) =&gt; ['value' =&gt; $value])-&gt;catch(fn(\Throwable $e) =&gt; [
+$result = $promise-&gt;map(fn(string $value) =&gt; ['value' =&gt; $value])-&gt;catch(fn(Throwable $e) =&gt; [
     'error' =&gt; $e-&gt;getMessage(),
 ]);
 
@@ -127,7 +127,7 @@ $processed = $promise
         ])-&gt;coerce($data),
     )
     -&gt;map(fn(array $valid) =&gt; ['project' =&gt; $valid['name'], 'v' =&gt; $valid['version']])
-    -&gt;catch(fn(\Throwable $e) =&gt; ['error' =&gt; $e-&gt;getMessage()])
+    -&gt;catch(fn(Throwable $e) =&gt; ['error' =&gt; $e-&gt;getMessage()])
     -&gt;always(fn() =&gt; IO\write_error_line('pipeline complete'));
 
 $processed-&gt;await();

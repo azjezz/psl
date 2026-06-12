@@ -60,7 +60,7 @@ use Psl\Async;
 /** @var Async\Awaitable<string> $promise */
 $promise = Async\run(static fn() => 'hello world');
 
-$result = $promise->then(fn(string $value) => ['value' => $value], fn(\Throwable $e) => ['error' => $e->getMessage()]);
+$result = $promise->then(fn(string $value) => ['value' => $value], fn(Throwable $e) => ['error' => $e->getMessage()]);
 
 $result->await(); // ['value' => 'hello world']
 ```
@@ -73,7 +73,7 @@ use Psl\Async;
 /** @var Async\Awaitable<string> $promise */
 $promise = Async\run(static fn() => 'hello world');
 
-$result = $promise->map(fn(string $value) => ['value' => $value])->catch(fn(\Throwable $e) => [
+$result = $promise->map(fn(string $value) => ['value' => $value])->catch(fn(Throwable $e) => [
     'error' => $e->getMessage(),
 ]);
 
@@ -120,7 +120,7 @@ $processed = $promise
         ])->coerce($data),
     )
     ->map(fn(array $valid) => ['project' => $valid['name'], 'v' => $valid['version']])
-    ->catch(fn(\Throwable $e) => ['error' => $e->getMessage()])
+    ->catch(fn(Throwable $e) => ['error' => $e->getMessage()])
     ->always(fn() => IO\write_error_line('pipeline complete'));
 
 $processed->await();

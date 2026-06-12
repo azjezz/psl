@@ -102,8 +102,8 @@ use Psl\Fun;
 $handler = Fun\rethrow();
 
 try {
-    $handler(new \RuntimeException('boom'));
-} catch (\RuntimeException $e) {
+    $handler(new RuntimeException('boom'));
+} catch (RuntimeException $e) {
     echo $e->getMessage(); // 'boom'
 }
 ```

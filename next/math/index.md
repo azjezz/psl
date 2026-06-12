@@ -90,7 +90,7 @@ Math\exp(1.0); // ~E (e^1)
 // Throws on invalid input instead of returning -INF or NAN
 try {
     Math\log(-1.0);
-} catch (\Psl\Math\Exception\InvalidArgumentException $e) {
+} catch (Math\Exception\InvalidArgumentException $e) {
     echo $e->getMessage() . "\n";
 }
 ```

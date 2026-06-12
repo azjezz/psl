@@ -327,7 +327,7 @@ IO\write_line('Same time: %s', $utc->atTheSameTime($la) ? 'yes' : 'no');
 use Psl\DateTime;
 use Psl\IO;
 
-$native = new \DateTimeImmutable('2025-03-15 12:00:00', new \DateTimeZone('UTC'));
+$native = new DateTimeImmutable('2025-03-15 12:00:00', new DateTimeZone('UTC'));
 $dt = DateTime\DateTime::fromStdlib($native);
 $back = $dt->toStdlib(); // DateTimeImmutable
 
