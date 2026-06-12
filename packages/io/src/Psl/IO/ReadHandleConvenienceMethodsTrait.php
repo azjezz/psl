@@ -42,7 +42,6 @@ trait ReadHandleConvenienceMethodsTrait
         $data = '';
 
         do {
-            /** @var positive-int|null $chunkSize */
             $chunkSize = $toRead;
             $chunk = $this->read($chunkSize, $cancellation);
             $data .= $chunk;

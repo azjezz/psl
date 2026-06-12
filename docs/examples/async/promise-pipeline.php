@@ -21,7 +21,7 @@ $processed = $promise
         ])->coerce($data),
     )
     ->map(fn(array $valid) => ['project' => $valid['name'], 'v' => $valid['version']])
-    ->catch(fn(\Throwable $e) => ['error' => $e->getMessage()])
+    ->catch(fn(Throwable $e) => ['error' => $e->getMessage()])
     ->always(fn() => IO\write_error_line('pipeline complete'));
 
 $processed->await();

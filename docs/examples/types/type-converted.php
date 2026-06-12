@@ -13,7 +13,7 @@ $dateTimeType = Type\converted(
     static function (string $value): DateTimeImmutable {
         $date = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $value);
         if (!$date) {
-            throw new \RuntimeException('Invalid date format');
+            throw new RuntimeException('Invalid date format');
         }
 
         return $date;

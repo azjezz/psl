@@ -9,6 +9,7 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 use ReflectionClass;
+use ReflectionClassConstant;
 
 use function is_string;
 
@@ -49,6 +50,7 @@ final readonly class ProtectedConstantNameOfType extends Type
             return false;
         }
 
+        /** @var false|ReflectionClassConstant $constant */
         $constant = $reflection->getReflectionConstant($value);
         return $constant !== false && $constant->isProtected();
     }
@@ -70,6 +72,7 @@ final readonly class ProtectedConstantNameOfType extends Type
             throw CoercionException::withValue($value, $this->toString());
         }
 
+        /** @var false|ReflectionClassConstant $constant */
         $constant = $reflection->getReflectionConstant($value);
         if ($constant === false || !$constant->isProtected()) {
             throw CoercionException::withValue($value, $this->toString());
@@ -97,6 +100,7 @@ final readonly class ProtectedConstantNameOfType extends Type
             throw AssertException::withValue($value, $this->toString());
         }
 
+        /** @var false|ReflectionClassConstant $constant */
         $constant = $reflection->getReflectionConstant($value);
         if ($constant === false || !$constant->isProtected()) {
             throw AssertException::withValue($value, $this->toString());
