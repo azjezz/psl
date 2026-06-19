@@ -16,13 +16,9 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template T
- *
- * @extends Type\Type<Collection\MutableVectorInterface<T>>
- *
  * @internal
  */
-final readonly class MutableVectorType extends Type\Type
+final readonly class MutableVectorType<T = mixed> extends Type\Type<Collection\MutableVectorInterface<T>>
 {
     /**
      * @psalm-mutation-free

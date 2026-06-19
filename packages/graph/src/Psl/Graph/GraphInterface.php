@@ -7,14 +7,11 @@ namespace Psl\Graph;
 /**
  * Common interface for graph implementations.
  *
- * @template TNode
- * @template TWeight
- *
  * @inheritors DirectedGraph|UndirectedGraph
  *
  * @api
  */
-interface GraphInterface
+interface GraphInterface<TNode = mixed, TWeight = mixed>
 {
     /**
      * Returns all nodes in the graph.

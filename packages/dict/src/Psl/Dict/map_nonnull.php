@@ -21,10 +21,6 @@ use Closure;
  *      Dict\map_nonnull([1, 2, 3], fn($v) => $v > 1 ? $v * 2 : null);
  *      => Dict(1 => 4, 2 => 6)
  *
- * @template Tk of array-key
- * @template Tv
- * @template T
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): (T|null)) $function
  *
@@ -32,7 +28,7 @@ use Closure;
  *
  * @api
  */
-function map_nonnull(iterable $iterable, Closure $function): array
+function map_nonnull<Tk : int|string = int|string, Tv = mixed, T = mixed>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

@@ -8,14 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends AccessibleCollectionInterface<Tk, Tv>
- *
  * @api
  */
-interface MapInterface extends AccessibleCollectionInterface
+interface MapInterface<Tk : int|string = int|string, Tv = mixed> extends AccessibleCollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `VectorInterface` containing the values of the current
@@ -87,15 +82,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from the current `MapInterface` to the
      * returned `MapInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                              `MapInterface` values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
      *                              operation is applied.
      */
-    public function map(Closure $fn): MapInterface;
+    public function map<Tu = mixed>(Closure $fn): MapInterface;
 
     /**
      * Returns a `MapInterface` after an operation has been applied to each key and
@@ -108,15 +101,13 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from this `MapInterface` to the returned
      * `MapInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `MapInterface` keys and values.
      *
      * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
      *                              operation on the current `MapInterface`'s keys and values is applied.
      */
-    public function mapWithKey(Closure $fn): MapInterface;
+    public function mapWithKey<Tu = mixed>(Closure $fn): MapInterface;
 
     /**
      * Returns the first value in the current `MapInterface`.
@@ -186,8 +177,6 @@ interface MapInterface extends AccessibleCollectionInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MapInterface`.
      *
      * @return MapInterface<Tk, array{0: Tv, 1: Tu}> The `MapInterface` that combines the values of the current
@@ -196,7 +185,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MapInterface;
+    public function zip<Tu = mixed>(array $elements): MapInterface;
 
     /**
      * Returns a `MapInterface` containing the first `n` values of the current

@@ -19,8 +19,6 @@ use function array_map;
  *          ],
  *      ])
  *
- * @template T
- *
  * @param array{
  *   value: T,
  *   children?: list<array{
@@ -44,7 +42,7 @@ use function array_map;
  *
  * @api
  */
-function from_array(array $array): TreeNode
+function from_array<T = mixed>(array $array): TreeNode<T>
 {
     /**
      * @var list<array{

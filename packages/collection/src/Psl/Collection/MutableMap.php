@@ -27,14 +27,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @implements MutableMapInterface<Tk, Tv>
- *
  * @api
  */
-final class MutableMap implements MutableMapInterface
+final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements MutableMapInterface<Tk, Tv>
 {
     /**
      * @var array<Tk, Tv> $elements
@@ -65,29 +60,23 @@ final class MutableMap implements MutableMapInterface
     }
 
     /**
-     * @template Tsk of array-key
-     * @template Tsv
-     *
      * @param array<Tsk, Tsv> $elements
      *
      * @return MutableMap<Tsk, Tsv>
      *
      * @pure
      */
-    public static function fromArray(array $elements): MutableMap
+    public static function fromArray<Tsk : int|string = int|string, Tsv = mixed>(array $elements): MutableMap<Tsk, Tsv>
     {
         return new self($elements);
     }
 
     /**
-     * @template Tsk of array-key
-     * @template Tsv
-     *
      * @param array<Tsk, Tsv> $items
      *
      * @return MutableMap<Tsk, Tsv>
      */
-    public static function fromItems(iterable $items): MutableMap
+    public static function fromItems<Tsk : int|string = int|string, Tsv = mixed>(iterable $items): MutableMap<Tsk, Tsv>
     {
         return self::fromArray(iterator_to_array($items));
     }
@@ -391,8 +380,6 @@ final class MutableMap implements MutableMapInterface
      * The keys will remain unchanged from the current `MutableMap` to the
      * returned `MutableMap`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                              `MutableMap` values.
      *
@@ -400,7 +387,7 @@ final class MutableMap implements MutableMapInterface
      *                            operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableMap
+    public function map<Tu = mixed>(Closure $fn): MutableMap
     {
         return new MutableMap(array_map($fn, $this->elements));
     }
@@ -416,8 +403,6 @@ final class MutableMap implements MutableMapInterface
      * The keys will remain unchanged from this `MutableMap` to the returned
      * `MutableMap`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `MutableMap` keys and values.
      *
@@ -425,7 +410,7 @@ final class MutableMap implements MutableMapInterface
      *                            operation on the current `MutableMap`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableMap
+    public function mapWithKey<Tu = mixed>(Closure $fn): MutableMap
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -444,8 +429,6 @@ final class MutableMap implements MutableMapInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the
      *                                       elements of this `MutableMap`.
      *
@@ -455,7 +438,7 @@ final class MutableMap implements MutableMapInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableMap
+    public function zip<Tu = mixed>(array $elements): MutableMap
     {
         $elements = array_values($elements);
         $count = count($elements);

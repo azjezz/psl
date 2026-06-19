@@ -7,11 +7,9 @@ namespace Psl\Type\Internal;
 use Override;
 
 /**
- * @extends UnionType<string|bool, int|float>
- *
  * @internal
  */
-final readonly class ScalarType extends UnionType
+final readonly class ScalarType extends UnionType<string|bool, int|float>
 {
     /**
      * @psalm-mutation-free

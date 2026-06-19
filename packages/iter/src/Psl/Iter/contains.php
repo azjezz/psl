@@ -11,14 +11,12 @@ use function is_array;
  * Returns true if the given iterable contains the value. Strict equality is
  * used.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  * @param T $value
  *
  * @api
  */
-function contains(iterable $iterable, mixed $value): bool
+function contains<T = mixed>(iterable $iterable, T $value): bool
 {
     if (is_array($iterable)) {
         return in_array($value, $iterable, true);

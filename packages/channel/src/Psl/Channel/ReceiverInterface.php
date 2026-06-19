@@ -9,11 +9,9 @@ use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 
 /**
- * @template T
- *
  * @api
  */
-interface ReceiverInterface extends ChannelInterface
+interface ReceiverInterface<T = mixed> extends ChannelInterface
 {
     /**
      * Receives a message from the channel.

@@ -16,14 +16,11 @@ use Revolt\EventLoop\Suspension;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template Tk
- * @template Tv
- *
  * @internal
  *
  * @codeCoverageIgnore
  */
-final class AwaitableIteratorQueue
+final class AwaitableIteratorQueue<Tk = mixed, Tv = mixed>
 {
     /**
      * @var array<int, array{0: Tk, 1: Awaitable<Tv>}>

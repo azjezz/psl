@@ -9,15 +9,13 @@ use Closure;
 /**
  * Returns a closure that can be used for lazy evaluation.
  *
- * @template T
- *
  * @param (Closure(): T) $initializer
  *
  * @return (Closure(): T)
  *
  * @api
  */
-function lazy(Closure $initializer): Closure
+function lazy<T = mixed>(Closure $initializer): Closure
 {
     $evaluator = new Internal\LazyEvaluator($initializer);
 

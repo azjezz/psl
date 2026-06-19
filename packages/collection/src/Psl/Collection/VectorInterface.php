@@ -8,13 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template T
- *
- * @extends AccessibleCollectionInterface<int<0, max>, T>
- *
  * @api
  */
-interface VectorInterface extends AccessibleCollectionInterface
+interface VectorInterface<T = mixed> extends AccessibleCollectionInterface<int, T>
 {
     /**
      * Returns the value at the specified key in the current vector.
@@ -130,15 +126,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from the current `VectorInterface` to the
      * returned `VectorInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `VectorInterface` values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing key/value pairs after a user-specified
      *                             operation is applied.
      */
-    public function map(Closure $fn): VectorInterface;
+    public function map<Tu = mixed>(Closure $fn): VectorInterface;
 
     /**
      * Returns a `VectorInterface` after an operation has been applied to each key and
@@ -151,15 +145,13 @@ interface VectorInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from this `VectorInterface` to the returned
      * `VectorInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `VectorInterface` keys and values.
      *
      * @return VectorInterface<Tu> A `VectorInterface` containing the values after a user-specified
      *                             operation on the current `VectorInterface`'s keys and values is applied.
      */
-    public function mapWithKey(Closure $fn): VectorInterface;
+    public function mapWithKey<Tu = mixed>(Closure $fn): VectorInterface;
 
     /**
      * Returns the first value in the current `VectorInterface`.
@@ -229,8 +221,6 @@ interface VectorInterface extends AccessibleCollectionInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `VectorInterface`.
      *
      * @return VectorInterface<array{0: T, 1: Tu}> The `VectorInterface` that combines the values of
@@ -239,7 +229,7 @@ interface VectorInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): VectorInterface;
+    public function zip<Tu = mixed>(array $elements): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the first `n` values of the current

@@ -17,8 +17,6 @@ use Closure;
  *      )
  *      => true
  *
- * @template T
- *
  * @param NodeInterface<T>   $node
  * @param (Closure(T): bool) $predicate
  *
@@ -26,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function any(NodeInterface $node, Closure $predicate): bool
+function any<T = mixed>(NodeInterface<T> $node, Closure $predicate): bool
 {
     if ($predicate($node->getValue())) {
         return true;

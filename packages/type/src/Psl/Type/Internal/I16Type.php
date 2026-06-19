@@ -12,11 +12,9 @@ use Psl\Type\Exception\CoercionException;
 use function is_int;
 
 /**
- * @extends Type\Type<int<-32768, 32767>>
- *
  * @internal
  */
-final readonly class I16Type extends Type\Type
+final readonly class I16Type extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int<-32768, 32767> $value

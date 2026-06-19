@@ -27,10 +27,6 @@ use Closure;
  *         24 => ['id' => 24, 'name' => 'bar']
  *     )
  *
- * @template Tk1
- * @template Tk2 of array-key
- * @template Tv
- *
  * @param iterable<Tk1, Tv> $iterable Iterable to reindex
  * @param (Closure(Tv): Tk2) $function
  *
@@ -38,7 +34,7 @@ use Closure;
  *
  * @api
  */
-function reindex(iterable $iterable, Closure $function): array
+function reindex<Tk1 = mixed, Tk2 : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $value) {

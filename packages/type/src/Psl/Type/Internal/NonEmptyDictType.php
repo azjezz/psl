@@ -15,14 +15,11 @@ use function is_iterable;
 use function sprintf;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
  * @extends Type\Type<non-empty-array<Tk, Tv>>
  *
  * @internal
  */
-final readonly class NonEmptyDictType extends Type\Type
+final readonly class NonEmptyDictType<Tk : int|string = int|string, Tv = mixed> extends Type\Type
 {
     /**
      * @psalm-mutation-free

@@ -13,14 +13,9 @@ use function sprintf;
 use function str_contains;
 
 /**
- * @template Tl
- * @template Tr
- *
- * @extends Type\Type<Tl|Tr>
- *
  * @internal
  */
-readonly class UnionType extends Type\Type
+readonly class UnionType<Tl = mixed, Tr = mixed> extends Type\Type<Tl|Tr>
 {
     /**
      * @psalm-mutation-free

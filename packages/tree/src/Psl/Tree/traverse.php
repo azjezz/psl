@@ -51,9 +51,6 @@ use function array_map;
  *          ]
  *      )
  *
- * @template TValue
- * @template TResult
- *
  * @param NodeInterface<TValue> $tree
  * @param (Closure(TValue, (Closure(): list<TResult>)): TResult) $transform
  *
@@ -63,7 +60,7 @@ use function array_map;
  *
  * @api
  */
-function traverse(NodeInterface $tree, Closure $transform): mixed
+function traverse<TValue = mixed, TResult = mixed>(NodeInterface<TValue> $tree, Closure $transform): TResult
 {
     $value = $tree->getValue();
 

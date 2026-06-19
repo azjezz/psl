@@ -8,11 +8,9 @@ use Closure;
 use Throwable;
 
 /**
- * @template-covariant T
- *
  * @api
  */
-interface PromiseInterface
+interface PromiseInterface<T = mixed>
 {
     /**
      * Transforms a promise's value by applying a function to the promise's fulfillment
@@ -26,14 +24,12 @@ interface PromiseInterface
      * $promise->map($success)->catch($failure);
      * ```
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      * @param (Closure(Throwable): Ts) $failure
      *
      * @return PromiseInterface<Ts>
      */
-    public function then(Closure $success, Closure $failure): PromiseInterface;
+    public function then<Ts = mixed>(Closure $success, Closure $failure): PromiseInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is fulfilled.
@@ -41,13 +37,11 @@ interface PromiseInterface
      * The returned promise is resolved with the return value of the callback,
      * or is rejected with a throwable thrown from the callback.
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      *
      * @return PromiseInterface<Ts>
      */
-    public function map(Closure $success): PromiseInterface;
+    public function map<Ts = mixed>(Closure $success): PromiseInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is rejected.
@@ -55,13 +49,11 @@ interface PromiseInterface
      * The returned promise is resolved with the return value of the callback,
      * or is rejected with a throwable thrown from the callback.
      *
-     * @template Ts
-     *
      * @param (Closure(Throwable): Ts) $failure
      *
      * @return PromiseInterface<T|Ts>
      */
-    public function catch(Closure $failure): PromiseInterface;
+    public function catch<Ts = mixed>(Closure $failure): PromiseInterface<T|Ts>;
 
     /**
      * Attaches a callback that is always invoked when the promise is resolved.

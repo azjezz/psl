@@ -17,19 +17,14 @@ use function sprintf;
 /**
  * @psalm-immutable
  *
- * @implements Interoperability\ToStdlib<DateTimeImmutable>
- * @implements Interoperability\FromStdlib<DateTimeImmutable>
- * @implements Interoperability\ToIntl<IntlCalendar>
- * @implements Interoperability\FromIntl<IntlCalendar>
- *
  * @api
  */
 final readonly class DateTime implements
     DateTimeInterface,
-    Interoperability\ToStdlib,
-    Interoperability\FromStdlib,
-    Interoperability\ToIntl,
-    Interoperability\FromIntl
+    Interoperability\ToStdlib<DateTimeImmutable>,
+    Interoperability\FromStdlib<DateTimeImmutable>,
+    Interoperability\ToIntl<IntlCalendar>,
+    Interoperability\FromIntl<IntlCalendar>
 {
     use DateTimeConvenienceMethodsTrait;
 

@@ -20,8 +20,6 @@ namespace Psl\EitherOrBoth;
 /**
  * Create a {@see Left} variant of {@see EitherOrBoth}.
  *
- * @template TLeft
- *
  * @param TLeft $value
  *
  * @return Left<TLeft>
@@ -30,15 +28,13 @@ namespace Psl\EitherOrBoth;
  *
  * @api
  */
-function left(mixed $value): Left
+function left<TLeft = mixed>(TLeft $value): Left<TLeft>
 {
     return new Left($value);
 }
 
 /**
  * Create a {@see Right} variant of {@see EitherOrBoth}.
- *
- * @template TRight
  *
  * @param TRight $value
  *
@@ -48,16 +44,13 @@ function left(mixed $value): Left
  *
  * @api
  */
-function right(mixed $value): Right
+function right<TRight = mixed>(TRight $value): Right<TRight>
 {
     return new Right($value);
 }
 
 /**
  * Create a {@see Both} variant of {@see EitherOrBoth}.
- *
- * @template TLeft
- * @template TRight
  *
  * @param TLeft  $left
  * @param TRight $right
@@ -68,7 +61,7 @@ function right(mixed $value): Right
  *
  * @api
  */
-function both(mixed $left, mixed $right): Both
+function both<TLeft = mixed, TRight = mixed>(TLeft $left, TRight $right): Both<TLeft, TRight>
 {
     return new Both($left, $right);
 }

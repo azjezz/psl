@@ -24,13 +24,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @template T of array-key
- *
- * @implements SetInterface<T>
- *
  * @api
  */
-final readonly class Set implements SetInterface
+final readonly class Set<T : int|string = int|string> implements SetInterface<T>
 {
     /**
      * @var array<T, T> $elements
@@ -70,15 +66,13 @@ final readonly class Set implements SetInterface
     /**
      * Create a set from the given array, using the values of the array as the set values.
      *
-     * @template Ts of array-key
-     *
      * @param array<array-key, Ts> $elements
      *
      * @return Set<Ts>
      *
      * @pure
      */
-    public static function fromArray(array $elements): Set
+    public static function fromArray<Ts : int|string = int|string>(array $elements): Set<Ts>
     {
         return new self($elements);
     }
@@ -86,13 +80,11 @@ final readonly class Set implements SetInterface
     /**
      * Create a set from the given items, using the keys of the array as the set values.
      *
-     * @template Ts of array-key
-     *
      * @param iterable<array-key, Ts> $items
      *
      * @return Set<Ts>
      */
-    public static function fromItems(iterable $items): Set
+    public static function fromItems<Ts : int|string = int|string>(iterable $items): Set<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -102,15 +94,13 @@ final readonly class Set implements SetInterface
     /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
-     * @template Ts of array-key
-     *
      * @param array<Ts, mixed> $elements
      *
      * @return Set<Ts>
      *
      * @pure
      */
-    public static function fromArrayKeys(array $elements): Set
+    public static function fromArrayKeys<Ts : int|string = int|string>(array $elements): Set<Ts>
     {
         /** @var array<Ts, Ts> $set */
         $set = [];
@@ -424,8 +414,6 @@ final readonly class Set implements SetInterface
      * Every value in the current Map is affected by a call to `map()`, unlike
      * `filter()` where only values that meet a certain criteria are affected.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `Set` values.
      *
@@ -433,7 +421,7 @@ final readonly class Set implements SetInterface
      *                 operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): Set
+    public function map<Tu : int|string = int|string>(Closure $fn): Set
     {
         return new Set(array_map($fn, $this->elements));
     }
@@ -448,14 +436,12 @@ final readonly class Set implements SetInterface
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
      *
      * @return Set<Tu>
      */
     #[Override]
-    public function mapWithKey(Closure $fn): Set
+    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): Set<Tu>
     {
         return $this->map(
             /**
@@ -468,8 +454,6 @@ final readonly class Set implements SetInterface
     /**
      * Always throws an exception since `Set` can only contain array-key values.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `SetInterface`.
      *
      * @psalm-mutation-free
@@ -477,7 +461,7 @@ final readonly class Set implements SetInterface
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never
+    public function zip<Tu = mixed>(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a Set.');
     }

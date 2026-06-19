@@ -7,8 +7,6 @@ namespace Psl\Async;
 /**
  * Awaits the given awaitable.
  *
- * @template T
- *
  * @param Awaitable<T> $awaitable
  *
  * @return T
@@ -17,7 +15,7 @@ namespace Psl\Async;
  *
  * @api
  */
-function await(Awaitable $awaitable): mixed
+function await<T = mixed>(Awaitable<T> $awaitable): T
 {
     return $awaitable->await();
 }

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Psl\Comparison;
 
 /**
- * @template T
- *
  * @param T $a
  * @param T $b
  *
@@ -18,7 +16,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function compare(mixed $a, mixed $b): Order
+function compare<T = mixed>(T $a, T $b): Order
 {
     if ($a instanceof Comparable) {
         return $a->compare($b);

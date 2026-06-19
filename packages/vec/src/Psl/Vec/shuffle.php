@@ -17,15 +17,13 @@ use function shuffle as php_shuffle;
  *      Vec\shuffle(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Vec(2, 3, 1)
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @return list<T> the shuffled items as a list.
  *
  * @api
  */
-function shuffle(iterable $iterable): array
+function shuffle<T = mixed>(iterable $iterable): array
 {
     $array = namespace\values($iterable);
 

@@ -43,8 +43,6 @@ interface StoreInterface
      * Per-key atomicity ensures only one fiber computes the value for a given
      * key at a time - other fibers requesting the same key wait for the result.
      *
-     * @template T
-     *
      * @param non-empty-string $key
      * @param (Closure(): T) $computer
      * @param null|Duration $ttl Time to live. Null means no expiration.
@@ -53,15 +51,13 @@ interface StoreInterface
      *
      * @return T
      */
-    public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed;
+    public function compute<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T;
 
     /**
      * Update a value, always invoking the computer.
      *
      * Unlike {@see compute()}, the $computer is always called. It receives
      * the current value (or null if absent) and returns the new value.
-     *
-     * @template T
      *
      * @param non-empty-string $key
      * @param (Closure(null|T): T) $computer
@@ -71,7 +67,7 @@ interface StoreInterface
      *
      * @return T
      */
-    public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed;
+    public function update<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T;
 
     /**
      * Delete an item from the cache.

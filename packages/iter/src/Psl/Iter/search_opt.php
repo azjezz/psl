@@ -20,8 +20,6 @@ use Psl\Option\Option;
  *      Iter\search_opt(['foo', 'bar', 'baz'], fn($v) => 'qux' === $v)
  *      => Option::none()
  *
- * @template T
- *
  * @param iterable<T> $iterable The iterable to search
  * @param (Closure(T): bool) $predicate
  *
@@ -29,7 +27,7 @@ use Psl\Option\Option;
  *
  * @api
  */
-function search_opt(iterable $iterable, Closure $predicate): Option
+function search_opt<T = mixed>(iterable $iterable, Closure $predicate): Option<T>
 {
     foreach ($iterable as $value) {
         if (!$predicate($value)) {

@@ -9,15 +9,13 @@ use Closure;
 /**
  * Create a closure that returns the value passed to it as an argument.
  *
- * @template T
- *
  * @return (Closure(T): T)
  *
  * @pure
  *
  * @api
  */
-function identity(): Closure
+function identity<T = mixed>(): Closure
 {
     return static fn(mixed $result): mixed => $result;
 }

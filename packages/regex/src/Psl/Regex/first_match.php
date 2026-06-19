@@ -11,8 +11,6 @@ use function preg_match;
 /**
  * Determine if $subject matches the given $pattern and return the first matches.
  *
- * @template T of array|null
- *
  * @param non-empty-string $pattern The pattern to match against.
  * @param ?Type\TypeInterface<T> $captureGroups What shape does the matching items have?
  *
@@ -23,7 +21,7 @@ use function preg_match;
  *
  * @api
  */
-function first_match(
+function first_match<T : array|null = array|null>(
     string $subject,
     string $pattern,
     null|Type\TypeInterface $captureGroups = null,

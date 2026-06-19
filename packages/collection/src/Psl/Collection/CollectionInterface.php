@@ -16,14 +16,11 @@ use Psl\Default\DefaultInterface;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @extends IteratorAggregate<Tk, Tv>
  *
  * @api
  */
-interface CollectionInterface extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
+interface CollectionInterface<Tk : int|string = int|string, Tv = mixed> extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
 {
     /**
      * Is the CollectionInterface empty?
@@ -123,8 +120,6 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines the values of
@@ -132,7 +127,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @psalm-mutation-free
      */
-    public function zip(array $elements): CollectionInterface;
+    public function zip<Tu = mixed>(array $elements): CollectionInterface;
 
     /**
      * Returns a `CollectionInterface` containing the first `n` values of the current

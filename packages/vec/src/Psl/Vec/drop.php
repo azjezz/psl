@@ -12,8 +12,6 @@ namespace Psl\Vec;
  *      Vec\drop([1, 2, 3, 4, 5], 3)
  *      => Vec(4, 5)
  *
- * @template T
- *
  * @param iterable<T> $iterable Iterable to drop the elements from
  * @param int<0, max> $n Number of elements to drop from the start
  *
@@ -21,7 +19,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function drop(iterable $iterable, int $n): array
+function drop<T = mixed>(iterable $iterable, int $n): array
 {
     return namespace\slice($iterable, $n);
 }

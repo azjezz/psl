@@ -9,15 +9,13 @@ use Psl\Collection;
 /**
  * @pure
  *
- * @template T
- *
  * @param TypeInterface<T> $valueType
  *
  * @return TypeInterface<Collection\MutableVectorInterface<T>>
  *
  * @api
  */
-function mutable_vector(TypeInterface $valueType): TypeInterface
+function mutable_vector<T = mixed>(TypeInterface<T> $valueType): TypeInterface<Collection\MutableVectorInterface<T>>
 {
     return new Internal\MutableVectorType($valueType);
 }

@@ -38,10 +38,6 @@ use function count;
  *          fn($r) => $r['name']  // Store just the name
  *      );
  *
- * @template TItem
- * @template TId of array-key
- * @template TValue
- *
  * @param non-empty-list<TItem> $items The flat list of items
  * @param Closure(TItem): TId $getId Function to extract the ID from an item
  * @param Closure(TItem): (TId|null) $getParentId Function to extract the parent ID (null for root)
@@ -57,7 +53,7 @@ use function count;
  *
  * @api
  */
-function from_list(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface
+function from_list<TItem = mixed, TId : int|string = int|string, TValue = mixed>(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface<TValue>
 {
     // Group items by parent ID (manual grouping to handle null keys)
     $byParent = [];

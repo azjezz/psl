@@ -12,9 +12,6 @@ use function array_key_exists;
  *
  * The dict will have the same ordering as the `$keys` iterable.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param iterable<Tk> $keys
  *
@@ -22,7 +19,7 @@ use function array_key_exists;
  *
  * @api
  */
-function select_keys(iterable $iterable, iterable $keys): array
+function select_keys<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, iterable $keys): array
 {
     $array = [];
     foreach ($iterable as $k => $v) {

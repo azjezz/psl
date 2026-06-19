@@ -23,8 +23,6 @@ namespace Psl\Graph;
  *      $graph = Graph\add_edge($graph, 'A', 'C', 5);
  *      Graph\shortest_path($graph, 'A', 'C') // ['A', 'B', 'C']
  *
- * @template TNode
- *
  * @param DirectedGraph<TNode, int>|UndirectedGraph<TNode, int> $graph
  * @param TNode $from
  * @param TNode $to
@@ -35,7 +33,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function shortest_path(DirectedGraph|UndirectedGraph $graph, mixed $from, mixed $to): null|array
+function shortest_path<TNode = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $from, TNode $to): null|array
 {
     return namespace\shortest_path_by($graph, $from, $to, static fn(int $weight): int => $weight);
 }

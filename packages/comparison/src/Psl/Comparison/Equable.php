@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Psl\Comparison;
 
 /**
- * @template T
- *
  * @api
  */
-interface Equable
+interface Equable<T = mixed>
 {
     /**
      * @param T $other

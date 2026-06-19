@@ -19,8 +19,6 @@ use Psl\DataStructure\Queue;
  *      ]))
  *      => ['a', 'b', 'd', 'c']
  *
- * @template T
- *
  * @param NodeInterface<T> $rootNode
  *
  * @return list<T>
@@ -29,7 +27,7 @@ use Psl\DataStructure\Queue;
  *
  * @api
  */
-function level_order(NodeInterface $rootNode): array
+function level_order<T = mixed>(NodeInterface<T> $rootNode): array
 {
     $result = [];
     /** @var Queue<NodeInterface<T>> $queue */

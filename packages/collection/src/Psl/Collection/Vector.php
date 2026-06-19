@@ -24,13 +24,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template T
- *
- * @implements VectorInterface<T>
- *
  * @api
  */
-final readonly class Vector implements VectorInterface
+final readonly class Vector<T = mixed> implements VectorInterface<T>
 {
     /**
      * @var list<T> $elements
@@ -63,15 +59,13 @@ final readonly class Vector implements VectorInterface
     /**
      * Create a vector from the given $elements array.
      *
-     * @template Ts
-     *
      * @param array<array-key, Ts> $elements
      *
      * @return Vector<Ts>
      *
      * @pure
      */
-    public static function fromArray(array $elements): Vector
+    public static function fromArray<Ts = mixed>(array $elements): Vector<Ts>
     {
         return new self($elements);
     }
@@ -79,13 +73,11 @@ final readonly class Vector implements VectorInterface
     /**
      * Create a vector from the given $items iterable.
      *
-     * @template Ts
-     *
      * @param iterable<array-key, Ts> $items
      *
      * @return Vector<Ts>
      */
-    public static function fromItems(iterable $items): Vector
+    public static function fromItems<Ts = mixed>(iterable $items): Vector<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -378,8 +370,6 @@ final readonly class Vector implements VectorInterface
      * The keys will remain unchanged from the current `Vector` to the
      * returned `Vector`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `Vector` values.
      *
@@ -387,7 +377,7 @@ final readonly class Vector implements VectorInterface
      *                    operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): Vector
+    public function map<Tu = mixed>(Closure $fn): Vector
     {
         return new Vector(array_map($fn, $this->elements));
     }
@@ -403,8 +393,6 @@ final readonly class Vector implements VectorInterface
      * The keys will remain unchanged from this `Vector` to the returned
      * `Vector`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `Vector` keys and values.
      *
@@ -412,7 +400,7 @@ final readonly class Vector implements VectorInterface
      *                    operation on the current `Vector`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): Vector
+    public function mapWithKey<Tu = mixed>(Closure $fn): Vector
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -431,8 +419,6 @@ final readonly class Vector implements VectorInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `VectorInterface`.
      *
      * @return Vector<array{0: T, 1: Tu}> The `Vector` that combines the values of the current
@@ -441,7 +427,7 @@ final readonly class Vector implements VectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): Vector
+    public function zip<Tu = mixed>(array $elements): Vector
     {
         $elements = array_values($elements);
         $result = [];

@@ -23,9 +23,6 @@ use function count;
  *      $graph = Graph\add_edge($graph, 'C', 'D');
  *      Graph\topological_sort($graph) // ['A', 'B', 'C', 'D'] or ['A', 'C', 'B', 'D']
  *
- * @template TNode
- * @template TWeight
- *
  * @param DirectedGraph<TNode, TWeight> $graph
  *
  * @return list<TNode>|null null if graph contains a cycle
@@ -34,7 +31,7 @@ use function count;
  *
  * @api
  */
-function topological_sort(DirectedGraph $graph): null|array
+function topological_sort<TNode = mixed, TWeight = mixed>(DirectedGraph<TNode, TWeight> $graph): null|array
 {
     $allNodes = namespace\nodes($graph);
     $inDegree = [];

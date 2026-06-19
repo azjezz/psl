@@ -25,13 +25,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template T
- *
- * @implements MutableVectorInterface<T>
- *
  * @api
  */
-final class MutableVector implements MutableVectorInterface
+final class MutableVector<T = mixed> implements MutableVectorInterface<T>
 {
     /**
      * @var list<T> $elements
@@ -66,15 +62,13 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Create a vector from the given $elements array.
      *
-     * @template Ts
-     *
      * @param array<array-key, Ts> $elements
      *
      * @return MutableVector<Ts>
      *
      * @pure
      */
-    public static function fromArray(array $elements): MutableVector
+    public static function fromArray<Ts = mixed>(array $elements): MutableVector<Ts>
     {
         return new self($elements);
     }
@@ -82,13 +76,11 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Create a vector from the given $items iterable.
      *
-     * @template Ts
-     *
      * @param iterable<array-key, Ts> $items
      *
      * @return MutableVector<Ts>
      */
-    public static function fromItems(iterable $items): MutableVector
+    public static function fromItems<Ts = mixed>(iterable $items): MutableVector<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -525,8 +517,6 @@ final class MutableVector implements MutableVectorInterface
      * The keys will remain unchanged from the current `MutableVector` to the
      * returned `MutableVector`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableVector` values.
      *
@@ -534,7 +524,7 @@ final class MutableVector implements MutableVectorInterface
      *                           operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableVector
+    public function map<Tu = mixed>(Closure $fn): MutableVector
     {
         return new MutableVector(array_map($fn, $this->elements));
     }
@@ -550,8 +540,6 @@ final class MutableVector implements MutableVectorInterface
      * The keys will remain unchanged from this `MutableVector` to the returned
      * `MutableVector`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `MutableVector` keys and values
      *
@@ -559,7 +547,7 @@ final class MutableVector implements MutableVectorInterface
      *                           operation on the current `MutableVector`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableVector
+    public function mapWithKey<Tu = mixed>(Closure $fn): MutableVector
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -578,8 +566,6 @@ final class MutableVector implements MutableVectorInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableVector`.
      *
      * @return MutableVector<array{0: T, 1: Tu}> The `MutableVector` that combines the values of the current
@@ -588,7 +574,7 @@ final class MutableVector implements MutableVectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableVector
+    public function zip<Tu = mixed>(array $elements): MutableVector
     {
         $elements = array_values($elements);
         $result = [];

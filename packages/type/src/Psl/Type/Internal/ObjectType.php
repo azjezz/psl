@@ -12,11 +12,9 @@ use Psl\Type\Type;
 use function is_object;
 
 /**
- * @extends Type<object>
- *
  * @internal
  */
-final readonly class ObjectType extends Type
+final readonly class ObjectType extends Type<object>
 {
     /**
      * @psalm-assert-if-true object $value

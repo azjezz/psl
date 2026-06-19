@@ -7,15 +7,13 @@ namespace Psl\Vec;
 /**
  * Return all the unique values of an array, as a list.
  *
- * @template Tv
- *
  * @param iterable<Tv> $iterable
  *
  * @return list<Tv>
  *
  * @api
  */
-function unique(iterable $iterable): array
+function unique<Tv = mixed>(iterable $iterable): array
 {
     return namespace\unique_by(
         $iterable,

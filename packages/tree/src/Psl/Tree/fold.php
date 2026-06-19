@@ -21,9 +21,6 @@ use function array_map;
  *      )
  *      => 'root(a,b)'
  *
- * @template T
- * @template Ta
- *
  * @param NodeInterface<T> $tree
  * @param (Closure(T, list<Ta>): Ta) $function
  *
@@ -31,7 +28,7 @@ use function array_map;
  *
  * @api
  */
-function fold(NodeInterface $tree, Closure $function): mixed
+function fold<T = mixed, Ta = mixed>(NodeInterface<T> $tree, Closure $function): Ta
 {
     if (!$tree instanceof TreeNode) {
         return $function($tree->getValue(), []);

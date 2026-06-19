@@ -19,9 +19,6 @@ use Psl\DataStructure\Queue;
  *      $graph = Graph\add_edge($graph, 'B', 'D');
  *      Graph\bfs($graph, 'A') // ['A', 'B', 'C', 'D']
  *
- * @template TNode
- * @template TWeight
- *
  * @param DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph
  * @param TNode $start
  *
@@ -31,7 +28,7 @@ use Psl\DataStructure\Queue;
  *
  * @api
  */
-function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
+function bfs<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $start): array
 {
     if (!$graph->hasNode($start)) {
         return [];

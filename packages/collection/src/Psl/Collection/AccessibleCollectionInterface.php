@@ -12,15 +12,9 @@ use Override;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends CollectionInterface<Tk, Tv>
- * @extends IndexAccessInterface<Tk, Tv>
- *
  * @api
  */
-interface AccessibleCollectionInterface extends CollectionInterface, IndexAccessInterface
+interface AccessibleCollectionInterface<Tk : int|string = int|string, Tv = mixed> extends CollectionInterface<Tk, Tv>, IndexAccessInterface<Tk, Tv>
 {
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current
@@ -143,8 +137,6 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `AccessibleCollectionInterface` that combines the values of the current
@@ -153,7 +145,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): AccessibleCollectionInterface;
+    public function zip<Tu = mixed>(array $elements): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the first `n` values of the current

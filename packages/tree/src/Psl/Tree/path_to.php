@@ -22,8 +22,6 @@ use Closure;
  *      )
  *      => ['a', 'b', 'c']
  *
- * @template T
- *
  * @param NodeInterface<T> $tree
  * @param (Closure(T): bool) $predicate
  *
@@ -31,7 +29,7 @@ use Closure;
  *
  * @api
  */
-function path_to(NodeInterface $tree, Closure $predicate): null|array
+function path_to<T = mixed>(NodeInterface<T> $tree, Closure $predicate): null|array
 {
     $value = $tree->getValue();
 

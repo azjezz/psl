@@ -16,10 +16,6 @@ use Closure;
  *
  * Reductions returns a list of every accumulator throughout the way.
  *
- * @template Tk
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Ts, Tk, Tv): Ts) $function
  * @param Ts $initial
@@ -28,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function reductions(iterable $iterable, Closure $function, mixed $initial): array
+function reductions<Tk = mixed, Tv = mixed, Ts = mixed>(iterable $iterable, Closure $function, Ts $initial): array
 {
     $accumulators = [];
     $accumulator = $initial;

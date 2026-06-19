@@ -9,14 +9,9 @@ use Override;
 use Psl\Comparison;
 
 /**
- * @template-covariant T
- *
- * @implements Comparison\Comparable<Option<T>>
- * @implements Comparison\Equable<Option<T>>
- *
  * @api
  */
-final readonly class Option implements Comparison\Comparable, Comparison\Equable
+final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T>>, Comparison\Equable<Option<T>>
 {
     /**
      * @var null|array{T}
@@ -36,15 +31,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Create an option with some value.
      *
-     * @template Tv
-     *
      * @param Tv $value
      *
      * @return Option<Tv>
      *
      * @pure
      */
-    public static function some(mixed $value): Option
+    public static function some<Tv = mixed>(Tv $value): Option<Tv>
     {
         return new self([$value]);
     }
@@ -119,15 +112,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @note:   Arguments passed to `Option::unwrapOr()` are eagerly evaluated;
      *          if you are passing the result of a function call, it is recommended to use `Option::unwrapOrElse()`, which is lazily evaluated.
      *
-     * @template O
-     *
      * @param O $default
      *
      * @return T|O
      *
      * @psalm-mutation-free
      */
-    public function unwrapOr(mixed $default): mixed
+    public function unwrapOr<O = mixed>(O $default): T|O
     {
         if (null !== $this->option) {
             return $this->option[0];
@@ -139,13 +130,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Returns the contained some value or computes it from a closure.
      *
-     * @template O
-     *
      * @param (Closure(): O) $default
      *
      * @return T|O
      */
-    public function unwrapOrElse(Closure $default): mixed
+    public function unwrapOrElse<O = mixed>(Closure $default): T|O
     {
         if (null !== $this->option) {
             return $this->option[0];
@@ -157,15 +146,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Return none if either `$this`, or `$other` options are none, otherwise returns `$other`.
      *
-     * @template Tu
-     *
      * @param Option<Tu> $other
      *
      * @return Option<Tu>
      *
      * @psalm-mutation-free
      */
-    public function and(Option $other): Option
+    public function and<Tu = mixed>(Option<Tu> $other): Option<Tu>
     {
         if (null !== $this->option && null !== $other->option) {
             return $other;
@@ -180,15 +167,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @note:   Arguments passed to `Option::or()` are eagerly evaluated;
      *          if you are passing the result of a function call, it is recommended to use `Option::orElse()`, which is lazily evaluated.
      *
-     * @template O
-     *
      * @param Option<O> $option
      *
      * @return Option<T|O>
      *
      * @psalm-mutation-free
      */
-    public function or(Option $option): Option
+    public function or<O = mixed>(Option<O> $option): Option<T|O>
     {
         if (null !== $this->option) {
             return $this;
@@ -200,13 +185,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Returns the option if it contains a value, otherwise calls $closure and returns the result.
      *
-     * @template E
-     *
      * @param (Closure(): Option<E>) $closure
      *
      * @return Option<T|E>
      */
-    public function orElse(Closure $closure): Option
+    public function orElse<E = mixed>(Closure $closure): Option<T|E>
     {
         if (null !== $this->option) {
             return $this;
@@ -252,8 +235,6 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Matches the contained option value with the provided closures and returns the result.
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $some A closure to be called when the option is some.
      *                               The closure must accept the option value as its only argument and can return a value.
      *                               Example: `fn($value) => $value + 10`
@@ -264,7 +245,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      *
      * @return Ts The result of calling the appropriate closure.
      */
-    public function proceed(Closure $some, Closure $none): mixed
+    public function proceed<Ts = mixed>(Closure $some, Closure $none): mixed
     {
         if (null !== $this->option) {
             return $some($this->option[0]);
@@ -292,13 +273,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Maps an `Option<T>` to `Option<Tu>` by applying a function to a contained value.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $closure
      *
      * @return Option<Tu>
      */
-    public function map(Closure $closure): Option
+    public function map<Tu = mixed>(Closure $closure): Option<Tu>
     {
         if (null !== $this->option) {
             return namespace\some($closure($this->option[0]));
@@ -311,13 +290,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     /**
      * Maps an `Option<T>` to `Option<Tu>` by applying a function to a contained value that returns an Option<Tu>.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Option<Tu>) $closure
      *
      * @return Option<Tu>
      */
-    public function andThen(Closure $closure): Option
+    public function andThen<Tu = mixed>(Closure $closure): Option<Tu>
     {
         if (null !== $this->option) {
             return $closure($this->option[0]);
@@ -334,15 +311,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * @note:   arguments passed to `Option::mapOr()` are eagerly evaluated;
      *          if you are passing the result of a function call, it is recommended to use `Option::mapOrElse()`, which is lazily evaluated.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $closure
      *
      * @param Tu $default
      *
      * @return Option<Tu>
      */
-    public function mapOr(Closure $closure, mixed $default): Option
+    public function mapOr<Tu = mixed>(Closure $closure, Tu $default): Option<Tu>
     {
         if (null !== $this->option) {
             return namespace\some($closure($this->option[0]));
@@ -355,15 +330,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * Applies a function to the contained value (if some),
      * or computes a default function result (if none).
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $closure
      *
      * @param (Closure(): Tu) $default
      *
      * @return Option<Tu>
      */
-    public function mapOrElse(Closure $closure, Closure $default): Option
+    public function mapOrElse<Tu = mixed>(Closure $closure, Closure $default): Option<Tu>
     {
         if (null !== $this->option) {
             return namespace\some($closure($this->option[0]));
@@ -400,13 +373,11 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * Combines two `Option` values into a single `Option` containing a tuple of the two inner values.
      * If either of the `Option`s is `None`, the resulting `Option` will also be `None`.
      *
-     * @template Tu
-     *
      * @param Option<Tu> $other The other `Option` to zip with.
      *
      * @return Option<array{T, Tu}> The resulting `Option` containing the combined tuple or `None`.
      */
-    public function zip(Option $other): Option
+    public function zip<Tu = mixed>(Option $other): Option
     {
         return $this->andThen(static fn(mixed $a): Option => $other->map(static fn(mixed $b): array => [$a, $b]));
     }
@@ -415,16 +386,13 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      * Applies the provided closure to the value contained in this `Option` and the value contained in the $other `Option`,
      * and returns a new `Option` containing the result of the closure.
      *
-     * @template Tu
-     * @template Tr
-     *
      * @param Option<Tu> $other The Option to zip with.
      * @param (Closure(T, Tu): Tr) $closure The closure to apply to the values.
      *
      * @return Option<Tr> The new `Option` containing the result of applying the closure to the values,
      *                    or `None` if either this or the $other `Option is `None`.
      */
-    public function zipWith(Option $other, Closure $closure): Option
+    public function zipWith<Tu = mixed, Tr = mixed>(Option $other, Closure $closure): Option
     {
         return $this->andThen(
             /** @param T $a */
@@ -436,9 +404,6 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
     }
 
     /**
-     * @template L
-     * @template R
-     *
      * @psalm-if-this-is Option<list{L, R}>
      * @where T is list{L, R}
      *
@@ -446,7 +411,7 @@ final readonly class Option implements Comparison\Comparable, Comparison\Equable
      *
      * @psalm-mutation-free
      */
-    public function unzip(): array
+    public function unzip<L = mixed, R = mixed>(): array
     {
         if (null === $this->option) {
             return [namespace\none(), namespace\none()];

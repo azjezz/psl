@@ -20,8 +20,6 @@ use function max;
  *      Tree\depth(Tree\tree('root', [Tree\leaf('child')]))
  *      => 1
  *
- * @template T
- *
  * @param NodeInterface<T> $tree
  *
  * @return int<0, max>
@@ -30,7 +28,7 @@ use function max;
  *
  * @api
  */
-function depth(NodeInterface $tree): int
+function depth<T = mixed>(NodeInterface<T> $tree): int
 {
     if (!$tree instanceof TreeNode) {
         return 0;

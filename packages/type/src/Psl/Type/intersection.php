@@ -7,10 +7,6 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template TFirst
- * @template TSecond
- * @template TRest
- *
  * @param TypeInterface<TFirst> $first
  * @param TypeInterface<TSecond> $second
  * @param TypeInterface<TRest> ...$rest
@@ -19,7 +15,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function intersection(TypeInterface $first, TypeInterface $second, TypeInterface ...$rest): TypeInterface
+function intersection<TFirst = mixed, TSecond = mixed, TRest = mixed>(TypeInterface<TFirst> $first, TypeInterface<TSecond> $second, TypeInterface<TRest> ...$rest): TypeInterface<TFirst&TSecond&TRest>
 {
     $accumulatedType = new Internal\IntersectionType($first, $second);
 

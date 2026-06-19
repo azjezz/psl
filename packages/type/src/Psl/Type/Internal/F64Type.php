@@ -12,11 +12,9 @@ use Psl\Type\Exception\CoercionException;
 use function Psl\Type;
 
 /**
- * @extends Type\Type<float>
- *
  * @internal
  */
-final readonly class F64Type extends Type\Type
+final readonly class F64Type extends Type\Type<float>
 {
     /**
      * @psalm-assert-if-true float $value

@@ -8,13 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template T of array-key
- *
- * @extends AccessibleCollectionInterface<T, T>
- *
  * @api
  */
-interface SetInterface extends AccessibleCollectionInterface
+interface SetInterface<T : int|string = int|string> extends AccessibleCollectionInterface<T, T>
 {
     /**
      * Returns the provided value if it exists in the current `SetInterface`.
@@ -136,15 +132,13 @@ interface SetInterface extends AccessibleCollectionInterface
      * Every value in the current Map is affected by a call to `map()`, unlike
      * `filter()` where only values that meet a certain criteria are affected.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `SetInterface` values.
      *
      * @return SetInterface<Tu> A `SetInterface` containing key/value pairs after a user-specified
      *                          operation is applied.
      */
-    public function map(Closure $fn): SetInterface;
+    public function map<Tu : int|string = int|string>(Closure $fn): SetInterface;
 
     /**
      * Transform the values of the current `SetInterface` by applying the provided callback,
@@ -156,13 +150,11 @@ interface SetInterface extends AccessibleCollectionInterface
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
      *
      * @return SetInterface<Tu>
      */
-    public function mapWithKey(Closure $fn): SetInterface;
+    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): SetInterface<Tu>;
 
     /**
      * Returns the first value in the current `SetInterface`.
@@ -232,8 +224,6 @@ interface SetInterface extends AccessibleCollectionInterface
     /**
      * Always throws an exception since `Set` can only contain array-key values.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `SetInterface`.
      *
      * @psalm-mutation-free
@@ -241,7 +231,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never;
+    public function zip<Tu = mixed>(array $elements): never;
 
     /**
      * Returns a `SetInterface` containing the first `n` values of the current

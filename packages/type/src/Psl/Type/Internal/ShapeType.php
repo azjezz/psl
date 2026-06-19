@@ -22,16 +22,13 @@ use function is_int;
 use function is_iterable;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
  * @extends Type\Type<array<Tk, Tv>>
  *
  * @mago-expect lint:kan-defect
  *
  * @internal
  */
-final readonly class ShapeType extends Type\Type
+final readonly class ShapeType<Tk : int|string = int|string, Tv = mixed> extends Type\Type
 {
     /**
      * @var array<Tk, Type\TypeInterface<Tv>>

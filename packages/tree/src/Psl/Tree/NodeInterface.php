@@ -9,13 +9,11 @@ use JsonSerializable;
 /**
  * Base interface for all tree nodes.
  *
- * @template-covariant T
- *
  * @psalm-inheritors LeafNode|TreeNode
  *
  * @api
  */
-interface NodeInterface extends JsonSerializable
+interface NodeInterface<T = mixed> extends JsonSerializable
 {
     /**
      * Returns the value stored in this node.

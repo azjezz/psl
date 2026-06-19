@@ -13,13 +13,9 @@ use UnitEnum;
 use function sprintf;
 
 /**
- * @template T of UnitEnum
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class UnitEnumType extends Type\Type
+final readonly class UnitEnumType<T : UnitEnum = UnitEnum> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

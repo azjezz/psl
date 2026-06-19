@@ -13,11 +13,9 @@ use function is_float;
 use function Psl\Type;
 
 /**
- * @extends Type\Type<float>
- *
  * @internal
  */
-final readonly class F32Type extends Type\Type
+final readonly class F32Type extends Type\Type<float>
 {
     /**
      * @psalm-assert-if-true float $value

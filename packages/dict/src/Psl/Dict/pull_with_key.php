@@ -23,11 +23,6 @@ use Closure;
  *          4096 => 'M', 16384 => 'O', 65536 => 'Q', 262144 => 'S', 1048576 => 'U'
  *      )
  *
- * @template Tk1
- * @template Tv1
- * @template Tk2 of array-key
- * @template Tv2
- *
  * @param iterable<Tk1, Tv1> $iterable
  * @param (Closure(Tk1, Tv1): Tv2) $valueFunc
  * @param (Closure(Tk1, Tv1): Tk2) $keyFunc
@@ -36,7 +31,7 @@ use Closure;
  *
  * @api
  */
-function pull_with_key(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
+function pull_with_key<Tk1 = mixed, Tv1 = mixed, Tk2 : int|string = int|string, Tv2 = mixed>(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

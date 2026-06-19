@@ -9,8 +9,6 @@ use Closure;
 /**
  * Returns a closure that calls the callback with the value passed to it and returns the value.
  *
- * @template T
- *
  * @param (Closure(T): void) $callback
  *
  * @return (Closure(T): T)
@@ -19,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function tap(Closure $callback): Closure
+function tap<T = mixed>(Closure $callback): Closure
 {
     return static function (mixed $value) use ($callback): mixed {
         $callback($value);

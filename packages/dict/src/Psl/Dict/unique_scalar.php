@@ -11,16 +11,13 @@ use function is_array;
  * Returns a new dict in which each value appears exactly once. Better performant than `Dict\unique()` when the values
  * are only scalars.
  *
- * @template Tk of array-key
- * @template Tv of scalar
- *
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tk, Tv>
  *
  * @api
  */
-function unique_scalar(iterable $iterable): array
+function unique_scalar<Tk : int|string = int|string, Tv : int|float|string|bool = int|float|string|bool>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_unique($iterable);

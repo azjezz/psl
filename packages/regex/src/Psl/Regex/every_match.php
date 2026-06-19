@@ -13,8 +13,6 @@ use const PREG_SET_ORDER;
 /**
  * Determine if $subject matches the given $pattern and return every matches.
  *
- * @template T of array|null
- *
  * @param non-empty-string $pattern The pattern to match against.
  * @param ?Type\TypeInterface<T> $captureGroups What shape does a single set of matching items have?
  *
@@ -25,7 +23,7 @@ use const PREG_SET_ORDER;
  *
  * @api
  */
-function every_match(
+function every_match<T : array|null = array|null>(
     string $subject,
     string $pattern,
     null|Type\TypeInterface $captureGroups = null,

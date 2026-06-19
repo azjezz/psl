@@ -13,9 +13,6 @@ use function iterator_to_array;
  * Returns a new dict where each element in `$keys` maps to the
  * corresponding element in `$values`.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk> $keys
  * @param iterable<Tv> $values
  *
@@ -25,7 +22,7 @@ use function iterator_to_array;
  *
  * @api
  */
-function associate(iterable $keys, iterable $values): array
+function associate<Tk : int|string = int|string, Tv = mixed>(iterable $keys, iterable $values): array
 {
     if (!is_array($keys)) {
         $keys = iterator_to_array($keys);

@@ -14,13 +14,9 @@ use function sprintf;
 use function str_ends_with;
 
 /**
- * @template T of string|int|float|bool
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class LiteralScalarType extends Type\Type
+final readonly class LiteralScalarType<T : string|int|float|bool = string|int|float|bool> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

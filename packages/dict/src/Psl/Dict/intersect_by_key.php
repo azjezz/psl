@@ -10,9 +10,6 @@ use function array_map;
 /**
  * Computes the intersection of iterables using keys for comparison.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $first
  * @param iterable<Tk, mixed> $second
  * @param iterable<Tk, mixed> ...$rest
@@ -21,7 +18,7 @@ use function array_map;
  *
  * @api
  */
-function intersect_by_key(iterable $first, iterable $second, iterable ...$rest): array
+function intersect_by_key<Tk : int|string = int|string, Tv = mixed>(iterable $first, iterable $second, iterable ...$rest): array
 {
     return array_intersect_key(
         namespace\from_iterable($first),

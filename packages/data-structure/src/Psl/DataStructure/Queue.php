@@ -12,13 +12,9 @@ use function count;
 /**
  * A basic implementation of a queue data structure ( FIFO ).
  *
- * @template T
- *
- * @implements QueueInterface<T>
- *
  * @api
  */
-final class Queue implements QueueInterface
+final class Queue<T = mixed> implements QueueInterface<T>
 {
     /**
      * @var list<T>

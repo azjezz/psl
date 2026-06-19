@@ -12,8 +12,6 @@ use Throwable;
  *
  * If you want the first awaitable completed, successful or not, use {@see first()} instead.
  *
- * @template T
- *
  * @param iterable<Awaitable<T>> $awaitables
  *
  * @throws Exception\CompositeException If all $awaitables errored.
@@ -23,7 +21,7 @@ use Throwable;
  *
  * @api
  */
-function any(iterable $awaitables): mixed
+function any<T = mixed>(iterable $awaitables): T
 {
     $errors = [];
     foreach (Awaitable::iterate($awaitables) as $first) {

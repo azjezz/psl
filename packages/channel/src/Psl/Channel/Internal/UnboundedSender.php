@@ -10,18 +10,11 @@ use Psl\Async\NullCancellationToken;
 use Psl\Channel\SenderInterface;
 
 /**
- * @template T
- *
- * @implements SenderInterface<T>
- *
  * @internal
  */
-final class UnboundedSender implements SenderInterface
+final class UnboundedSender<T = mixed> implements SenderInterface<T>
 {
-    /**
-     * @use ChannelSideTrait<UnboundedChannelState<T>>
-     */
-    use ChannelSideTrait;
+    use ChannelSideTrait<UnboundedChannelState<T>>;
 
     /**
      * @param UnboundedChannelState<T> $state

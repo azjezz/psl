@@ -14,11 +14,9 @@ use function is_resource;
 use function sprintf;
 
 /**
- * @extends Type\Type<resource>
- *
  * @internal
  */
-final readonly class ResourceType extends Type\Type
+final readonly class ResourceType extends Type\Type<resource>
 {
     /**
      * @psalm-mutation-free

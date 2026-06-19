@@ -10,16 +10,13 @@ use Generator;
  * Create a rewindable iterator from the given generator without
  * exhausting the generator immediately.
  *
- * @template Tk
- * @template Tv
- *
  * @param Generator<Tk, Tv, mixed, mixed> $generator
  *
  * @return Iterator<Tk, Tv>
  *
  * @api
  */
-function rewindable(Generator $generator): Iterator
+function rewindable<Tk = mixed, Tv = mixed>(Generator $generator): Iterator<Tk, Tv>
 {
     return new Iterator($generator);
 }

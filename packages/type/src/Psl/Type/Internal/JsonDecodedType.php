@@ -17,13 +17,9 @@ use function json_decode;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * @template T
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class JsonDecodedType extends Type\Type
+final readonly class JsonDecodedType<T = mixed> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

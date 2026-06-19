@@ -14,8 +14,6 @@ namespace Psl\Tree;
  *          Tree\leaf('child2'),
  *      ])
  *
- * @template T
- *
  * @param T $value
  * @param list<NodeInterface<T>> $children
  *
@@ -25,7 +23,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function tree(mixed $value, array $children = []): TreeNode
+function tree<T = mixed>(T $value, array $children = []): TreeNode<T>
 {
     return new TreeNode($value, $children);
 }

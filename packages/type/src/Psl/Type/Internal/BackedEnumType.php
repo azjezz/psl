@@ -13,13 +13,9 @@ use Psl\Type\Exception\CoercionException;
 use function sprintf;
 
 /**
- * @template T of BackedEnum
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class BackedEnumType extends Type\Type
+final readonly class BackedEnumType<T : BackedEnum = BackedEnum> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

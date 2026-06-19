@@ -9,9 +9,6 @@ use Closure;
 /**
  * @pure
  *
- * @template I
- * @template O
- *
  * @param TypeInterface<I> $from
  * @param TypeInterface<O> $into
  * @param (Closure(I): O) $converter
@@ -20,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function converted(TypeInterface $from, TypeInterface $into, Closure $converter): TypeInterface
+function converted<I = mixed, O = mixed>(TypeInterface<I> $from, TypeInterface<O> $into, Closure $converter): TypeInterface<O>
 {
     return new Internal\ConvertedType($from, $into, $converter);
 }

@@ -17,8 +17,6 @@ use Closure;
  *      )
  *      => 2
  *
- * @template T
- *
  * @param NodeInterface<T> $tree
  * @param (Closure(T): bool) $predicate
  *
@@ -26,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function find(NodeInterface $tree, Closure $predicate): mixed
+function find<T = mixed>(NodeInterface<T> $tree, Closure $predicate): T|null
 {
     $value = $tree->getValue();
     if ($predicate($value)) {

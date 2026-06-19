@@ -10,13 +10,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @template T
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class OptionalType extends Type\Type
+final readonly class OptionalType<T = mixed> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

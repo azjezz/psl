@@ -20,13 +20,11 @@ use function explode;
  * An Interval has a start and end, both of which are {@see TemporalInterface}
  * instances. The start must be before or at the same time as the end.
  *
- * @implements Comparison\Equable<Interval>
- *
  * @immutable
  *
  * @api
  */
-final readonly class Interval implements Comparison\Equable, JsonSerializable, Stringable
+final readonly class Interval implements Comparison\Equable<Interval>, JsonSerializable, Stringable
 {
     /**
      * @pure

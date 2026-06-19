@@ -28,13 +28,11 @@ use const STR_PAD_LEFT;
  *
  * For example, Duration::hours(2, -183) normalizes to "-1 hour(s), -3 minute(s)".
  *
- * @implements Comparison\Comparable<Duration>
- *
  * @immutable
  *
  * @api
  */
-final readonly class Duration implements TemporalAmountInterface, Comparison\Comparable
+final readonly class Duration implements TemporalAmountInterface, Comparison\Comparable<Duration>
 {
     /**
      * Initializes a new instance of Duration with specified hours, minutes, seconds, and

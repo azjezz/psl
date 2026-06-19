@@ -29,9 +29,6 @@ use Closure;
  *      )
  *      => Dict(7 => [2], 8 => [3], 9 => [4], 10 => [5], 11 => [6], 12 => [7, 8, 9, 10])
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tv> $values
  * @param (Closure(Tv): ?Tk) $keyFunc
  *
@@ -39,7 +36,7 @@ use Closure;
  *
  * @api
  */
-function group_by(iterable $values, Closure $keyFunc): array
+function group_by<Tk : int|string = int|string, Tv = mixed>(iterable $values, Closure $keyFunc): array
 {
     $result = [];
     foreach ($values as $value) {

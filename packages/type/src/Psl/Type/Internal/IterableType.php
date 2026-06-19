@@ -15,14 +15,11 @@ use function is_iterable;
 use function sprintf;
 
 /**
- * @template Tk
- * @template Tv
- *
  * @extends Type\Type<iterable<Tk, Tv>>
  *
  * @internal
  */
-final readonly class IterableType extends Type\Type
+final readonly class IterableType<Tk = mixed, Tv = mixed> extends Type\Type
 {
     /**
      * @psalm-mutation-free

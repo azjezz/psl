@@ -11,8 +11,6 @@ use function is_array;
 /**
  * Returns a new list formed by concatenating the given lists together.
  *
- * @template T
- *
  * @param iterable<T> $first
  * @param iterable<T> ...$rest
  *
@@ -20,7 +18,7 @@ use function is_array;
  *
  * @api
  */
-function concat(iterable $first, iterable ...$rest): array
+function concat<T = mixed>(iterable $first, iterable ...$rest): array
 {
     if (is_array($first) && $rest === []) {
         return array_values($first);

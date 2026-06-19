@@ -7,15 +7,13 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template T of string|int|float|bool
- *
  * @param T $value
  *
  * @return TypeInterface<T>
  *
  * @api
  */
-function literal_scalar(string|int|float|bool $value): TypeInterface
+function literal_scalar<T : string|int|float|bool = string|int|float|bool>(string|int|float|bool $value): TypeInterface<T>
 {
     return new Internal\LiteralScalarType($value);
 }

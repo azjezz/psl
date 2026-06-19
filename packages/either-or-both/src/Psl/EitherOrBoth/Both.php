@@ -11,14 +11,9 @@ use Psl\Option;
 /**
  * The Both variant of {@see EitherOrBoth}: a left value and a right value are both present.
  *
- * @template-covariant TLeft
- * @template-covariant TRight
- *
- * @implements EitherOrBoth<TLeft, TRight>
- *
  * @api
  */
-final readonly class Both implements EitherOrBoth
+final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth<TLeft, TRight>
 {
     /**
      * @var TLeft
@@ -135,51 +130,42 @@ final readonly class Both implements EitherOrBoth
     /**
      * Applies the closure to both sides independently.
      *
-     * @template TResult
-     *
      * @param (Closure(TLeft|TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
      *
      * @return Both<TResult, TResult>
      */
-    public function map(Closure $closure): Both
+    public function map<TResult = mixed>(Closure $closure): Both<TResult, TResult>
     {
         return new Both($closure($this->left), $closure($this->right));
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
      *
      * @return Both<TResult, TRight>
      */
-    public function mapLeft(Closure $closure): Both
+    public function mapLeft<TResult = mixed>(Closure $closure): Both<TResult, TRight>
     {
         return new Both($closure($this->left), $this->right);
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
      *
      * @return Both<TLeft, TResult>
      */
-    public function mapRight(Closure $closure): Both
+    public function mapRight<TResult = mixed>(Closure $closure): Both<TLeft, TResult>
     {
         return new Both($this->left, $closure($this->right));
     }
 
     /**
-     * @template TResultLeft
-     * @template TResultRight
-     *
      * @param (Closure(TLeft): TResultLeft)   $left
      * @param (Closure(TRight): TResultRight) $right
      *
@@ -188,7 +174,7 @@ final readonly class Both implements EitherOrBoth
      *
      * @return Both<TResultLeft, TResultRight>
      */
-    public function mapAny(Closure $left, Closure $right): Both
+    public function mapAny<TResultLeft = mixed, TResultRight = mixed>(Closure $left, Closure $right): Both<TResultLeft, TResultRight>
     {
         return new Both($left($this->left), $right($this->right));
     }
@@ -200,12 +186,10 @@ final readonly class Both implements EitherOrBoth
      */
     public function swap(): Both
     {
-        return new Both($this->right, $this->left);
+        return both($this->right, $this->left);
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult)         $left
      * @param (Closure(TRight): TResult)        $right
      * @param (Closure(TLeft, TRight): TResult) $both
@@ -214,7 +198,7 @@ final readonly class Both implements EitherOrBoth
      *
      * @return TResult
      */
-    public function proceed(Closure $left, Closure $right, Closure $both): mixed
+    public function proceed<TResult = mixed>(Closure $left, Closure $right, Closure $both): TResult
     {
         return $both($this->left, $this->right);
     }

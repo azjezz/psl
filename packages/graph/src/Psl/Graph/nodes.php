@@ -14,9 +14,6 @@ namespace Psl\Graph;
  *      $graph = Graph\add_node($graph, 'B');
  *      Graph\nodes($graph) // ['A', 'B']
  *
- * @template TNode
- * @template TWeight
- *
  * @param GraphInterface<TNode, TWeight> $graph
  *
  * @return list<TNode>
@@ -25,7 +22,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function nodes(GraphInterface $graph): array
+function nodes<TNode = mixed, TWeight = mixed>(GraphInterface<TNode, TWeight> $graph): array
 {
     return $graph->getNodes();
 }

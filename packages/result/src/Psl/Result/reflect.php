@@ -11,8 +11,6 @@ use Throwable;
  * Wraps the given operation in another operation that always completes with a {@see Success},
  * or {@see Failure} if the closure throws an {@see Throwable}.
  *
- * @template T
- *
  * @param Closure(): T $task
  *
  * @return Closure(): ResultInterface<T>
@@ -23,7 +21,7 @@ use Throwable;
  *
  * @api
  */
-function reflect(Closure $task): Closure
+function reflect<T = mixed>(Closure $task): Closure
 {
     return static fn(): ResultInterface => namespace\wrap($task);
 }

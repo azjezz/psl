@@ -14,14 +14,11 @@ use function is_iterable;
 use function sprintf;
 
 /**
- * @template Tk as array-key
- * @template Tv
- *
  * @extends Type\Type<iterable<Tk, Tv>>
  *
  * @internal
  */
-final readonly class ContainerType extends Type\Type
+final readonly class ContainerType<Tk : int|string = int|string, Tv = mixed> extends Type\Type
 {
     /**
      * @psalm-mutation-free

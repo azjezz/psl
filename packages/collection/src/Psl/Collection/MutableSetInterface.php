@@ -8,14 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template T of array-key
- *
- * @extends SetInterface<T>
- * @extends MutableAccessibleCollectionInterface<T, T>
- *
  * @api
  */
-interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetInterface
+interface MutableSetInterface<T : int|string = int|string> extends MutableAccessibleCollectionInterface<T, T>, SetInterface<T>
 {
     /**
      * Returns the provided value if it exists in the current `MutableSetInterface`.
@@ -137,8 +132,6 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * Every value in the current Map is affected by a call to `map()`, unlike
      * `filter()` where only values that meet a certain criteria are affected.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableSetInterface` values
      *
@@ -146,7 +139,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *                                 operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableSetInterface;
+    public function map<Tu : int|string = int|string>(Closure $fn): MutableSetInterface;
 
     /**
      * Transform the values of the current `MutableSetInterface` by applying the provided callback,
@@ -158,14 +151,12 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
      *
      * @return MutableSetInterface<Tu>
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableSetInterface;
+    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): MutableSetInterface<Tu>;
 
     /**
      * Returns the first value in the current `MutableSetInterface`.
@@ -235,8 +226,6 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
     /**
      * Always throws an exception since `Set` can only contain array-key values.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `SetInterface`.
      *
      * @psalm-mutation-free
@@ -244,7 +233,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never;
+    public function zip<Tu = mixed>(array $elements): never;
 
     /**
      * Returns a `MutableSetInterface` containing the first `n` values of the current

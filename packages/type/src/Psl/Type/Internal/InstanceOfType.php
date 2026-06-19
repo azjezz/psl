@@ -10,13 +10,9 @@ use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
 /**
- * @template T as object
- *
- * @extends Type<T>
- *
  * @internal
  */
-final readonly class InstanceOfType extends Type
+final readonly class InstanceOfType<T : object = object> extends Type<T>
 {
     /**
      * @var class-string<T> $classname

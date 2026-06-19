@@ -25,13 +25,9 @@ use function is_array;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template-covariant T
- *
- * @implements PromiseInterface<T>
- *
  * @api
  */
-final readonly class Awaitable implements PromiseInterface
+final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
 {
     private State $state;
 
@@ -48,14 +44,11 @@ final readonly class Awaitable implements PromiseInterface
     /**
      * Iterate over the given `Awaitable`s in completion order.
      *
-     * @template Tk
-     * @template Tv
-     *
      * @param iterable<Tk, Awaitable<Tv>> $awaitables
      *
      * @return Generator<Tk, Awaitable<Tv>, null, void>
      */
-    public static function iterate(iterable $awaitables): Generator
+    public static function iterate<Tk = mixed, Tv = mixed>(iterable $awaitables): Generator
     {
         $iterator = new AwaitableIterator();
 
@@ -92,13 +85,11 @@ final readonly class Awaitable implements PromiseInterface
     }
 
     /**
-     * @template Tv
-     *
      * @param Tv $result
      *
      * @return Awaitable<Tv>
      */
-    public static function complete(mixed $result): self
+    public static function complete<Tv = mixed>(Tv $result): self
     {
         $state = new State();
         $state->complete($result);
@@ -131,15 +122,13 @@ final readonly class Awaitable implements PromiseInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(T): Ts $success
      * @param Closure(Throwable): Ts $failure
      *
      * @return Awaitable<Ts>
      */
     #[Override]
-    public function then(Closure $success, Closure $failure): Awaitable
+    public function then<Ts = mixed>(Closure $success, Closure $failure): Awaitable<Ts>
     {
         $state = new State();
 
@@ -176,14 +165,12 @@ final readonly class Awaitable implements PromiseInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(T): Ts $success
      *
      * @return Awaitable<Ts>
      */
     #[Override]
-    public function map(Closure $success): Awaitable
+    public function map<Ts = mixed>(Closure $success): Awaitable<Ts>
     {
         return $this->then($success, static fn(Throwable $throwable): never => throw $throwable);
     }
@@ -191,14 +178,12 @@ final readonly class Awaitable implements PromiseInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(Throwable): Ts $failure
      *
      * @return Awaitable<T|Ts>
      */
     #[Override]
-    public function catch(Closure $failure): Awaitable
+    public function catch<Ts = mixed>(Closure $failure): Awaitable<T|Ts>
     {
         return $this->then(
             /**

@@ -8,10 +8,8 @@ use Closure;
 
 /**
  * @internal
- *
- * @template T
  */
-final class LazyEvaluator
+final class LazyEvaluator<T = mixed>
 {
     /**
      * @var T|null

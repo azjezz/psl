@@ -12,13 +12,9 @@ use function count;
 /**
  * A basic implementation of a stack data structure ( LIFO ).
  *
- * @template T
- *
- * @implements StackInterface<T>
- *
  * @api
  */
-final class Stack implements StackInterface
+final class Stack<T = mixed> implements StackInterface<T>
 {
     /**
      * @var list<T> $items

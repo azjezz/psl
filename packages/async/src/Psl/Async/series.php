@@ -11,16 +11,13 @@ use Closure;
  *
  * If any functions in the series throws, no more functions are run, and the exception is immediately thrown.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, (Closure(): Tv)> $tasks
  *
  * @return array<Tk, Tv>
  *
  * @api
  */
-function series(iterable $tasks): array
+function series<Tk : int|string = int|string, Tv = mixed>(iterable $tasks): array
 {
     $result = [];
     foreach ($tasks as $key => $task) {

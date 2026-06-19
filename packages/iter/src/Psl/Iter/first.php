@@ -7,8 +7,6 @@ namespace Psl\Iter;
 /**
  * Returns the first element of an iterable, if the iterable is empty, null will be returned.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? T : T|null)
@@ -17,7 +15,7 @@ namespace Psl\Iter;
  *
  * @api
  */
-function first(iterable $iterable): mixed
+function first<T = mixed>(iterable $iterable): mixed
 {
     foreach ($iterable as $v) {
         return $v;

@@ -18,9 +18,6 @@ use Closure;
  *      )
  *      => 6
  *
- * @template T
- * @template Ta
- *
  * @param NodeInterface<T> $tree
  * @param (Closure(Ta, T): Ta) $function
  * @param Ta $initial
@@ -29,7 +26,7 @@ use Closure;
  *
  * @api
  */
-function reduce(NodeInterface $tree, Closure $function, mixed $initial): mixed
+function reduce<T = mixed, Ta = mixed>(NodeInterface<T> $tree, Closure $function, Ta $initial): Ta
 {
     $accumulator = $function($initial, $tree->getValue());
 

@@ -16,9 +16,6 @@ use function array_map;
  *      $graph = Graph\add_edge($graph, 'A', 'C');
  *      Graph\neighbors($graph, 'A') // ['B', 'C']
  *
- * @template TNode
- * @template TWeight
- *
  * @param DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph
  * @param TNode $node
  *
@@ -28,7 +25,7 @@ use function array_map;
  *
  * @api
  */
-function neighbors(DirectedGraph|UndirectedGraph $graph, mixed $node): array
+function neighbors<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $node): array
 {
     $edges = $graph->getEdgesFrom($node);
 

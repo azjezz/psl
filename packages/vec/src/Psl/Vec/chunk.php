@@ -14,8 +14,6 @@ use function is_array;
  * If the original list doesn't divide evenly, the final chunk will be
  * smaller.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  * @param positive-int $size
  *
@@ -23,7 +21,7 @@ use function is_array;
  *
  * @api
  */
-function chunk(iterable $iterable, int $size): array
+function chunk<T = mixed>(iterable $iterable, int $size): array
 {
     if (is_array($iterable)) {
         return array_chunk($iterable, $size);

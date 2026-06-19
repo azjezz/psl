@@ -23,11 +23,6 @@ use Closure;
  *          64 => 'G', 128 => 'H', 256 => 'I', 512 => 'J', 1024 => 'K'
  *      )
  *
- * @template Tk1
- * @template Tv1
- * @template Tk2 of array-key
- * @template Tv2
- *
  * @param iterable<Tk1, Tv1> $iterable
  * @param (Closure(Tv1): Tv2) $valueFunc
  * @param (Closure(Tv1): Tk2) $keyFunc
@@ -36,7 +31,7 @@ use Closure;
  *
  * @api
  */
-function pull(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
+function pull<Tk1 = mixed, Tv1 = mixed, Tk2 : int|string = int|string, Tv2 = mixed>(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
 {
     $result = [];
     foreach ($iterable as $value) {

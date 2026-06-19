@@ -21,16 +21,13 @@ use function is_array;
  *      Dict\flatten([[0 => 1, 1 => 2], [2 => 9, 3 => 8]])
  *      => Dict(0 => 1, 1 => 2, 2 => 9, 3 => 8)
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<iterable<Tk, Tv>> $iterables
  *
  * @return array<Tk, Tv>
  *
  * @api
  */
-function flatten(iterable $iterables): array
+function flatten<Tk : int|string = int|string, Tv = mixed>(iterable $iterables): array
 {
     if (is_array($iterables)) {
         $allArrays = true;

@@ -20,14 +20,11 @@ use function count;
  *
  * Just like {@see Semaphore}, all operations must have the same input type (Tin) and output type (Tout), and be processed by the same function;
  *
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @see Semaphore
  *
  * @api
  */
-final class Sequence
+final class Sequence<Tin = mixed, Tout = mixed>
 {
     private bool $ongoing = false;
 

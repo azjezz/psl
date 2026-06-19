@@ -9,8 +9,6 @@ use function is_array;
 /**
  * Returns true if the given iterable is empty.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? false : true)
@@ -19,7 +17,7 @@ use function is_array;
  *
  * @api
  */
-function is_empty(iterable $iterable): bool
+function is_empty<T = mixed>(iterable $iterable): bool
 {
     if (is_array($iterable)) {
         return [] === $iterable;

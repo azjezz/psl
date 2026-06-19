@@ -8,14 +8,9 @@ namespace Psl\Collection;
  * The interface for mutable, keyed collections to enable setting and removing
  * keys.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends IndexAccessInterface<Tk, Tv>
- *
  * @api
  */
-interface MutableIndexAccessInterface extends IndexAccessInterface
+interface MutableIndexAccessInterface<Tk : int|string = int|string, Tv = mixed> extends IndexAccessInterface<Tk, Tv>
 {
     /**
      * Removes the specified key (and associated value) from the current

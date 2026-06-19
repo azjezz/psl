@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Psl\Comparison;
 
 /**
- * @template T
- *
  * @param T $a
  * @param T $b
  *
  * @api
  */
-function greater_or_equal(mixed $a, mixed $b): bool
+function greater_or_equal<T = mixed>(T $a, T $b): bool
 {
     $order = namespace\compare($a, $b);
 

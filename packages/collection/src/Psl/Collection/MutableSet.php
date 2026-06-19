@@ -25,13 +25,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @template T of array-key
- *
- * @implements MutableSetInterface<T>
- *
  * @api
  */
-final class MutableSet implements MutableSetInterface
+final class MutableSet<T : int|string = int|string> implements MutableSetInterface<T>
 {
     /**
      * @var array<T, T>
@@ -71,15 +67,13 @@ final class MutableSet implements MutableSetInterface
     /**
      * Create a set from the given array, using the values of the array as the set values.
      *
-     * @template Ts of array-key
-     *
      * @param array<array-key, Ts> $elements
      *
      * @return MutableSet<Ts>
      *
      * @pure
      */
-    public static function fromArray(array $elements): MutableSet
+    public static function fromArray<Ts : int|string = int|string>(array $elements): MutableSet<Ts>
     {
         return new self($elements);
     }
@@ -87,13 +81,11 @@ final class MutableSet implements MutableSetInterface
     /**
      * Create a set from the given iterable, using the values of the iterable as the set values.
      *
-     * @template Ts of array-key
-     *
      * @param iterable<Ts, Ts> $items
      *
      * @return MutableSet<Ts>
      */
-    public static function fromItems(iterable $items): MutableSet
+    public static function fromItems<Ts : int|string = int|string>(iterable $items): MutableSet<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -103,15 +95,13 @@ final class MutableSet implements MutableSetInterface
     /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
-     * @template Ts of array-key
-     *
      * @param array<Ts, mixed> $elements
      *
      * @return MutableSet<Ts>
      *
      * @pure
      */
-    public static function fromArrayKeys(array $elements): MutableSet
+    public static function fromArrayKeys<Ts : int|string = int|string>(array $elements): MutableSet<Ts>
     {
         /** @var array<Ts, Ts> $set */
         $set = [];
@@ -501,8 +491,6 @@ final class MutableSet implements MutableSetInterface
      * The keys will remain unchanged from the current `MutableSet` to the
      * returned `MutableSet`.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableSet` values.
      *
@@ -510,7 +498,7 @@ final class MutableSet implements MutableSetInterface
      *                        operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableSet
+    public function map<Tu : int|string = int|string>(Closure $fn): MutableSet
     {
         return new MutableSet(array_map($fn, $this->elements));
     }
@@ -525,14 +513,12 @@ final class MutableSet implements MutableSetInterface
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
      *
      * @return MutableSet<Tu>
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableSet
+    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): MutableSet<Tu>
     {
         return $this->map(
             /**
@@ -545,8 +531,6 @@ final class MutableSet implements MutableSetInterface
     /**
      * Always throws an exception since `MutableSet` can only contain array-key values.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableSet`.
      *
      * @psalm-mutation-free
@@ -554,7 +538,7 @@ final class MutableSet implements MutableSetInterface
      * @throws Exception\RuntimeException Always throws an exception since `MutableSet` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never
+    public function zip<Tu = mixed>(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a MutableSet.');
     }

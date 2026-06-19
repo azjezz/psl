@@ -7,13 +7,9 @@ namespace Psl\DataStructure;
 use Override;
 
 /**
- * @template T
- *
- * @extends QueueInterface<T>
- *
  * @api
  */
-interface PriorityQueueInterface extends QueueInterface
+interface PriorityQueueInterface<T = mixed> extends QueueInterface<T>
 {
     /**
      * Adds a node to the queue.

@@ -12,9 +12,6 @@ namespace Psl\Dict;
  *      Dict\drop(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 2)
  *      => Dict('c' => 3, 'd' => 4)
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable Iterable to drop the elements from
  * @param int<0, max> $n Number of elements to drop from the start
  *
@@ -22,7 +19,7 @@ namespace Psl\Dict;
  *
  * @api
  */
-function drop(iterable $iterable, int $n): array
+function drop<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, int $n): array
 {
     return namespace\slice($iterable, $n);
 }

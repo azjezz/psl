@@ -26,9 +26,6 @@ use function min;
  *         Arr(3, 6)
  *     )
  *
- * @template Tv
- * @template Tu
- *
  * @param iterable<Tv> $first
  * @param iterable<Tu> $second
  *
@@ -36,7 +33,7 @@ use function min;
  *
  * @api
  */
-function zip(iterable $first, iterable $second): array
+function zip<Tv = mixed, Tu = mixed>(iterable $first, iterable $second): array
 {
     $one = namespace\values($first);
     $two = namespace\values($second);

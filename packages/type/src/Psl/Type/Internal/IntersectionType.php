@@ -15,14 +15,9 @@ use function sprintf;
 use function str_contains;
 
 /**
- * @template Tl
- * @template Tr
- *
- * @extends Type<Tl&Tr>
- *
  * @internal
  */
-final readonly class IntersectionType extends Type
+final readonly class IntersectionType<Tl = mixed, Tr = mixed> extends Type<Tl&Tr>
 {
     /**
      * @psalm-mutation-free

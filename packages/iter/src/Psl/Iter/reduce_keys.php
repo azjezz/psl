@@ -13,10 +13,6 @@ use Closure;
  * iterator value and returns a new accumulator. The accumulator is initialized
  * to $initial.
  *
- * @template Tk
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Ts, Tk): Ts) $function
  * @param Ts $initial
@@ -25,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function reduce_keys(iterable $iterable, Closure $function, mixed $initial): mixed
+function reduce_keys<Tk = mixed, Tv = mixed, Ts = mixed>(iterable $iterable, Closure $function, Ts $initial): Ts
 {
     $accumulator = $initial;
     foreach ($iterable as $k => $_) {

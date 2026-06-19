@@ -11,8 +11,6 @@ use Psl\Exception\RuntimeException;
 /**
  * @pure
  *
- * @template T of BackedEnum
- *
  * @param class-string<T> $enum
  *
  * @throws RuntimeException If reflection fails.
@@ -22,7 +20,7 @@ use Psl\Exception\RuntimeException;
  *
  * @api
  */
-function backed_enum_value(string $enum): TypeInterface
+function backed_enum_value<T : BackedEnum = BackedEnum>(string $enum): TypeInterface
 {
     return new Internal\BackedEnumValueType($enum);
 }

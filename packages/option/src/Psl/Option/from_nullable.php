@@ -7,8 +7,6 @@ namespace Psl\Option;
 /**
  * Create an option from a mixed value (Some) or null (None).
  *
- * @template T
- *
  * @param null|T $value
  *
  * @return Option<T>
@@ -17,7 +15,7 @@ namespace Psl\Option;
  *
  * @api
  */
-function from_nullable(mixed $value): Option
+function from_nullable<T = mixed>(null|T $value): Option<T>
 {
     return null !== $value ? Option::some($value) : Option::none();
 }

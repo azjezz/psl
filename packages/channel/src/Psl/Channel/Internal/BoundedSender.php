@@ -14,18 +14,11 @@ use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 /**
- * @template T
- *
- * @implements SenderInterface<T>
- *
  * @internal
  */
-final class BoundedSender implements SenderInterface
+final class BoundedSender<T = mixed> implements SenderInterface<T>
 {
-    /**
-     * @use ChannelSideTrait<BoundedChannelState<T>>
-     */
-    use ChannelSideTrait;
+    use ChannelSideTrait<BoundedChannelState<T>>;
 
     private null|Suspension $suspension = null;
 

@@ -9,8 +9,6 @@ use Psl\Crypto\Exception;
 use SodiumException;
 
 /**
- * @template T
- *
  * @param (Closure(): T) $callback
  *
  * @return T
@@ -21,7 +19,7 @@ use SodiumException;
  *
  * @codeCoverageIgnore -We can't reproduce this easily, just ignore it.
  */
-function call_sodium(Closure $callback): mixed
+function call_sodium<T = mixed>(Closure $callback): T
 {
     try {
         return $callback();

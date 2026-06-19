@@ -21,9 +21,6 @@ use function array_map;
  *      )
  *      => Tree\tree(2, [Tree\leaf(4), Tree\leaf(6)])
  *
- * @template T
- * @template Tu
- *
  * @param NodeInterface<T> $node
  * @param (Closure(T): Tu) $function
  *
@@ -31,7 +28,7 @@ use function array_map;
  *
  * @api
  */
-function map(NodeInterface $node, Closure $function): NodeInterface
+function map<T = mixed, Tu = mixed>(NodeInterface<T> $node, Closure $function): NodeInterface<Tu>
 {
     if (!$node instanceof TreeNode) {
         return new LeafNode($function($node->getValue()));

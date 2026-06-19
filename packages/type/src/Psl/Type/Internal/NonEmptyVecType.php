@@ -16,15 +16,13 @@ use function is_iterable;
 use function sprintf;
 
 /**
- * @template Tv
- *
  * @extends Type\Type<non-empty-list<Tv>>
  *
  * @internal
  *
  * @mago-expect analysis:mixed-assignment
  */
-final readonly class NonEmptyVecType extends Type\Type
+final readonly class NonEmptyVecType<Tv = mixed> extends Type\Type
 {
     /**
      * @psalm-mutation-free

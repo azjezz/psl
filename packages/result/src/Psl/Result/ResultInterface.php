@@ -16,13 +16,9 @@ use Throwable;
  * This is an interface. You get generally `ResultInterface<T>` by calling `wrap<T>()`, passing in
  * the `(Closure(): T)`, and a `Success<T>` or `Failure<Te>` is returned.
  *
- * @template-covariant T
- *
- * @extends Psl\Promise\PromiseInterface<T>
- *
  * @api
  */
-interface ResultInterface extends Psl\Promise\PromiseInterface
+interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
 {
     /**
      * Transforms a promise's value by applying a function to the promise's fulfillment
@@ -36,15 +32,13 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * $promise->map($success)->catch($failure);
      * ```
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      * @param (Closure(Throwable): Ts) $failure
      *
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function then(Closure $success, Closure $failure): ResultInterface;
+    public function then<Ts = mixed>(Closure $success, Closure $failure): ResultInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is fulfilled.
@@ -52,14 +46,12 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * The returned promise is resolved with the return value of the callback,
      * or is rejected with a throwable thrown from the callback.
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      *
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function map(Closure $success): ResultInterface;
+    public function map<Ts = mixed>(Closure $success): ResultInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is rejected.
@@ -67,14 +59,12 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * The returned promise is resolved with the return value of the callback,
      * or is rejected with a throwable thrown from the callback.
      *
-     * @template Ts
-     *
      * @param (Closure(Throwable): Ts) $failure
      *
      * @return ResultInterface<T|Ts>
      */
     #[Override]
-    public function catch(Closure $failure): ResultInterface;
+    public function catch<Ts = mixed>(Closure $failure): ResultInterface<T|Ts>;
 
     /**
      * Attaches a callback that is always invoked when the promise is resolved.
@@ -105,13 +95,11 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
     /**
      * Unwrap the Result if it is succeeded or return $default value.
      *
-     * @template D
-     *
      * @param D $default
      *
      * @return T|D
      */
-    public function unwrapOr(mixed $default): mixed;
+    public function unwrapOr<D = mixed>(D $default): T|D;
 
     /**
      * Return the underlying throwable, or fail with a invariant violation exception.
@@ -153,12 +141,10 @@ interface ResultInterface extends Psl\Promise\PromiseInterface
      * The callback will receive the result or Throwable as an argument,
      * so that you can transform it to anything you want.
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      * @param (Closure(Throwable): Ts) $failure
      *
      * @return Ts
      */
-    public function proceed(Closure $success, Closure $failure): mixed;
+    public function proceed<Ts = mixed>(Closure $success, Closure $failure): Ts;
 }

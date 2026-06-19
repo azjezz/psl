@@ -12,13 +12,9 @@ use Psl;
 /**
  * Represents the result of successful operation.
  *
- * @template-covariant    T
- *
- * @implements  ResultInterface<T>
- *
  * @api
  */
-final readonly class Success implements ResultInterface
+final readonly class Success<T = mixed> implements ResultInterface<T>
 {
     /**
      * @var T
@@ -51,14 +47,12 @@ final readonly class Success implements ResultInterface
     /**
      * Unwrap the Result if it is succeeded or return $default value.
      *
-     * @template D
-     *
      * @param D $default
      *
-     * @return T
+     * @return T|D
      */
     #[Override]
-    public function unwrapOr(mixed $default): mixed
+    public function unwrapOr<D = mixed>(D $default): T|D
     {
         return $this->value;
     }
@@ -108,15 +102,13 @@ final readonly class Success implements ResultInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      * @param (Closure(RootException): Ts) $failure
      *
      * @return Ts
      */
     #[Override]
-    public function proceed(Closure $success, Closure $failure): mixed
+    public function proceed<Ts = mixed>(Closure $success, Closure $failure): Ts
     {
         return $success($this->value);
     }
@@ -124,15 +116,13 @@ final readonly class Success implements ResultInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      * @param (Closure(RootException): Ts) $failure
      *
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function then(Closure $success, Closure $failure): ResultInterface
+    public function then<Ts = mixed>(Closure $success, Closure $failure): ResultInterface<Ts>
     {
         return namespace\wrap(fn(): mixed => $success($this->value));
     }
@@ -140,14 +130,12 @@ final readonly class Success implements ResultInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param (Closure(T): Ts) $success
      *
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function map(Closure $success): ResultInterface
+    public function map<Ts = mixed>(Closure $success): ResultInterface<Ts>
     {
         return namespace\wrap(fn(): mixed => $success($this->value));
     }
@@ -155,14 +143,12 @@ final readonly class Success implements ResultInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param (Closure(RootException): Ts) $failure
      *
-     * @return Success<T>
+     * @return ResultInterface<T|Ts>
      */
     #[Override]
-    public function catch(Closure $failure): Success
+    public function catch<Ts = mixed>(Closure $failure): ResultInterface<T|Ts>
     {
         return new Success($this->value);
     }

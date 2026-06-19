@@ -32,9 +32,6 @@ use Psl\EitherOrBoth;
  * pass is O(1); subsequent passes additionally retain the cache of yielded
  * events.
  *
- * @template L
- * @template R
- *
  * @param iterable<L> $left
  * @param iterable<R> $right
  * @param (Closure(L, R): Order) $compare
@@ -43,7 +40,7 @@ use Psl\EitherOrBoth;
  *
  * @api
  */
-function merge_join_by(iterable $left, iterable $right, Closure $compare): Iterator
+function merge_join_by<L = mixed, R = mixed>(iterable $left, iterable $right, Closure $compare): Iterator<int, EitherOrBoth\EitherOrBoth<L, R>>
 {
     return Iterator::from(
         /**

@@ -13,16 +13,13 @@ namespace Psl\Graph;
  *      $graph = Graph\add_node($graph, 'A');
  *      $graph = Graph\add_edge($graph, 'A', 'B');
  *
- * @template TNode
- * @template TWeight
- *
  * @return UndirectedGraph<TNode, TWeight>
  *
  * @pure
  *
  * @api
  */
-function undirected(): UndirectedGraph
+function undirected<TNode = mixed, TWeight = mixed>(): UndirectedGraph<TNode, TWeight>
 {
     return new UndirectedGraph([]);
 }

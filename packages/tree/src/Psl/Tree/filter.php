@@ -26,8 +26,6 @@ use Closure;
  *      )
  *      => Tree\tree(2, [Tree\tree(3, [])])
  *
- * @template T
- *
  * @param NodeInterface<T>   $node
  * @param (Closure(T): bool) $predicate
  *
@@ -35,7 +33,7 @@ use Closure;
  *
  * @api
  */
-function filter(NodeInterface $node, Closure $predicate): null|TreeNode
+function filter<T = mixed>(NodeInterface<T> $node, Closure $predicate): null|TreeNode
 {
     if (!$predicate($node->getValue())) {
         return null;

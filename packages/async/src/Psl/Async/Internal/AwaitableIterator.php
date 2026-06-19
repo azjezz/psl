@@ -20,14 +20,11 @@ use function array_shift;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template Tk
- * @template Tv
- *
  * @internal
  *
  * @codeCoverageIgnore
  */
-final class AwaitableIterator
+final class AwaitableIterator<Tk = mixed, Tv = mixed>
 {
     /**
      * @var AwaitableIteratorQueue<Tk, Tv>

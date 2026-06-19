@@ -13,21 +13,15 @@ use Override;
  *
  * Every concrete mutable class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends AccessibleCollectionInterface<Tk, Tv>
- * @extends MutableCollectionInterface<Tk, Tv>
- * @extends MutableIndexAccessInterface<Tk, Tv>
  * @extends ArrayAccess<Tk, Tv>
  *
  * @api
  */
-interface MutableAccessibleCollectionInterface extends
-    AccessibleCollectionInterface,
+interface MutableAccessibleCollectionInterface<Tk : int|string = int|string, Tv = mixed> extends
+    AccessibleCollectionInterface<Tk, Tv>,
     ArrayAccess,
-    MutableCollectionInterface,
-    MutableIndexAccessInterface
+    MutableCollectionInterface<Tk, Tv>,
+    MutableIndexAccessInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
@@ -124,8 +118,6 @@ interface MutableAccessibleCollectionInterface extends
      * number of elements in `$elements`, then only the combined elements up to and including
      * the final element of the one with the least number of elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableAccessibleCollectionInterface`.
      *
      * @return MutableAccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `MutableAccessibleCollectionInterface`
@@ -136,7 +128,7 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableAccessibleCollectionInterface;
+    public function zip<Tu = mixed>(array $elements): MutableAccessibleCollectionInterface;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the first `n` values of the current

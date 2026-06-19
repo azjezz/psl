@@ -19,8 +19,6 @@ use function is_array;
  *      Vec\slice([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5], 5, 3)
  *      => Vec(0, 1, 2)
  *
- * @template T
- *
  * @param iterable<T> $iterable Iterable to take the slice from
  * @param int<0, max> $start Start offset
  * @param null|int<0, max> $length Length (if not specified all remaining values from the array are used)
@@ -29,7 +27,7 @@ use function is_array;
  *
  * @api
  */
-function slice(iterable $iterable, int $start, null|int $length = null): array
+function slice<T = mixed>(iterable $iterable, int $start, null|int $length = null): array
 {
     if (is_array($iterable)) {
         return array_values(array_slice($iterable, $start, $length));

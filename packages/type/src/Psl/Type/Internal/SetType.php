@@ -16,13 +16,9 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template T of array-key
- *
- * @extends Type\Type<Collection\SetInterface<T>>
- *
  * @internal
  */
-final readonly class SetType extends Type\Type
+final readonly class SetType<T : int|string = int|string> extends Type\Type<Collection\SetInterface<T>>
 {
     /**
      * @psalm-mutation-free

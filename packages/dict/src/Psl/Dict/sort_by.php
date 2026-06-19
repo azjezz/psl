@@ -13,10 +13,6 @@ use Closure;
  * If the optional comparator function isn't provided, the values will be sorted
  * in ascending order of scalar key.
  *
- * @template Tk of array-key
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): Ts) $scalarFunc
  * @param (Closure(Ts, Ts): int)|null $comparator
@@ -25,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function sort_by(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
+function sort_by<Tk : int|string = int|string, Tv = mixed, Ts = mixed>(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {
     $comparator ??=
         /**

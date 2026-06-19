@@ -14,11 +14,9 @@ use function array_shift;
 use function array_splice;
 
 /**
- * @template T
- *
  * @internal
  */
-final class BoundedChannelState implements ChannelInterface
+final class BoundedChannelState<T = mixed> implements ChannelInterface
 {
     /**
      * @var list<Suspension<mixed>>

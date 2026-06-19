@@ -8,15 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends MapInterface<Tk, Tv>
- * @extends MutableAccessibleCollectionInterface<Tk, Tv>
- *
  * @api
  */
-interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionInterface
+interface MutableMapInterface<Tk : int|string = int|string, Tv = mixed> extends MapInterface<Tk, Tv>, MutableAccessibleCollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableVectorInterface` containing the values of the current
@@ -89,8 +83,6 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys will remain unchanged from the current `MutableMapInterface` to the
      * returned `MutableMapInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                              `MutableMapInterface` values.
      *
@@ -98,7 +90,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                     a user-specified operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableMapInterface;
+    public function map<Tu = mixed>(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` after an operation has been applied to each key and
@@ -111,8 +103,6 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys will remain unchanged from this `MutableMapInterface` to the returned
      * `MutableMapInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `MutableMapInterface` keys and values.
      *
@@ -120,7 +110,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableMapInterface;
+    public function mapWithKey<Tu = mixed>(Closure $fn): MutableMapInterface;
 
     /**
      * Returns the first value in the current `MutableMapInterface`.
@@ -190,8 +180,6 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
@@ -201,7 +189,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableMapInterface;
+    public function zip<Tu = mixed>(array $elements): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` containing the first `n` values of the current

@@ -7,8 +7,6 @@ namespace Psl\Math;
 /**
  * Returns the absolute value of the given number.
  *
- * @template T of int|float
- *
  * @param T $number
  *
  * @return T
@@ -17,7 +15,7 @@ namespace Psl\Math;
  *
  * @api
  */
-function abs(int|float $number): int|float
+function abs<T : int|float = int|float>(int|float $number): int|float
 {
     return $number < 0 ? -$number : $number;
 }

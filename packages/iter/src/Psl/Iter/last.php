@@ -10,15 +10,13 @@ use function is_array;
 /**
  * Returns the last element of an iterable, if the iterable is empty, null will be returned.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? T : T|null)
  *
  * @api
  */
-function last(iterable $iterable): mixed
+function last<T = mixed>(iterable $iterable): mixed
 {
     if (is_array($iterable)) {
         if ([] === $iterable) {

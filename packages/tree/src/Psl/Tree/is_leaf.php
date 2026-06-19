@@ -15,8 +15,6 @@ namespace Psl\Tree;
  *      Tree\is_leaf(Tree\tree('value', [Tree\leaf('child')]))
  *      => false
  *
- * @template T
- *
  * @param NodeInterface<T> $node
  *
  * @return bool
@@ -27,7 +25,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function is_leaf(NodeInterface $node): bool
+function is_leaf<T = mixed>(NodeInterface<T> $node): bool
 {
     return $node instanceof LeafNode;
 }

@@ -7,9 +7,6 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template Tk as array-key
- * @template Tv
- *
  * @param TypeInterface<Tk> $keyType
  * @param TypeInterface<Tv> $valueType
  *
@@ -17,7 +14,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function container(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
+function container<Tk : int|string = int|string, Tv = mixed>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
 {
     return new Internal\ContainerType($keyType, $valueType);
 }

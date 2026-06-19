@@ -16,14 +16,9 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends Type\Type<Collection\MutableMapInterface<Tk, Tv>>
- *
  * @internal
  */
-final readonly class MutableMapType extends Type\Type
+final readonly class MutableMapType<Tk : int|string = int|string, Tv = mixed> extends Type\Type<Collection\MutableMapInterface<Tk, Tv>>
 {
     /**
      * @psalm-mutation-free

@@ -22,12 +22,9 @@ use function count;
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @api
  */
-final class Semaphore
+final class Semaphore<Tin = mixed, Tout = mixed>
 {
     /**
      * @var int<0, max>

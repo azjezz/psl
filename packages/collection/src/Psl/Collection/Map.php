@@ -25,14 +25,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @implements MapInterface<Tk, Tv>
- *
  * @api
  */
-final readonly class Map implements MapInterface
+final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements MapInterface<Tk, Tv>
 {
     /**
      * @var array<Tk, Tv> $elements
@@ -63,29 +58,23 @@ final readonly class Map implements MapInterface
     }
 
     /**
-     * @template Tsk of array-key
-     * @template Tsv
-     *
      * @param array<Tsk, Tsv> $elements
      *
      * @return Map<Tsk, Tsv>
      *
      * @pure
      */
-    public static function fromArray(array $elements): Map
+    public static function fromArray<Tsk : int|string = int|string, Tsv = mixed>(array $elements): Map<Tsk, Tsv>
     {
         return new self($elements);
     }
 
     /**
-     * @template Tsk of array-key
-     * @template Tsv
-     *
      * @param array<Tsk, Tsv> $items
      *
      * @return Map<Tsk, Tsv>
      */
-    public static function fromItems(iterable $items): Map
+    public static function fromItems<Tsk : int|string = int|string, Tsv = mixed>(iterable $items): Map<Tsk, Tsv>
     {
         return self::fromArray(iterator_to_array($items));
     }
@@ -389,8 +378,6 @@ final readonly class Map implements MapInterface
      * The keys will remain unchanged from the current `Map` to the
      * returned `Map`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                              `Map` values.
      *
@@ -398,7 +385,7 @@ final readonly class Map implements MapInterface
      *                     operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): Map
+    public function map<Tu = mixed>(Closure $fn): Map
     {
         return new Map(array_map($fn, $this->elements));
     }
@@ -414,8 +401,6 @@ final readonly class Map implements MapInterface
      * The keys will remain unchanged from this `Map` to the returned
      * `Map`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `Map` keys and values.
      *
@@ -423,7 +408,7 @@ final readonly class Map implements MapInterface
      *                     operation on the current `Map`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): Map
+    public function mapWithKey<Tu = mixed>(Closure $fn): Map
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -442,8 +427,6 @@ final readonly class Map implements MapInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `Map`.
      *
      * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current `Map` with the provided elements.
@@ -451,7 +434,7 @@ final readonly class Map implements MapInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): Map
+    public function zip<Tu = mixed>(array $elements): Map
     {
         $elements = array_values($elements);
         $count = count($elements);

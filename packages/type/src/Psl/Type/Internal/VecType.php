@@ -15,15 +15,13 @@ use function is_array;
 use function is_iterable;
 
 /**
- * @template Tv
- *
  * @extends Type\Type<list<Tv>>
  *
  * @internal
  *
  * @mago-expect analysis:mixed-assignment
  */
-final readonly class VecType extends Type\Type
+final readonly class VecType<Tv = mixed> extends Type\Type
 {
     /**
      * @psalm-mutation-free

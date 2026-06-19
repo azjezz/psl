@@ -22,17 +22,13 @@ use function count;
  *
  * Just like {@see KeyedSemaphore}, all operations must have the same input type (Tin) and output type (Tout), and be processed by the same function;
  *
- * @template-contravariant Tk of array-key
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @see KeyedSemaphore
  *
  * @mago-expect lint:excessive-nesting
  *
  * @api
  */
-final class KeyedSequence
+final class KeyedSequence<Tk : int|string = int|string, Tin = mixed, Tout = mixed>
 {
     /**
      * Tracks the fiber that currently holds each key, enabling re-entrant

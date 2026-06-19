@@ -7,9 +7,6 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param TypeInterface<Tk> $keyType
  * @param TypeInterface<Tv> $valueType
  *
@@ -17,7 +14,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function non_empty_dict(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
+function non_empty_dict<Tk : int|string = int|string, Tv = mixed>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
 {
     return new Internal\NonEmptyDictType($keyType, $valueType);
 }

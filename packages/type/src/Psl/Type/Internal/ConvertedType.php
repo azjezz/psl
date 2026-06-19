@@ -13,14 +13,9 @@ use Psl\Type\TypeInterface;
 use Throwable;
 
 /**
- * @template I
- * @template O
- *
- * @extends Type\Type<O>
- *
  * @internal
  */
-final readonly class ConvertedType extends Type\Type
+final readonly class ConvertedType<I = mixed, O = mixed> extends Type\Type<O>
 {
     /**
      * @psalm-mutation-free

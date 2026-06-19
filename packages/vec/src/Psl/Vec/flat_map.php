@@ -7,9 +7,6 @@ namespace Psl\Vec;
 use Closure;
 
 /**
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tv> $iterable Iterable to be mapped over
  * @param (Closure(Tv): iterable<Ts>) $mapper
  *
@@ -17,7 +14,7 @@ use Closure;
  *
  * @api
  */
-function flat_map(iterable $iterable, Closure $mapper): array
+function flat_map<Tv = mixed, Ts = mixed>(iterable $iterable, Closure $mapper): array
 {
     $flattened = [];
     foreach ($iterable as $value) {

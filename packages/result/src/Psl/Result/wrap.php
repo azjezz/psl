@@ -11,15 +11,13 @@ use Throwable;
  * Wrap the given closure result in a `Success`, or `Failure` if the closure throws
  * an `Throwable`.
  *
- * @template T
- *
  * @param (Closure(): T) $closure
  *
  * @return ResultInterface<T>
  *
  * @api
  */
-function wrap(Closure $closure): ResultInterface
+function wrap<T = mixed>(Closure $closure): ResultInterface<T>
 {
     try {
         return new Success($closure());

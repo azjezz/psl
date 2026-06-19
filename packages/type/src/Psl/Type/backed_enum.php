@@ -9,15 +9,13 @@ use BackedEnum;
 /**
  * @pure
  *
- * @template T of BackedEnum
- *
  * @param class-string<T> $enum
  *
  * @return TypeInterface<T>
  *
  * @api
  */
-function backed_enum(string $enum): TypeInterface
+function backed_enum<T : BackedEnum = BackedEnum>(string $enum): TypeInterface<T>
 {
     return new Internal\BackedEnumType($enum);
 }

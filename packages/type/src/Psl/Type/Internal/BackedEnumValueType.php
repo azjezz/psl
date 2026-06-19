@@ -21,13 +21,11 @@ use function is_int;
 use function is_string;
 
 /**
- * @template T of BackedEnum
- *
  * @extends Type\Type<value-of<T>>
  *
  * @internal
  */
-final readonly class BackedEnumValueType extends Type\Type
+final readonly class BackedEnumValueType<T : BackedEnum = BackedEnum> extends Type\Type
 {
     private bool $isStringBacked;
 

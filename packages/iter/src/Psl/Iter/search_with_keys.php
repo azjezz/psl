@@ -18,9 +18,6 @@ use Closure;
  *      Iter\search_with_keys(['foo', 'bar', 'baz'], fn($k, $v) => 'qux' === $v)
  *      => null
  *
- * @template TKey
- * @template TValue
- *
  * @param iterable<TKey, TValue> $iterable The iterable to search
  * @param (Closure(TKey, TValue): bool) $predicate
  *
@@ -28,7 +25,7 @@ use Closure;
  *
  * @api
  */
-function search_with_keys(iterable $iterable, Closure $predicate): mixed
+function search_with_keys<TKey = mixed, TValue = mixed>(iterable $iterable, Closure $predicate): TValue|null
 {
     foreach ($iterable as $key => $value) {
         if (!$predicate($key, $value)) {

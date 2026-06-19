@@ -29,9 +29,6 @@ use const ARRAY_FILTER_USE_BOTH;
  *      );
  *      => Vec('baz')
  *
- * @template Tk
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tk, Tv): bool)|null $predicate
  *
@@ -39,7 +36,7 @@ use const ARRAY_FILTER_USE_BOTH;
  *
  * @api
  */
-function filter_with_key(iterable $iterable, null|Closure $predicate = null): array
+function filter_with_key<Tk = mixed, Tv = mixed>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??=
         /**

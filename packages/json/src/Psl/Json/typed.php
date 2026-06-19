@@ -9,8 +9,6 @@ use Psl\Type;
 /**
  * Decode a json encoded string into a dynamic variable.
  *
- * @template T
- *
  * @param Type\TypeInterface<T> $type
  *
  * @throws Exception\DecodeException If an error occurred.
@@ -19,7 +17,7 @@ use Psl\Type;
  *
  * @api
  */
-function typed(string $json, Type\TypeInterface $type): mixed
+function typed<T = mixed>(string $json, Type\TypeInterface<T> $type): T
 {
     try {
         return $type->coerce(namespace\decode($json));

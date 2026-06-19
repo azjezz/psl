@@ -9,9 +9,6 @@ use Throwable;
 /**
  * Awaits all awaitables to complete concurrently.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Awaitable<Tv>> $awaitables
  *
  * @throws Exception\CompositeException If multiple awaitables failed at once.
@@ -20,7 +17,7 @@ use Throwable;
  *
  * @api
  */
-function all(iterable $awaitables): array
+function all<Tk : int|string = int|string, Tv = mixed>(iterable $awaitables): array
 {
     $values = [];
 

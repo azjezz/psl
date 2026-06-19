@@ -8,11 +8,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @template-covariant T
- *
  * @api
  */
-interface TypeInterface
+interface TypeInterface<T = mixed>
 {
     /**
      * @psalm-assert-if-true T $value

@@ -14,8 +14,6 @@ use Closure;
  *
  * In the case of duplicate values, later values overwrite previous ones.
  *
- * @template T
- *
  * @param iterable<T> $numbers
  * @param (Closure(T): numeric) $numericFunction
  *
@@ -23,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function max_by(iterable $numbers, Closure $numericFunction): mixed
+function max_by<T = mixed>(iterable $numbers, Closure $numericFunction): T|null
 {
     $max = null;
     $maxNum = null;

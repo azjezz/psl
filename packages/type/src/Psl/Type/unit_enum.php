@@ -9,15 +9,13 @@ use UnitEnum;
 /**
  * @pure
  *
- * @template T of UnitEnum
- *
  * @param class-string<T> $enum
  *
  * @return TypeInterface<T>
  *
  * @api
  */
-function unit_enum(string $enum): TypeInterface
+function unit_enum<T : UnitEnum = UnitEnum>(string $enum): TypeInterface<T>
 {
     return new Internal\UnitEnumType($enum);
 }

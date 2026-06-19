@@ -13,11 +13,9 @@ namespace Psl;
  *
  * `Iter\reduce()` can also be used in some situations to avoid this class.
  *
- * @template T
- *
  * @api
  */
-final class Ref
+final class Ref<T = mixed>
 {
     /**
      * @var T

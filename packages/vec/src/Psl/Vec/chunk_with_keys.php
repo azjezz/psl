@@ -12,9 +12,6 @@ namespace Psl\Vec;
  *     Vec\chunk_with_keys(['a' => 1, 'b' => 2, 'c' => 3], 2)
  *     => Iter(['a' => 1, 'b' => 2], ['c' => 3])
  *
- * @template Tk as array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable The iterable to chunk
  * @param positive-int $size The size of each chunk
  *
@@ -22,7 +19,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function chunk_with_keys(iterable $iterable, int $size): array
+function chunk_with_keys<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, int $size): array
 {
     $result = [];
     $ii = 0;

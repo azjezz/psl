@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Psl\Interoperability;
 
 /**
- * @template T
- *
  * @api
  */
-interface FromStdlib
+interface FromStdlib<T = mixed>
 {
     /**
      * @param T $value

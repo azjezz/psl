@@ -11,13 +11,11 @@ use Psl\Default\DefaultInterface;
 /**
  * An interface representing a queue data structure ( FIFO ).
  *
- * @template T
- *
  * @see https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)
  *
  * @api
  */
-interface QueueInterface extends Countable, DefaultInterface
+interface QueueInterface<T = mixed> extends Countable, DefaultInterface
 {
     /**
      * Adds a node to the queue.

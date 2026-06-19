@@ -10,13 +10,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @template T
- *
- * @extends Type\Type<T|null>
- *
  * @internal
  */
-final readonly class NullableType extends Type\Type
+final readonly class NullableType<T = mixed> extends Type\Type<T|null>
 {
     /**
      * @psalm-mutation-free

@@ -15,11 +15,9 @@ use function array_splice;
 use function count;
 
 /**
- * @template T
- *
  * @internal
  */
-final class UnboundedChannelState implements ChannelInterface
+final class UnboundedChannelState<T = mixed> implements ChannelInterface
 {
     /**
      * @var list<Suspension<mixed>>

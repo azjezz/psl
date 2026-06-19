@@ -184,8 +184,6 @@ final class LocalStore implements StoreInterface
      * If the cache is full, the least recently used entry is evicted before
      * storing the new value.
      *
-     * @template T
-     *
      * @param non-empty-string $key
      * @param (Closure(): T) $computer
      * @param null|Duration $ttl Time to live. Null means no expiration.
@@ -193,7 +191,7 @@ final class LocalStore implements StoreInterface
      * @return T
      */
     #[Override]
-    public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
+    public function compute<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         /** @var T */
         return $this->sequence->waitFor($key, [$computer, $ttl, false]);
@@ -210,8 +208,6 @@ final class LocalStore implements StoreInterface
      * the current process. If the cache is full, the least recently used
      * entry is evicted before storing.
      *
-     * @template T
-     *
      * @param non-empty-string $key
      * @param (Closure(null|T): T) $computer Receives the old value or null.
      * @param null|Duration $ttl Time to live. Null means no expiration.
@@ -219,7 +215,7 @@ final class LocalStore implements StoreInterface
      * @return T
      */
     #[Override]
-    public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
+    public function update<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         /** @var T */
         return $this->sequence->waitFor($key, [$computer, $ttl, true]);

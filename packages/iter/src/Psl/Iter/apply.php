@@ -9,14 +9,12 @@ use Closure;
 /**
  * Applies a function to all values of an iterable.
  *
- * @template  T
- *
  * @param iterable<T> $iterable Iterable to apply on
  * @param (Closure(T): mixed) $function Apply function
  *
  * @api
  */
-function apply(iterable $iterable, Closure $function): void
+function apply<T = mixed>(iterable $iterable, Closure $function): void
 {
     foreach ($iterable as $value) {
         $function($value);

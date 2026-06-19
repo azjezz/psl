@@ -15,8 +15,6 @@ namespace Psl\Tree;
  *      ]))
  *      => 3
  *
- * @template T
- *
  * @param NodeInterface<T> $node
  *
  * @return int<1, max>
@@ -25,7 +23,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function count(NodeInterface $node): int
+function count<T = mixed>(NodeInterface<T> $node): int
 {
     $total = 1;
     if ($node instanceof TreeNode) {

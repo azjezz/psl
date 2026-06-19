@@ -9,13 +9,9 @@ use Override;
 /**
  * Immutable leaf node implementation (node with no children).
  *
- * @template-covariant T
- *
- * @implements NodeInterface<T>
- *
  * @api
  */
-final readonly class LeafNode implements NodeInterface
+final readonly class LeafNode<T = mixed> implements NodeInterface<T>
 {
     /**
      * @param T $value

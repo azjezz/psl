@@ -22,15 +22,13 @@ use function is_array;
  *     Vec\flatten([])
  *     => Vec()
  *
- * @template T
- *
  * @param iterable<iterable<T>> $iterables
  *
  * @return list<T>
  *
  * @api
  */
-function flatten(iterable $iterables): array
+function flatten<T = mixed>(iterable $iterables): array
 {
     if (is_array($iterables)) {
         $allArrays = true;

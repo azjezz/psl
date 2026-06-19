@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Psl\Observer;
 
 /**
- * @template T of SubjectInterface
- *
  * @api
  */
-interface ObserverInterface
+interface ObserverInterface<T : SubjectInterface = SubjectInterface>
 {
     /**
      * Receive an update from a subject.

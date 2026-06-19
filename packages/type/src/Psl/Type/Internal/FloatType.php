@@ -17,11 +17,9 @@ use function is_string;
 use function preg_match;
 
 /**
- * @extends Type\Type<float>
- *
  * @internal
  */
-final readonly class FloatType extends Type\Type
+final readonly class FloatType extends Type\Type<float>
 {
     /**
      * @psalm-assert-if-true float $value

@@ -27,15 +27,11 @@ use function in_array;
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
- * @template-contravariant Tk of array-key
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @mago-expect lint:excessive-nesting
  *
  * @api
  */
-final class KeyedSemaphore
+final class KeyedSemaphore<Tk : int|string = int|string, Tin = mixed, Tout = mixed>
 {
     /**
      * @var array<Tk, int<0, max>>

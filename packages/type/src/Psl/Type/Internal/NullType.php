@@ -10,11 +10,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @extends Type\Type<null>
- *
  * @internal
  */
-final readonly class NullType extends Type\Type
+final readonly class NullType extends Type\Type<null>
 {
     /**
      * @psalm-assert-if-true null $value

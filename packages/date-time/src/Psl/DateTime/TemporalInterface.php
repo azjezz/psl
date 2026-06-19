@@ -15,12 +15,9 @@ use Stringable;
 /**
  * Represents a temporal object that can be manipulated and compared.
  *
- * @template-extends Comparable<TemporalInterface>
- * @template-extends Equable<TemporalInterface>
- *
  * @api
  */
-interface TemporalInterface extends Comparable, Equable, JsonSerializable, Stringable
+interface TemporalInterface extends Comparable<TemporalInterface>, Equable<TemporalInterface>, JsonSerializable, Stringable
 {
     /**
      * Returns the timestamp representation of this temporal object.

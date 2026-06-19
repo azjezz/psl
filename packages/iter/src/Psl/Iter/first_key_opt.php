@@ -12,16 +12,13 @@ use Psl\Option\Option;
  *
  * @param iterable<Tk, Tv> $iterable
  *
- * @template Tk
- * @template Tv
- *
  * @return Option<Tk>
  *
  * @mago-expect lint:loop-does-not-iterate
  *
  * @api
  */
-function first_key_opt(iterable $iterable): Option
+function first_key_opt<Tk = mixed, Tv = mixed>(iterable $iterable): Option<Tk>
 {
     foreach ($iterable as $k => $_) {
         return Option::some($k);

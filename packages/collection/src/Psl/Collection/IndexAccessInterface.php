@@ -7,12 +7,9 @@ namespace Psl\Collection;
 /**
  * The interface for all keyed collections to enable access its values.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @api
  */
-interface IndexAccessInterface
+interface IndexAccessInterface<Tk : int|string = int|string, Tv = mixed>
 {
     /**
      * Returns the value at the specified key in the current collection.

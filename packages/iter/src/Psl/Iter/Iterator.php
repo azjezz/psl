@@ -14,14 +14,11 @@ use function array_key_exists;
 use function count;
 
 /**
- * @template   Tk
- * @template   Tv
- *
  * @implements SeekableIterator<Tk, Tv>
  *
  * @api
  */
-final class Iterator implements Countable, SeekableIterator
+final class Iterator<Tk = mixed, Tv = mixed> implements Countable, SeekableIterator
 {
     /**
      * @var null|Generator<Tk, Tv, mixed, mixed>
@@ -61,14 +58,11 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Create an iterator from a factory.
      *
-     * @template Tsk
-     * @template Tsv
-     *
      * @param (Closure(): iterable<Tsk, Tsv>) $factory
      *
      * @return Iterator<Tsk, Tsv>
      */
-    public static function from(Closure $factory): Iterator
+    public static function from<Tsk = mixed, Tsv = mixed>(Closure $factory): Iterator<Tsk, Tsv>
     {
         return self::create($factory());
     }
@@ -76,14 +70,11 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Create an iterator from an iterable.
      *
-     * @template Tsk
-     * @template Tsv
-     *
      * @param iterable<Tsk, Tsv> $iterable
      *
      * @return Iterator<Tsk, Tsv>
      */
-    public static function create(iterable $iterable): Iterator
+    public static function create<Tsk = mixed, Tsv = mixed>(iterable $iterable): Iterator<Tsk, Tsv>
     {
         if ($iterable instanceof Generator) {
             return new self($iterable);

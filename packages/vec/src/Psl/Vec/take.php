@@ -12,8 +12,6 @@ namespace Psl\Vec;
  *      Vec\take([1, 2, 3, 4], 2)
  *      => Vec(1, 2)
  *
- * @template T
- *
  * @param iterable<T> $iterable Iterable to take the elements from
  * @param int<0, max> $n Number of elements to take from the start
  *
@@ -21,7 +19,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function take(iterable $iterable, int $n): array
+function take<T = mixed>(iterable $iterable, int $n): array
 {
     return namespace\slice($iterable, 0, $n);
 }

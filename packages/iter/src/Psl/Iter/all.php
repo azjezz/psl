@@ -12,14 +12,12 @@ use Closure;
  * This function is short-circuiting, i.e. if the predicate fails for one
  * element the remaining elements will not be considered anymore.
  *
- * @template  T
- *
  * @param iterable<T> $iterable Iterable to check against the predicate
  * @param (Closure(T): bool) $predicate
  *
  * @api
  */
-function all(iterable $iterable, Closure $predicate): bool
+function all<T = mixed>(iterable $iterable, Closure $predicate): bool
 {
     foreach ($iterable as $value) {
         if ($predicate($value)) {

@@ -18,8 +18,6 @@ use Closure;
  *      Iter\search(['foo', 'bar', 'baz'], fn($v) => 'qux' === $v)
  *      => Null
  *
- * @template T
- *
  * @param iterable<T> $iterable The iterable to search
  * @param (Closure(T): bool) $predicate
  *
@@ -27,7 +25,7 @@ use Closure;
  *
  * @api
  */
-function search(iterable $iterable, Closure $predicate): mixed
+function search<T = mixed>(iterable $iterable, Closure $predicate): T|null
 {
     foreach ($iterable as $value) {
         if (!$predicate($value)) {

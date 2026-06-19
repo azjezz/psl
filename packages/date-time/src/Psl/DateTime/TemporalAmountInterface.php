@@ -19,12 +19,9 @@ use Stringable;
  *
  * @inheritors Duration|Period
  *
- * @extends Comparison\Equable<TemporalAmountInterface>
- * @extends Interoperability\ToStdlib<DateInterval>
- *
  * @api
  */
-interface TemporalAmountInterface extends Comparison\Equable, JsonSerializable, Stringable, Interoperability\ToStdlib
+interface TemporalAmountInterface extends Comparison\Equable<TemporalAmountInterface>, JsonSerializable, Stringable, Interoperability\ToStdlib<DateInterval>
 {
     /**
      * Checks if this amount represents zero.

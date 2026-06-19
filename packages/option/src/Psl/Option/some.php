@@ -7,8 +7,6 @@ namespace Psl\Option;
 /**
  * Create an option with some value.
  *
- * @template T
- *
  * @param T $value
  *
  * @return Option<T>
@@ -17,7 +15,7 @@ namespace Psl\Option;
  *
  * @api
  */
-function some(mixed $value): Option
+function some<T = mixed>(T $value): Option<T>
 {
     return Option::some($value);
 }

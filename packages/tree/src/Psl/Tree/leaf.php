@@ -11,8 +11,6 @@ namespace Psl\Tree;
  *
  *      Tree\leaf('value')
  *
- * @template T
- *
  * @param T $value
  *
  * @return LeafNode<T>
@@ -21,7 +19,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function leaf(mixed $value): LeafNode
+function leaf<T = mixed>(T $value): LeafNode<T>
 {
     return new LeafNode($value);
 }

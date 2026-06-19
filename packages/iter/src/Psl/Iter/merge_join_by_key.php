@@ -34,9 +34,6 @@ use function array_key_exists;
  * The returned {@see Iterator} is rewindable -- consuming it twice replays the
  * cached events without re-walking the inputs.
  *
- * @template T
- * @template I of array-key
- *
  * @param iterable<T> $left
  * @param iterable<T> $right
  * @param (Closure(T): I) $key_by
@@ -45,7 +42,7 @@ use function array_key_exists;
  *
  * @api
  */
-function merge_join_by_key(iterable $left, iterable $right, Closure $key_by): Iterator
+function merge_join_by_key<T = mixed, I : int|string = int|string>(iterable $left, iterable $right, Closure $key_by): Iterator<int, EitherOrBoth\EitherOrBoth<T, T>>
 {
     return Iterator::from(
         /**

@@ -17,9 +17,6 @@ use Closure;
  *      Dict\take_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Dict(3, 1, 4)
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable Iterable to take values from
  * @param (Closure(Tv): bool) $predicate
  *
@@ -27,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function take_while(iterable $iterable, Closure $predicate): array
+function take_while<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $predicate): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

@@ -17,14 +17,9 @@ use Psl\Option;
  * the three positions are equal citizens. Primary use case: three-way diff of two
  * collections (insert / delete / update events).
  *
- * @template-covariant TLeft
- * @template-covariant TRight
- *
- * @extends Comparison\Equable<EitherOrBoth<TLeft, TRight>>
- *
  * @api
  */
-interface EitherOrBoth extends Comparison\Equable
+interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable<EitherOrBoth<TLeft, TRight>>
 {
     /**
      * Returns true if this is exclusively a Left (not Both).
@@ -106,20 +101,16 @@ interface EitherOrBoth extends Comparison\Equable
      *
      * On {@see Both} the closure runs twice, once per side, independently.
      *
-     * @template TResult
-     *
      * @param (Closure(TLeft|TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
      *
      * @return EitherOrBoth<TResult, TResult>
      */
-    public function map(Closure $closure): EitherOrBoth;
+    public function map<TResult = mixed>(Closure $closure): EitherOrBoth<TResult, TResult>;
 
     /**
      * Map the left side if present, leave the right side untouched.
-     *
-     * @template TResult
      *
      * @param (Closure(TLeft): TResult) $closure
      *
@@ -127,12 +118,10 @@ interface EitherOrBoth extends Comparison\Equable
      *
      * @return EitherOrBoth<TResult, TRight>
      */
-    public function mapLeft(Closure $closure): EitherOrBoth;
+    public function mapLeft<TResult = mixed>(Closure $closure): EitherOrBoth<TResult, TRight>;
 
     /**
      * Map the right side if present, leave the left side untouched.
-     *
-     * @template TResult
      *
      * @param (Closure(TRight): TResult) $closure
      *
@@ -140,16 +129,13 @@ interface EitherOrBoth extends Comparison\Equable
      *
      * @return EitherOrBoth<TLeft, TResult>
      */
-    public function mapRight(Closure $closure): EitherOrBoth;
+    public function mapRight<TResult = mixed>(Closure $closure): EitherOrBoth<TLeft, TResult>;
 
     /**
      * Map each side independently with its own closure.
      *
      * On {@see Left}, only the left closure runs; on {@see Right}, only the right;
      * on {@see Both}, both run.
-     *
-     * @template TResultLeft
-     * @template TResultRight
      *
      * @param (Closure(TLeft): TResultLeft)   $left
      * @param (Closure(TRight): TResultRight) $right
@@ -159,7 +145,7 @@ interface EitherOrBoth extends Comparison\Equable
      *
      * @return EitherOrBoth<TResultLeft, TResultRight>
      */
-    public function mapAny(Closure $left, Closure $right): EitherOrBoth;
+    public function mapAny<TResultLeft = mixed, TResultRight = mixed>(Closure $left, Closure $right): EitherOrBoth<TResultLeft, TResultRight>;
 
     /**
      * Swap the Left and Right sides.
@@ -179,8 +165,6 @@ interface EitherOrBoth extends Comparison\Equable
      * Argument order is positional: left first, right second, both third.
      * No happy-path convention applies — the three variants are equal citizens.
      *
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult)         $left  Called when this is a Left.
      * @param (Closure(TRight): TResult)        $right Called when this is a Right.
      * @param (Closure(TLeft, TRight): TResult) $both  Called when this is a Both.
@@ -191,7 +175,7 @@ interface EitherOrBoth extends Comparison\Equable
      *
      * @return TResult
      */
-    public function proceed(Closure $left, Closure $right, Closure $both): mixed;
+    public function proceed<TResult = mixed>(Closure $left, Closure $right, Closure $both): TResult;
 
     /**
      * Run a side-effect closure on the contained value(s) and return self unchanged.

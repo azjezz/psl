@@ -14,8 +14,6 @@ use Closure;
  *     Vec\reproduce(5, fn(int $i): int => $i * 2)
  *     => Vec(2, 4, 6, 8, 10)
  *
- * @template T
- *
  * @param positive-int $size
  * @param (Closure(int): T) $factory
  *
@@ -23,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function reproduce(int $size, Closure $factory): array
+function reproduce<T = mixed>(int $size, Closure $factory): array
 {
     $result = [];
     for ($i = 1; $i <= $size; $i++) {

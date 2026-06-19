@@ -9,13 +9,9 @@ use Override;
 /**
  * Immutable tree node implementation (node with children).
  *
- * @template-covariant T
- *
- * @implements NodeInterface<T>
- *
  * @api
  */
-final readonly class TreeNode implements NodeInterface
+final readonly class TreeNode<T = mixed> implements NodeInterface<T>
 {
     /**
      * @var list<NodeInterface<T>>

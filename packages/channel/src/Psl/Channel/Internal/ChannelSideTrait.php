@@ -7,11 +7,9 @@ namespace Psl\Channel\Internal;
 use Override;
 
 /**
- * @template T of UnboundedChannelState|BoundedChannelState
- *
  * @internal
  */
-trait ChannelSideTrait
+trait ChannelSideTrait<T : UnboundedChannelState|BoundedChannelState = UnboundedChannelState|BoundedChannelState>
 {
     /**
      * @var T

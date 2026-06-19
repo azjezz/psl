@@ -12,13 +12,9 @@ use function count;
 use function max;
 
 /**
- * @template T
- *
- * @implements PriorityQueueInterface<T>
- *
  * @api
  */
-final class PriorityQueue implements PriorityQueueInterface
+final class PriorityQueue<T = mixed> implements PriorityQueueInterface<T>
 {
     /**
      * @var array<int, non-empty-list<T>>

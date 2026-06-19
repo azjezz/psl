@@ -15,15 +15,13 @@ use function is_array;
  *      Vec\reverse(['foo', 'bar', 'baz', 'qux'])
  *      => Vec('qux', 'baz', 'bar', 'foo')
  *
- * @template T
- *
  * @param iterable<T> $iterable The iterable to reverse.
  *
  * @return list<T>
  *
  * @api
  */
-function reverse(iterable $iterable): array
+function reverse<T = mixed>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_reverse(array_values($iterable));

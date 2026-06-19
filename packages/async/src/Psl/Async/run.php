@@ -11,15 +11,13 @@ use Throwable;
 /**
  * Create a new fiber asynchronously using the given closure.
  *
- * @template T
- *
  * @param (Closure(): T) $closure
  *
  * @return Awaitable<T>
  *
  * @api
  */
-function run(Closure $closure): Awaitable
+function run<T = mixed>(Closure $closure): Awaitable<T>
 {
     $state = new Internal\State();
 

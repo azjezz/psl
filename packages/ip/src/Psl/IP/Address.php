@@ -32,12 +32,9 @@ use const STR_PAD_LEFT;
 /**
  * Immutable IP address value object backed by raw binary bytes.
  *
- * @implements Comparable<Address>
- * @implements Equable<Address>
- *
  * @api
  */
-final readonly class Address implements Stringable, Comparable, Equable
+final readonly class Address implements Stringable, Comparable<Address>, Equable<Address>
 {
     /**
      * @param non-empty-string $bytes Raw binary bytes (4 for IPv4, 16 for IPv6).

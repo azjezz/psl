@@ -15,8 +15,6 @@ namespace Psl\Tree;
  *      )
  *      => true
  *
- * @template T
- *
  * @param NodeInterface<T> $tree
  * @param T $value
  *
@@ -26,7 +24,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function contains(NodeInterface $tree, mixed $value): bool
+function contains<T = mixed>(NodeInterface<T> $tree, T $value): bool
 {
     return namespace\any($tree, static fn(mixed $v): bool => $v === $value);
 }

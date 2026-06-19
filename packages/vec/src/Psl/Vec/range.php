@@ -28,8 +28,6 @@ namespace Psl\Vec;
  *     Vec\range(3.0, 0.0, -0.5)
  *     => Vec(3.0, 2.5, 2.0, 1.5, 1.0, 0.5, 0.0)
  *
- * @template T of int|float
- *
  * @param T $start
  * @param T $end
  * @param T|null $step
@@ -42,7 +40,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function range(int|float $start, int|float $end, int|float|null $step = null): array
+function range<T : int|float = int|float>(int|float $start, int|float $end, int|float|null $step = null): array
 {
     if ($start === $end) {
         return [$start];

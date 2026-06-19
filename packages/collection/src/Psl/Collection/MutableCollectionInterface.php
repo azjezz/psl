@@ -15,14 +15,9 @@ use Override;
  *
  * If your collection to be immutable, implement Collection only instead.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends CollectionInterface<Tk, Tv>
- *
  * @api
  */
-interface MutableCollectionInterface extends CollectionInterface
+interface MutableCollectionInterface<Tk : int|string = int|string, Tv = mixed> extends CollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableCollectionInterface` containing the values of the current `MutableCollectionInterface`
@@ -72,8 +67,6 @@ interface MutableCollectionInterface extends CollectionInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the
      *                                       elements of this `MutableCollectionInterface`.
      *
@@ -85,7 +78,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableCollectionInterface;
+    public function zip<Tu = mixed>(array $elements): MutableCollectionInterface;
 
     /**
      * Returns a `MutableCollectionInterface` containing the first `n` values of the current

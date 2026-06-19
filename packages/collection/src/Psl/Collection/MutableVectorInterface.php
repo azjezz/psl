@@ -8,14 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template T
- *
- * @extends VectorInterface<T>
- * @extends MutableAccessibleCollectionInterface<int<0, max>, T>
- *
  * @api
  */
-interface MutableVectorInterface extends MutableAccessibleCollectionInterface, VectorInterface
+interface MutableVectorInterface<T = mixed> extends MutableAccessibleCollectionInterface<int, T>, VectorInterface<T>
 {
     /**
      * Get an array copy of the current vector.
@@ -98,8 +93,6 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys will remain unchanged from the current `MutableVectorInterface` to the
      * returned `MutableVectorInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableVectorInterface` values
      *
@@ -107,7 +100,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                                    a user-specified operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableVectorInterface;
+    public function map<Tu = mixed>(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` after an operation has been applied to each key and
@@ -120,8 +113,6 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys will remain unchanged from this `MutableVectorInterface` to the returned
      * `MutableVectorInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `MutableVectorInterface` keys and values
      *
@@ -130,7 +121,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                                    keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableVectorInterface;
+    public function mapWithKey<Tu = mixed>(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns the first value in the current `MutableVectorInterface`.
@@ -200,8 +191,6 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<array{0: T, 1: Tu}> The `MutableVectorInterface` that combines the values of
@@ -210,7 +199,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableVectorInterface;
+    public function zip<Tu = mixed>(array $elements): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the first `n` values of the current

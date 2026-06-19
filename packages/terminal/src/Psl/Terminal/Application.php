@@ -25,11 +25,9 @@ use const SIGWINCH;
 /**
  * Terminal application managing the event loop, raw mode, and rendering lifecycle.
  *
- * @template S of object
- *
  * @api
  */
-final class Application
+final class Application<S : object = object>
 {
     /**
      * @var array<class-string, list<Closure>>
@@ -75,14 +73,12 @@ final class Application
     /**
      * Create a local terminal application using STDIN/STDOUT.
      *
-     * @template T of object
-     *
      * @param T $state Application state object, passed to all callbacks.
      * @param null|DateTime\Duration $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
      *
      * @return self<T>
      */
-    public static function create(
+    public static function create<T : object = object>(
         object $state,
         string $title = '',
         null|DateTime\Duration $tickInterval = null,
@@ -117,8 +113,6 @@ final class Application
      * Use {@see dispatch()} to inject {@see Event\Resize} events whenever
      * the remote client reports a window size change.
      *
-     * @template T of object
-     *
      * @param T $state Application state object, passed to all callbacks.
      * @param ReadHandleInterface&StreamHandleInterface $input
      * @param WriteHandleInterface $output
@@ -128,7 +122,7 @@ final class Application
      *
      * @return self<T>
      */
-    public static function custom(
+    public static function custom<T : object = object>(
         object $state,
         IO\ReadHandleInterface&IO\StreamHandleInterface $input,
         IO\WriteHandleInterface $output,
@@ -156,12 +150,10 @@ final class Application
     /**
      * Register an event handler for a specific event type.
      *
-     * @template T of Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus
-     *
      * @param class-string<T> $eventClass
      * @param Closure(T, S): void $handler
      */
-    public function on(string $eventClass, Closure $handler): void
+    public function on<T : Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus = Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus>(string $eventClass, Closure $handler): void
     {
         $this->eventHandlers[$eventClass] ??= [];
         $this->eventHandlers[$eventClass][] = $handler;

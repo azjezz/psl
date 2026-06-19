@@ -8,13 +8,9 @@ use Override;
 use Psl\Type\Exception\AssertException;
 
 /**
- * @template-covariant T
- *
- * @implements TypeInterface<T>
- *
  * @api
  */
-abstract readonly class Type implements TypeInterface
+abstract readonly class Type<T = mixed> implements TypeInterface<T>
 {
     /**
      * @psalm-assert-if-true T $value

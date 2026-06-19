@@ -11,14 +11,9 @@ use function array_values;
  *
  * Supports any node type (scalars, objects, arrays, resources, etc.).
  *
- * @template TNode
- * @template TWeight
- *
- * @implements GraphInterface<TNode, TWeight>
- *
  * @api
  */
-final readonly class DirectedGraph implements GraphInterface
+final readonly class DirectedGraph<TNode = mixed, TWeight = mixed> implements GraphInterface<TNode, TWeight>
 {
     /**
      * @param array<non-empty-string, TNode> $nodes Map from node key to node
