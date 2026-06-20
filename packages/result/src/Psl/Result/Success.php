@@ -14,7 +14,7 @@ use Psl;
  *
  * @api
  */
-final readonly class Success<T> implements ResultInterface<T>
+final readonly class Success<+T> implements ResultInterface<T>
 {
     /**
      * @var T

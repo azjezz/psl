@@ -18,7 +18,7 @@ use Throwable;
  *
  * @api
  */
-interface ResultInterface<T> extends Psl\Promise\PromiseInterface<T>
+interface ResultInterface<+T> extends Psl\Promise\PromiseInterface<T>
 {
     /**
      * Transforms a promise's value by applying a function to the promise's fulfillment

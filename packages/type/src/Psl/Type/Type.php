@@ -10,7 +10,7 @@ use Psl\Type\Exception\AssertException;
 /**
  * @api
  */
-abstract readonly class Type<T> implements TypeInterface<T>
+abstract readonly class Type<+T> implements TypeInterface<T>
 {
     /**
      * @psalm-assert-if-true T $value

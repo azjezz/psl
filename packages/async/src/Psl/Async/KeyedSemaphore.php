@@ -31,7 +31,7 @@ use function in_array;
  *
  * @api
  */
-final class KeyedSemaphore<Tk : int|string, Tin, Tout>
+final class KeyedSemaphore<-Tk : int|string, -Tin, +Tout>
 {
     /**
      * @var array<Tk, int<0, max>>

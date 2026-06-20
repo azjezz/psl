@@ -24,7 +24,7 @@ use function count;
  *
  * @api
  */
-final class Sequence<Tin, Tout>
+final class Sequence<-Tin, +Tout>
 {
     private bool $ongoing = false;
 

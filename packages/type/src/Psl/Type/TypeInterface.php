@@ -10,7 +10,7 @@ use Psl\Type\Exception\CoercionException;
 /**
  * @api
  */
-interface TypeInterface<T>
+interface TypeInterface<+T>
 {
     /**
      * @psalm-assert-if-true T $value

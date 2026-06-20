@@ -13,7 +13,7 @@ use Throwable;
  *
  * @api
  */
-final readonly class Failure<T, Te : Throwable> implements ResultInterface<T>
+final readonly class Failure<+T, +Te : Throwable> implements ResultInterface<T>
 {
     /**
      * @var Te

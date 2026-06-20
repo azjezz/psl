@@ -24,7 +24,7 @@ use function count;
  *
  * @api
  */
-final class Semaphore<Tin, Tout>
+final class Semaphore<-Tin, +Tout>
 {
     /**
      * @var int<0, max>

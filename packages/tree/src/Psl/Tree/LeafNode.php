@@ -11,7 +11,7 @@ use Override;
  *
  * @api
  */
-final readonly class LeafNode<T> implements NodeInterface<T>
+final readonly class LeafNode<+T> implements NodeInterface<T>
 {
     /**
      * @param T $value
