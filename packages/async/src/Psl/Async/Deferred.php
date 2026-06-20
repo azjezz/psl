@@ -33,7 +33,7 @@ final readonly class Deferred<T>
     public function __construct()
     {
         $this->state = new Internal\State();
-        $this->awaitable = new Awaitable($this->state);
+        $this->awaitable = new Awaitable::<T>($this->state);
     }
 
     /**

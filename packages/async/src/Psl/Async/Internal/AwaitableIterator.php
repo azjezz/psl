@@ -38,7 +38,7 @@ final class AwaitableIterator<Tk, Tv>
 
     public function __construct()
     {
-        $this->queue = new AwaitableIteratorQueue();
+        $this->queue = new AwaitableIteratorQueue::<Tk, Tv>();
     }
 
     /**

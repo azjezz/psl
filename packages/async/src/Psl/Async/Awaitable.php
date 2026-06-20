@@ -50,7 +50,7 @@ final readonly class Awaitable<T> implements PromiseInterface<T>
      */
     public static function iterate<Tk, Tv>(iterable $awaitables): Generator
     {
-        $iterator = new AwaitableIterator();
+        $iterator = new AwaitableIterator::<Tk, Tv>();
 
         if (is_array($awaitables)) {
             foreach ($awaitables as $key => $awaitable) {
@@ -91,7 +91,7 @@ final readonly class Awaitable<T> implements PromiseInterface<T>
      */
     public static function complete<Tv>(Tv $result): self
     {
-        $state = new State();
+        $state = new State::<Tv>();
         $state->complete($result);
 
         return new self::<Tv>($state);
@@ -103,7 +103,7 @@ final readonly class Awaitable<T> implements PromiseInterface<T>
     public static function error(Throwable $throwable): self
     {
         /** @var State<never> $state */
-        $state = new State();
+        $state = new State::<never>();
         $state->error($throwable);
 
         return new self::<never>($state);
@@ -130,7 +130,7 @@ final readonly class Awaitable<T> implements PromiseInterface<T>
     #[Override]
     public function then<Ts>(Closure $success, Closure $failure): Awaitable<Ts>
     {
-        $state = new State();
+        $state = new State::<Ts>();
 
         $this->state->subscribe(
             /**
@@ -206,7 +206,7 @@ final readonly class Awaitable<T> implements PromiseInterface<T>
     #[Override]
     public function always(Closure $always): Awaitable
     {
-        $state = new State();
+        $state = new State::<T>();
 
         $this->state->subscribe(static function (null|Throwable $error, mixed $value) use ($state, $always): void {
             try {

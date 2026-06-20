@@ -17,5 +17,5 @@ namespace Psl\Option;
  */
 function from_nullable<T>(null|T $value): Option<T>
 {
-    return null !== $value ? Option::some($value) : Option::none();
+    return null !== $value ? Option::some::<T>($value) : Option::none();
 }
