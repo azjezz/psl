@@ -27,7 +27,7 @@ use function is_array;
  *
  * @api
  */
-final readonly class Awaitable<T> implements PromiseInterface<T>
+final readonly class Awaitable<+T> implements PromiseInterface<T>
 {
     private State $state;
 
