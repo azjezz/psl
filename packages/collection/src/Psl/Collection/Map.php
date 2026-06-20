@@ -27,7 +27,7 @@ use const ARRAY_FILTER_USE_BOTH;
 /**
  * @api
  */
-final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements MapInterface<Tk, Tv>
+final readonly class Map<Tk : int|string, Tv> implements MapInterface<Tk, Tv>
 {
     /**
      * @var array<Tk, Tv> $elements
@@ -64,9 +64,9 @@ final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements Ma
      *
      * @pure
      */
-    public static function fromArray<Tsk : int|string = int|string, Tsv = mixed>(array $elements): Map<Tsk, Tsv>
+    public static function fromArray<Tsk : int|string, Tsv>(array $elements): Map<Tsk, Tsv>
     {
-        return new self($elements);
+        return new self::<Tsk, Tsv>($elements);
     }
 
     /**
@@ -74,7 +74,7 @@ final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements Ma
      *
      * @return Map<Tsk, Tsv>
      */
-    public static function fromItems<Tsk : int|string = int|string, Tsv = mixed>(iterable $items): Map<Tsk, Tsv>
+    public static function fromItems<Tsk : int|string, Tsv>(iterable $items): Map<Tsk, Tsv>
     {
         return self::fromArray(iterator_to_array($items));
     }
@@ -385,7 +385,7 @@ final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements Ma
      *                     operation is applied.
      */
     #[Override]
-    public function map<Tu = mixed>(Closure $fn): Map
+    public function map<Tu>(Closure $fn): Map
     {
         return new Map(array_map($fn, $this->elements));
     }
@@ -408,7 +408,7 @@ final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements Ma
      *                     operation on the current `Map`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey<Tu = mixed>(Closure $fn): Map
+    public function mapWithKey<Tu>(Closure $fn): Map
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -434,7 +434,7 @@ final readonly class Map<Tk : int|string = int|string, Tv = mixed> implements Ma
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): Map
+    public function zip<Tu>(array $elements): Map
     {
         $elements = array_values($elements);
         $count = count($elements);

@@ -9,7 +9,7 @@ namespace Psl\Result;
  *
  * @api
  */
-function collect_stats<T = mixed>(iterable $results): Stats
+function collect_stats<T>(iterable $results): Stats
 {
     $stats = new Stats();
     foreach ($results as $result) {

@@ -15,7 +15,7 @@ use function array_values;
  *
  * @api
  */
-final readonly class UndirectedGraph<TNode = mixed, TWeight = mixed> implements GraphInterface<TNode, TWeight>
+final readonly class UndirectedGraph<TNode, TWeight> implements GraphInterface<TNode, TWeight>
 {
     /**
      * @param array<non-empty-string, TNode> $nodes Map from node key to node
@@ -117,7 +117,7 @@ final readonly class UndirectedGraph<TNode = mixed, TWeight = mixed> implements 
         $nodes[$key] = $node;
         $edges[$key] = [];
 
-        return new UndirectedGraph($nodes, $edges);
+        return new UndirectedGraph::<TNode, TWeight>($nodes, $edges);
     }
 
     /**
@@ -139,7 +139,7 @@ final readonly class UndirectedGraph<TNode = mixed, TWeight = mixed> implements 
         $edges[$key] ??= [];
         $edges[$key][] = $edge;
 
-        return new UndirectedGraph($this->nodes, $edges);
+        return new UndirectedGraph::<TNode, TWeight>($this->nodes, $edges);
     }
 
     /**

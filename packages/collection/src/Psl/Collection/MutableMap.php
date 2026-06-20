@@ -29,7 +29,7 @@ use const ARRAY_FILTER_USE_BOTH;
 /**
  * @api
  */
-final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements MutableMapInterface<Tk, Tv>
+final class MutableMap<Tk : int|string, Tv> implements MutableMapInterface<Tk, Tv>
 {
     /**
      * @var array<Tk, Tv> $elements
@@ -66,9 +66,9 @@ final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements Muta
      *
      * @pure
      */
-    public static function fromArray<Tsk : int|string = int|string, Tsv = mixed>(array $elements): MutableMap<Tsk, Tsv>
+    public static function fromArray<Tsk : int|string, Tsv>(array $elements): MutableMap<Tsk, Tsv>
     {
-        return new self($elements);
+        return new self::<Tsk, Tsv>($elements);
     }
 
     /**
@@ -76,7 +76,7 @@ final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements Muta
      *
      * @return MutableMap<Tsk, Tsv>
      */
-    public static function fromItems<Tsk : int|string = int|string, Tsv = mixed>(iterable $items): MutableMap<Tsk, Tsv>
+    public static function fromItems<Tsk : int|string, Tsv>(iterable $items): MutableMap<Tsk, Tsv>
     {
         return self::fromArray(iterator_to_array($items));
     }
@@ -387,7 +387,7 @@ final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements Muta
      *                            operation is applied.
      */
     #[Override]
-    public function map<Tu = mixed>(Closure $fn): MutableMap
+    public function map<Tu>(Closure $fn): MutableMap
     {
         return new MutableMap(array_map($fn, $this->elements));
     }
@@ -410,7 +410,7 @@ final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements Muta
      *                            operation on the current `MutableMap`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey<Tu = mixed>(Closure $fn): MutableMap
+    public function mapWithKey<Tu>(Closure $fn): MutableMap
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -438,7 +438,7 @@ final class MutableMap<Tk : int|string = int|string, Tv = mixed> implements Muta
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): MutableMap
+    public function zip<Tu>(array $elements): MutableMap
     {
         $elements = array_values($elements);
         $count = count($elements);

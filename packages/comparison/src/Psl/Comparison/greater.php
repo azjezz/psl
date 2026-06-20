@@ -10,7 +10,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function greater<T = mixed>(T $a, T $b): bool
+function greater<T>(T $a, T $b): bool
 {
     return namespace\compare($a, $b) === Order::Greater;
 }

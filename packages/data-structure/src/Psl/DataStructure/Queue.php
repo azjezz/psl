@@ -14,7 +14,7 @@ use function count;
  *
  * @api
  */
-final class Queue<T = mixed> implements QueueInterface<T>
+final class Queue<T> implements QueueInterface<T>
 {
     /**
      * @var list<T>

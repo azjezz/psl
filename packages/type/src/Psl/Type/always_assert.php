@@ -16,7 +16,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function always_assert<T = mixed>(TypeInterface<T> $type): TypeInterface<T>
+function always_assert<T>(TypeInterface<T> $type): TypeInterface<T>
 {
     return new Internal\AlwaysAssertType($type);
 }

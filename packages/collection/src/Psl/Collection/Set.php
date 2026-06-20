@@ -26,7 +26,7 @@ use const ARRAY_FILTER_USE_KEY;
 /**
  * @api
  */
-final readonly class Set<T : int|string = int|string> implements SetInterface<T>
+final readonly class Set<T : int|string> implements SetInterface<T>
 {
     /**
      * @var array<T, T> $elements
@@ -72,9 +72,9 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
      *
      * @pure
      */
-    public static function fromArray<Ts : int|string = int|string>(array $elements): Set<Ts>
+    public static function fromArray<Ts : int|string>(array $elements): Set<Ts>
     {
-        return new self($elements);
+        return new self::<Ts>($elements);
     }
 
     /**
@@ -84,7 +84,7 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
      *
      * @return Set<Ts>
      */
-    public static function fromItems<Ts : int|string = int|string>(iterable $items): Set<Ts>
+    public static function fromItems<Ts : int|string>(iterable $items): Set<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -100,7 +100,7 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
      *
      * @pure
      */
-    public static function fromArrayKeys<Ts : int|string = int|string>(array $elements): Set<Ts>
+    public static function fromArrayKeys<Ts : int|string>(array $elements): Set<Ts>
     {
         /** @var array<Ts, Ts> $set */
         $set = [];
@@ -108,7 +108,7 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
             $set[$key] = $key;
         }
 
-        return new self($set);
+        return new self::<Ts>($set);
     }
 
     /**
@@ -421,7 +421,7 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
      *                 operation is applied.
      */
     #[Override]
-    public function map<Tu : int|string = int|string>(Closure $fn): Set
+    public function map<Tu : int|string>(Closure $fn): Set
     {
         return new Set(array_map($fn, $this->elements));
     }
@@ -441,7 +441,7 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
      * @return Set<Tu>
      */
     #[Override]
-    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): Set<Tu>
+    public function mapWithKey<Tu : int|string>(Closure $fn): Set<Tu>
     {
         return $this->map(
             /**
@@ -461,7 +461,7 @@ final readonly class Set<T : int|string = int|string> implements SetInterface<T>
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): never
+    public function zip<Tu>(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a Set.');
     }

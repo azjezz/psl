@@ -15,7 +15,7 @@ use function sprintf;
 /**
  * @internal
  */
-final readonly class UnitEnumType<T : UnitEnum = UnitEnum> extends Type\Type<T>
+final readonly class UnitEnumType<T : UnitEnum> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

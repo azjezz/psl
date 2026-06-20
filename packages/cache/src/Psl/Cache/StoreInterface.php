@@ -51,7 +51,7 @@ interface StoreInterface
      *
      * @return T
      */
-    public function compute<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T;
+    public function compute<T>(string $key, Closure $computer, null|Duration $ttl = null): T;
 
     /**
      * Update a value, always invoking the computer.
@@ -67,7 +67,7 @@ interface StoreInterface
      *
      * @return T
      */
-    public function update<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T;
+    public function update<T>(string $key, Closure $computer, null|Duration $ttl = null): T;
 
     /**
      * Delete an item from the cache.

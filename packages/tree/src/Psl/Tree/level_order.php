@@ -27,7 +27,7 @@ use Psl\DataStructure\Queue;
  *
  * @api
  */
-function level_order<T = mixed>(NodeInterface<T> $rootNode): array
+function level_order<T>(NodeInterface<T> $rootNode): array
 {
     $result = [];
     /** @var Queue<NodeInterface<T>> $queue */

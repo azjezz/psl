@@ -17,7 +17,7 @@ namespace Psl\Async;
  *
  * @api
  */
-function first<T = mixed>(iterable $awaitables): T
+function first<T>(iterable $awaitables): T
 {
     foreach (Awaitable::iterate($awaitables) as $first) {
         foreach ($awaitables as $awaitable) {

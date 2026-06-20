@@ -18,7 +18,7 @@ use function sprintf;
 /**
  * @internal
  */
-final readonly class SetType<T : int|string = int|string> extends Type\Type<Collection\SetInterface<T>>
+final readonly class SetType<T : int|string> extends Type\Type<Collection\SetInterface<T>>
 {
     /**
      * @psalm-mutation-free

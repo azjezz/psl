@@ -21,7 +21,7 @@ use function is_countable;
  *
  * @api
  */
-function count<T = mixed>(iterable $iterable): int
+function count<T>(iterable $iterable): int
 {
     if (is_countable($iterable)) {
         return php_count($iterable);

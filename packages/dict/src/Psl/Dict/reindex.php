@@ -34,7 +34,7 @@ use Closure;
  *
  * @api
  */
-function reindex<Tk1 = mixed, Tk2 : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $function): array
+function reindex<Tk1, Tk2 : int|string, Tv>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $value) {

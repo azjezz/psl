@@ -21,7 +21,7 @@ use function mt_rand;
  *
  * @api
  */
-function random<T = mixed>(iterable $iterable): T
+function random<T>(iterable $iterable): T
 {
     // We convert the iterable to an array before checking if it is empty,
     // this helps us avoids an issue when the iterable is a generator where

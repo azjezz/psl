@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function converted<I = mixed, O = mixed>(TypeInterface<I> $from, TypeInterface<O> $into, Closure $converter): TypeInterface<O>
+function converted<I, O>(TypeInterface<I> $from, TypeInterface<O> $into, Closure $converter): TypeInterface<O>
 {
     return new Internal\ConvertedType($from, $into, $converter);
 }

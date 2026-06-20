@@ -15,7 +15,7 @@ use Psl\Collection;
  *
  * @api
  */
-function mutable_set<T : int|string = int|string>(TypeInterface<T> $type): TypeInterface<Collection\MutableSetInterface<T>>
+function mutable_set<T : int|string>(TypeInterface<T> $type): TypeInterface<Collection\MutableSetInterface<T>>
 {
     return new Internal\MutableSetType($type);
 }

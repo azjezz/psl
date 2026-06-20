@@ -21,7 +21,7 @@ use function is_array;
  *
  * @api
  */
-function reverse<T = mixed>(iterable $iterable): array
+function reverse<T>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_reverse(array_values($iterable));

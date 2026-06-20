@@ -23,7 +23,7 @@ use function uksort;
  *
  * @api
  */
-function sort_by_key<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, null|Closure $comparator = null): array
+function sort_by_key<Tk : int|string, Tv>(iterable $iterable, null|Closure $comparator = null): array
 {
     if (is_array($iterable)) {
         $result = $iterable;

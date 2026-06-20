@@ -24,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function find<T = mixed>(NodeInterface<T> $tree, Closure $predicate): T|null
+function find<T>(NodeInterface<T> $tree, Closure $predicate): T|null
 {
     $value = $tree->getValue();
     if ($predicate($value)) {

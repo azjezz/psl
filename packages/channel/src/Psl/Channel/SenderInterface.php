@@ -11,7 +11,7 @@ use Psl\Async\NullCancellationToken;
 /**
  * @api
  */
-interface SenderInterface<T = mixed> extends ChannelInterface
+interface SenderInterface<T> extends ChannelInterface
 {
     /**
      * Send a message to the channel.

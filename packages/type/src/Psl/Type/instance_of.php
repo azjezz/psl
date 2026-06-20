@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function instance_of<T = mixed>(string $classname): TypeInterface<T>
+function instance_of<T>(string $classname): TypeInterface<T>
 {
     return new Internal\InstanceOfType($classname);
 }

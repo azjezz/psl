@@ -20,7 +20,7 @@ use Closure;
  *
  * @api
  */
-function when<Ti = mixed, To = mixed>(Closure $condition, Closure $then, Closure $else): Closure
+function when<Ti, To>(Closure $condition, Closure $then, Closure $else): Closure
 {
     return static fn(mixed $value): mixed => $condition($value) ? $then($value) : $else($value);
 }

@@ -9,7 +9,7 @@ use Override;
 /**
  * @api
  */
-interface PriorityQueueInterface<T = mixed> extends QueueInterface<T>
+interface PriorityQueueInterface<T> extends QueueInterface<T>
 {
     /**
      * Adds a node to the queue.

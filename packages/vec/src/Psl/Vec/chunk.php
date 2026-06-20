@@ -21,7 +21,7 @@ use function is_array;
  *
  * @api
  */
-function chunk<T = mixed>(iterable $iterable, int $size): array
+function chunk<T>(iterable $iterable, int $size): array
 {
     if (is_array($iterable)) {
         return array_chunk($iterable, $size);

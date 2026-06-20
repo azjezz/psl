@@ -26,7 +26,7 @@ use Closure;
  *
  * @api
  */
-function reduce<T = mixed, Ta = mixed>(NodeInterface<T> $tree, Closure $function, Ta $initial): Ta
+function reduce<T, Ta>(NodeInterface<T> $tree, Closure $function, Ta $initial): Ta
 {
     $accumulator = $function($initial, $tree->getValue());
 

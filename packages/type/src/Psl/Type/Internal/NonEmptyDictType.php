@@ -19,7 +19,7 @@ use function sprintf;
  *
  * @internal
  */
-final readonly class NonEmptyDictType<Tk : int|string = int|string, Tv = mixed> extends Type\Type
+final readonly class NonEmptyDictType<Tk : int|string, Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free

@@ -15,7 +15,7 @@ namespace Psl\Channel;
  *
  * @api
  */
-function bounded<T = mixed>(int $capacity): array
+function bounded<T>(int $capacity): array
 {
     $channel = new Internal\BoundedChannelState($capacity);
 

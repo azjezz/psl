@@ -60,7 +60,7 @@ use function array_map;
  *
  * @api
  */
-function traverse<TValue = mixed, TResult = mixed>(NodeInterface<TValue> $tree, Closure $transform): TResult
+function traverse<TValue, TResult>(NodeInterface<TValue> $tree, Closure $transform): TResult
 {
     $value = $tree->getValue();
 

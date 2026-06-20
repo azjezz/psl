@@ -27,7 +27,7 @@ use function is_array;
  *
  * @api
  */
-function flatten<Tk : int|string = int|string, Tv = mixed>(iterable $iterables): array
+function flatten<Tk : int|string, Tv>(iterable $iterables): array
 {
     if (is_array($iterables)) {
         $allArrays = true;

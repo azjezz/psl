@@ -25,7 +25,7 @@ use function is_string;
  *
  * @internal
  */
-final readonly class BackedEnumValueType<T : BackedEnum = BackedEnum> extends Type\Type
+final readonly class BackedEnumValueType<T : BackedEnum> extends Type\Type<int|string>
 {
     private bool $isStringBacked;
 

@@ -21,7 +21,7 @@ use function is_iterable;
  *
  * @mago-expect analysis:mixed-assignment
  */
-final readonly class VecType<Tv = mixed> extends Type\Type
+final readonly class VecType<Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free

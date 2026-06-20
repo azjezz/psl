@@ -18,7 +18,7 @@ use function array_map;
  *
  * @api
  */
-function diff<Tk : int|string = int|string, Tv = mixed>(iterable $first, iterable $second, iterable ...$rest): array
+function diff<Tk : int|string, Tv>(iterable $first, iterable $second, iterable ...$rest): array
 {
     return array_diff(
         namespace\from_iterable($first),

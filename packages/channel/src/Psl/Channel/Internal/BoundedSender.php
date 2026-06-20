@@ -16,7 +16,7 @@ use Revolt\EventLoop\Suspension;
 /**
  * @internal
  */
-final class BoundedSender<T = mixed> implements SenderInterface<T>
+final class BoundedSender<T> implements SenderInterface<T>
 {
     use ChannelSideTrait<BoundedChannelState<T>>;
 

@@ -15,7 +15,7 @@ use UnitEnum;
  *
  * @api
  */
-function unit_enum<T : UnitEnum = UnitEnum>(string $enum): TypeInterface<T>
+function unit_enum<T : UnitEnum>(string $enum): TypeInterface<T>
 {
     return new Internal\UnitEnumType($enum);
 }

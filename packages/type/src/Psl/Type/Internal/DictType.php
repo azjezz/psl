@@ -19,7 +19,7 @@ use function is_iterable;
  *
  * @internal
  */
-final readonly class DictType<Tk : int|string = int|string, Tv = mixed> extends Type\Type
+final readonly class DictType<Tk : int|string, Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free

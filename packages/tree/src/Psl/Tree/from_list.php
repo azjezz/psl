@@ -53,7 +53,7 @@ use function count;
  *
  * @api
  */
-function from_list<TItem = mixed, TId : int|string = int|string, TValue = mixed>(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface<TValue>
+function from_list<TItem, TId : int|string, TValue>(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface<TValue>
 {
     // Group items by parent ID (manual grouping to handle null keys)
     $byParent = [];

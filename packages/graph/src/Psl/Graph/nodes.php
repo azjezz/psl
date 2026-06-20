@@ -22,7 +22,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function nodes<TNode = mixed, TWeight = mixed>(GraphInterface<TNode, TWeight> $graph): array
+function nodes<TNode, TWeight>(GraphInterface<TNode, TWeight> $graph): array
 {
     return $graph->getNodes();
 }

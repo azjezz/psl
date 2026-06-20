@@ -19,7 +19,7 @@ namespace Psl\Math;
  *
  * @api
  */
-function clamp<T : float|int = float|int>(int|float $number, int|float $min, int|float $max): int|float
+function clamp<T : float|int>(int|float $number, int|float $min, int|float $max): int|float
 {
     if ($max < $min) {
         throw new Exception\InvalidArgumentException('Expected $min to be lower or equal to $max.');

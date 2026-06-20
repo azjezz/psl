@@ -17,7 +17,7 @@ use Psl\Type;
  *
  * @api
  */
-function typed<T = mixed>(string $json, Type\TypeInterface<T> $type): T
+function typed<T>(string $json, Type\TypeInterface<T> $type): T
 {
     try {
         return $type->coerce(namespace\decode($json));

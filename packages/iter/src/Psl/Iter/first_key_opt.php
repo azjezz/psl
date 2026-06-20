@@ -18,7 +18,7 @@ use Psl\Option\Option;
  *
  * @api
  */
-function first_key_opt<Tk = mixed, Tv = mixed>(iterable $iterable): Option<Tk>
+function first_key_opt<Tk, Tv>(iterable $iterable): Option<Tk>
 {
     foreach ($iterable as $k => $_) {
         return Option::some($k);

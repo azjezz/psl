@@ -19,7 +19,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function chunk_with_keys<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, int $size): array
+function chunk_with_keys<Tk : int|string, Tv>(iterable $iterable, int $size): array
 {
     $result = [];
     $ii = 0;

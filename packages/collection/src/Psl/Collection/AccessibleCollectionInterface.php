@@ -14,7 +14,7 @@ use Override;
  *
  * @api
  */
-interface AccessibleCollectionInterface<Tk : int|string = int|string, Tv = mixed> extends CollectionInterface<Tk, Tv>, IndexAccessInterface<Tk, Tv>
+interface AccessibleCollectionInterface<Tk : int|string, Tv> extends CollectionInterface<Tk, Tv>, IndexAccessInterface<Tk, Tv>
 {
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current
@@ -145,7 +145,7 @@ interface AccessibleCollectionInterface<Tk : int|string = int|string, Tv = mixed
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): AccessibleCollectionInterface;
+    public function zip<Tu>(array $elements): AccessibleCollectionInterface;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the first `n` values of the current

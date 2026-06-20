@@ -19,7 +19,7 @@ use function array_reduce;
  *
  * @api
  */
-function pipe<T = mixed>(Closure ...$stages): Closure
+function pipe<T>(Closure ...$stages): Closure
 {
     return static fn(mixed $input): mixed => array_reduce(
         $stages,

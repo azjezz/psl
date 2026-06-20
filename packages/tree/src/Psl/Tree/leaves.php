@@ -25,7 +25,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function leaves<T = mixed>(NodeInterface<T> $node): array
+function leaves<T>(NodeInterface<T> $node): array
 {
     if (!$node instanceof TreeNode) {
         return [$node->getValue()];

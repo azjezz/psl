@@ -31,7 +31,7 @@ use function is_array;
  *
  * @api
  */
-function filter<T = mixed>(iterable $iterable, null|Closure $predicate = null): array
+function filter<T>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??=
         /**

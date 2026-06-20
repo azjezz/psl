@@ -16,7 +16,7 @@ use function is_array;
  *
  * @api
  */
-function contains<T = mixed>(iterable $iterable, T $value): bool
+function contains<T>(iterable $iterable, T $value): bool
 {
     if (is_array($iterable)) {
         return in_array($value, $iterable, true);

@@ -21,7 +21,7 @@ use function preg_match;
  *
  * @api
  */
-function first_match<T : array|null = array|null>(
+function first_match<T : array|null>(
     string $subject,
     string $pattern,
     null|Type\TypeInterface $captureGroups = null,

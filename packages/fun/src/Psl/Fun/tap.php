@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function tap<T = mixed>(Closure $callback): Closure
+function tap<T>(Closure $callback): Closure
 {
     return static function (mixed $value) use ($callback): mixed {
         $callback($value);

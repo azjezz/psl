@@ -13,7 +13,7 @@ use JsonSerializable;
  *
  * @api
  */
-interface NodeInterface<T = mixed> extends JsonSerializable
+interface NodeInterface<T> extends JsonSerializable
 {
     /**
      * Returns the value stored in this node.

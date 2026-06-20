@@ -12,7 +12,7 @@ use Psl\Type\Exception\CoercionException;
 /**
  * @internal
  */
-final readonly class AlwaysAssertType<T = mixed> extends Type\Type<T>
+final readonly class AlwaysAssertType<T> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

@@ -18,7 +18,7 @@ use function is_array;
  *
  * @api
  */
-function concat<T = mixed>(iterable $first, iterable ...$rest): array
+function concat<T>(iterable $first, iterable ...$rest): array
 {
     if (is_array($first) && $rest === []) {
         return array_values($first);

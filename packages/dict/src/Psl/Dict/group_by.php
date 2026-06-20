@@ -36,7 +36,7 @@ use Closure;
  *
  * @api
  */
-function group_by<Tk : int|string = int|string, Tv = mixed>(iterable $values, Closure $keyFunc): array
+function group_by<Tk : int|string, Tv>(iterable $values, Closure $keyFunc): array
 {
     $result = [];
     foreach ($values as $value) {

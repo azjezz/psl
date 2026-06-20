@@ -27,7 +27,7 @@ use const ARRAY_FILTER_USE_BOTH;
 /**
  * @api
  */
-final class MutableVector<T = mixed> implements MutableVectorInterface<T>
+final class MutableVector<T> implements MutableVectorInterface<T>
 {
     /**
      * @var list<T> $elements
@@ -68,9 +68,9 @@ final class MutableVector<T = mixed> implements MutableVectorInterface<T>
      *
      * @pure
      */
-    public static function fromArray<Ts = mixed>(array $elements): MutableVector<Ts>
+    public static function fromArray<Ts>(array $elements): MutableVector<Ts>
     {
-        return new self($elements);
+        return new self::<Ts>($elements);
     }
 
     /**
@@ -80,7 +80,7 @@ final class MutableVector<T = mixed> implements MutableVectorInterface<T>
      *
      * @return MutableVector<Ts>
      */
-    public static function fromItems<Ts = mixed>(iterable $items): MutableVector<Ts>
+    public static function fromItems<Ts>(iterable $items): MutableVector<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -524,7 +524,7 @@ final class MutableVector<T = mixed> implements MutableVectorInterface<T>
      *                           operation is applied.
      */
     #[Override]
-    public function map<Tu = mixed>(Closure $fn): MutableVector
+    public function map<Tu>(Closure $fn): MutableVector
     {
         return new MutableVector(array_map($fn, $this->elements));
     }
@@ -547,7 +547,7 @@ final class MutableVector<T = mixed> implements MutableVectorInterface<T>
      *                           operation on the current `MutableVector`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey<Tu = mixed>(Closure $fn): MutableVector
+    public function mapWithKey<Tu>(Closure $fn): MutableVector
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -574,7 +574,7 @@ final class MutableVector<T = mixed> implements MutableVectorInterface<T>
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): MutableVector
+    public function zip<Tu>(array $elements): MutableVector
     {
         $elements = array_values($elements);
         $result = [];

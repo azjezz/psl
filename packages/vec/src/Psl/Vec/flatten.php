@@ -28,7 +28,7 @@ use function is_array;
  *
  * @api
  */
-function flatten<T = mixed>(iterable $iterables): array
+function flatten<T>(iterable $iterables): array
 {
     if (is_array($iterables)) {
         $allArrays = true;

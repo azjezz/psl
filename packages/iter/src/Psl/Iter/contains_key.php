@@ -17,7 +17,7 @@ use function is_string;
  *
  * @api
  */
-function contains_key<Tk = mixed, Tv = mixed>(iterable $iterable, Tk $key): bool
+function contains_key<Tk, Tv>(iterable $iterable, Tk $key): bool
 {
     if (is_array($iterable) && (is_int($key) || is_string($key))) {
         return array_key_exists($key, $iterable);

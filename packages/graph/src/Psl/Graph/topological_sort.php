@@ -31,7 +31,7 @@ use function count;
  *
  * @api
  */
-function topological_sort<TNode = mixed, TWeight = mixed>(DirectedGraph<TNode, TWeight> $graph): null|array
+function topological_sort<TNode, TWeight>(DirectedGraph<TNode, TWeight> $graph): null|array
 {
     $allNodes = namespace\nodes($graph);
     $inDegree = [];

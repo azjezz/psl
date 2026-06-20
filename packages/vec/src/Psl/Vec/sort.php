@@ -22,7 +22,7 @@ use function usort;
  *
  * @api
  */
-function sort<T = mixed>(iterable $iterable, null|Closure $comparator = null): array
+function sort<T>(iterable $iterable, null|Closure $comparator = null): array
 {
     $array = namespace\values($iterable);
     if (null !== $comparator) {

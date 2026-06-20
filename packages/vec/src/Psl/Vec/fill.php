@@ -20,7 +20,7 @@ use function array_fill;
  *
  * @api
  */
-function fill<T = mixed>(int $size, T $value): array
+function fill<T>(int $size, T $value): array
 {
     return array_fill(0, $size, $value);
 }

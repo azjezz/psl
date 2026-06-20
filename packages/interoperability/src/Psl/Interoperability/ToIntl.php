@@ -7,7 +7,7 @@ namespace Psl\Interoperability;
 /**
  * @api
  */
-interface ToIntl<T = mixed>
+interface ToIntl<T>
 {
     /**
      * @return T

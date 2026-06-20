@@ -10,7 +10,7 @@ use Override;
 /**
  * @api
  */
-interface MutableMapInterface<Tk : int|string = int|string, Tv = mixed> extends MapInterface<Tk, Tv>, MutableAccessibleCollectionInterface<Tk, Tv>
+interface MutableMapInterface<Tk : int|string, Tv> extends MapInterface<Tk, Tv>, MutableAccessibleCollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableVectorInterface` containing the values of the current
@@ -90,7 +90,7 @@ interface MutableMapInterface<Tk : int|string = int|string, Tv = mixed> extends 
      *                                     a user-specified operation is applied.
      */
     #[Override]
-    public function map<Tu = mixed>(Closure $fn): MutableMapInterface;
+    public function map<Tu>(Closure $fn): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` after an operation has been applied to each key and
@@ -110,7 +110,7 @@ interface MutableMapInterface<Tk : int|string = int|string, Tv = mixed> extends 
      *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey<Tu = mixed>(Closure $fn): MutableMapInterface;
+    public function mapWithKey<Tu>(Closure $fn): MutableMapInterface;
 
     /**
      * Returns the first value in the current `MutableMapInterface`.
@@ -189,7 +189,7 @@ interface MutableMapInterface<Tk : int|string = int|string, Tv = mixed> extends 
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): MutableMapInterface;
+    public function zip<Tu>(array $elements): MutableMapInterface;
 
     /**
      * Returns a `MutableMapInterface` containing the first `n` values of the current

@@ -21,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function reduce<T = mixed, Ts = mixed>(iterable $iterable, Closure $function, Ts $initial): Ts
+function reduce<T, Ts>(iterable $iterable, Closure $function, Ts $initial): Ts
 {
     $accumulator = $initial;
     foreach ($iterable as $v) {

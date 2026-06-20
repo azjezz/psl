@@ -36,7 +36,7 @@ use const ARRAY_FILTER_USE_BOTH;
  *
  * @api
  */
-function filter_with_key<Tk = mixed, Tv = mixed>(iterable $iterable, null|Closure $predicate = null): array
+function filter_with_key<Tk, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??=
         /**

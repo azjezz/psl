@@ -25,7 +25,7 @@ use Closure;
  *
  * @api
  */
-function search<T = mixed>(iterable $iterable, Closure $predicate): T|null
+function search<T>(iterable $iterable, Closure $predicate): T|null
 {
     foreach ($iterable as $value) {
         if (!$predicate($value)) {

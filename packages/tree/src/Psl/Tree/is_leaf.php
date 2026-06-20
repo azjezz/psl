@@ -25,7 +25,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function is_leaf<T = mixed>(NodeInterface<T> $node): bool
+function is_leaf<T>(NodeInterface<T> $node): bool
 {
     return $node instanceof LeafNode;
 }

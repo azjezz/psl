@@ -24,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function reductions<Tk = mixed, Tv = mixed, Ts = mixed>(iterable $iterable, Closure $function, Ts $initial): array
+function reductions<Tk, Tv, Ts>(iterable $iterable, Closure $function, Ts $initial): array
 {
     $accumulators = [];
     $accumulator = $initial;

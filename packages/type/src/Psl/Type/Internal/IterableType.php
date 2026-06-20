@@ -19,7 +19,7 @@ use function sprintf;
  *
  * @internal
  */
-final readonly class IterableType<Tk = mixed, Tv = mixed> extends Type\Type
+final readonly class IterableType<Tk, Tv> extends Type\Type<iterable>
 {
     /**
      * @psalm-mutation-free

@@ -18,7 +18,7 @@ use function array_map;
  *
  * @api
  */
-function intersect_by_key<Tk : int|string = int|string, Tv = mixed>(iterable $first, iterable $second, iterable ...$rest): array
+function intersect_by_key<Tk : int|string, Tv>(iterable $first, iterable $second, iterable ...$rest): array
 {
     return array_intersect_key(
         namespace\from_iterable($first),

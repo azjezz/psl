@@ -16,7 +16,7 @@ use function is_array;
  *
  * @api
  */
-function last_key<Tk = mixed, Tv = mixed>(iterable $iterable): mixed
+function last_key<Tk, Tv>(iterable $iterable): mixed
 {
     if (is_array($iterable)) {
         return array_key_last($iterable);

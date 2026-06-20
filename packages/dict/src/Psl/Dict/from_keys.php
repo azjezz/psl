@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function from_keys<Tk : int|string = int|string, Tv = mixed>(iterable $keys, Closure $valueFunc): array
+function from_keys<Tk : int|string, Tv>(iterable $keys, Closure $valueFunc): array
 {
     $result = [];
     foreach ($keys as $key) {

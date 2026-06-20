@@ -12,7 +12,7 @@ use Psl\Type\Exception\CoercionException;
 /**
  * @internal
  */
-final readonly class OptionalType<T = mixed> extends Type\Type<T>
+final readonly class OptionalType<T> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

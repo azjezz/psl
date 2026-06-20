@@ -15,7 +15,7 @@ use Closure;
  *
  * @api
  */
-function identity<T = mixed>(): Closure
+function identity<T>(): Closure
 {
     return static fn(mixed $result): mixed => $result;
 }

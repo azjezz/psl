@@ -19,7 +19,7 @@ use function array_key_exists;
  *
  * @api
  */
-function select_keys<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, iterable $keys): array
+function select_keys<Tk : int|string, Tv>(iterable $iterable, iterable $keys): array
 {
     $array = [];
     foreach ($iterable as $k => $v) {

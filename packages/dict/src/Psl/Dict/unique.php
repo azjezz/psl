@@ -13,7 +13,7 @@ namespace Psl\Dict;
  *
  * @api
  */
-function unique<Tk : int|string = int|string, Tv = mixed>(iterable $iterable): array
+function unique<Tk : int|string, Tv>(iterable $iterable): array
 {
     return namespace\unique_by(
         $iterable,

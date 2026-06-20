@@ -7,7 +7,7 @@ namespace Psl\Interoperability;
 /**
  * @api
  */
-interface ToStdlib<T = mixed>
+interface ToStdlib<T>
 {
     /**
      * @return T

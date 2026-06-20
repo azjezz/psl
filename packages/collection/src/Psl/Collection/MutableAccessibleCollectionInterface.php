@@ -17,7 +17,7 @@ use Override;
  *
  * @api
  */
-interface MutableAccessibleCollectionInterface<Tk : int|string = int|string, Tv = mixed> extends
+interface MutableAccessibleCollectionInterface<Tk : int|string, Tv> extends
     AccessibleCollectionInterface<Tk, Tv>,
     ArrayAccess,
     MutableCollectionInterface<Tk, Tv>,
@@ -128,7 +128,7 @@ interface MutableAccessibleCollectionInterface<Tk : int|string = int|string, Tv 
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): MutableAccessibleCollectionInterface;
+    public function zip<Tu>(array $elements): MutableAccessibleCollectionInterface;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the first `n` values of the current

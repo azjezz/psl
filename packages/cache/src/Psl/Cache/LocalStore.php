@@ -191,7 +191,7 @@ final class LocalStore implements StoreInterface
      * @return T
      */
     #[Override]
-    public function compute<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T
+    public function compute<T>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         /** @var T */
         return $this->sequence->waitFor($key, [$computer, $ttl, false]);
@@ -215,7 +215,7 @@ final class LocalStore implements StoreInterface
      * @return T
      */
     #[Override]
-    public function update<T = mixed>(string $key, Closure $computer, null|Duration $ttl = null): T
+    public function update<T>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         /** @var T */
         return $this->sequence->waitFor($key, [$computer, $ttl, true]);

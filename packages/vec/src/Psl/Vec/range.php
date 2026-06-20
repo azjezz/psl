@@ -40,7 +40,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function range<T : int|float = int|float>(int|float $start, int|float $end, int|float|null $step = null): array
+function range<T : int|float>(int|float $start, int|float $end, int|float|null $step = null): array
 {
     if ($start === $end) {
         return [$start];

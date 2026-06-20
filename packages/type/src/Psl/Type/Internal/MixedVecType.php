@@ -19,7 +19,7 @@ use function is_iterable;
  *
  * @internal
  */
-final readonly class MixedVecType extends Type\Type
+final readonly class MixedVecType extends Type\Type<array>
 {
     /**
      * @psalm-assert-if-true list<Tv> $value

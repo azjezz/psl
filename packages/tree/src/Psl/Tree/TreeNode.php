@@ -11,7 +11,7 @@ use Override;
  *
  * @api
  */
-final readonly class TreeNode<T = mixed> implements NodeInterface<T>
+final readonly class TreeNode<T> implements NodeInterface<T>
 {
     /**
      * @var list<NodeInterface<T>>

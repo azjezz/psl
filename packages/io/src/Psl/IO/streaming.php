@@ -39,7 +39,7 @@ use function sprintf;
  *
  * @api
  */
-function streaming<T : int|string = int|string>(iterable $handles, CancellationTokenInterface $cancellation = new NullCancellationToken()): Generator
+function streaming<T : int|string>(iterable $handles, CancellationTokenInterface $cancellation = new NullCancellationToken()): Generator
 {
     /**
      * @var Channel\ReceiverInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $receiver

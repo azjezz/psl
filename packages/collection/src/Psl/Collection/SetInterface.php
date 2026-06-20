@@ -10,7 +10,7 @@ use Override;
 /**
  * @api
  */
-interface SetInterface<T : int|string = int|string> extends AccessibleCollectionInterface<T, T>
+interface SetInterface<T : int|string> extends AccessibleCollectionInterface<T, T>
 {
     /**
      * Returns the provided value if it exists in the current `SetInterface`.
@@ -138,7 +138,7 @@ interface SetInterface<T : int|string = int|string> extends AccessibleCollection
      * @return SetInterface<Tu> A `SetInterface` containing key/value pairs after a user-specified
      *                          operation is applied.
      */
-    public function map<Tu : int|string = int|string>(Closure $fn): SetInterface;
+    public function map<Tu : int|string>(Closure $fn): SetInterface;
 
     /**
      * Transform the values of the current `SetInterface` by applying the provided callback,
@@ -154,7 +154,7 @@ interface SetInterface<T : int|string = int|string> extends AccessibleCollection
      *
      * @return SetInterface<Tu>
      */
-    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): SetInterface<Tu>;
+    public function mapWithKey<Tu : int|string>(Closure $fn): SetInterface<Tu>;
 
     /**
      * Returns the first value in the current `SetInterface`.
@@ -231,7 +231,7 @@ interface SetInterface<T : int|string = int|string> extends AccessibleCollection
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): never;
+    public function zip<Tu>(array $elements): never;
 
     /**
      * Returns a `SetInterface` containing the first `n` values of the current

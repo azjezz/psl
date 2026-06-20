@@ -19,7 +19,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function directed<TNode = mixed, TWeight = mixed>(): DirectedGraph<TNode, TWeight>
+function directed<TNode, TWeight>(): DirectedGraph<TNode, TWeight>
 {
-    return new DirectedGraph([]);
+    return new DirectedGraph::<TNode, TWeight>([]);
 }

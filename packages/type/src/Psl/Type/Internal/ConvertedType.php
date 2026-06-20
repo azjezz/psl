@@ -15,7 +15,7 @@ use Throwable;
 /**
  * @internal
  */
-final readonly class ConvertedType<I = mixed, O = mixed> extends Type\Type<O>
+final readonly class ConvertedType<I, O> extends Type\Type<O>
 {
     /**
      * @psalm-mutation-free

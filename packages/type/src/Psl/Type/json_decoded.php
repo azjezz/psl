@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function json_decoded<T = mixed>(TypeInterface<T> $innerType): TypeInterface<T>
+function json_decoded<T>(TypeInterface<T> $innerType): TypeInterface<T>
 {
     return new Internal\JsonDecodedType($innerType);
 }

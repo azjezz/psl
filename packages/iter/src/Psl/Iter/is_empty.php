@@ -17,7 +17,7 @@ use function is_array;
  *
  * @api
  */
-function is_empty<T = mixed>(iterable $iterable): bool
+function is_empty<T>(iterable $iterable): bool
 {
     if (is_array($iterable)) {
         return [] === $iterable;

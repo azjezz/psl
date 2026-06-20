@@ -29,7 +29,7 @@ use Closure;
  *
  * @api
  */
-function path_to<T = mixed>(NodeInterface<T> $tree, Closure $predicate): null|array
+function path_to<T>(NodeInterface<T> $tree, Closure $predicate): null|array
 {
     $value = $tree->getValue();
 

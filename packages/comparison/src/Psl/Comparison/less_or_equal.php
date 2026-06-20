@@ -10,7 +10,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function less_or_equal<T = mixed>(T $a, T $b): bool
+function less_or_equal<T>(T $a, T $b): bool
 {
     $order = namespace\compare($a, $b);
 

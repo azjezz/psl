@@ -18,7 +18,7 @@ use Throwable;
  *
  * @api
  */
-interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
+interface ResultInterface<T> extends Psl\Promise\PromiseInterface<T>
 {
     /**
      * Transforms a promise's value by applying a function to the promise's fulfillment
@@ -38,7 +38,7 @@ interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function then<Ts = mixed>(Closure $success, Closure $failure): ResultInterface<Ts>;
+    public function then<Ts>(Closure $success, Closure $failure): ResultInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is fulfilled.
@@ -51,7 +51,7 @@ interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function map<Ts = mixed>(Closure $success): ResultInterface<Ts>;
+    public function map<Ts>(Closure $success): ResultInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is rejected.
@@ -64,7 +64,7 @@ interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
      * @return ResultInterface<T|Ts>
      */
     #[Override]
-    public function catch<Ts = mixed>(Closure $failure): ResultInterface<T|Ts>;
+    public function catch<Ts>(Closure $failure): ResultInterface<T|Ts>;
 
     /**
      * Attaches a callback that is always invoked when the promise is resolved.
@@ -99,7 +99,7 @@ interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
      *
      * @return T|D
      */
-    public function unwrapOr<D = mixed>(D $default): T|D;
+    public function unwrapOr<D>(D $default): T|D;
 
     /**
      * Return the underlying throwable, or fail with a invariant violation exception.
@@ -146,5 +146,5 @@ interface ResultInterface<T = mixed> extends Psl\Promise\PromiseInterface<T>
      *
      * @return Ts
      */
-    public function proceed<Ts = mixed>(Closure $success, Closure $failure): Ts;
+    public function proceed<Ts>(Closure $success, Closure $failure): Ts;
 }

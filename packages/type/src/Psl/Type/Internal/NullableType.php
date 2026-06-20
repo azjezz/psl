@@ -12,7 +12,7 @@ use Psl\Type\Exception\CoercionException;
 /**
  * @internal
  */
-final readonly class NullableType<T = mixed> extends Type\Type<T|null>
+final readonly class NullableType<T> extends Type\Type<T|null>
 {
     /**
      * @psalm-mutation-free

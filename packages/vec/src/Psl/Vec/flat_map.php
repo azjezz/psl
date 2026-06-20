@@ -14,7 +14,7 @@ use Closure;
  *
  * @api
  */
-function flat_map<Tv = mixed, Ts = mixed>(iterable $iterable, Closure $mapper): array
+function flat_map<Tv, Ts>(iterable $iterable, Closure $mapper): array
 {
     $flattened = [];
     foreach ($iterable as $value) {

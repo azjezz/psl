@@ -16,7 +16,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function compare<T = mixed>(T $a, T $b): Order
+function compare<T>(T $a, T $b): Order
 {
     if ($a instanceof Comparable) {
         return $a->compare($b);

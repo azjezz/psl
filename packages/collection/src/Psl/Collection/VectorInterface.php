@@ -10,7 +10,7 @@ use Override;
 /**
  * @api
  */
-interface VectorInterface<T = mixed> extends AccessibleCollectionInterface<int, T>
+interface VectorInterface<T> extends AccessibleCollectionInterface<int, T>
 {
     /**
      * Returns the value at the specified key in the current vector.
@@ -132,7 +132,7 @@ interface VectorInterface<T = mixed> extends AccessibleCollectionInterface<int, 
      * @return VectorInterface<Tu> A `VectorInterface` containing key/value pairs after a user-specified
      *                             operation is applied.
      */
-    public function map<Tu = mixed>(Closure $fn): VectorInterface;
+    public function map<Tu>(Closure $fn): VectorInterface;
 
     /**
      * Returns a `VectorInterface` after an operation has been applied to each key and
@@ -151,7 +151,7 @@ interface VectorInterface<T = mixed> extends AccessibleCollectionInterface<int, 
      * @return VectorInterface<Tu> A `VectorInterface` containing the values after a user-specified
      *                             operation on the current `VectorInterface`'s keys and values is applied.
      */
-    public function mapWithKey<Tu = mixed>(Closure $fn): VectorInterface;
+    public function mapWithKey<Tu>(Closure $fn): VectorInterface;
 
     /**
      * Returns the first value in the current `VectorInterface`.
@@ -229,7 +229,7 @@ interface VectorInterface<T = mixed> extends AccessibleCollectionInterface<int, 
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): VectorInterface;
+    public function zip<Tu>(array $elements): VectorInterface;
 
     /**
      * Returns a `VectorInterface` containing the first `n` values of the current

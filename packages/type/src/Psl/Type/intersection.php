@@ -15,7 +15,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function intersection<TFirst = mixed, TSecond = mixed, TRest = mixed>(TypeInterface<TFirst> $first, TypeInterface<TSecond> $second, TypeInterface<TRest> ...$rest): TypeInterface<TFirst&TSecond&TRest>
+function intersection<TFirst, TSecond, TRest>(TypeInterface<TFirst> $first, TypeInterface<TSecond> $second, TypeInterface<TRest> ...$rest): TypeInterface<TFirst&TSecond&TRest>
 {
     $accumulatedType = new Internal\IntersectionType($first, $second);
 

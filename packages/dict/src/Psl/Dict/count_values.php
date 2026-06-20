@@ -19,7 +19,7 @@ use function iterator_to_array;
  *
  * @api
  */
-function count_values<T : int|string = int|string>(iterable $values): array
+function count_values<T : int|string>(iterable $values): array
 {
     if (!is_array($values)) {
         $values = array_values(iterator_to_array($values));

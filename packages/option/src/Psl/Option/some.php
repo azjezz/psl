@@ -15,7 +15,7 @@ namespace Psl\Option;
  *
  * @api
  */
-function some<T = mixed>(T $value): Option<T>
+function some<T>(T $value): Option<T>
 {
     return Option::some($value);
 }

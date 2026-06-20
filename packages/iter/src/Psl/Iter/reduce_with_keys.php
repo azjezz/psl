@@ -22,7 +22,7 @@ use Closure;
  *
  * @api
  */
-function reduce_with_keys<Tk = mixed, Tv = mixed, Ts = mixed>(iterable $iterable, Closure $function, Ts $initial): Ts
+function reduce_with_keys<Tk, Tv, Ts>(iterable $iterable, Closure $function, Ts $initial): Ts
 {
     $accumulator = $initial;
     foreach ($iterable as $k => $v) {

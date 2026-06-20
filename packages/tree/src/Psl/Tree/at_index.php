@@ -35,7 +35,7 @@ use function array_slice;
  *
  * @api
  */
-function at_index<T = mixed>(NodeInterface<T> $node, array $indexPath): mixed
+function at_index<T>(NodeInterface<T> $node, array $indexPath): mixed
 {
     if ([] === $indexPath) {
         return $node->getValue();

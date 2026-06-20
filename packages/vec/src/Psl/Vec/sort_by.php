@@ -24,7 +24,7 @@ use function uasort;
  *
  * @api
  */
-function sort_by<Tv = mixed, Ts = mixed>(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
+function sort_by<Tv, Ts>(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {
     /** @var array<int, Ts> $orderBy */
     $orderBy = [];

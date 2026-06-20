@@ -13,7 +13,7 @@ use function array_values;
  *
  * @api
  */
-final readonly class DirectedGraph<TNode = mixed, TWeight = mixed> implements GraphInterface<TNode, TWeight>
+final readonly class DirectedGraph<TNode, TWeight> implements GraphInterface<TNode, TWeight>
 {
     /**
      * @param array<non-empty-string, TNode> $nodes Map from node key to node
@@ -115,7 +115,7 @@ final readonly class DirectedGraph<TNode = mixed, TWeight = mixed> implements Gr
         $nodes[$key] = $node;
         $edges[$key] = [];
 
-        return new DirectedGraph($nodes, $edges);
+        return new DirectedGraph::<TNode, TWeight>($nodes, $edges);
     }
 
     /**
@@ -137,7 +137,7 @@ final readonly class DirectedGraph<TNode = mixed, TWeight = mixed> implements Gr
         $edges[$key] ??= [];
         $edges[$key][] = $edge;
 
-        return new DirectedGraph($this->nodes, $edges);
+        return new DirectedGraph::<TNode, TWeight>($this->nodes, $edges);
     }
 
     /**

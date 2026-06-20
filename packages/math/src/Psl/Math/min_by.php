@@ -21,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function min_by<T = mixed>(iterable $numbers, Closure $numericFunction): T|null
+function min_by<T>(iterable $numbers, Closure $numericFunction): T|null
 {
     $min = null;
     $minNum = null;

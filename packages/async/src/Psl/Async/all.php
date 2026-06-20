@@ -17,7 +17,7 @@ use Throwable;
  *
  * @api
  */
-function all<Tk : int|string = int|string, Tv = mixed>(iterable $awaitables): array
+function all<Tk : int|string, Tv>(iterable $awaitables): array
 {
     $values = [];
 

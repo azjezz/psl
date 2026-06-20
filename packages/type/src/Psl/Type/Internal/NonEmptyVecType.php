@@ -22,7 +22,7 @@ use function sprintf;
  *
  * @mago-expect analysis:mixed-assignment
  */
-final readonly class NonEmptyVecType<Tv = mixed> extends Type\Type
+final readonly class NonEmptyVecType<Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free

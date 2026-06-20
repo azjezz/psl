@@ -12,7 +12,7 @@ use Psl\Type\Type;
 /**
  * @internal
  */
-final readonly class InstanceOfType<T : object = object> extends Type<T>
+final readonly class InstanceOfType<T : object> extends Type<T>
 {
     /**
      * @var class-string<T> $classname

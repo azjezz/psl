@@ -14,7 +14,7 @@ namespace Psl\Dict;
  *
  * @api
  */
-function from_entries<Tk : int|string = int|string, Tv = mixed>(iterable $entries): array
+function from_entries<Tk : int|string, Tv>(iterable $entries): array
 {
     $result = [];
     foreach ($entries as [$key, $value]) {

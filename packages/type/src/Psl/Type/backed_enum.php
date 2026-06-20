@@ -15,7 +15,7 @@ use BackedEnum;
  *
  * @api
  */
-function backed_enum<T : BackedEnum = BackedEnum>(string $enum): TypeInterface<T>
+function backed_enum<T : BackedEnum>(string $enum): TypeInterface<T>
 {
     return new Internal\BackedEnumType($enum);
 }

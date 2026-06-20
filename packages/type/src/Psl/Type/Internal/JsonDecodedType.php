@@ -19,7 +19,7 @@ use const JSON_THROW_ON_ERROR;
 /**
  * @internal
  */
-final readonly class JsonDecodedType<T = mixed> extends Type\Type<T>
+final readonly class JsonDecodedType<T> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

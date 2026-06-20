@@ -28,7 +28,7 @@ use Psl\DataStructure\Queue;
  *
  * @api
  */
-function bfs<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $start): array
+function bfs<TNode, TWeight>(DirectedGraph|UndirectedGraph $graph, TNode $start): array
 {
     if (!$graph->hasNode($start)) {
         return [];

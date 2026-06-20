@@ -23,7 +23,7 @@ use const PREG_SET_ORDER;
  *
  * @api
  */
-function every_match<T : array|null = array|null>(
+function every_match<T : array|null>(
     string $subject,
     string $pattern,
     null|Type\TypeInterface $captureGroups = null,

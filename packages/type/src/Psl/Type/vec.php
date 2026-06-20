@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function vec<T = mixed>(TypeInterface<T> $valueType): TypeInterface
+function vec<T>(TypeInterface<T> $valueType): TypeInterface
 {
     return new Internal\VecType($valueType);
 }

@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function nullish<T = mixed>(TypeInterface<T> $innerType): TypeInterface<T|null>
+function nullish<T>(TypeInterface<T> $innerType): TypeInterface<T|null>
 {
     return new Internal\NullishType($innerType);
 }

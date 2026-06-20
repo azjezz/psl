@@ -7,7 +7,7 @@ namespace Psl\Interoperability;
 /**
  * @api
  */
-interface FromStdlib<T = mixed>
+interface FromStdlib<T>
 {
     /**
      * @param T $value

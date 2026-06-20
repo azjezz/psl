@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function partition<T = mixed>(iterable $iterable, Closure $predicate): array
+function partition<T>(iterable $iterable, Closure $predicate): array
 {
     $success = [];
     $failure = [];

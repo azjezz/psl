@@ -19,7 +19,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function undirected<TNode = mixed, TWeight = mixed>(): UndirectedGraph<TNode, TWeight>
+function undirected<TNode, TWeight>(): UndirectedGraph<TNode, TWeight>
 {
-    return new UndirectedGraph([]);
+    return new UndirectedGraph::<TNode, TWeight>([]);
 }

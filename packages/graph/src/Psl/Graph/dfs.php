@@ -30,7 +30,7 @@ use function count;
  *
  * @api
  */
-function dfs<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $start): array
+function dfs<TNode, TWeight>(DirectedGraph|UndirectedGraph $graph, TNode $start): array
 {
     if (!$graph->hasNode($start)) {
         return [];

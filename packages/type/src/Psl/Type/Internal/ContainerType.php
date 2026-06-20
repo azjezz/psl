@@ -18,7 +18,7 @@ use function sprintf;
  *
  * @internal
  */
-final readonly class ContainerType<Tk : int|string = int|string, Tv = mixed> extends Type\Type
+final readonly class ContainerType<Tk : int|string, Tv> extends Type\Type<iterable>
 {
     /**
      * @psalm-mutation-free

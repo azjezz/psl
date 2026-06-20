@@ -15,7 +15,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function union<T = mixed>(TypeInterface<T> $first, TypeInterface<T> $second, TypeInterface<T> ...$rest): TypeInterface<T>
+function union<T>(TypeInterface<T> $first, TypeInterface<T> $second, TypeInterface<T> ...$rest): TypeInterface<T>
 {
     $accumulatedType = new Internal\UnionType($first, $second);
 

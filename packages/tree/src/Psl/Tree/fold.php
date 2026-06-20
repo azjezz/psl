@@ -28,7 +28,7 @@ use function array_map;
  *
  * @api
  */
-function fold<T = mixed, Ta = mixed>(NodeInterface<T> $tree, Closure $function): Ta
+function fold<T, Ta>(NodeInterface<T> $tree, Closure $function): Ta
 {
     if (!$tree instanceof TreeNode) {
         return $function($tree->getValue(), []);

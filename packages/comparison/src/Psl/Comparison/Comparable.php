@@ -9,7 +9,7 @@ use Psl\Comparison\Exception\IncomparableException;
 /**
  * @api
  */
-interface Comparable<T = mixed>
+interface Comparable<T>
 {
     /**
      * @param T $other

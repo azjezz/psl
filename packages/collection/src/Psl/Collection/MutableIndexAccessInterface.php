@@ -10,7 +10,7 @@ namespace Psl\Collection;
  *
  * @api
  */
-interface MutableIndexAccessInterface<Tk : int|string = int|string, Tv = mixed> extends IndexAccessInterface<Tk, Tv>
+interface MutableIndexAccessInterface<Tk : int|string, Tv> extends IndexAccessInterface<Tk, Tv>
 {
     /**
      * Removes the specified key (and associated value) from the current

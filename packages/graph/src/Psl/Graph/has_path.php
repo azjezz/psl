@@ -25,7 +25,7 @@ use Psl\DataStructure\Queue;
  *
  * @api
  */
-function has_path<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $from, TNode $to): bool
+function has_path<TNode, TWeight>(DirectedGraph|UndirectedGraph $graph, TNode $from, TNode $to): bool
 {
     if (!$graph->hasNode($from) || !$graph->hasNode($to)) {
         return false;

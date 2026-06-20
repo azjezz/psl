@@ -24,7 +24,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function has_cycle<TNode = mixed, TWeight = mixed>(GraphInterface<TNode, TWeight> $graph): bool
+function has_cycle<TNode, TWeight>(GraphInterface<TNode, TWeight> $graph): bool
 {
     return $graph->hasCycle();
 }

@@ -23,7 +23,7 @@ use function is_array;
  *
  * @api
  */
-function flip<Tk : int|string = int|string, Tv : int|string = int|string>(iterable $iterable): array
+function flip<Tk : int|string, Tv : int|string>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_flip($iterable);

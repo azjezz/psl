@@ -13,7 +13,7 @@ use Psl\Option;
  *
  * @api
  */
-final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
+final readonly class Left<TLeft> implements EitherOrBoth<TLeft, never>
 {
     /**
      * @var TLeft
@@ -127,9 +127,9 @@ final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
      *
      * @return Left<TResult>
      */
-    public function map<TResult = mixed>(Closure $closure): Left<TResult>
+    public function map<TResult>(Closure $closure): Left<TResult>
     {
-        return new Left($closure($this->value));
+        return new Left::<TResult>($closure($this->value));
     }
 
     /**
@@ -139,9 +139,9 @@ final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
      *
      * @return Left<TResult>
      */
-    public function mapLeft<TResult = mixed>(Closure $closure): Left<TResult>
+    public function mapLeft<TResult>(Closure $closure): Left<TResult>
     {
-        return new Left($closure($this->value));
+        return new Left::<TResult>($closure($this->value));
     }
 
     /**
@@ -151,7 +151,7 @@ final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
      *
      * @psalm-mutation-free
      */
-    public function mapRight<TResult = mixed>(Closure $closure): Left<TLeft>
+    public function mapRight<TResult>(Closure $closure): Left<TLeft>
     {
         return $this;
     }
@@ -164,9 +164,9 @@ final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
      *
      * @return Left<TResultLeft>
      */
-    public function mapAny<TResultLeft = mixed, TResultRight = mixed>(Closure $left, Closure $right): Left<TResultLeft>
+    public function mapAny<TResultLeft, TResultRight>(Closure $left, Closure $right): Left<TResultLeft>
     {
-        return new Left($left($this->value));
+        return new Left::<TResultLeft>($left($this->value));
     }
 
     /**
@@ -176,7 +176,7 @@ final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
      */
     public function swap(): Right
     {
-        return new Right($this->value);
+        return new Right::<TLeft>($this->value);
     }
 
     /**
@@ -188,7 +188,7 @@ final readonly class Left<TLeft = mixed> implements EitherOrBoth<TLeft, never>
      *
      * @return TResult
      */
-    public function proceed<TResult = mixed>(Closure $left, Closure $right, Closure $both): TResult
+    public function proceed<TResult>(Closure $left, Closure $right, Closure $both): TResult
     {
         return $left($this->value);
     }

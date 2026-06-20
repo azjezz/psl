@@ -18,7 +18,7 @@ use function min as php_min;
  *
  * @api
  */
-function min<T : int|float = int|float>(array $numbers): null|float|int
+function min<T : int|float>(array $numbers): null|float|int
 {
     if ([] === $numbers) {
         return null;

@@ -22,7 +22,7 @@ use function serialize;
  *
  * @api
  */
-function unique_by<Tv = mixed, Ts = mixed>(iterable $iterable, Closure $scalarFunc): array
+function unique_by<Tv, Ts>(iterable $iterable, Closure $scalarFunc): array
 {
     /** @var array<array-key, true> $seen */
     $seen = [];

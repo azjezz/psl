@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function non_empty_vec<T = mixed>(TypeInterface<T> $valueType): TypeInterface
+function non_empty_vec<T>(TypeInterface<T> $valueType): TypeInterface
 {
     return new Internal\NonEmptyVecType($valueType);
 }

@@ -13,7 +13,7 @@ namespace Psl\Channel;
  *
  * @api
  */
-function unbounded<T = mixed>(): array
+function unbounded<T>(): array
 {
     $channel = new Internal\UnboundedChannelState();
 

@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function concurrently<Tk : int|string = int|string, Tv = mixed>(iterable $tasks): array
+function concurrently<Tk : int|string, Tv>(iterable $tasks): array
 {
     $awaitables = [];
     foreach ($tasks as $k => $task) {

@@ -18,7 +18,7 @@ use function preg_match;
  *
  * @internal
  */
-final readonly class UuidType extends Type\Type
+final readonly class UuidType extends Type\Type<string>
 {
     /**
      * @psalm-assert-if-true non-empty-string $value

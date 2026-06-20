@@ -13,7 +13,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function enumerate<Tk = mixed, Tv = mixed>(iterable $iterable): array
+function enumerate<Tk, Tv>(iterable $iterable): array
 {
     $result = [];
     foreach ($iterable as $k => $v) {

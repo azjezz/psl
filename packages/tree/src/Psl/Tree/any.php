@@ -24,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function any<T = mixed>(NodeInterface<T> $node, Closure $predicate): bool
+function any<T>(NodeInterface<T> $node, Closure $predicate): bool
 {
     if ($predicate($node->getValue())) {
         return true;

@@ -33,7 +33,7 @@ use function min;
  *
  * @api
  */
-function zip<Tv = mixed, Tu = mixed>(iterable $first, iterable $second): array
+function zip<Tv, Tu>(iterable $first, iterable $second): array
 {
     $one = namespace\values($first);
     $two = namespace\values($second);

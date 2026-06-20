@@ -20,7 +20,7 @@ use function is_array;
  *
  * @api
  */
-function merge<Tk : int|string = int|string, Tv = mixed>(iterable $first, iterable ...$rest): array
+function merge<Tk : int|string, Tv>(iterable $first, iterable ...$rest): array
 {
     if (is_array($first)) {
         foreach ($rest as $iterable) {

@@ -22,7 +22,7 @@ use function iterator_to_array;
  *
  * @api
  */
-function associate<Tk : int|string = int|string, Tv = mixed>(iterable $keys, iterable $values): array
+function associate<Tk : int|string, Tv>(iterable $keys, iterable $values): array
 {
     if (!is_array($keys)) {
         $keys = iterator_to_array($keys);

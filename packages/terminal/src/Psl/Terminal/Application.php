@@ -27,7 +27,7 @@ use const SIGWINCH;
  *
  * @api
  */
-final class Application<S : object = object>
+final class Application<S : object>
 {
     /**
      * @var array<class-string, list<Closure>>
@@ -78,14 +78,14 @@ final class Application<S : object = object>
      *
      * @return self<T>
      */
-    public static function create<T : object = object>(
+    public static function create<T : object>(
         object $state,
         string $title = '',
         null|DateTime\Duration $tickInterval = null,
         bool $scrollSmoothing = true,
         bool $mouseMotion = false,
     ): self {
-        return new self(
+        return new self::<T>(
             $title,
             $tickInterval ?? DateTime\Duration::milliseconds(16),
             $state,
@@ -122,7 +122,7 @@ final class Application<S : object = object>
      *
      * @return self<T>
      */
-    public static function custom<T : object = object>(
+    public static function custom<T : object>(
         object $state,
         IO\ReadHandleInterface&IO\StreamHandleInterface $input,
         IO\WriteHandleInterface $output,
@@ -133,7 +133,7 @@ final class Application<S : object = object>
         bool $scrollSmoothing = true,
         bool $mouseMotion = false,
     ): self {
-        return new self(
+        return new self::<T>(
             $title,
             $tickInterval ?? DateTime\Duration::milliseconds(16),
             $state,
@@ -153,7 +153,7 @@ final class Application<S : object = object>
      * @param class-string<T> $eventClass
      * @param Closure(T, S): void $handler
      */
-    public function on<T : Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus = Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus>(string $eventClass, Closure $handler): void
+    public function on<T : Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus>(string $eventClass, Closure $handler): void
     {
         $this->eventHandlers[$eventClass] ??= [];
         $this->eventHandlers[$eventClass][] = $handler;

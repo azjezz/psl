@@ -21,7 +21,7 @@ use Throwable;
  *
  * @api
  */
-function reflect<T = mixed>(Closure $task): Closure
+function reflect<T>(Closure $task): Closure
 {
     return static fn(): ResultInterface => namespace\wrap($task);
 }

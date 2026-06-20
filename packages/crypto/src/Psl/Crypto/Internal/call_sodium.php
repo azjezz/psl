@@ -19,7 +19,7 @@ use SodiumException;
  *
  * @codeCoverageIgnore -We can't reproduce this easily, just ignore it.
  */
-function call_sodium<T = mixed>(Closure $callback): T
+function call_sodium<T>(Closure $callback): T
 {
     try {
         return $callback();

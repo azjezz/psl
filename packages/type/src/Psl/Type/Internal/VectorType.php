@@ -18,7 +18,7 @@ use function sprintf;
 /**
  * @internal
  */
-final readonly class VectorType<T = mixed> extends Type\Type<Collection\VectorInterface<T>>
+final readonly class VectorType<T> extends Type\Type<Collection\VectorInterface<T>>
 {
     /**
      * @psalm-mutation-free

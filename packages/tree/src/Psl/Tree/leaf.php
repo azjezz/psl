@@ -19,7 +19,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function leaf<T = mixed>(T $value): LeafNode<T>
+function leaf<T>(T $value): LeafNode<T>
 {
-    return new LeafNode($value);
+    return new LeafNode::<T>($value);
 }

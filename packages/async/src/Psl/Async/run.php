@@ -17,7 +17,7 @@ use Throwable;
  *
  * @api
  */
-function run<T = mixed>(Closure $closure): Awaitable<T>
+function run<T>(Closure $closure): Awaitable<T>
 {
     $state = new Internal\State();
 
@@ -31,5 +31,5 @@ function run<T = mixed>(Closure $closure): Awaitable<T>
         }
     });
 
-    return new Awaitable($state);
+    return new Awaitable::<T>($state);
 }

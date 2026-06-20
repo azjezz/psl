@@ -13,7 +13,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function unique<Tv = mixed>(iterable $iterable): array
+function unique<Tv>(iterable $iterable): array
 {
     return namespace\unique_by(
         $iterable,

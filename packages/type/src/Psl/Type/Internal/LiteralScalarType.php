@@ -16,7 +16,7 @@ use function str_ends_with;
 /**
  * @internal
  */
-final readonly class LiteralScalarType<T : string|int|float|bool = string|int|float|bool> extends Type\Type<T>
+final readonly class LiteralScalarType<T : string|int|float|bool> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

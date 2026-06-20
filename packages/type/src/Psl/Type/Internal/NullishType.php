@@ -12,7 +12,7 @@ use Psl\Type\Exception\CoercionException;
 /**
  * @internal
  */
-final readonly class NullishType<T = mixed> extends Type\Type<T|null>
+final readonly class NullishType<T> extends Type\Type<T|null>
 {
     /**
      * @psalm-mutation-free

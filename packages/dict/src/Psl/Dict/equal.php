@@ -16,7 +16,7 @@ use function count;
  *
  * @api
  */
-function equal<Tk : int|string = int|string, Tv = mixed>(array $first, array $second): bool
+function equal<Tk : int|string, Tv>(array $first, array $second): bool
 {
     if ($first === $second) {
         return true;

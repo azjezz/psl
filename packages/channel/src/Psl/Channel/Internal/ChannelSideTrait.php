@@ -9,7 +9,7 @@ use Override;
 /**
  * @internal
  */
-trait ChannelSideTrait<T : UnboundedChannelState|BoundedChannelState = UnboundedChannelState|BoundedChannelState>
+trait ChannelSideTrait<T : UnboundedChannelState|BoundedChannelState>
 {
     /**
      * @var T

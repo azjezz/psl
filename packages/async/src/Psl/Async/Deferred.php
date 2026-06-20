@@ -18,7 +18,7 @@ use Throwable;
  *
  * @api
  */
-final readonly class Deferred<T = mixed>
+final readonly class Deferred<T>
 {
     /**
      * @var Internal\State<T>

@@ -18,7 +18,7 @@ use function is_string;
  *
  * @internal
  */
-final readonly class NonEmptyStringType extends Type\Type
+final readonly class NonEmptyStringType extends Type\Type<string>
 {
     /**
      * @psalm-assert-if-true non-empty-string $value

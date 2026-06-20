@@ -33,7 +33,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function shortest_path<TNode = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $from, TNode $to): null|array
+function shortest_path<TNode>(DirectedGraph|UndirectedGraph $graph, TNode $from, TNode $to): null|array
 {
     return namespace\shortest_path_by($graph, $from, $to, static fn(int $weight): int => $weight);
 }

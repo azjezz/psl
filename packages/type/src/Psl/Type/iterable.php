@@ -14,7 +14,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function iterable<Tk = mixed, Tv = mixed>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
+function iterable<Tk, Tv>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
 {
     return new Internal\IterableType($keyType, $valueType);
 }

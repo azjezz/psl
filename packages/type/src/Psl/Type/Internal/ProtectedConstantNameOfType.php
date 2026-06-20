@@ -18,7 +18,7 @@ use function is_string;
  *
  * @internal
  */
-final readonly class ProtectedConstantNameOfType extends Type
+final readonly class ProtectedConstantNameOfType extends Type<string>
 {
     /**
      * @var class-string

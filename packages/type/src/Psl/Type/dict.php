@@ -14,7 +14,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function dict<Tk : int|string = int|string, Tv = mixed>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
+function dict<Tk : int|string, Tv>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
 {
     return new Internal\DictType($keyType, $valueType);
 }

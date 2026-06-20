@@ -15,7 +15,7 @@ use Psl\Option;
  *
  * @api
  */
-final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
+final readonly class Left<TLeft> implements Either<TLeft, never>
 {
     /**
      * @var TLeft
@@ -79,7 +79,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @psalm-mutation-free
      */
-    public function getRightOr<T = mixed>(T $default): never|T
+    public function getRightOr<T>(T $default): never|T
     {
         return $default;
     }
@@ -91,7 +91,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @psalm-mutation-free
      */
-    public function getLeftOr<T = mixed>(T $default): TLeft|T
+    public function getLeftOr<T>(T $default): TLeft|T
     {
         return $this->value;
     }
@@ -103,7 +103,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return never|TResult
      */
-    public function getRightOrElse<TResult = mixed>(Closure $closure): never|TResult
+    public function getRightOrElse<TResult>(Closure $closure): never|TResult
     {
         return $closure($this->value);
     }
@@ -113,7 +113,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return TLeft|TResult
      */
-    public function getLeftOrElse<TResult = mixed>(Closure $closure): TLeft|TResult
+    public function getLeftOrElse<TResult>(Closure $closure): TLeft|TResult
     {
         return $this->value;
     }
@@ -145,7 +145,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return Either<TResult, TResult>
      */
-    public function map<TResult = mixed>(Closure $closure): Either<TResult, TResult>
+    public function map<TResult>(Closure $closure): Either<TResult, TResult>
     {
         return new Left($closure($this->value));
     }
@@ -157,7 +157,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @psalm-mutation-free
      */
-    public function mapRight<TResult = mixed>(Closure $closure): Either<TLeft, TResult>
+    public function mapRight<TResult>(Closure $closure): Either<TLeft, TResult>
     {
         return $this;
     }
@@ -169,7 +169,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return Either<TResult, never>
      */
-    public function mapLeft<TResult = mixed>(Closure $closure): Either<TResult, never>
+    public function mapLeft<TResult>(Closure $closure): Either<TResult, never>
     {
         return new Left($closure($this->value));
     }
@@ -181,7 +181,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return Either<TResultLeft, TResultRight>
      */
-    public function flatMap<TResultLeft = mixed, TResultRight = mixed>(Closure $closure): Either<TResultLeft, TResultRight>
+    public function flatMap<TResultLeft, TResultRight>(Closure $closure): Either<TResultLeft, TResultRight>
     {
         return $closure($this->value);
     }
@@ -193,7 +193,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @psalm-mutation-free
      */
-    public function flatMapRight<TResultLeft = mixed, TResultRight = mixed>(Closure $closure): Either<TLeft|TResultLeft, TResultRight>
+    public function flatMapRight<TResultLeft, TResultRight>(Closure $closure): Either<TLeft|TResultLeft, TResultRight>
     {
         return $this;
     }
@@ -205,7 +205,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return Either<TResultLeft, never|TResultRight>
      */
-    public function flatMapLeft<TResultLeft = mixed, TResultRight = mixed>(Closure $closure): Either<TResultLeft, never|TResultRight>
+    public function flatMapLeft<TResultLeft, TResultRight>(Closure $closure): Either<TResultLeft, never|TResultRight>
     {
         return $closure($this->value);
     }
@@ -218,7 +218,7 @@ final readonly class Left<TLeft = mixed> implements Either<TLeft, never>
      *
      * @return TResult
      */
-    public function proceed<TResult = mixed>(Closure $right, Closure $left): TResult
+    public function proceed<TResult>(Closure $right, Closure $left): TResult
     {
         return $left($this->value);
     }

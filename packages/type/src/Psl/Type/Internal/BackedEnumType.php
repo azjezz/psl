@@ -15,7 +15,7 @@ use function sprintf;
 /**
  * @internal
  */
-final readonly class BackedEnumType<T : BackedEnum = BackedEnum> extends Type\Type<T>
+final readonly class BackedEnumType<T : BackedEnum> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free

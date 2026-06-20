@@ -18,7 +18,7 @@ use function sprintf;
 /**
  * @internal
  */
-final readonly class MutableSetType<T : int|string = int|string> extends Type\Type<Collection\MutableSetInterface<T>>
+final readonly class MutableSetType<T : int|string> extends Type\Type<Collection\MutableSetInterface<T>>
 {
     /**
      * @psalm-mutation-free

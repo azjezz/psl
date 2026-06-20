@@ -31,7 +31,7 @@ use Closure;
  *
  * @api
  */
-function pull<Tk1 = mixed, Tv1 = mixed, Tk2 : int|string = int|string, Tv2 = mixed>(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
+function pull<Tk1, Tv1, Tk2 : int|string, Tv2>(iterable $iterable, Closure $valueFunc, Closure $keyFunc): array
 {
     $result = [];
     foreach ($iterable as $value) {

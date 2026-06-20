@@ -27,7 +27,7 @@ use Closure;
  *
  * @api
  */
-function map_nonnull<Tk = mixed, Tv = mixed, T = mixed>(iterable $iterable, Closure $function): array
+function map_nonnull<Tk, Tv, T>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $value) {

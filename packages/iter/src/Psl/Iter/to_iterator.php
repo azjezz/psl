@@ -15,7 +15,7 @@ namespace Psl\Iter;
  *
  * @api
  */
-function to_iterator<Tk = mixed, Tv = mixed>(iterable $iterable): Iterator<Tk, Tv>
+function to_iterator<Tk, Tv>(iterable $iterable): Iterator<Tk, Tv>
 {
     return Iterator::create($iterable);
 }

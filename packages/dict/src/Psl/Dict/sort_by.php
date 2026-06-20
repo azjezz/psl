@@ -21,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function sort_by<Tk : int|string = int|string, Tv = mixed, Ts = mixed>(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
+function sort_by<Tk : int|string, Tv, Ts>(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {
     $comparator ??=
         /**

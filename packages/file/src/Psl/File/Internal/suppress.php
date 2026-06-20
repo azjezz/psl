@@ -15,7 +15,7 @@ use function error_reporting;
  *
  * @internal
  */
-function suppress<T = mixed>(Closure $fun): T
+function suppress<T>(Closure $fun): T
 {
     $previousLevel = error_reporting(0);
 

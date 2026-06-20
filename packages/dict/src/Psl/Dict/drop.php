@@ -19,7 +19,7 @@ namespace Psl\Dict;
  *
  * @api
  */
-function drop<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, int $n): array
+function drop<Tk : int|string, Tv>(iterable $iterable, int $n): array
 {
     return namespace\slice($iterable, $n);
 }

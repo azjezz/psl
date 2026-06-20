@@ -7,7 +7,7 @@ namespace Psl\Observer;
 /**
  * @api
  */
-interface ObserverInterface<T : SubjectInterface = SubjectInterface>
+interface ObserverInterface<T : SubjectInterface>
 {
     /**
      * Receive an update from a subject.

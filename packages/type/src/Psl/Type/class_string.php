@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function class_string<T = mixed>(string|null $classname = null): TypeInterface
+function class_string<T>(string|null $classname = null): TypeInterface
 {
     return new Internal\ClassStringType($classname);
 }

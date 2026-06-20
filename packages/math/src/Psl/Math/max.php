@@ -18,7 +18,7 @@ use function max as php_max;
  *
  * @api
  */
-function max<T : int|float = int|float>(array $numbers): null|int|float
+function max<T : int|float>(array $numbers): null|int|float
 {
     if ([] === $numbers) {
         return null;

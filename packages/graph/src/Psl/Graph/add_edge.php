@@ -29,7 +29,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function add_edge<TNode = mixed, TWeight = mixed>(
+function add_edge<TNode, TWeight>(
     DirectedGraph|UndirectedGraph $graph,
     TNode $from,
     TNode $to,

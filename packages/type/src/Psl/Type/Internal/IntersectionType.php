@@ -17,7 +17,7 @@ use function str_contains;
 /**
  * @internal
  */
-final readonly class IntersectionType<Tl = mixed, Tr = mixed> extends Type<Tl&Tr>
+final readonly class IntersectionType<Tl, Tr> extends Type<Tl&Tr>
 {
     /**
      * @psalm-mutation-free

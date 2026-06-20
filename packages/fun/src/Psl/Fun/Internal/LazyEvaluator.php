@@ -9,7 +9,7 @@ use Closure;
 /**
  * @internal
  */
-final class LazyEvaluator<T = mixed>
+final class LazyEvaluator<T>
 {
     /**
      * @var T|null

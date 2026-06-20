@@ -18,7 +18,7 @@ use function count;
  *
  * @api
  */
-final class Iterator<Tk = mixed, Tv = mixed> implements Countable, SeekableIterator
+final class Iterator<Tk, Tv> implements Countable, SeekableIterator
 {
     /**
      * @var null|Generator<Tk, Tv, mixed, mixed>
@@ -62,7 +62,7 @@ final class Iterator<Tk = mixed, Tv = mixed> implements Countable, SeekableItera
      *
      * @return Iterator<Tsk, Tsv>
      */
-    public static function from<Tsk = mixed, Tsv = mixed>(Closure $factory): Iterator<Tsk, Tsv>
+    public static function from<Tsk, Tsv>(Closure $factory): Iterator<Tsk, Tsv>
     {
         return self::create($factory());
     }
@@ -74,10 +74,10 @@ final class Iterator<Tk = mixed, Tv = mixed> implements Countable, SeekableItera
      *
      * @return Iterator<Tsk, Tsv>
      */
-    public static function create<Tsk = mixed, Tsv = mixed>(iterable $iterable): Iterator<Tsk, Tsv>
+    public static function create<Tsk, Tsv>(iterable $iterable): Iterator<Tsk, Tsv>
     {
         if ($iterable instanceof Generator) {
-            return new self($iterable);
+            return new self::<Tsk, Tsv>($iterable);
         }
 
         $factory =
@@ -86,7 +86,7 @@ final class Iterator<Tk = mixed, Tv = mixed> implements Countable, SeekableItera
              */
             static fn(): Generator => yield from $iterable;
 
-        return new self($factory());
+        return new self::<Tsk, Tsv>($factory());
     }
 
     /**

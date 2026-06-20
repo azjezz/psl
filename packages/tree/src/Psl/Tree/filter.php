@@ -33,7 +33,7 @@ use Closure;
  *
  * @api
  */
-function filter<T = mixed>(NodeInterface<T> $node, Closure $predicate): null|TreeNode
+function filter<T>(NodeInterface<T> $node, Closure $predicate): null|TreeNode
 {
     if (!$predicate($node->getValue())) {
         return null;

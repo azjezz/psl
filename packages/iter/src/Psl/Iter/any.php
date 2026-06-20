@@ -18,7 +18,7 @@ use Closure;
  *
  * @api
  */
-function any<T = mixed>(iterable $iterable, Closure $predicate): bool
+function any<T>(iterable $iterable, Closure $predicate): bool
 {
     foreach ($iterable as $value) {
         if (!$predicate($value)) {

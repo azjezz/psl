@@ -16,7 +16,7 @@ use Generator;
  *
  * @api
  */
-function rewindable<Tk = mixed, Tv = mixed>(Generator $generator): Iterator<Tk, Tv>
+function rewindable<Tk, Tv>(Generator $generator): Iterator<Tk, Tv>
 {
-    return new Iterator($generator);
+    return new Iterator::<Tk, Tv>($generator);
 }

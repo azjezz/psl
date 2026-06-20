@@ -18,7 +18,7 @@ use function is_array;
  *
  * @api
  */
-function unique_scalar<Tv : int|float|string|bool = int|float|string|bool>(iterable $iterable): array
+function unique_scalar<Tv : int|float|string|bool>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_values(array_unique($iterable));

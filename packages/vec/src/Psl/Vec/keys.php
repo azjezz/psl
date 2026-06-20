@@ -16,7 +16,7 @@ use function is_array;
  *
  * @api
  */
-function keys<Tk : int|string = int|string, Tv = mixed>(iterable $iterable): array
+function keys<Tk : int|string, Tv>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_keys($iterable);

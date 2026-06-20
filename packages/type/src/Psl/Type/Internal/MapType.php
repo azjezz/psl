@@ -18,7 +18,7 @@ use function sprintf;
 /**
  * @internal
  */
-final readonly class MapType<Tk : int|string = int|string, Tv = mixed> extends Type\Type<Collection\MapInterface<Tk, Tv>>
+final readonly class MapType<Tk : int|string, Tv> extends Type\Type<Collection\MapInterface<Tk, Tv>>
 {
     /**
      * @psalm-mutation-free

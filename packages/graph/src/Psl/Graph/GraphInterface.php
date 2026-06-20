@@ -11,7 +11,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-interface GraphInterface<TNode = mixed, TWeight = mixed>
+interface GraphInterface<TNode, TWeight>
 {
     /**
      * Returns all nodes in the graph.

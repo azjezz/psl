@@ -23,7 +23,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function tree<T = mixed>(T $value, array $children = []): TreeNode<T>
+function tree<T>(T $value, array $children = []): TreeNode<T>
 {
-    return new TreeNode($value, $children);
+    return new TreeNode::<T>($value, $children);
 }

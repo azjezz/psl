@@ -9,7 +9,7 @@ namespace Psl\Collection;
  *
  * @api
  */
-interface IndexAccessInterface<Tk : int|string = int|string, Tv = mixed>
+interface IndexAccessInterface<Tk : int|string, Tv>
 {
     /**
      * Returns the value at the specified key in the current collection.

@@ -17,7 +17,7 @@ use function count;
 /**
  * @internal
  */
-final class UnboundedChannelState<T = mixed> implements ChannelInterface
+final class UnboundedChannelState<T> implements ChannelInterface
 {
     /**
      * @var list<Suspension<mixed>>

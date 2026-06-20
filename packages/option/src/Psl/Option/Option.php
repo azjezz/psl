@@ -11,7 +11,7 @@ use Psl\Comparison;
 /**
  * @api
  */
-final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T>>, Comparison\Equable<Option<T>>
+final readonly class Option<T> implements Comparison\Comparable<Option<T>>, Comparison\Equable<Option<T>>
 {
     /**
      * @var null|array{T}
@@ -37,9 +37,9 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @pure
      */
-    public static function some<Tv = mixed>(Tv $value): Option<Tv>
+    public static function some<Tv>(Tv $value): Option<Tv>
     {
-        return new self([$value]);
+        return new self::<Tv>([$value]);
     }
 
     /**
@@ -52,7 +52,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
     public static function none(): Option
     {
         /** @var Option<never> */
-        return new self(null);
+        return new self::<never>(null);
     }
 
     /**
@@ -118,7 +118,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @psalm-mutation-free
      */
-    public function unwrapOr<O = mixed>(O $default): T|O
+    public function unwrapOr<O>(O $default): T|O
     {
         if (null !== $this->option) {
             return $this->option[0];
@@ -134,7 +134,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return T|O
      */
-    public function unwrapOrElse<O = mixed>(Closure $default): T|O
+    public function unwrapOrElse<O>(Closure $default): T|O
     {
         if (null !== $this->option) {
             return $this->option[0];
@@ -152,7 +152,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @psalm-mutation-free
      */
-    public function and<Tu = mixed>(Option<Tu> $other): Option<Tu>
+    public function and<Tu>(Option<Tu> $other): Option<Tu>
     {
         if (null !== $this->option && null !== $other->option) {
             return $other;
@@ -173,7 +173,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @psalm-mutation-free
      */
-    public function or<O = mixed>(Option<O> $option): Option<T|O>
+    public function or<O>(Option<O> $option): Option<T|O>
     {
         if (null !== $this->option) {
             return $this;
@@ -189,7 +189,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Option<T|E>
      */
-    public function orElse<E = mixed>(Closure $closure): Option<T|E>
+    public function orElse<E>(Closure $closure): Option<T|E>
     {
         if (null !== $this->option) {
             return $this;
@@ -245,7 +245,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Ts The result of calling the appropriate closure.
      */
-    public function proceed<Ts = mixed>(Closure $some, Closure $none): mixed
+    public function proceed<Ts>(Closure $some, Closure $none): mixed
     {
         if (null !== $this->option) {
             return $some($this->option[0]);
@@ -277,7 +277,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Option<Tu>
      */
-    public function map<Tu = mixed>(Closure $closure): Option<Tu>
+    public function map<Tu>(Closure $closure): Option<Tu>
     {
         if (null !== $this->option) {
             return namespace\some($closure($this->option[0]));
@@ -294,7 +294,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Option<Tu>
      */
-    public function andThen<Tu = mixed>(Closure $closure): Option<Tu>
+    public function andThen<Tu>(Closure $closure): Option<Tu>
     {
         if (null !== $this->option) {
             return $closure($this->option[0]);
@@ -317,7 +317,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Option<Tu>
      */
-    public function mapOr<Tu = mixed>(Closure $closure, Tu $default): Option<Tu>
+    public function mapOr<Tu>(Closure $closure, Tu $default): Option<Tu>
     {
         if (null !== $this->option) {
             return namespace\some($closure($this->option[0]));
@@ -336,7 +336,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Option<Tu>
      */
-    public function mapOrElse<Tu = mixed>(Closure $closure, Closure $default): Option<Tu>
+    public function mapOrElse<Tu>(Closure $closure, Closure $default): Option<Tu>
     {
         if (null !== $this->option) {
             return namespace\some($closure($this->option[0]));
@@ -377,7 +377,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @return Option<array{T, Tu}> The resulting `Option` containing the combined tuple or `None`.
      */
-    public function zip<Tu = mixed>(Option $other): Option
+    public function zip<Tu>(Option $other): Option
     {
         return $this->andThen(static fn(mixed $a): Option => $other->map(static fn(mixed $b): array => [$a, $b]));
     }
@@ -392,7 +392,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      * @return Option<Tr> The new `Option` containing the result of applying the closure to the values,
      *                    or `None` if either this or the $other `Option is `None`.
      */
-    public function zipWith<Tu = mixed, Tr = mixed>(Option $other, Closure $closure): Option
+    public function zipWith<Tu, Tr>(Option $other, Closure $closure): Option
     {
         return $this->andThen(
             /** @param T $a */
@@ -411,7 +411,7 @@ final readonly class Option<T = mixed> implements Comparison\Comparable<Option<T
      *
      * @psalm-mutation-free
      */
-    public function unzip<L = mixed, R = mixed>(): array
+    public function unzip<L, R>(): array
     {
         if (null === $this->option) {
             return [namespace\none(), namespace\none()];

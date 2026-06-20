@@ -16,7 +16,7 @@ use Psl\Collection;
  *
  * @api
  */
-function mutable_map<Tk : int|string = int|string, Tv = mixed>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface<Collection\MutableMapInterface<Tk, Tv>>
+function mutable_map<Tk : int|string, Tv>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface<Collection\MutableMapInterface<Tk, Tv>>
 {
     return new Internal\MutableMapType($keyType, $valueType);
 }

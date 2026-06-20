@@ -24,7 +24,7 @@ use Throwable;
  *
  * @codeCoverageIgnore
  */
-final class State<T = mixed>
+final class State<T>
 {
     private bool $complete = false;
 

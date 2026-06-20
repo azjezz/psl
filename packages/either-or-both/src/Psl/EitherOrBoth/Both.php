@@ -13,7 +13,7 @@ use Psl\Option;
  *
  * @api
  */
-final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth<TLeft, TRight>
+final readonly class Both<TLeft, TRight> implements EitherOrBoth<TLeft, TRight>
 {
     /**
      * @var TLeft
@@ -136,9 +136,9 @@ final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth
      *
      * @return Both<TResult, TResult>
      */
-    public function map<TResult = mixed>(Closure $closure): Both<TResult, TResult>
+    public function map<TResult>(Closure $closure): Both<TResult, TResult>
     {
-        return new Both($closure($this->left), $closure($this->right));
+        return new Both::<TResult, TResult>($closure($this->left), $closure($this->right));
     }
 
     /**
@@ -148,9 +148,9 @@ final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth
      *
      * @return Both<TResult, TRight>
      */
-    public function mapLeft<TResult = mixed>(Closure $closure): Both<TResult, TRight>
+    public function mapLeft<TResult>(Closure $closure): Both<TResult, TRight>
     {
-        return new Both($closure($this->left), $this->right);
+        return new Both::<TResult, TRight>($closure($this->left), $this->right);
     }
 
     /**
@@ -160,9 +160,9 @@ final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth
      *
      * @return Both<TLeft, TResult>
      */
-    public function mapRight<TResult = mixed>(Closure $closure): Both<TLeft, TResult>
+    public function mapRight<TResult>(Closure $closure): Both<TLeft, TResult>
     {
-        return new Both($this->left, $closure($this->right));
+        return new Both::<TLeft, TResult>($this->left, $closure($this->right));
     }
 
     /**
@@ -174,9 +174,9 @@ final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth
      *
      * @return Both<TResultLeft, TResultRight>
      */
-    public function mapAny<TResultLeft = mixed, TResultRight = mixed>(Closure $left, Closure $right): Both<TResultLeft, TResultRight>
+    public function mapAny<TResultLeft, TResultRight>(Closure $left, Closure $right): Both<TResultLeft, TResultRight>
     {
-        return new Both($left($this->left), $right($this->right));
+        return new Both::<TResultLeft, TResultRight>($left($this->left), $right($this->right));
     }
 
     /**
@@ -198,7 +198,7 @@ final readonly class Both<TLeft = mixed, TRight = mixed> implements EitherOrBoth
      *
      * @return TResult
      */
-    public function proceed<TResult = mixed>(Closure $left, Closure $right, Closure $both): TResult
+    public function proceed<TResult>(Closure $left, Closure $right, Closure $both): TResult
     {
         return $both($this->left, $this->right);
     }

@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function shape<Tk : int|string = int|string, Tv = mixed>(array $elements, bool $allowUnknownFields = false): TypeInterface
+function shape<Tk : int|string, Tv>(array $elements, bool $allowUnknownFields = false): TypeInterface
 {
     return new Internal\ShapeType($elements, $allowUnknownFields);
 }

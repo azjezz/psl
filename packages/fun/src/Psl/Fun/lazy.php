@@ -15,7 +15,7 @@ use Closure;
  *
  * @api
  */
-function lazy<T = mixed>(Closure $initializer): Closure
+function lazy<T>(Closure $initializer): Closure
 {
     $evaluator = new Internal\LazyEvaluator($initializer);
 

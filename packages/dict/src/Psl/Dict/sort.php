@@ -23,7 +23,7 @@ use function uasort;
  *
  * @api
  */
-function sort<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, null|Closure $comparator = null): array
+function sort<Tk : int|string, Tv>(iterable $iterable, null|Closure $comparator = null): array
 {
     if (is_array($iterable)) {
         $array = $iterable;

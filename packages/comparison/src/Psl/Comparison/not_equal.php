@@ -10,7 +10,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function not_equal<T = mixed>(T $a, T $b): bool
+function not_equal<T>(T $a, T $b): bool
 {
     return namespace\compare($a, $b) !== Order::Equal;
 }

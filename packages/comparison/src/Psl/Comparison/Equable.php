@@ -7,7 +7,7 @@ namespace Psl\Comparison;
 /**
  * @api
  */
-interface Equable<T = mixed>
+interface Equable<T>
 {
     /**
      * @param T $other

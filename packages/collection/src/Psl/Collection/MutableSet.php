@@ -27,7 +27,7 @@ use const ARRAY_FILTER_USE_KEY;
 /**
  * @api
  */
-final class MutableSet<T : int|string = int|string> implements MutableSetInterface<T>
+final class MutableSet<T : int|string> implements MutableSetInterface<T>
 {
     /**
      * @var array<T, T>
@@ -73,9 +73,9 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
      *
      * @pure
      */
-    public static function fromArray<Ts : int|string = int|string>(array $elements): MutableSet<Ts>
+    public static function fromArray<Ts : int|string>(array $elements): MutableSet<Ts>
     {
-        return new self($elements);
+        return new self::<Ts>($elements);
     }
 
     /**
@@ -85,7 +85,7 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
      *
      * @return MutableSet<Ts>
      */
-    public static function fromItems<Ts : int|string = int|string>(iterable $items): MutableSet<Ts>
+    public static function fromItems<Ts : int|string>(iterable $items): MutableSet<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -101,7 +101,7 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
      *
      * @pure
      */
-    public static function fromArrayKeys<Ts : int|string = int|string>(array $elements): MutableSet<Ts>
+    public static function fromArrayKeys<Ts : int|string>(array $elements): MutableSet<Ts>
     {
         /** @var array<Ts, Ts> $set */
         $set = [];
@@ -109,7 +109,7 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
             $set[$element] = $element;
         }
 
-        return new self($set);
+        return new self::<Ts>($set);
     }
 
     /**
@@ -498,7 +498,7 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
      *                        operation is applied.
      */
     #[Override]
-    public function map<Tu : int|string = int|string>(Closure $fn): MutableSet
+    public function map<Tu : int|string>(Closure $fn): MutableSet
     {
         return new MutableSet(array_map($fn, $this->elements));
     }
@@ -518,7 +518,7 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
      * @return MutableSet<Tu>
      */
     #[Override]
-    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): MutableSet<Tu>
+    public function mapWithKey<Tu : int|string>(Closure $fn): MutableSet<Tu>
     {
         return $this->map(
             /**
@@ -538,7 +538,7 @@ final class MutableSet<T : int|string = int|string> implements MutableSetInterfa
      * @throws Exception\RuntimeException Always throws an exception since `MutableSet` can only contain array-key values.
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): never
+    public function zip<Tu>(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a MutableSet.');
     }

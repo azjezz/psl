@@ -17,7 +17,7 @@ use Throwable;
  *
  * @api
  */
-function wrap<T = mixed>(Closure $closure): ResultInterface<T>
+function wrap<T>(Closure $closure): ResultInterface<T>
 {
     try {
         return new Success($closure());

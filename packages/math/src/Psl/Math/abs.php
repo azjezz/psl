@@ -15,7 +15,7 @@ namespace Psl\Math;
  *
  * @api
  */
-function abs<T : int|float = int|float>(int|float $number): int|float
+function abs<T : int|float>(int|float $number): int|float
 {
     return $number < 0 ? -$number : $number;
 }

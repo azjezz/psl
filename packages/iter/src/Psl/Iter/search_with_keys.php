@@ -25,7 +25,7 @@ use Closure;
  *
  * @api
  */
-function search_with_keys<TKey = mixed, TValue = mixed>(iterable $iterable, Closure $predicate): TValue|null
+function search_with_keys<TKey, TValue>(iterable $iterable, Closure $predicate): TValue|null
 {
     foreach ($iterable as $key => $value) {
         if (!$predicate($key, $value)) {

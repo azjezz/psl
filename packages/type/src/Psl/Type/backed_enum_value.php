@@ -20,7 +20,7 @@ use Psl\Exception\RuntimeException;
  *
  * @api
  */
-function backed_enum_value<T : BackedEnum = BackedEnum>(string $enum): TypeInterface
+function backed_enum_value<T : BackedEnum>(string $enum): TypeInterface
 {
     return new Internal\BackedEnumValueType($enum);
 }

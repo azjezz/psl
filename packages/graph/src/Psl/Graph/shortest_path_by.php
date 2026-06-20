@@ -44,7 +44,7 @@ use const PHP_INT_MAX;
  *
  * @api
  */
-function shortest_path_by<TNode = mixed, TWeight = mixed>(
+function shortest_path_by<TNode, TWeight>(
     DirectedGraph|UndirectedGraph $graph,
     TNode $from,
     TNode $to,

@@ -14,7 +14,7 @@ use function count;
  *
  * @api
  */
-final class Stack<T = mixed> implements StackInterface<T>
+final class Stack<T> implements StackInterface<T>
 {
     /**
      * @var list<T> $items

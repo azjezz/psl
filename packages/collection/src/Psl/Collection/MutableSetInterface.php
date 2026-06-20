@@ -10,7 +10,7 @@ use Override;
 /**
  * @api
  */
-interface MutableSetInterface<T : int|string = int|string> extends MutableAccessibleCollectionInterface<T, T>, SetInterface<T>
+interface MutableSetInterface<T : int|string> extends MutableAccessibleCollectionInterface<T, T>, SetInterface<T>
 {
     /**
      * Returns the provided value if it exists in the current `MutableSetInterface`.
@@ -139,7 +139,7 @@ interface MutableSetInterface<T : int|string = int|string> extends MutableAccess
      *                                 operation is applied.
      */
     #[Override]
-    public function map<Tu : int|string = int|string>(Closure $fn): MutableSetInterface;
+    public function map<Tu : int|string>(Closure $fn): MutableSetInterface;
 
     /**
      * Transform the values of the current `MutableSetInterface` by applying the provided callback,
@@ -156,7 +156,7 @@ interface MutableSetInterface<T : int|string = int|string> extends MutableAccess
      * @return MutableSetInterface<Tu>
      */
     #[Override]
-    public function mapWithKey<Tu : int|string = int|string>(Closure $fn): MutableSetInterface<Tu>;
+    public function mapWithKey<Tu : int|string>(Closure $fn): MutableSetInterface<Tu>;
 
     /**
      * Returns the first value in the current `MutableSetInterface`.
@@ -233,7 +233,7 @@ interface MutableSetInterface<T : int|string = int|string> extends MutableAccess
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): never;
+    public function zip<Tu>(array $elements): never;
 
     /**
      * Returns a `MutableSetInterface` containing the first `n` values of the current

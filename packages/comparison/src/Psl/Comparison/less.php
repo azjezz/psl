@@ -10,7 +10,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function less<T = mixed>(T $a, T $b): bool
+function less<T>(T $a, T $b): bool
 {
     return namespace\compare($a, $b) === Order::Less;
 }

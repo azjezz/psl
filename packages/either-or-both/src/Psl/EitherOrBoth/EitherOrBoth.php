@@ -19,7 +19,7 @@ use Psl\Option;
  *
  * @api
  */
-interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable<EitherOrBoth<TLeft, TRight>>
+interface EitherOrBoth<TLeft, TRight> extends Comparison\Equable<EitherOrBoth<TLeft, TRight>>
 {
     /**
      * Returns true if this is exclusively a Left (not Both).
@@ -107,7 +107,7 @@ interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable
      *
      * @return EitherOrBoth<TResult, TResult>
      */
-    public function map<TResult = mixed>(Closure $closure): EitherOrBoth<TResult, TResult>;
+    public function map<TResult>(Closure $closure): EitherOrBoth<TResult, TResult>;
 
     /**
      * Map the left side if present, leave the right side untouched.
@@ -118,7 +118,7 @@ interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable
      *
      * @return EitherOrBoth<TResult, TRight>
      */
-    public function mapLeft<TResult = mixed>(Closure $closure): EitherOrBoth<TResult, TRight>;
+    public function mapLeft<TResult>(Closure $closure): EitherOrBoth<TResult, TRight>;
 
     /**
      * Map the right side if present, leave the left side untouched.
@@ -129,7 +129,7 @@ interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable
      *
      * @return EitherOrBoth<TLeft, TResult>
      */
-    public function mapRight<TResult = mixed>(Closure $closure): EitherOrBoth<TLeft, TResult>;
+    public function mapRight<TResult>(Closure $closure): EitherOrBoth<TLeft, TResult>;
 
     /**
      * Map each side independently with its own closure.
@@ -145,7 +145,7 @@ interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable
      *
      * @return EitherOrBoth<TResultLeft, TResultRight>
      */
-    public function mapAny<TResultLeft = mixed, TResultRight = mixed>(Closure $left, Closure $right): EitherOrBoth<TResultLeft, TResultRight>;
+    public function mapAny<TResultLeft, TResultRight>(Closure $left, Closure $right): EitherOrBoth<TResultLeft, TResultRight>;
 
     /**
      * Swap the Left and Right sides.
@@ -175,7 +175,7 @@ interface EitherOrBoth<TLeft = mixed, TRight = mixed> extends Comparison\Equable
      *
      * @return TResult
      */
-    public function proceed<TResult = mixed>(Closure $left, Closure $right, Closure $both): TResult;
+    public function proceed<TResult>(Closure $left, Closure $right, Closure $both): TResult;
 
     /**
      * Run a side-effect closure on the contained value(s) and return self unchanged.

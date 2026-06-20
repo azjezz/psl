@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function optional<T = mixed>(TypeInterface<T> $innerType): TypeInterface<T>
+function optional<T>(TypeInterface<T> $innerType): TypeInterface<T>
 {
     return new Internal\OptionalType($innerType);
 }

@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function partition_with_key<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $predicate): array
+function partition_with_key<Tk : int|string, Tv>(iterable $iterable, Closure $predicate): array
 {
     $success = [];
     $failure = [];

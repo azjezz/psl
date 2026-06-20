@@ -16,7 +16,7 @@ use function array_splice;
 /**
  * @internal
  */
-final class BoundedChannelState<T = mixed> implements ChannelInterface
+final class BoundedChannelState<T> implements ChannelInterface
 {
     /**
      * @var list<Suspension<mixed>>

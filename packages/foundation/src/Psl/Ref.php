@@ -15,7 +15,7 @@ namespace Psl;
  *
  * @api
  */
-final class Ref<T = mixed>
+final class Ref<T>
 {
     /**
      * @var T

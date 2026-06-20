@@ -19,7 +19,7 @@ namespace Psl\Vec;
  *
  * @api
  */
-function drop<T = mixed>(iterable $iterable, int $n): array
+function drop<T>(iterable $iterable, int $n): array
 {
     return namespace\slice($iterable, $n);
 }

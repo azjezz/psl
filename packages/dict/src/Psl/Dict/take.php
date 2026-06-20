@@ -19,7 +19,7 @@ namespace Psl\Dict;
  *
  * @api
  */
-function take<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, int $n): array
+function take<Tk : int|string, Tv>(iterable $iterable, int $n): array
 {
     return namespace\slice($iterable, 0, $n);
 }

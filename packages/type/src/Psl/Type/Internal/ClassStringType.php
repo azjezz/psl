@@ -18,7 +18,7 @@ use function is_string;
  *
  * @internal
  */
-final readonly class ClassStringType<T : object = object> extends Type
+final readonly class ClassStringType<T : object> extends Type<string>
 {
     /**
      * @var class-string<T>|null $classname

@@ -14,7 +14,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function non_empty_dict<Tk : int|string = int|string, Tv = mixed>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
+function non_empty_dict<Tk : int|string, Tv>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface
 {
     return new Internal\NonEmptyDictType($keyType, $valueType);
 }

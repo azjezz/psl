@@ -14,7 +14,7 @@ use Override;
  *
  * @api
  */
-interface StackInterface<T = mixed> extends Countable
+interface StackInterface<T> extends Countable
 {
     /**
      * Adds an item to the stack.

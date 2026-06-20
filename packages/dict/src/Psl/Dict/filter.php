@@ -30,7 +30,7 @@ use function is_array;
  *
  * @api
  */
-function filter<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, null|Closure $predicate = null): array
+function filter<Tk : int|string, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??= static fn(mixed $value): bool => (
         // @mago-expect analysis:mixed-operand

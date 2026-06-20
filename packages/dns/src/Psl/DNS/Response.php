@@ -50,7 +50,7 @@ final readonly class Response
      *
      * @return list<T>
      */
-    public function getAnswerRecords<T : RecordInterface = RecordInterface>(string $type): array
+    public function getAnswerRecords<T : RecordInterface>(string $type): array
     {
         /** @var list<T> */
         return array_values(array_filter($this->answers, static fn(RecordInterface $r): bool => $r instanceof $type));
@@ -63,7 +63,7 @@ final readonly class Response
      *
      * @return null|T
      */
-    public function getFirstAnswerRecord<T : RecordInterface = RecordInterface>(string $type): null|RecordInterface
+    public function getFirstAnswerRecord<T : RecordInterface>(string $type): null|RecordInterface
     {
         foreach ($this->answers as $record) {
             if ($record instanceof $type) {
@@ -81,7 +81,7 @@ final readonly class Response
      *
      * @return list<T>
      */
-    public function getAuthorityRecords<T : RecordInterface = RecordInterface>(string $type): array
+    public function getAuthorityRecords<T : RecordInterface>(string $type): array
     {
         /** @var list<T> */
         return array_values(array_filter($this->authority, static fn(RecordInterface $r): bool => $r instanceof $type));
@@ -94,7 +94,7 @@ final readonly class Response
      *
      * @return list<T>
      */
-    public function getAdditionalRecords<T : RecordInterface = RecordInterface>(string $type): array
+    public function getAdditionalRecords<T : RecordInterface>(string $type): array
     {
         /** @var list<T> */
         return array_values(array_filter(

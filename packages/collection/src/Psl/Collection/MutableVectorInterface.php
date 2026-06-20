@@ -10,7 +10,7 @@ use Override;
 /**
  * @api
  */
-interface MutableVectorInterface<T = mixed> extends MutableAccessibleCollectionInterface<int, T>, VectorInterface<T>
+interface MutableVectorInterface<T> extends MutableAccessibleCollectionInterface<int, T>, VectorInterface<T>
 {
     /**
      * Get an array copy of the current vector.
@@ -100,7 +100,7 @@ interface MutableVectorInterface<T = mixed> extends MutableAccessibleCollectionI
      *                                    a user-specified operation is applied.
      */
     #[Override]
-    public function map<Tu = mixed>(Closure $fn): MutableVectorInterface;
+    public function map<Tu>(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` after an operation has been applied to each key and
@@ -121,7 +121,7 @@ interface MutableVectorInterface<T = mixed> extends MutableAccessibleCollectionI
      *                                    keys and values is applied.
      */
     #[Override]
-    public function mapWithKey<Tu = mixed>(Closure $fn): MutableVectorInterface;
+    public function mapWithKey<Tu>(Closure $fn): MutableVectorInterface;
 
     /**
      * Returns the first value in the current `MutableVectorInterface`.
@@ -199,7 +199,7 @@ interface MutableVectorInterface<T = mixed> extends MutableAccessibleCollectionI
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): MutableVectorInterface;
+    public function zip<Tu>(array $elements): MutableVectorInterface;
 
     /**
      * Returns a `MutableVectorInterface` containing the first `n` values of the current

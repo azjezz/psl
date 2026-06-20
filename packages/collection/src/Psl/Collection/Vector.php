@@ -26,7 +26,7 @@ use const ARRAY_FILTER_USE_BOTH;
 /**
  * @api
  */
-final readonly class Vector<T = mixed> implements VectorInterface<T>
+final readonly class Vector<T> implements VectorInterface<T>
 {
     /**
      * @var list<T> $elements
@@ -65,9 +65,9 @@ final readonly class Vector<T = mixed> implements VectorInterface<T>
      *
      * @pure
      */
-    public static function fromArray<Ts = mixed>(array $elements): Vector<Ts>
+    public static function fromArray<Ts>(array $elements): Vector<Ts>
     {
-        return new self($elements);
+        return new self::<Ts>($elements);
     }
 
     /**
@@ -77,7 +77,7 @@ final readonly class Vector<T = mixed> implements VectorInterface<T>
      *
      * @return Vector<Ts>
      */
-    public static function fromItems<Ts = mixed>(iterable $items): Vector<Ts>
+    public static function fromItems<Ts>(iterable $items): Vector<Ts>
     {
         $array = iterator_to_array($items);
 
@@ -377,7 +377,7 @@ final readonly class Vector<T = mixed> implements VectorInterface<T>
      *                    operation is applied.
      */
     #[Override]
-    public function map<Tu = mixed>(Closure $fn): Vector
+    public function map<Tu>(Closure $fn): Vector
     {
         return new Vector(array_map($fn, $this->elements));
     }
@@ -400,7 +400,7 @@ final readonly class Vector<T = mixed> implements VectorInterface<T>
      *                    operation on the current `Vector`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey<Tu = mixed>(Closure $fn): Vector
+    public function mapWithKey<Tu>(Closure $fn): Vector
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -427,7 +427,7 @@ final readonly class Vector<T = mixed> implements VectorInterface<T>
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip<Tu = mixed>(array $elements): Vector
+    public function zip<Tu>(array $elements): Vector
     {
         $elements = array_values($elements);
         $result = [];

@@ -24,7 +24,7 @@ use function array_shift;
  *
  * @codeCoverageIgnore
  */
-final class AwaitableIterator<Tk = mixed, Tv = mixed>
+final class AwaitableIterator<Tk, Tv>
 {
     /**
      * @var AwaitableIteratorQueue<Tk, Tv>

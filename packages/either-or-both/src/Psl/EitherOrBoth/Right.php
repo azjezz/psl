@@ -13,7 +13,7 @@ use Psl\Option;
  *
  * @api
  */
-final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight>
+final readonly class Right<TRight> implements EitherOrBoth<never, TRight>
 {
     /**
      * @var TRight
@@ -127,9 +127,9 @@ final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight
      *
      * @return Right<TResult>
      */
-    public function map<TResult = mixed>(Closure $closure): Right<TResult>
+    public function map<TResult>(Closure $closure): Right<TResult>
     {
-        return new Right($closure($this->value));
+        return new Right::<TResult>($closure($this->value));
     }
 
     /**
@@ -139,7 +139,7 @@ final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight
      *
      * @psalm-mutation-free
      */
-    public function mapLeft<TResult = mixed>(Closure $closure): Right<TRight>
+    public function mapLeft<TResult>(Closure $closure): Right<TRight>
     {
         return $this;
     }
@@ -151,9 +151,9 @@ final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight
      *
      * @return Right<TResult>
      */
-    public function mapRight<TResult = mixed>(Closure $closure): Right<TResult>
+    public function mapRight<TResult>(Closure $closure): Right<TResult>
     {
-        return new Right($closure($this->value));
+        return new Right::<TResult>($closure($this->value));
     }
 
     /**
@@ -164,9 +164,9 @@ final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight
      *
      * @return Right<TResultRight>
      */
-    public function mapAny<TResultLeft = mixed, TResultRight = mixed>(Closure $left, Closure $right): Right<TResultRight>
+    public function mapAny<TResultLeft, TResultRight>(Closure $left, Closure $right): Right<TResultRight>
     {
-        return new Right($right($this->value));
+        return new Right::<TResultRight>($right($this->value));
     }
 
     /**
@@ -176,7 +176,7 @@ final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight
      */
     public function swap(): Left
     {
-        return new Left($this->value);
+        return new Left::<TRight>($this->value);
     }
 
     /**
@@ -188,7 +188,7 @@ final readonly class Right<TRight = mixed> implements EitherOrBoth<never, TRight
      *
      * @return TResult
      */
-    public function proceed<TResult = mixed>(Closure $left, Closure $right, Closure $both): TResult
+    public function proceed<TResult>(Closure $left, Closure $right, Closure $both): TResult
     {
         return $right($this->value);
     }

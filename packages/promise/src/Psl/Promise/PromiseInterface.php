@@ -10,7 +10,7 @@ use Throwable;
 /**
  * @api
  */
-interface PromiseInterface<T = mixed>
+interface PromiseInterface<T>
 {
     /**
      * Transforms a promise's value by applying a function to the promise's fulfillment
@@ -29,7 +29,7 @@ interface PromiseInterface<T = mixed>
      *
      * @return PromiseInterface<Ts>
      */
-    public function then<Ts = mixed>(Closure $success, Closure $failure): PromiseInterface<Ts>;
+    public function then<Ts>(Closure $success, Closure $failure): PromiseInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is fulfilled.
@@ -41,7 +41,7 @@ interface PromiseInterface<T = mixed>
      *
      * @return PromiseInterface<Ts>
      */
-    public function map<Ts = mixed>(Closure $success): PromiseInterface<Ts>;
+    public function map<Ts>(Closure $success): PromiseInterface<Ts>;
 
     /**
      * Attaches a callback that is invoked if this promise is rejected.
@@ -53,7 +53,7 @@ interface PromiseInterface<T = mixed>
      *
      * @return PromiseInterface<T|Ts>
      */
-    public function catch<Ts = mixed>(Closure $failure): PromiseInterface<T|Ts>;
+    public function catch<Ts>(Closure $failure): PromiseInterface<T|Ts>;
 
     /**
      * Attaches a callback that is always invoked when the promise is resolved.

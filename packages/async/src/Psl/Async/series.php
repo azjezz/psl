@@ -17,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function series<Tk : int|string = int|string, Tv = mixed>(iterable $tasks): array
+function series<Tk : int|string, Tv>(iterable $tasks): array
 {
     $result = [];
     foreach ($tasks as $key => $task) {

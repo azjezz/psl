@@ -20,7 +20,7 @@ use Psl\Default\DefaultInterface;
  *
  * @api
  */
-interface CollectionInterface<Tk : int|string = int|string, Tv = mixed> extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
+interface CollectionInterface<Tk : int|string, Tv> extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
 {
     /**
      * Is the CollectionInterface empty?
@@ -127,7 +127,7 @@ interface CollectionInterface<Tk : int|string = int|string, Tv = mixed> extends 
      *
      * @psalm-mutation-free
      */
-    public function zip<Tu = mixed>(array $elements): CollectionInterface;
+    public function zip<Tu>(array $elements): CollectionInterface;
 
     /**
      * Returns a `CollectionInterface` containing the first `n` values of the current

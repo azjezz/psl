@@ -42,7 +42,7 @@ use function array_key_exists;
  *
  * @api
  */
-function merge_join_by_key<T = mixed, I : int|string = int|string>(iterable $left, iterable $right, Closure $key_by): Iterator<int, EitherOrBoth\EitherOrBoth<T, T>>
+function merge_join_by_key<T, I : int|string>(iterable $left, iterable $right, Closure $key_by): Iterator<int, EitherOrBoth\EitherOrBoth<T, T>>
 {
     return Iterator::from(
         /**

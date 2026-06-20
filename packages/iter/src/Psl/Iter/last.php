@@ -16,7 +16,7 @@ use function is_array;
  *
  * @api
  */
-function last<T = mixed>(iterable $iterable): mixed
+function last<T>(iterable $iterable): mixed
 {
     if (is_array($iterable)) {
         if ([] === $iterable) {

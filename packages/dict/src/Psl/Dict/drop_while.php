@@ -24,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function drop_while<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $predicate): array
+function drop_while<Tk : int|string, Tv>(iterable $iterable, Closure $predicate): array
 {
     $result = [];
     $failed = false;

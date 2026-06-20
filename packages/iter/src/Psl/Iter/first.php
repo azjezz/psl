@@ -15,7 +15,7 @@ namespace Psl\Iter;
  *
  * @api
  */
-function first<T = mixed>(iterable $iterable): mixed
+function first<T>(iterable $iterable): mixed
 {
     foreach ($iterable as $v) {
         return $v;

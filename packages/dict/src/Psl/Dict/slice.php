@@ -26,7 +26,7 @@ use function is_array;
  *
  * @api
  */
-function slice<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, int $start, null|int $length = null): array
+function slice<Tk : int|string, Tv>(iterable $iterable, int $start, null|int $length = null): array
 {
     if (is_array($iterable)) {
         return array_slice($iterable, $start, $length, true);

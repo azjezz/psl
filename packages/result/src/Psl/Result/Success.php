@@ -14,7 +14,7 @@ use Psl;
  *
  * @api
  */
-final readonly class Success<T = mixed> implements ResultInterface<T>
+final readonly class Success<T> implements ResultInterface<T>
 {
     /**
      * @var T
@@ -52,7 +52,7 @@ final readonly class Success<T = mixed> implements ResultInterface<T>
      * @return T|D
      */
     #[Override]
-    public function unwrapOr<D = mixed>(D $default): T|D
+    public function unwrapOr<D>(D $default): T|D
     {
         return $this->value;
     }
@@ -108,7 +108,7 @@ final readonly class Success<T = mixed> implements ResultInterface<T>
      * @return Ts
      */
     #[Override]
-    public function proceed<Ts = mixed>(Closure $success, Closure $failure): Ts
+    public function proceed<Ts>(Closure $success, Closure $failure): Ts
     {
         return $success($this->value);
     }
@@ -122,7 +122,7 @@ final readonly class Success<T = mixed> implements ResultInterface<T>
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function then<Ts = mixed>(Closure $success, Closure $failure): ResultInterface<Ts>
+    public function then<Ts>(Closure $success, Closure $failure): ResultInterface<Ts>
     {
         return namespace\wrap(fn(): mixed => $success($this->value));
     }
@@ -135,7 +135,7 @@ final readonly class Success<T = mixed> implements ResultInterface<T>
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function map<Ts = mixed>(Closure $success): ResultInterface<Ts>
+    public function map<Ts>(Closure $success): ResultInterface<Ts>
     {
         return namespace\wrap(fn(): mixed => $success($this->value));
     }
@@ -148,7 +148,7 @@ final readonly class Success<T = mixed> implements ResultInterface<T>
      * @return ResultInterface<T|Ts>
      */
     #[Override]
-    public function catch<Ts = mixed>(Closure $failure): ResultInterface<T|Ts>
+    public function catch<Ts>(Closure $failure): ResultInterface<T|Ts>
     {
         return new Success($this->value);
     }

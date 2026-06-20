@@ -25,7 +25,7 @@ use function array_map;
  *
  * @api
  */
-function neighbors<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $node): array
+function neighbors<TNode, TWeight>(DirectedGraph|UndirectedGraph $graph, TNode $node): array
 {
     $edges = $graph->getEdgesFrom($node);
 

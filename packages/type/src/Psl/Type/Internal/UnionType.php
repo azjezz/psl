@@ -15,7 +15,7 @@ use function str_contains;
 /**
  * @internal
  */
-readonly class UnionType<Tl = mixed, Tr = mixed> extends Type\Type<Tl|Tr>
+readonly class UnionType<Tl, Tr> extends Type\Type<Tl|Tr>
 {
     /**
      * @psalm-mutation-free

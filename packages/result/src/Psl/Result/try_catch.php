@@ -20,7 +20,7 @@ use Throwable;
  *
  * @api
  */
-function try_catch<T = mixed, Ts = mixed>(Closure $try, Closure $catch): T|Ts
+function try_catch<T, Ts>(Closure $try, Closure $catch): T|Ts
 {
     return namespace\wrap($try)->catch($catch)->getResult();
 }

@@ -21,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function max_by<T = mixed>(iterable $numbers, Closure $numericFunction): T|null
+function max_by<T>(iterable $numbers, Closure $numericFunction): T|null
 {
     $max = null;
     $maxNum = null;

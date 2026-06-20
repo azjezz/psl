@@ -14,7 +14,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function sort<T = mixed>(T $a, T $b): int
+function sort<T>(T $a, T $b): int
 {
     return namespace\compare($a, $b)->value;
 }

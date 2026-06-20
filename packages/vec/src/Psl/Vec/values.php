@@ -16,7 +16,7 @@ use function is_array;
  *
  * @api
  */
-function values<T = mixed>(iterable $iterable): array
+function values<T>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_values($iterable);

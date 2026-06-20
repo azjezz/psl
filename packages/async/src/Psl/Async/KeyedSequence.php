@@ -28,7 +28,7 @@ use function count;
  *
  * @api
  */
-final class KeyedSequence<Tk : int|string = int|string, Tin = mixed, Tout = mixed>
+final class KeyedSequence<Tk : int|string, Tin, Tout>
 {
     /**
      * Tracks the fiber that currently holds each key, enabling re-entrant

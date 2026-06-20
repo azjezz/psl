@@ -20,7 +20,7 @@ use function substr;
  *
  * @internal
  */
-function box<T = mixed>(Closure $fun): array
+function box<T>(Closure $fun): array
 {
     $lastMessage = null;
     set_error_handler(static function (int $_, string $message) use (&$lastMessage): void {

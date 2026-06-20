@@ -27,7 +27,7 @@ use Psl\Option\Option;
  *
  * @api
  */
-function search_with_keys_opt<TKey = mixed, TValue = mixed>(iterable $iterable, Closure $predicate): Option<TValue>
+function search_with_keys_opt<TKey, TValue>(iterable $iterable, Closure $predicate): Option<TValue>
 {
     foreach ($iterable as $key => $value) {
         if (!$predicate($key, $value)) {

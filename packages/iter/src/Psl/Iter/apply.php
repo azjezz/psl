@@ -14,7 +14,7 @@ use Closure;
  *
  * @api
  */
-function apply<T = mixed>(iterable $iterable, Closure $function): void
+function apply<T>(iterable $iterable, Closure $function): void
 {
     foreach ($iterable as $value) {
         $function($value);

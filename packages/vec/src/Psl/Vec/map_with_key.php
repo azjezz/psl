@@ -24,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function map_with_key<Tk = mixed, Tv = mixed, T = mixed>(iterable $iterable, Closure $function): array
+function map_with_key<Tk, Tv, T>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

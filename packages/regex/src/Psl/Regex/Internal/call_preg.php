@@ -23,7 +23,7 @@ use function error_reporting;
  *
  * @internal
  */
-function call_preg<T = mixed>(string $function, Closure $closure): T
+function call_preg<T>(string $function, Closure $closure): T
 {
     error_clear_last();
     $previousLevel = error_reporting(0);

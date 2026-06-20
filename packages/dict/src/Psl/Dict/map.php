@@ -26,7 +26,7 @@ use Closure;
  *
  * @api
  */
-function map<Tk : int|string = int|string, Tv = mixed, T = mixed>(iterable $iterable, Closure $function): array
+function map<Tk : int|string, Tv, T>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

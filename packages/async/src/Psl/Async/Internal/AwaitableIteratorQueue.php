@@ -20,7 +20,7 @@ use Revolt\EventLoop\Suspension;
  *
  * @codeCoverageIgnore
  */
-final class AwaitableIteratorQueue<Tk = mixed, Tv = mixed>
+final class AwaitableIteratorQueue<Tk, Tv>
 {
     /**
      * @var array<int, array{0: Tk, 1: Awaitable<Tv>}>

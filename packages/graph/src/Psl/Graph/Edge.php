@@ -9,7 +9,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-final readonly class Edge<TNode = mixed, TWeight = mixed>
+final readonly class Edge<TNode, TWeight>
 {
     /**
      * @param TNode $to

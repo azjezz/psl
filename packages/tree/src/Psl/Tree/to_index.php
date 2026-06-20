@@ -34,7 +34,7 @@ use Closure;
  *
  * @api
  */
-function to_index<T = mixed>(NodeInterface<T> $tree, Closure $predicate): null|array
+function to_index<T>(NodeInterface<T> $tree, Closure $predicate): null|array
 {
     $value = $tree->getValue();
 

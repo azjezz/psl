@@ -33,7 +33,7 @@ use const ARRAY_FILTER_USE_KEY;
  *
  * @api
  */
-function filter_keys<Tk = mixed, Tv = mixed>(iterable $iterable, null|Closure $predicate = null): array
+function filter_keys<Tk, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??=
         /**

@@ -15,7 +15,7 @@ use Psl\Collection;
  *
  * @api
  */
-function set<T : int|string = int|string>(TypeInterface<T> $type): TypeInterface<Collection\SetInterface<T>>
+function set<T : int|string>(TypeInterface<T> $type): TypeInterface<Collection\SetInterface<T>>
 {
     return new Internal\SetType($type);
 }

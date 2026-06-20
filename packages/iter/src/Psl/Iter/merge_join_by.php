@@ -40,7 +40,7 @@ use Psl\EitherOrBoth;
  *
  * @api
  */
-function merge_join_by<L = mixed, R = mixed>(iterable $left, iterable $right, Closure $compare): Iterator<int, EitherOrBoth\EitherOrBoth<L, R>>
+function merge_join_by<L, R>(iterable $left, iterable $right, Closure $compare): Iterator<int, EitherOrBoth\EitherOrBoth<L, R>>
 {
     return Iterator::from(
         /**

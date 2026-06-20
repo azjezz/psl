@@ -28,7 +28,7 @@ use function max;
  *
  * @api
  */
-function depth<T = mixed>(NodeInterface<T> $tree): int
+function depth<T>(NodeInterface<T> $tree): int
 {
     if (!$tree instanceof TreeNode) {
         return 0;

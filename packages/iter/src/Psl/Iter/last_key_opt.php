@@ -16,7 +16,7 @@ use Psl\Option\Option;
  *
  * @api
  */
-function last_key_opt<Tk = mixed, Tv = mixed>(iterable $iterable): Option<Tk>
+function last_key_opt<Tk, Tv>(iterable $iterable): Option<Tk>
 {
     $last = Option::none();
     foreach ($iterable as $k => $_) {

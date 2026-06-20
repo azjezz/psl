@@ -14,7 +14,7 @@ use function max;
 /**
  * @api
  */
-final class PriorityQueue<T = mixed> implements PriorityQueueInterface<T>
+final class PriorityQueue<T> implements PriorityQueueInterface<T>
 {
     /**
      * @var array<int, non-empty-list<T>>

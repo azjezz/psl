@@ -28,9 +28,9 @@ namespace Psl\EitherOrBoth;
  *
  * @api
  */
-function left<TLeft = mixed>(TLeft $value): Left<TLeft>
+function left<TLeft>(TLeft $value): Left<TLeft>
 {
-    return new Left($value);
+    return new Left::<TLeft>($value);
 }
 
 /**
@@ -44,9 +44,9 @@ function left<TLeft = mixed>(TLeft $value): Left<TLeft>
  *
  * @api
  */
-function right<TRight = mixed>(TRight $value): Right<TRight>
+function right<TRight>(TRight $value): Right<TRight>
 {
-    return new Right($value);
+    return new Right::<TRight>($value);
 }
 
 /**
@@ -61,7 +61,7 @@ function right<TRight = mixed>(TRight $value): Right<TRight>
  *
  * @api
  */
-function both<TLeft = mixed, TRight = mixed>(TLeft $left, TRight $right): Both<TLeft, TRight>
+function both<TLeft, TRight>(TLeft $left, TRight $right): Both<TLeft, TRight>
 {
-    return new Both($left, $right);
+    return new Both::<TLeft, TRight>($left, $right);
 }

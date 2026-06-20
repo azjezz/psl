@@ -23,7 +23,7 @@ use function shuffle as php_shuffle;
  *
  * @api
  */
-function shuffle<T = mixed>(iterable $iterable): array
+function shuffle<T>(iterable $iterable): array
 {
     $array = namespace\values($iterable);
 

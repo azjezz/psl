@@ -27,7 +27,7 @@ use Psl\Option\Option;
  *
  * @api
  */
-function search_opt<T = mixed>(iterable $iterable, Closure $predicate): Option<T>
+function search_opt<T>(iterable $iterable, Closure $predicate): Option<T>
 {
     foreach ($iterable as $value) {
         if (!$predicate($value)) {

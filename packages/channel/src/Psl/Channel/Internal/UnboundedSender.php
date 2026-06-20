@@ -12,7 +12,7 @@ use Psl\Channel\SenderInterface;
 /**
  * @internal
  */
-final class UnboundedSender<T = mixed> implements SenderInterface<T>
+final class UnboundedSender<T> implements SenderInterface<T>
 {
     use ChannelSideTrait<UnboundedChannelState<T>>;
 

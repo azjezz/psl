@@ -49,7 +49,7 @@ use function array_map;
  *
  * @api
  */
-function to_array<T = mixed>(NodeInterface<T> $tree): array
+function to_array<T>(NodeInterface<T> $tree): array
 {
     if ($tree instanceof LeafNode) {
         return [

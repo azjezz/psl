@@ -15,7 +15,7 @@ namespace Psl\Option;
  *
  * @api
  */
-function from_nullable<T = mixed>(null|T $value): Option<T>
+function from_nullable<T>(null|T $value): Option<T>
 {
     return null !== $value ? Option::some($value) : Option::none();
 }

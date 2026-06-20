@@ -21,7 +21,7 @@ use Throwable;
  *
  * @api
  */
-function any<T = mixed>(iterable $awaitables): T
+function any<T>(iterable $awaitables): T
 {
     $errors = [];
     foreach (Awaitable::iterate($awaitables) as $first) {

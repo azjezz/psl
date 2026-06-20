@@ -21,7 +21,7 @@ use function is_array;
  *
  * @api
  */
-function filter_nulls<T = mixed>(iterable $iterable): array
+function filter_nulls<T>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_values(array_filter($iterable, static fn(mixed $value): bool => null !== $value));

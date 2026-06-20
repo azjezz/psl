@@ -20,7 +20,7 @@ use function is_array;
  *
  * @api
  */
-function filter_nulls<Tk : int|string = int|string, Tv = mixed>(iterable $iterable): array
+function filter_nulls<Tk : int|string, Tv>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_filter($iterable, static fn(mixed $value): bool => null !== $value);

@@ -42,7 +42,7 @@ use function array_map;
  *
  * @api
  */
-function from_array<T = mixed>(array $array): TreeNode<T>
+function from_array<T>(array $array): TreeNode<T>
 {
     /**
      * @var list<array{
@@ -64,5 +64,5 @@ function from_array<T = mixed>(array $array): TreeNode<T>
      */
     $children = $array['children'] ?? [];
 
-    return new TreeNode($array['value'], array_map(from_array(...), $children));
+    return new TreeNode::<T>($array['value'], array_map(from_array(...), $children));
 }

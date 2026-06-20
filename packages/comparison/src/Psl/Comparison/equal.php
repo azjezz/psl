@@ -10,7 +10,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function equal<T = mixed>(T $a, T $b): bool
+function equal<T>(T $a, T $b): bool
 {
     return namespace\compare($a, $b) === Order::Equal;
 }

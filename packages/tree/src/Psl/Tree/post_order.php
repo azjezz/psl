@@ -25,7 +25,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function post_order<T = mixed>(NodeInterface<T> $tree): array
+function post_order<T>(NodeInterface<T> $tree): array
 {
     if (!$tree instanceof TreeNode) {
         return [$tree->getValue()];

@@ -17,7 +17,7 @@ use Psl\Option;
  *
  * @api
  */
-interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Either<TLeft, TRight>>, Comparison\Equable<Either<TLeft, TRight>>
+interface Either<TLeft, TRight> extends Comparison\Comparable<Either<TLeft, TRight>>, Comparison\Equable<Either<TLeft, TRight>>
 {
     /**
      * Returns true if this is a Right value.
@@ -70,7 +70,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @psalm-mutation-free
      */
-    public function getRightOr<T = mixed>(T $default): TRight|T;
+    public function getRightOr<T>(T $default): TRight|T;
 
     /**
      * Returns the contained Left value, or the provided default.
@@ -83,7 +83,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @psalm-mutation-free
      */
-    public function getLeftOr<T = mixed>(T $default): TLeft|T;
+    public function getLeftOr<T>(T $default): TLeft|T;
 
     /**
      * Returns the contained Right value, or computes it from the Left value using the given closure.
@@ -94,7 +94,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return TRight|TResult
      */
-    public function getRightOrElse<TResult = mixed>(Closure $closure): TRight|TResult;
+    public function getRightOrElse<TResult>(Closure $closure): TRight|TResult;
 
     /**
      * Returns the contained Left value, or computes it from the Right value using the given closure.
@@ -105,7 +105,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return TLeft|TResult
      */
-    public function getLeftOrElse<TResult = mixed>(Closure $closure): TLeft|TResult;
+    public function getLeftOrElse<TResult>(Closure $closure): TLeft|TResult;
 
     /**
      * Converts the Right value to an Option, returning None if this is a Left.
@@ -134,7 +134,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return Either<TResult, TResult>
      */
-    public function map<TResult = mixed>(Closure $closure): Either<TResult, TResult>;
+    public function map<TResult>(Closure $closure): Either<TResult, TResult>;
 
     /**
      * Maps an Either by applying a function to the contained Right value,
@@ -146,7 +146,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return Either<TLeft, TResult>
      */
-    public function mapRight<TResult = mixed>(Closure $closure): Either<TLeft, TResult>;
+    public function mapRight<TResult>(Closure $closure): Either<TLeft, TResult>;
 
     /**
      * Maps an Either by applying a function to the contained Left value,
@@ -158,7 +158,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return Either<TResult, TRight>
      */
-    public function mapLeft<TResult = mixed>(Closure $closure): Either<TResult, TRight>;
+    public function mapLeft<TResult>(Closure $closure): Either<TResult, TRight>;
 
     /**
      * Applies a function to the contained value and returns the resulting Either.
@@ -169,7 +169,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return Either<TResultLeft, TResultRight>
      */
-    public function flatMap<TResultLeft = mixed, TResultRight = mixed>(Closure $closure): Either<TResultLeft, TResultRight>;
+    public function flatMap<TResultLeft, TResultRight>(Closure $closure): Either<TResultLeft, TResultRight>;
 
     /**
      * Applies a function to the contained Right value and returns the resulting Either,
@@ -181,7 +181,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return Either<TLeft|TResultLeft, TResultRight>
      */
-    public function flatMapRight<TResultLeft = mixed, TResultRight = mixed>(Closure $closure): Either<TLeft|TResultLeft, TResultRight>;
+    public function flatMapRight<TResultLeft, TResultRight>(Closure $closure): Either<TLeft|TResultLeft, TResultRight>;
 
     /**
      * Applies a function to the contained Left value and returns the resulting Either,
@@ -193,7 +193,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return Either<TResultLeft, TRight|TResultRight>
      */
-    public function flatMapLeft<TResultLeft = mixed, TResultRight = mixed>(Closure $closure): Either<TResultLeft, TRight|TResultRight>;
+    public function flatMapLeft<TResultLeft, TResultRight>(Closure $closure): Either<TResultLeft, TRight|TResultRight>;
 
     /**
      * Matches the contained value with the provided closures and returns the result.
@@ -211,7 +211,7 @@ interface Either<TLeft = mixed, TRight = mixed> extends Comparison\Comparable<Ei
      *
      * @return TResult
      */
-    public function proceed<TResult = mixed>(Closure $right, Closure $left): TResult;
+    public function proceed<TResult>(Closure $right, Closure $left): TResult;
 
     /**
      * Applies a function to the contained value and returns the original Either.

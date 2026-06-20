@@ -18,7 +18,7 @@ use Closure;
  *
  * @api
  */
-function after<I = mixed, O = mixed, R = mixed>(Closure $first, Closure $next): Closure
+function after<I, O, R>(Closure $first, Closure $next): Closure
 {
     return static fn(mixed $input): mixed => $next($first($input));
 }

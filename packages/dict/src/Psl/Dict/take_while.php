@@ -24,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function take_while<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $predicate): array
+function take_while<Tk : int|string, Tv>(iterable $iterable, Closure $predicate): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

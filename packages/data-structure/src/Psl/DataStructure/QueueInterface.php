@@ -15,7 +15,7 @@ use Psl\Default\DefaultInterface;
  *
  * @api
  */
-interface QueueInterface<T = mixed> extends Countable, DefaultInterface
+interface QueueInterface<T> extends Countable, DefaultInterface
 {
     /**
      * Adds a node to the queue.

@@ -27,7 +27,7 @@ use function is_array;
  *
  * @api
  */
-final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
+final readonly class Awaitable<T> implements PromiseInterface<T>
 {
     private State $state;
 
@@ -48,7 +48,7 @@ final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
      *
      * @return Generator<Tk, Awaitable<Tv>, null, void>
      */
-    public static function iterate<Tk = mixed, Tv = mixed>(iterable $awaitables): Generator
+    public static function iterate<Tk, Tv>(iterable $awaitables): Generator
     {
         $iterator = new AwaitableIterator();
 
@@ -89,12 +89,12 @@ final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
      *
      * @return Awaitable<Tv>
      */
-    public static function complete<Tv = mixed>(Tv $result): self
+    public static function complete<Tv>(Tv $result): self
     {
         $state = new State();
         $state->complete($result);
 
-        return new self($state);
+        return new self::<Tv>($state);
     }
 
     /**
@@ -106,7 +106,7 @@ final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
         $state = new State();
         $state->error($throwable);
 
-        return new self($state);
+        return new self::<never>($state);
     }
 
     /**
@@ -128,7 +128,7 @@ final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
      * @return Awaitable<Ts>
      */
     #[Override]
-    public function then<Ts = mixed>(Closure $success, Closure $failure): Awaitable<Ts>
+    public function then<Ts>(Closure $success, Closure $failure): Awaitable<Ts>
     {
         $state = new State();
 
@@ -170,7 +170,7 @@ final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
      * @return Awaitable<Ts>
      */
     #[Override]
-    public function map<Ts = mixed>(Closure $success): Awaitable<Ts>
+    public function map<Ts>(Closure $success): Awaitable<Ts>
     {
         return $this->then($success, static fn(Throwable $throwable): never => throw $throwable);
     }
@@ -183,7 +183,7 @@ final readonly class Awaitable<T = mixed> implements PromiseInterface<T>
      * @return Awaitable<T|Ts>
      */
     #[Override]
-    public function catch<Ts = mixed>(Closure $failure): Awaitable<T|Ts>
+    public function catch<Ts>(Closure $failure): Awaitable<T|Ts>
     {
         return $this->then(
             /**

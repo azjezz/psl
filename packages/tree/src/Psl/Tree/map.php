@@ -28,7 +28,7 @@ use function array_map;
  *
  * @api
  */
-function map<T = mixed, Tu = mixed>(NodeInterface<T> $node, Closure $function): NodeInterface<Tu>
+function map<T, Tu>(NodeInterface<T> $node, Closure $function): NodeInterface<Tu>
 {
     if (!$node instanceof TreeNode) {
         return new LeafNode($function($node->getValue()));

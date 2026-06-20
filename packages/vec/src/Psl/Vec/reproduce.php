@@ -21,7 +21,7 @@ use Closure;
  *
  * @api
  */
-function reproduce<T = mixed>(int $size, Closure $factory): array
+function reproduce<T>(int $size, Closure $factory): array
 {
     $result = [];
     for ($i = 1; $i <= $size; $i++) {

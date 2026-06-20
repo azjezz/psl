@@ -13,7 +13,7 @@ use Throwable;
  *
  * @api
  */
-final readonly class Failure<T = mixed, Te : Throwable = Throwable> implements ResultInterface<T>
+final readonly class Failure<T, Te : Throwable> implements ResultInterface<T>
 {
     /**
      * @var Te
@@ -49,7 +49,7 @@ final readonly class Failure<T = mixed, Te : Throwable = Throwable> implements R
      * @return T|D
      */
     #[Override]
-    public function unwrapOr<D = mixed>(D $default): T|D
+    public function unwrapOr<D>(D $default): T|D
     {
         return $default;
     }
@@ -98,7 +98,7 @@ final readonly class Failure<T = mixed, Te : Throwable = Throwable> implements R
      * @return Ts
      */
     #[Override]
-    public function proceed<Ts = mixed>(Closure $success, Closure $failure): Ts
+    public function proceed<Ts>(Closure $success, Closure $failure): Ts
     {
         return $failure($this->throwable);
     }
@@ -112,7 +112,7 @@ final readonly class Failure<T = mixed, Te : Throwable = Throwable> implements R
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function then<Ts = mixed>(Closure $success, Closure $failure): ResultInterface<Ts>
+    public function then<Ts>(Closure $success, Closure $failure): ResultInterface<Ts>
     {
         return namespace\wrap(fn(): mixed => $failure($this->throwable));
     }
@@ -125,7 +125,7 @@ final readonly class Failure<T = mixed, Te : Throwable = Throwable> implements R
      * @return ResultInterface<Ts>
      */
     #[Override]
-    public function map<Ts = mixed>(Closure $success): ResultInterface<Ts>
+    public function map<Ts>(Closure $success): ResultInterface<Ts>
     {
         return new Failure($this->throwable);
     }
@@ -138,7 +138,7 @@ final readonly class Failure<T = mixed, Te : Throwable = Throwable> implements R
      * @return ResultInterface<T|Ts>
      */
     #[Override]
-    public function catch<Ts = mixed>(Closure $failure): ResultInterface<T|Ts>
+    public function catch<Ts>(Closure $failure): ResultInterface<T|Ts>
     {
         return namespace\wrap(fn(): mixed => $failure($this->throwable));
     }

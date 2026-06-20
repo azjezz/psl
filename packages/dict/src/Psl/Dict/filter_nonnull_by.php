@@ -28,7 +28,7 @@ use function is_array;
  *
  * @api
  */
-function filter_nonnull_by<Tk : int|string = int|string, Tv = mixed>(iterable $iterable, Closure $function): array
+function filter_nonnull_by<Tk : int|string, Tv>(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
         return array_filter($iterable, static fn($v) => null !== $function($v));

@@ -24,7 +24,7 @@ namespace Psl\Graph;
  *
  * @api
  */
-function add_node<TNode = mixed, TWeight = mixed>(DirectedGraph|UndirectedGraph $graph, TNode $node): DirectedGraph|UndirectedGraph
+function add_node<TNode, TWeight>(DirectedGraph|UndirectedGraph $graph, TNode $node): DirectedGraph|UndirectedGraph
 {
     return $graph->withNode($node);
 }
