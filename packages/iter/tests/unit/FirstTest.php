@@ -15,7 +15,7 @@ final class FirstTest extends TestCase
     #[DataProvider('provideData')]
     public function testFirst(null|string $expected, iterable $iterable): void
     {
-        $result = Iter\first($iterable);
+        $result = Iter\first::<string|null>($iterable);
 
         static::assertSame($expected, $result);
     }
@@ -26,9 +26,9 @@ final class FirstTest extends TestCase
         yield [null, new SplDoublyLinkedList()];
         yield ['b', ['a' => 'b', 'c' => 'd']];
         yield ['a', ['a', 'b']];
-        yield ['a', new Collection\Vector(['a', 'b'])];
-        yield ['b', new Collection\Vector(['b'])];
-        yield ['b', new Collection\Map(['a' => 'b', 'c' => 'd'])];
+        yield ['a', new Collection\Vector::<string>(['a', 'b'])];
+        yield ['b', new Collection\Vector::<string>(['b'])];
+        yield ['b', new Collection\Map::<string, string>(['a' => 'b', 'c' => 'd'])];
         yield [
             null,
             (static function (): iterable {

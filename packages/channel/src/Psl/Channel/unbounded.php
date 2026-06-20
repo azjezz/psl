@@ -9,18 +9,16 @@ namespace Psl\Channel;
  *
  * The created channel can hold an unlimited number of messages.
  *
- * @template T
- *
  * @return array{ReceiverInterface<T>, SenderInterface<T>}
  *
  * @api
  */
-function unbounded(): array
+function unbounded<T>(): array
 {
-    $channel = new Internal\UnboundedChannelState();
+    $channel = new Internal\UnboundedChannelState::<T>();
 
     return [
-        new Internal\UnboundedReceiver($channel),
-        new Internal\UnboundedSender($channel),
+        new Internal\UnboundedReceiver::<T>($channel),
+        new Internal\UnboundedSender::<T>($channel),
     ];
 }

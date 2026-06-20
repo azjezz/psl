@@ -12,7 +12,7 @@ final class SleepTest extends TestCase
 {
     public function testSleepCompletes(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             Async\sleep(Duration::milliseconds(10));
         })->await();
 
@@ -23,7 +23,7 @@ final class SleepTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $token = new Async\SignalCancellationToken();
 
             Async\Scheduler::delay(Duration::milliseconds(5), static fn(string $_) => $token->cancel());
@@ -36,7 +36,7 @@ final class SleepTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
             Async\sleep(Duration::seconds(5), $token);
@@ -56,7 +56,7 @@ final class SleepTest extends TestCase
     public function testSleepWakesEarlyOnCancel(): void
     {
         $token = new Async\SignalCancellationToken();
-        $task = Async\run(static fn() => Async\sleep(Duration::seconds(5), $token))->ignore();
+        $task = Async\run::<void>(static fn() => Async\sleep(Duration::seconds(5), $token))->ignore();
         $token->cancel();
 
         static::assertTrue($token->isCancelled());

@@ -19,10 +19,6 @@ use Closure;
  *     Dict\map([1, 2, 3, 4, 5], fn($i) => $i * 2);
  *     => Dict(2, 4, 6, 8, 10)
  *
- * @template Tk of array-key
- * @template Tv
- * @template T
- *
  * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
  * @param (Closure(Tv): T) $function
  *
@@ -30,7 +26,7 @@ use Closure;
  *
  * @api
  */
-function map(iterable $iterable, Closure $function): array
+function map<Tk: string|int, Tv, T>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $key => $value) {

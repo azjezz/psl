@@ -8,10 +8,10 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class NumTypeTest extends TypeTestCase
+final class NumTypeTest extends TypeTestCase<int|float>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int|float>
     {
         return Type\num();
     }

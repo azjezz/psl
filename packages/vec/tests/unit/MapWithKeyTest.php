@@ -13,7 +13,7 @@ final class MapWithKeyTest extends TestCase
     #[DataProvider('provideData')]
     public function testMapWithKey(array $expected, array $array, callable $function): void
     {
-        $result = Vec\map_with_key($array, $function);
+        $result = Vec\map_with_key::<int, int, int>($array, $function);
 
         static::assertSame($expected, $result);
     }

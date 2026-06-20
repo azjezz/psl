@@ -10,9 +10,6 @@ use function array_map;
 /**
  * Computes the difference of iterables.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $first
  * @param iterable<Tk, Tv> $second
  * @param iterable<Tk, Tv> ...$rest
@@ -21,11 +18,11 @@ use function array_map;
  *
  * @api
  */
-function diff(iterable $first, iterable $second, iterable ...$rest): array
+function diff<Tk: string|int, Tv>(iterable $first, iterable $second, iterable ...$rest): array
 {
     return array_diff(
-        namespace\from_iterable($first),
-        namespace\from_iterable($second),
-        ...array_map(namespace\from_iterable(...), $rest),
+        namespace\from_iterable::<Tk, Tv>($first),
+        namespace\from_iterable::<Tk, Tv>($second),
+        ...array_map(namespace\from_iterable::<Tk, Tv>(...), $rest),
     );
 }

@@ -59,7 +59,7 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
         ['content-type', 'application/json'],
     ]);
 
-    $repos = Vec\map($monorepo->packages, static fn(Package $p): string => Str\after($p->name, $org . '/') ?? $p->name);
+    $repos = Vec\map::<int, Package, string>($monorepo->packages, static fn(Package $p): string => Str\after($p->name, $org . '/') ?? $p->name);
     $repos[] = $mainRepo;
 
     $packagesBySlug = [];
@@ -68,7 +68,7 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
         $packagesBySlug[$slug] = $package;
     }
 
-    Log\info('Fixing %d repositories...', Iter\count($repos));
+    Log\info('Fixing %d repositories...', Iter\count::<string>($repos));
 
     $orgRulesetsTx = $httpClient->send(new Message\Request(
         method: Message\METHOD_GET,
@@ -76,7 +76,7 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
         headers: $readHeaders,
     ));
 
-    $fetchAwaitables = Dict\from_keys($repos, static fn(string $repo): Async\Awaitable => Async\run(static fn(): array => Async\concurrently([
+    $fetchAwaitables = Dict\from_keys::<string, Async\Awaitable<array>>($repos, static fn(string $repo): Async\Awaitable<array> => Async\run::<array>(static fn(): array => Async\concurrently::<string, Message\Transaction>([
         'settings' => static fn() => $httpClient->send(new Message\Request(
             method: Message\METHOD_GET,
             url: URL\parse(Str\format('https://api.github.com/repos/%s/%s', $org, $repo)),
@@ -89,16 +89,16 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
         )),
     ])));
 
-    $settingsType = Type\shape([
-        'description' => Type\nullable(Type\string()),
-        'homepage' => Type\nullable(Type\string()),
-        'topics' => Type\vec(Type\non_empty_string()),
+    $settingsType = Type\shape::<string, string|null|array|bool>([
+        'description' => Type\nullable::<string>(Type\string()),
+        'homepage' => Type\nullable::<string>(Type\string()),
+        'topics' => Type\vec::<string>(Type\non_empty_string()),
         'has_issues' => Type\bool(),
         'has_wiki' => Type\bool(),
         'has_discussions' => Type\bool(),
     ], allowUnknownFields: true);
 
-    $rulesetType = Type\vec(Type\shape([
+    $rulesetType = Type\vec::<array>(Type\shape::<string, string>([
         'name' => Type\non_empty_string(),
     ], allowUnknownFields: true));
 
@@ -119,7 +119,7 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
 
         Log\step('inspecting', $full);
 
-        $settings = Json\typed($fetched['settings']->response->body?->readAll() ?? '', $settingsType);
+        $settings = Json\typed::<array>($fetched['settings']->response->body?->readAll() ?? '', $settingsType);
 
         $package = $packagesBySlug[$repo] ?? null;
         $expectedDescription = $isMain ? $monorepo->rootDescription : $package->description ?? '';
@@ -157,8 +157,8 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
             $patch['has_pull_requests'] = false;
         }
 
-        $currentTopics = Vec\sort($settings['topics']);
-        $expectedTopicsSorted = Vec\sort(Vec\map($expectedKeywords, static fn(string $k): string => Str\Byte\lowercase(
+        $currentTopics = Vec\sort::<string>($settings['topics']);
+        $expectedTopicsSorted = Vec\sort::<string>(Vec\map::<int, string, string>($expectedKeywords, static fn(string $k): string => Str\Byte\lowercase(
             $k,
         )));
         // @mago-expect analysis:impossible-type-comparison,impossible-type-comparison - FP!
@@ -170,7 +170,7 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
                 continue;
             }
 
-            $rulesets = Json\typed($rulesetsTx->response->body?->readAll() ?? '', $rulesetType);
+            $rulesets = Json\typed::<array>($rulesetsTx->response->body?->readAll() ?? '', $rulesetType);
             foreach ($rulesets as $ruleset) {
                 $name = Str\lowercase($ruleset['name']);
                 if (Str\contains($name, 'tag') || Str\contains($name, 'immutable')) {
@@ -217,7 +217,7 @@ function fix(MonolithicRepository $monorepo, #[SensitiveParameter] string $token
         }
 
         if ($ops !== []) {
-            $fixAwaitables[$repo] = Async\run(static fn(): array => Async\concurrently($ops));
+            $fixAwaitables[$repo] = Async\run::<array>(static fn(): array => Async\concurrently::<string, Message\Transaction>($ops));
         } else {
             Log\success('%s already correct', $full);
         }

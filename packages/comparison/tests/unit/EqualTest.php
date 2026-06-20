@@ -13,6 +13,6 @@ class EqualTest extends AbstractComparisonTestCase
     #[DataProvider('provideComparisonCases')]
     public function testItCanEqual(mixed $a, mixed $b, Order $expected): void
     {
-        static::assertSame($expected === Order::Equal, Comparison\equal($a, $b));
+        static::assertSame($expected === Order::Equal, Comparison\equal::<mixed>($a, $b));
     }
 }

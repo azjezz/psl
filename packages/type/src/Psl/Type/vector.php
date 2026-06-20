@@ -9,15 +9,9 @@ use Psl\Collection;
 /**
  * @pure
  *
- * @template T
- *
- * @param TypeInterface<T> $valueType
- *
- * @return TypeInterface<Collection\VectorInterface<T>>
- *
  * @api
  */
-function vector(TypeInterface $valueType): TypeInterface
+function vector<T>(TypeInterface<T> $valueType): TypeInterface<Collection\VectorInterface<T>>
 {
-    return new Internal\VectorType($valueType);
+    return new Internal\VectorType::<T>($valueType);
 }

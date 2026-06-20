@@ -16,7 +16,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $data = $connection->read();
@@ -41,7 +41,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 // Accept first use
                 $connection = $listener->accept();
@@ -86,7 +86,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 // First connection
                 $connection1 = $listener->accept();
@@ -137,7 +137,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $connection->close();
@@ -164,7 +164,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $data = $connection->read();
@@ -194,7 +194,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $data = $connection->read();
@@ -222,7 +222,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn1 = $listener->accept();
                 $conn1->read();
@@ -261,7 +261,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn1 = $listener->accept();
                 $conn1->read();
@@ -300,7 +300,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn1 = $listener->accept();
                 $conn1->read();
@@ -340,7 +340,7 @@ final class SocketPoolTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn = $listener->accept();
                 $conn->read();

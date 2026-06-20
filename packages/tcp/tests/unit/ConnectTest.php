@@ -13,7 +13,7 @@ final class ConnectTest extends TestCase
 {
     public function testConnect(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 8089);
                 self::assertSame('tcp://127.0.0.1:8089', $listener->getLocalAddress()->toString());

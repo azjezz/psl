@@ -311,7 +311,7 @@ final class InjectionProtectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -336,7 +336,7 @@ final class InjectionProtectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -361,7 +361,7 @@ final class InjectionProtectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -393,7 +393,7 @@ final class InjectionProtectionTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },

@@ -58,7 +58,7 @@ final class LocalStore implements StoreInterface
     /**
      * @var Async\KeyedSequence<non-empty-string, array{Closure, null|Duration, bool}, mixed>
      */
-    private Async\KeyedSequence $sequence;
+    private Async\KeyedSequence<string, array, mixed> $sequence;
 
     /**
      * @param positive-int $maxSize Maximum number of entries. Oldest entries are evicted when full.
@@ -68,7 +68,7 @@ final class LocalStore implements StoreInterface
         private readonly int $maxSize = 1_000,
         null|Duration $cleanupInterval = null,
     ) {
-        $this->sequence = new Async\KeyedSequence(
+        $this->sequence = new Async\KeyedSequence::<string, array, mixed>(
             /**
              * @param non-empty-string $key
              * @param array{Closure, null|Duration, bool} $input
@@ -166,7 +166,7 @@ final class LocalStore implements StoreInterface
         );
 
         // @mago-expect analysis:never-return
-        return $this->compute($key, $computer);
+        return $this->compute::<mixed>($key, $computer);
     }
 
     /**
@@ -184,16 +184,12 @@ final class LocalStore implements StoreInterface
      * If the cache is full, the least recently used entry is evicted before
      * storing the new value.
      *
-     * @template T
-     *
      * @param non-empty-string $key
      * @param (Closure(): T) $computer
      * @param null|Duration $ttl Time to live. Null means no expiration.
-     *
-     * @return T
      */
     #[Override]
-    public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
+    public function compute<T>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         /** @var T */
         return $this->sequence->waitFor($key, [$computer, $ttl, false]);
@@ -210,16 +206,12 @@ final class LocalStore implements StoreInterface
      * the current process. If the cache is full, the least recently used
      * entry is evicted before storing.
      *
-     * @template T
-     *
      * @param non-empty-string $key
      * @param (Closure(null|T): T) $computer Receives the old value or null.
      * @param null|Duration $ttl Time to live. Null means no expiration.
-     *
-     * @return T
      */
     #[Override]
-    public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
+    public function update<T>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         /** @var T */
         return $this->sequence->waitFor($key, [$computer, $ttl, true]);

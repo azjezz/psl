@@ -56,7 +56,7 @@ final class CopyTest extends TestCase
 
         $data = str_repeat('x', 100_000);
 
-        Async\concurrently([
+        Async\concurrently::<string, mixed>([
             'write' => static function () use ($write, $data): void {
                 $write->writeAll($data);
                 $write->close();
@@ -78,7 +78,7 @@ final class CopyTest extends TestCase
         $this->expectException(Async\Exception\CancelledException::class);
 
         try {
-            Async\concurrently([
+            Async\concurrently::<string, void>([
                 'writer' => static function () use ($write): void {
                     // Write some data, then hold the pipe open without closing
                     $write->writeAll('partial');
@@ -100,7 +100,7 @@ final class CopyTest extends TestCase
 
     public function testCopyRetriesOnEmptyNonEofRead(): void
     {
-        $state = new Ref(0);
+        $state = new Ref::<int>(0);
         $reader = new class($state) implements IO\ReadHandleInterface {
             use IO\ReadHandleConvenienceMethodsTrait;
 
@@ -110,7 +110,7 @@ final class CopyTest extends TestCase
              * @param Ref<int> $state
              */
             public function __construct(
-                private readonly Ref $state,
+                private readonly Ref<int> $state,
             ) {}
 
             public function read(

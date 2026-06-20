@@ -18,7 +18,7 @@ use function fopen;
  */
 function open_resource(string $uri, string $mode): mixed
 {
-    return namespace\suppress(
+    return namespace\suppress::<mixed>(
         /**
          * @return resource
          */

@@ -32,12 +32,9 @@ use const STR_PAD_LEFT;
 /**
  * Immutable IP address value object backed by raw binary bytes.
  *
- * @implements Comparable<Address>
- * @implements Equable<Address>
- *
  * @api
  */
-final readonly class Address implements Stringable, Comparable, Equable
+final readonly class Address implements Stringable, Comparable<Address>, Equable<Address>
 {
     /**
      * @param non-empty-string $bytes Raw binary bytes (4 for IPv4, 16 for IPv6).
@@ -136,7 +133,7 @@ final readonly class Address implements Stringable, Comparable, Equable
      *
      * @throws IncomparableException If the other value is not an Address instance.
      */
-    public function compare(mixed $other): Order
+    public function compare(Address $other): Order
     {
         // @mago-expect analysis:impossible-condition - runtime check.
         if (!$other instanceof self) {
@@ -150,7 +147,7 @@ final readonly class Address implements Stringable, Comparable, Equable
     /**
      * Check whether two addresses are equal by their raw bytes.
      */
-    public function equals(mixed $other): bool
+    public function equals(Address $other): bool
     {
         // @mago-expect analysis:impossible-condition - runtime check.
         if (!$other instanceof self) {

@@ -12,11 +12,8 @@ use Psl\Type\Tests\Benchmark\Asset\ImplicitStringableObject;
 
 use function array_merge;
 
-/**
- * @extends GenericTypeBench<Type\TypeInterface<array-key>>
- */
 #[Groups(['type'])]
-final class ArrayKeyTypeBench extends GenericTypeBench
+final class ArrayKeyTypeBench extends GenericTypeBench<Type\TypeInterface<string|int>>
 {
     /**
      * {@inheritDoc}

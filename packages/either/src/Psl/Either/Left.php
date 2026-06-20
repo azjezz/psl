@@ -13,25 +13,16 @@ use Psl\Option;
  *
  * By convention, Left represents the failure/error case.
  *
- * @template-covariant TLeft
- *
- * @implements Either<TLeft, never>
- *
  * @api
  */
-final readonly class Left implements Either
+final readonly class Left<out TLeft> implements Either<TLeft, never>
 {
-    /**
-     * @var TLeft
-     */
-    private mixed $value;
+    private TLeft $value;
 
     /**
-     * @param TLeft $value
-     *
      * @psalm-mutation-free
      */
-    public function __construct(mixed $value)
+    public function __construct(TLeft $value)
     {
         $this->value = $value;
     }
@@ -67,183 +58,127 @@ final readonly class Left implements Either
     }
 
     /**
-     * @return TLeft
-     *
      * @psalm-mutation-free
      */
-    public function getLeft(): mixed
+    public function getLeft(): TLeft
     {
         return $this->value;
     }
 
     /**
-     * @template T
-     *
-     * @param T $default
-     *
-     * @return T
-     *
      * @psalm-mutation-free
      */
-    public function getRightOr(mixed $default): mixed
+    public function getRightOr<T>(T $default): T
     {
         return $default;
     }
 
     /**
-     * @template T
-     *
-     * @param T $default
-     *
-     * @return TLeft
-     *
      * @psalm-mutation-free
      */
-    public function getLeftOr(mixed $default): mixed
+    public function getLeftOr<T>(T $default): TLeft
     {
         return $this->value;
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return TResult
      */
-    public function getRightOrElse(Closure $closure): mixed
+    public function getRightOrElse<TResult>(Closure $closure): TResult
     {
         return $closure($this->value);
     }
 
-    /**
-     * @return TLeft
-     */
-    public function getLeftOrElse(Closure $closure): mixed
+    public function getLeftOrElse(Closure $closure): TLeft
     {
         return $this->value;
     }
 
     /**
-     * @return Option\Option<never>
-     *
      * @psalm-mutation-free
      */
-    public function unwrapRight(): Option\Option
+    public function unwrapRight(): Option\Option<never>
     {
         return Option\none();
     }
 
     /**
-     * @return Option\Option<TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function unwrapLeft(): Option\Option
+    public function unwrapLeft(): Option\Option<TLeft>
     {
-        return Option\some($this->value);
+        return Option\some::<TLeft>($this->value);
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Left<TResult>
      */
-    public function map(Closure $closure): Left
+    public function map<TResult>(Closure $closure): Left<TResult>
     {
-        return new Left($closure($this->value));
+        return new Left::<TResult>($closure($this->value));
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(never): TResult) $closure
      *
-     * @return Left<TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function mapRight(Closure $closure): Left
+    public function mapRight<TResult>(Closure $closure): Left<TLeft>
     {
         return $this;
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Left<TResult>
      */
-    public function mapLeft(Closure $closure): Left
+    public function mapLeft<TResult>(Closure $closure): Left<TResult>
     {
-        return new Left($closure($this->value));
+        return new Left::<TResult>($closure($this->value));
     }
 
     /**
-     * @template TResultLeft
-     * @template TResultRight
-     *
      * @param (Closure(TLeft): Either<TResultLeft, TResultRight>) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Either<TResultLeft, TResultRight>
      */
-    public function flatMap(Closure $closure): Either
+    public function flatMap<TResultLeft, TResultRight>(Closure $closure): Either<TResultLeft, TResultRight>
     {
         return $closure($this->value);
     }
 
     /**
-     * @template TResultLeft
-     * @template TResultRight
-     *
      * @param (Closure(never): Either<TResultLeft, TResultRight>) $closure
-     *
-     * @return Left<TLeft>
      *
      * @psalm-mutation-free
      */
-    public function flatMapRight(Closure $closure): Left
+    public function flatMapRight<TResultLeft, TResultRight>(Closure $closure): Left<TLeft>
     {
         return $this;
     }
 
     /**
-     * @template TResultLeft
-     * @template TResultRight
-     *
      * @param (Closure(TLeft): Either<TResultLeft, TResultRight>) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Either<TResultLeft, TResultRight>
      */
-    public function flatMapLeft(Closure $closure): Either
+    public function flatMapLeft<TResultLeft, TResultRight>(Closure $closure): Either<TResultLeft, TResultRight>
     {
         return $closure($this->value);
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(never): TResult) $right
      * @param (Closure(TLeft): TResult) $left
      *
      * @param-immediately-invoked-callable $left
-     *
-     * @return TResult
      */
-    public function proceed(Closure $right, Closure $left): mixed
+    public function proceed<TResult>(Closure $right, Closure $left): TResult
     {
         return $left($this->value);
     }
@@ -252,10 +187,8 @@ final readonly class Left implements Either
      * @param (Closure(TLeft): mixed) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Left<TLeft>
      */
-    public function apply(Closure $closure): Left
+    public function apply(Closure $closure): Left<TLeft>
     {
         $closure($this->value);
 
@@ -263,13 +196,11 @@ final readonly class Left implements Either
     }
 
     /**
-     * @return Right<TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function swap(): Right
+    public function swap(): Right<TLeft>
     {
-        return new Right($this->value);
+        return new Right::<TLeft>($this->value);
     }
 
     /**
@@ -289,24 +220,19 @@ final readonly class Left implements Either
     }
 
     /**
-     * @param Either<TLeft, mixed> $other
-     *
      * @throws Exception\RightException
      */
-    public function compare(mixed $other): Comparison\Order
+    public function compare(Either<mixed, mixed> $other): Comparison\Order
     {
         if ($other instanceof Right) {
             return Comparison\Order::Less;
         }
 
-        return Comparison\compare($this->value, $other->getLeft());
+        return Comparison\compare::<TLeft>($this->value, $other->getLeft());
     }
 
-    /**
-     * @param Either<TLeft, mixed> $other
-     */
-    public function equals(mixed $other): bool
+    public function equals(Either<mixed, mixed> $other): bool
     {
-        return Comparison\equal($this, $other);
+        return Comparison\equal::<Either<mixed, mixed>>($this, $other);
     }
 }

@@ -20,7 +20,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testClear(): void
     {
-        $vector = $this->create(['foo', 'bar']);
+        $vector = $this->create::<string>(['foo', 'bar']);
         $cleared = $vector->clear();
 
         static::assertSame($cleared, $vector);
@@ -29,7 +29,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testSet(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'bar',
             'baz',
             'qux',
@@ -51,7 +51,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testSetAll(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'bar',
             'baz',
             'qux',
@@ -77,7 +77,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testAdd(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -98,7 +98,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testAddAll(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -122,7 +122,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testRemove(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -137,7 +137,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testArrayAccess(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -172,7 +172,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testOffsetSetAtZero(): void
     {
-        $vector = $this->create(['a', 'b', 'c']);
+        $vector = $this->create::<string>(['a', 'b', 'c']);
 
         $vector[0] = 'x';
 
@@ -184,7 +184,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testOffsetSetThrowsForInvalidOffsetType(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -198,7 +198,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testOffsetIssetThrowsForInvalidOffsetType(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -212,7 +212,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testOffsetUnsetThrowsForInvalidOffsetType(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -226,7 +226,7 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testOffsetGetThrowsForInvalidOffsetType(): void
     {
-        $vector = $this->create([
+        $vector = $this->create::<string>([
             'foo',
             'bar',
             'baz',
@@ -240,20 +240,16 @@ final class MutableVectorTest extends AbstractVectorTestCase
 
     public function testFromItems(): void
     {
-        $vector = MutableVector::fromItems([1, 2, 3]);
+        $vector = MutableVector::<int>::fromItems([1, 2, 3]);
         static::assertSame([1, 2, 3], $vector->toArray());
     }
 
     /**
-     * @template     T
-     *
      * @param list<T> $items
-     *
-     * @return MutableVector<T>
      */
     #[Override]
-    protected function create(array $items): MutableVector
+    protected function create<T>(array $items): MutableVector<T>
     {
-        return new MutableVector($items);
+        return new MutableVector::<mixed>($items);
     }
 }

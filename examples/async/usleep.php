@@ -12,7 +12,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $start = DateTime\Timestamp::monotonic();
 
-Async\concurrently([
+Async\concurrently::<int, null>([
     static fn(): null => Async\sleep(DateTime\Duration::hours(0)),
     static fn(): null => Async\sleep(DateTime\Duration::minutes(0)),
     static fn(): null => Async\sleep(DateTime\Duration::zero()),

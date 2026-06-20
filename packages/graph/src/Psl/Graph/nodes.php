@@ -14,18 +14,13 @@ namespace Psl\Graph;
  *      $graph = Graph\add_node($graph, 'B');
  *      Graph\nodes($graph) // ['A', 'B']
  *
- * @template TNode
- * @template TWeight
- *
- * @param GraphInterface<TNode, TWeight> $graph
- *
  * @return list<TNode>
  *
  * @pure
  *
  * @api
  */
-function nodes(GraphInterface $graph): array
+function nodes<TNode, TWeight>(GraphInterface<TNode, TWeight> $graph): array
 {
     return $graph->getNodes();
 }

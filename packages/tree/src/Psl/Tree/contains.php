@@ -15,18 +15,13 @@ namespace Psl\Tree;
  *      )
  *      => true
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
- * @param T $value
- *
  * @return bool
  *
  * @pure
  *
  * @api
  */
-function contains(NodeInterface $tree, mixed $value): bool
+function contains<T>(NodeInterface<T> $tree, T $value): bool
 {
-    return namespace\any($tree, static fn(mixed $v): bool => $v === $value);
+    return namespace\any::<T>($tree, static fn(mixed $v): bool => $v === $value);
 }

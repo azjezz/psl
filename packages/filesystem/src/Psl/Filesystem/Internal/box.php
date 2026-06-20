@@ -14,15 +14,13 @@ use function strpos;
 use function substr;
 
 /**
- * @template T
- *
  * @param (Closure(): T) $fun
  *
  * @return array{0: T, 1: ?string}
  *
  * @internal
  */
-function box(Closure $fun): array
+function box<T>(Closure $fun): array
 {
     $lastMessage = null;
     set_error_handler(static function (int $_, string $message) use (&$lastMessage): void {

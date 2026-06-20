@@ -22,17 +22,13 @@ use function count;
  *
  * Just like {@see KeyedSemaphore}, all operations must have the same input type (Tin) and output type (Tout), and be processed by the same function;
  *
- * @template-contravariant Tk of array-key
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @see KeyedSemaphore
  *
  * @mago-expect lint:excessive-nesting
  *
  * @api
  */
-final class KeyedSequence
+final class KeyedSequence<in Tk: string|int, in Tin, out Tout>
 {
     /**
      * Tracks the fiber that currently holds each key, enabling re-entrant
@@ -62,20 +58,15 @@ final class KeyedSequence
     /**
      * Run the operation using the given `$input`, after all previous operations have completed.
      *
-     * @param Tk $key
-     * @param Tin $input
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
-     *
-     * @return Tout
      *
      * @see Sequence::cancel()
      */
     public function waitFor(
-        string|int $key,
-        mixed $input,
+        Tk $key,
+        Tin $input,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
-    ): mixed {
+    ): Tout {
         if (array_key_exists($key, $this->ongoing)) {
             $currentContext = Fiber::getCurrent() ?? $this;
             if ($this->ongoing[$key] === $currentContext) {
@@ -142,10 +133,8 @@ final class KeyedSequence
      * Any pending operation will fail with the given exception.
      *
      * Future operations will continue execution as usual.
-     *
-     * @param Tk $key
      */
-    public function cancel(string|int $key, Exception $exception): void
+    public function cancel(Tk $key, Exception $exception): void
     {
         $suspensions = $this->pending[$key] ?? [];
         unset($this->pending[$key]);
@@ -175,11 +164,9 @@ final class KeyedSequence
     /**
      * Get the number of operations pending execution for the given key.
      *
-     * @param Tk $key
-     *
      * @return int<0, max>
      */
-    public function getPendingOperations(string|int $key): int
+    public function getPendingOperations(Tk $key): int
     {
         return count($this->pending[$key] ?? []);
     }
@@ -203,10 +190,8 @@ final class KeyedSequence
      * Check if there's any operations pending execution for the given key.
      *
      * If this method returns `true`, it means the sequence is busy, future calls to `waitFor` will wait.
-     *
-     * @param Tk $key
      */
-    public function hasPendingOperations(string|int $key): bool
+    public function hasPendingOperations(Tk $key): bool
     {
         return array_key_exists($key, $this->pending);
     }
@@ -224,10 +209,8 @@ final class KeyedSequence
      *
      * If this method returns `true`, it means the sequence is busy, future calls to `waitFor` will wait.
      * If this method returns `false`, it means the sequence is not busy, future calls to `waitFor` will execute immediately.
-     *
-     * @param Tk $key
      */
-    public function hasOngoingOperations(string|int $key): bool
+    public function hasOngoingOperations(Tk $key): bool
     {
         return array_key_exists($key, $this->ongoing);
     }
@@ -255,12 +238,10 @@ final class KeyedSequence
      *
      * If the sequence does not have any ongoing operations for the given key, this method will return immediately.
      *
-     * @param Tk $key
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
      */
     public function waitForPending(
-        string|int $key,
+        Tk $key,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): void {
         if (!array_key_exists($key, $this->ongoing)) {

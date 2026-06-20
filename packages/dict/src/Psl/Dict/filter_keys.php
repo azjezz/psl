@@ -25,9 +25,6 @@ use const ARRAY_FILTER_USE_KEY;
  *      Dict\filter_keys([0 => 'a', 1 => 'b', 2 => 'c'], fn(int $key): bool => $key <= 1);
  *      => Dict(0 => 'a', 1 => 'b')
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tk): bool)|null $predicate
  *
@@ -35,7 +32,7 @@ use const ARRAY_FILTER_USE_KEY;
  *
  * @api
  */
-function filter_keys(iterable $iterable, null|Closure $predicate = null): array
+function filter_keys<Tk: string|int, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??= static fn(string|int $value): bool => (bool) $value;
 

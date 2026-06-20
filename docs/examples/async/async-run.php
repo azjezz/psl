@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Async;
 use Psl\DateTime\Duration;
 
-$awaitable = Async\run(static function (): string {
+$awaitable = Async\run::<string>(static function (): string {
     Async\sleep(Duration::seconds(1));
     return 'Hello world!';
 });

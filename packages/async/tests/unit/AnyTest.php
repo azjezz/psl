@@ -13,23 +13,23 @@ final class AnyTest extends TestCase
 {
     public function testAny(): void
     {
-        $result = Async\any([
-            Async\run(static function (): string {
+        $result = Async\any::<string>([
+            Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new InvariantViolationException('a');
             }),
-            Async\run(static function (): string {
+            Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(2));
 
                 throw new InvariantViolationException('b');
             }),
-            Async\run(static function (): string {
+            Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(3));
 
                 return 'c';
             }),
-            Async\run(static function (): string {
+            Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::microseconds(500));
 
                 Async\later();
@@ -48,14 +48,14 @@ final class AnyTest extends TestCase
         $this->expectException(Async\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('$awaitables must be a non-empty-iterable.');
 
-        Async\any([]);
+        Async\any::<mixed>([]);
     }
 
     public function testAnyWillFailingAwaitables(): void
     {
         $this->expectException(Async\Exception\CompositeException::class);
 
-        Async\any([
+        Async\any::<mixed>([
             Async\Awaitable::error(new InvariantViolationException('foo')),
             Async\Awaitable::error(new InvariantViolationException('bar')),
         ]);

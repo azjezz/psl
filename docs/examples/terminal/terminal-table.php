@@ -12,9 +12,9 @@ use Psl\Terminal\Widget;
 
 final class TableState {}
 
-$app = Terminal\Application::create(new TableState(), title: 'Table Demo');
+$app = Terminal\Application::create::<TableState>(new TableState(), title: 'Table Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, TableState $_state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, TableState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

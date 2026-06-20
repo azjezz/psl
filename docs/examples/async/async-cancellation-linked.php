@@ -17,9 +17,9 @@ $linked = new Async\LinkedCancellationToken(
     new Async\TimeoutCancellationToken(Duration::milliseconds(50)),
 );
 
-$deferred = new Async\Deferred();
+$deferred = new Async\Deferred::<string>();
 
-Async\run(static function () use ($deferred): void {
+Async\run::<void>(static function () use ($deferred): void {
     Async\sleep(Duration::seconds(5));
     $deferred->complete('too late');
 })->ignore();

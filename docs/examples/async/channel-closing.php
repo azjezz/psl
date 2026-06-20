@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Channel;
 use Psl\IO;
 
-[$receiver, $sender] = Channel\bounded(10);
+[$receiver, $sender] = Channel\bounded::<string>(10);
 
 $sender->send('last message');
 $sender->close();

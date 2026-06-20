@@ -7,54 +7,39 @@ namespace Psl\Collection;
 /**
  * The interface for all keyed collections to enable access its values.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @api
  */
-interface IndexAccessInterface
+interface IndexAccessInterface<Tk: string|int, Tv>
 {
     /**
      * Returns the value at the specified key in the current collection.
      *
-     * @param Tk $k
-     *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return Tv
      *
      * @psalm-mutation-free
      */
-    public function at(int|string $k): mixed;
+    public function at(Tk $k): Tv;
 
     /**
      * Determines if the specified key is in the current collection.
      *
-     * @param Tk $k
-     *
      * @psalm-mutation-free
      */
-    public function contains(int|string $k): bool;
+    public function contains(Tk $k): bool;
 
     /**
      * Alias of `contains`.
-     *
-     * @param Tk $k
      *
      * @see contains() method
      *
      * @psalm-mutation-free
      */
-    public function containsKey(int|string $k): bool;
+    public function containsKey(Tk $k): bool;
 
     /**
      * Returns the value at the specified key in the current collection.
      *
-     * @param Tk $k
-     *
-     * @return Tv|null
-     *
      * @psalm-mutation-free
      */
-    public function get(int|string $k): mixed;
+    public function get(Tk $k): Tv|null;
 }

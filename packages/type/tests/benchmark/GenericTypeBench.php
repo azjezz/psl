@@ -7,10 +7,7 @@ namespace Psl\Type\Tests\Benchmark;
 use PhpBench\Attributes\ParamProviders;
 use Psl\Type;
 
-/**
- * @template BenchmarkedType of Type\TypeInterface
- */
-abstract class GenericTypeBench
+abstract class GenericTypeBench<BenchmarkedType: Type\TypeInterface>
 {
     /**
      * @param array{type: BenchmarkedType, value: mixed} $input

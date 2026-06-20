@@ -9,15 +9,12 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Type\Tests\Fixture\StringEnum;
 
-/**
- * @extends TypeTestCase<StringEnum>
- */
-final class StringBackedEnumTypeTest extends TypeTestCase
+final class StringBackedEnumTypeTest extends TypeTestCase<StringEnum>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<StringEnum>
     {
-        return Type\backed_enum(StringEnum::class);
+        return Type\backed_enum::<StringEnum>(StringEnum::class);
     }
 
     /**
@@ -52,6 +49,6 @@ final class StringBackedEnumTypeTest extends TypeTestCase
     #[Override]
     public static function getToStringExamples(): iterable
     {
-        yield [Type\backed_enum(StringEnum::class), Str\format('backed-enum(%s)', StringEnum::class)];
+        yield [Type\backed_enum::<StringEnum>(StringEnum::class), Str\format('backed-enum(%s)', StringEnum::class)];
     }
 }

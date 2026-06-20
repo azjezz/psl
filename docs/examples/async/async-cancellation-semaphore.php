@@ -8,14 +8,14 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 
-$semaphore = new Async\Semaphore(1, static function (string $task): string {
+$semaphore = new Async\Semaphore::<string, string>(1, static function (string $task): string {
     Async\sleep(Duration::milliseconds(100));
 
     return $task . ' done';
 });
 
 // First task starts immediately
-Async\run(static function () use ($semaphore): void {
+Async\run::<void>(static function () use ($semaphore): void {
     $result = $semaphore->waitFor('task-1');
     IO\write_line($result);
 })->ignore();

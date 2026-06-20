@@ -11,7 +11,7 @@ final class WhenTest extends TestCase
 {
     public function testItRunsLeftFunction(): void
     {
-        $greet = Fun\when(
+        $greet = Fun\when::<string, string>(
             static fn(string $name): bool => 'Jos' === $name,
             static fn(string $name): string => 'Bonjour ' . $name . '!',
             static fn(string $name): string => 'Hello ' . $name . '!',
@@ -22,7 +22,7 @@ final class WhenTest extends TestCase
 
     public function testItRunsRightfunction(): void
     {
-        $greet = Fun\when(
+        $greet = Fun\when::<string, string>(
             static fn(string $name): bool => 'Jos' === $name,
             static fn(string $name): string => 'Bonjour ' . $name . '!',
             static fn(string $name): string => 'Hello ' . $name . '!',

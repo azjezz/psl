@@ -37,7 +37,7 @@ function decrypt(
     $keypair = $recipientSecretKey->bytes . $senderPublicKey->bytes;
 
     try {
-        $plaintext = Internal\call_sodium(fn() => sodium_crypto_box_open($encrypted, $nonce, $keypair));
+        $plaintext = Internal\call_sodium::<string|false>(fn() => sodium_crypto_box_open($encrypted, $nonce, $keypair));
 
         if ($plaintext === false) {
             throw new Exception\DecryptionException('Authenticated asymmetric decryption failed.');

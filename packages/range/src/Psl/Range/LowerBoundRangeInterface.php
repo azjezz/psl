@@ -76,5 +76,5 @@ interface LowerBoundRangeInterface extends IteratorAggregate, RangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function getIterator(): Iter\Iterator;
+    public function getIterator(): Iter\Iterator<int, int>;
 }

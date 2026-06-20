@@ -19,9 +19,9 @@ final class MergeJoinByKeyTest extends TestCase
      */
     private static function assertStream(array $left, array $right, array $expected): void
     {
-        $collected = Vec\map(
-            Iter\merge_join_by_key($left, $right, static fn(array $r): int => $r['id']),
-            static fn(EitherOrBoth\EitherOrBoth $e): array => $e->proceed(
+        $collected = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, array>(
+            Iter\merge_join_by_key::<array, int>($left, $right, static fn(array $r): int => $r['id']),
+            static fn(EitherOrBoth\EitherOrBoth<array, array> $e): array => $e->proceed::<array>(
                 left: static fn(array $r): array => ['left', $r['v']],
                 right: static fn(array $r): array => ['right', $r['v']],
                 both: static fn(array $l, array $r): array => ['both', $l['v'], $r['v']],
@@ -105,9 +105,9 @@ final class MergeJoinByKeyTest extends TestCase
         $left = [['id' => 'a', 'v' => 'A'], ['id' => 'b', 'v' => 'B']];
         $right = [['id' => 'b', 'v' => 'b'], ['id' => 'c', 'v' => 'c']];
 
-        $collected = Vec\map(
-            Iter\merge_join_by_key($left, $right, static fn(array $r): string => $r['id']),
-            static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $collected = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>(
+            Iter\merge_join_by_key::<array, string>($left, $right, static fn(array $r): string => $r['id']),
+            static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
                 left: static fn(array $r): string => "L:{$r['v']}",
                 right: static fn(array $r): string => "R:{$r['v']}",
                 both: static fn(array $l, array $r): string => "B:{$l['v']}/{$r['v']}",
@@ -123,13 +123,13 @@ final class MergeJoinByKeyTest extends TestCase
             yield from $values;
         };
 
-        $collected = Vec\map(
-            Iter\merge_join_by_key(
+        $collected = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>(
+            Iter\merge_join_by_key::<array, int>(
                 $gen([['id' => 1, 'v' => 'L1'], ['id' => 2, 'v' => 'L2']]),
                 $gen([['id' => 2, 'v' => 'R2'], ['id' => 3, 'v' => 'R3']]),
                 static fn(array $r): int => $r['id'],
             ),
-            static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+            static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
                 left: static fn(array $r): string => $r['v'] . '-left',
                 right: static fn(array $r): string => $r['v'] . '-right',
                 both: static fn(array $l, array $r): string => $l['v'] . '+' . $r['v'],
@@ -145,9 +145,9 @@ final class MergeJoinByKeyTest extends TestCase
         $left = [['id' => 1, 'v' => 'L']];
         $right = [['id' => 1, 'v' => 'first'], ['id' => 1, 'v' => 'last']];
 
-        $collected = Vec\map(
-            Iter\merge_join_by_key($left, $right, static fn(array $r): int => $r['id']),
-            static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $collected = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>(
+            Iter\merge_join_by_key::<array, int>($left, $right, static fn(array $r): int => $r['id']),
+            static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
                 left: static fn(array $r): string => 'L:' . $r['v'],
                 right: static fn(array $r): string => 'R:' . $r['v'],
                 both: static fn(array $l, array $r): string => 'B:' . $l['v'] . '/' . $r['v'],
@@ -162,15 +162,15 @@ final class MergeJoinByKeyTest extends TestCase
         $left = [['id' => 1, 'v' => 'A'], ['id' => 2, 'v' => 'B']];
         $right = [['id' => 2, 'v' => 'b'], ['id' => 3, 'v' => 'c']];
 
-        $stream = Iter\merge_join_by_key($left, $right, static fn(array $r): int => $r['id']);
+        $stream = Iter\merge_join_by_key::<array, int>($left, $right, static fn(array $r): int => $r['id']);
 
-        $first = Vec\map($stream, static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $first = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>($stream, static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
             left: static fn(array $r): string => "L:{$r['v']}",
             right: static fn(array $r): string => "R:{$r['v']}",
             both: static fn(array $l, array $r): string => "B:{$l['v']}/{$r['v']}",
         ));
 
-        $second = Vec\map($stream, static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $second = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>($stream, static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
             left: static fn(array $r): string => "L:{$r['v']}",
             right: static fn(array $r): string => "R:{$r['v']}",
             both: static fn(array $l, array $r): string => "B:{$l['v']}/{$r['v']}",
@@ -187,9 +187,9 @@ final class MergeJoinByKeyTest extends TestCase
         $left = [['id' => 1, 'v' => 'first'], ['id' => 1, 'v' => 'second']];
         $right = [['id' => 1, 'v' => 'R']];
 
-        $collected = Vec\map(
-            Iter\merge_join_by_key($left, $right, static fn(array $r): int => $r['id']),
-            static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $collected = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>(
+            Iter\merge_join_by_key::<array, int>($left, $right, static fn(array $r): int => $r['id']),
+            static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
                 left: static fn(array $r): string => 'L:' . $r['v'],
                 right: static fn(array $r): string => 'R:' . $r['v'],
                 both: static fn(array $l, array $r): string => 'B:' . $l['v'] . '/' . $r['v'],

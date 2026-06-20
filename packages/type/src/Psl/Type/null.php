@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function null(): TypeInterface
+function null(): TypeInterface<null>
 {
     static $instance = new Internal\NullType();
 

@@ -30,7 +30,7 @@ function change_group(string $node, int $group): void
         $fun = static fn(): bool => chgrp($node, $group);
     }
 
-    [$success, $error] = Internal\box($fun);
+    [$success, $error] = Internal\box::<bool>($fun);
     if (!$success) {
         throw new Exception\RuntimeException(sprintf(
             'Failed to change the group for node "%s": %s',

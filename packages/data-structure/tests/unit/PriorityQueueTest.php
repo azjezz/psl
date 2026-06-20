@@ -97,7 +97,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testPullReturnsNullWhenTheQueueIsEmpty(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = new DataStructure\PriorityQueue::<string>();
 
         static::assertCount(0, $queue);
         static::assertNull($queue->pull());
@@ -105,7 +105,7 @@ final class PriorityQueueTest extends TestCase
 
     public function testDequeueThrowsWhenTheQueueIsEmpty(): void
     {
-        $queue = new DataStructure\PriorityQueue();
+        $queue = new DataStructure\PriorityQueue::<string>();
 
         $this->expectException(DataStructure\Exception\UnderflowException::class);
         $this->expectExceptionMessage('Cannot dequeue a node from an empty queue.');

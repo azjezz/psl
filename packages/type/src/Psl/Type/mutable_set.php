@@ -9,15 +9,9 @@ use Psl\Collection;
 /**
  * @pure
  *
- * @template T of array-key
- *
- * @param TypeInterface<T> $type
- *
- * @return TypeInterface<Collection\MutableSetInterface<T>>
- *
  * @api
  */
-function mutable_set(TypeInterface $type): TypeInterface
+function mutable_set<T: string|int>(TypeInterface<T> $type): TypeInterface<Collection\MutableSetInterface<T>>
 {
-    return new Internal\MutableSetType($type);
+    return new Internal\MutableSetType::<T>($type);
 }

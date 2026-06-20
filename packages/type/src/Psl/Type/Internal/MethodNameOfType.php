@@ -17,7 +17,7 @@ use function is_string;
  *
  * @internal
  */
-final readonly class MethodNameOfType extends Type
+final readonly class MethodNameOfType extends Type<string>
 {
     /**
      * @var class-string

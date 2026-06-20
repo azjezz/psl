@@ -10,16 +10,13 @@ use function is_array;
 /**
  * Return all the keys of an array.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  *
  * @return list<Tk>
  *
  * @api
  */
-function keys(iterable $iterable): array
+function keys<Tk: string|int, Tv>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_keys($iterable);

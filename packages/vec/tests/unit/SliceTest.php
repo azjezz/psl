@@ -14,7 +14,7 @@ final class SliceTest extends TestCase
     #[DataProvider('provideData')]
     public function testSlice(array $expected, array $array, int $n, null|int $l = null): void
     {
-        $result = Vec\slice($array, $n, $l);
+        $result = Vec\slice::<int>($array, $n, $l);
 
         static::assertSame($expected, $result);
     }
@@ -27,22 +27,22 @@ final class SliceTest extends TestCase
 
     public function testSliceWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create([1, 2, 3, 4, 5]);
+        $iterator = Iter\Iterator::<int, int>::create([1, 2, 3, 4, 5]);
 
-        static::assertSame([3, 4, 5], Vec\slice($iterator, 2));
+        static::assertSame([3, 4, 5], Vec\slice::<int>($iterator, 2));
     }
 
     public function testSliceWithNonArrayIterableAndLength(): void
     {
-        $iterator = Iter\Iterator::create([1, 2, 3, 4, 5]);
+        $iterator = Iter\Iterator::<int, int>::create([1, 2, 3, 4, 5]);
 
-        static::assertSame([2, 3], Vec\slice($iterator, 1, 2));
+        static::assertSame([2, 3], Vec\slice::<int>($iterator, 1, 2));
     }
 
     public function testSliceWithNonArrayIterableZeroLength(): void
     {
-        $iterator = Iter\Iterator::create([1, 2, 3]);
+        $iterator = Iter\Iterator::<int, int>::create([1, 2, 3]);
 
-        static::assertSame([], Vec\slice($iterator, 0, 0));
+        static::assertSame([], Vec\slice::<int>($iterator, 0, 0));
     }
 }

@@ -19,7 +19,7 @@ final class TreeBench
     #[ParamProviders('provideTreeData')]
     public function benchDepth(array $params): void
     {
-        Tree\depth($params['tree']);
+        Tree\depth::<int>($params['tree']);
     }
 
     /**
@@ -28,7 +28,7 @@ final class TreeBench
     #[ParamProviders('provideAtIndexData')]
     public function benchAtIndex(array $params): void
     {
-        Tree\at_index($params['tree'], $params['path']);
+        Tree\at_index::<int>($params['tree'], $params['path']);
     }
 
     /**
@@ -40,17 +40,17 @@ final class TreeBench
         for ($i = 0; $i < 10; $i++) {
             $grandchildren = [];
             for ($j = 0; $j < 10; $j++) {
-                $grandchildren[] = Tree\leaf(($i * 10) + $j);
+                $grandchildren[] = Tree\leaf::<int>(($i * 10) + $j);
             }
 
-            $children[] = Tree\tree($i, $grandchildren);
+            $children[] = Tree\tree::<int>($i, $grandchildren);
         }
 
-        yield 'wide_shallow' => ['tree' => Tree\tree(0, $children)];
+        yield 'wide_shallow' => ['tree' => Tree\tree::<int>(0, $children)];
 
-        $node = Tree\leaf(0);
+        $node = Tree\leaf::<int>(0);
         for ($i = 0; $i < 20; $i++) {
-            $node = Tree\tree($i, [$node]);
+            $node = Tree\tree::<int>($i, [$node]);
         }
 
         yield 'deep_narrow' => ['tree' => $node];
@@ -64,9 +64,9 @@ final class TreeBench
      */
     public function provideAtIndexData(): iterable
     {
-        $node = Tree\leaf(0);
+        $node = Tree\leaf::<int>(0);
         for ($i = 0; $i < 15; $i++) {
-            $node = Tree\tree($i, [$node]);
+            $node = Tree\tree::<int>($i, [$node]);
         }
 
         yield 'deep_path' => ['tree' => $node, 'path' => array_fill(0, 15, 0)];
@@ -75,22 +75,22 @@ final class TreeBench
         for ($i = 0; $i < 20; $i++) {
             $grandchildren = [];
             for ($j = 0; $j < 5; $j++) {
-                $grandchildren[] = Tree\leaf(($i * 5) + $j);
+                $grandchildren[] = Tree\leaf::<int>(($i * 5) + $j);
             }
 
-            $children[] = Tree\tree($i, $grandchildren);
+            $children[] = Tree\tree::<int>($i, $grandchildren);
         }
 
-        yield 'wide_middle' => ['tree' => Tree\tree(0, $children), 'path' => [10, 2]];
+        yield 'wide_middle' => ['tree' => Tree\tree::<int>(0, $children), 'path' => [10, 2]];
     }
 
-    private static function buildBalancedTree(int $depth): Tree\NodeInterface
+    private static function buildBalancedTree(int $depth): Tree\NodeInterface<int>
     {
         if ($depth === 0) {
-            return Tree\leaf(0);
+            return Tree\leaf::<int>(0);
         }
 
-        return Tree\tree(0, [
+        return Tree\tree::<int>(0, [
             self::buildBalancedTree($depth - 1),
             self::buildBalancedTree($depth - 1),
         ]);

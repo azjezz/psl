@@ -13,7 +13,7 @@ final class AnyTest extends TestCase
     #[DataProvider('provideData')]
     public function testAny(bool $expected, iterable $iterable, callable $predicate): void
     {
-        static::assertSame($expected, Iter\any($iterable, $predicate));
+        static::assertSame($expected, Iter\any::<bool|int>($iterable, $predicate));
     }
 
     public static function provideData(): iterable

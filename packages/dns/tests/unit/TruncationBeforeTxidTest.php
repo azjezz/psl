@@ -20,7 +20,7 @@ final class TruncationBeforeTxidTest extends TestCase
         $server = UDP\Socket::bind('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        Async\run(static function () use ($server): void {
+        Async\run::<void>(static function () use ($server): void {
             [$query, $peer] = $server->receiveFrom(512);
             $reader = new Reader($query);
             $id = $reader->u16();

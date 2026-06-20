@@ -13,7 +13,7 @@ final class EnumerateTest extends TestCase
     #[DataProvider('provideData')]
     public function testEnumerate(array $expected, iterable $iterable): void
     {
-        static::assertSame($expected, Vec\enumerate($iterable));
+        static::assertSame($expected, Vec\enumerate::<string, string|int|null>($iterable));
     }
 
     public static function provideData(): iterable

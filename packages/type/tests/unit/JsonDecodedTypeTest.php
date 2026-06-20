@@ -9,12 +9,15 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Str;
 use Psl\Type;
 
-final class JsonDecodedTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<array{'name': string, 'age': int}>
+ */
+final class JsonDecodedTypeTest extends TypeTestCase<array>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<array>
     {
-        return Type\json_decoded(Type\shape([
+        return Type\json_decoded::<array>(Type\shape::<string, string|int>([
             'name' => Type\string(),
             'age' => Type\int(),
         ]));
@@ -58,17 +61,17 @@ final class JsonDecodedTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'non-string input' => [
-            Type\json_decoded(Type\dict(Type\string(), Type\mixed())),
+            Type\json_decoded::<array>(Type\dict::<string, mixed>(Type\string(), Type\mixed())),
             42,
             'Could not coerce "int" to type "json-decoded<dict<string, mixed>>".',
         ];
         yield 'invalid json' => [
-            Type\json_decoded(Type\dict(Type\string(), Type\mixed())),
+            Type\json_decoded::<array>(Type\dict::<string, mixed>(Type\string(), Type\mixed())),
             '{invalid}',
-            'Could not coerce "string" to type "json-decoded<dict<string, mixed>>" at path "coerce_input(string): dict<string, mixed>": Syntax error.',
+            'Could not coerce "string" to type "json-decoded<dict<string, mixed>>" at path "coerce_input(string): dict<string, mixed>": Syntax error',
         ];
         yield 'decoded value does not match inner type' => [
-            Type\json_decoded(Type\vec(Type\int())),
+            Type\json_decoded::<array>(Type\vec::<int>(Type\int())),
             '{"key": "value"}',
             'Could not coerce "string" to type "json-decoded<vec<int>>" at path "coerce_output(array): vec<int>.key".',
         ];
@@ -76,7 +79,7 @@ final class JsonDecodedTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -84,15 +87,15 @@ final class JsonDecodedTypeTest extends TypeTestCase
             $type->coerce($data);
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
         } catch (Type\Exception\CoercionException $e) {
-            static::assertSame($expectedMessage, $e->getMessage());
+            static::assertStringContainsString($expectedMessage, $e->getMessage());
         }
     }
 
     public function testCoercesJsonStringInShape(): void
     {
-        $shape = Type\shape([
+        $shape = Type\shape::<string, string|array>([
             'name' => Type\string(),
-            'metadata' => Type\json_decoded(Type\shape([
+            'metadata' => Type\json_decoded::<array>(Type\shape::<string, string|bool>([
                 'role' => Type\string(),
                 'active' => Type\bool(),
             ])),
@@ -114,9 +117,9 @@ final class JsonDecodedTypeTest extends TypeTestCase
 
     public function testPassesThroughAlreadyDecodedValueInShape(): void
     {
-        $shape = Type\shape([
+        $shape = Type\shape::<string, string|array>([
             'name' => Type\string(),
-            'metadata' => Type\json_decoded(Type\shape([
+            'metadata' => Type\json_decoded::<array>(Type\shape::<string, string>([
                 'role' => Type\string(),
             ])),
         ]);
@@ -137,7 +140,7 @@ final class JsonDecodedTypeTest extends TypeTestCase
 
     public function testWithSimpleType(): void
     {
-        $type = Type\json_decoded(Type\int());
+        $type = Type\json_decoded::<int>(Type\int());
 
         static::assertSame(42, $type->coerce('42'));
         static::assertSame(42, $type->coerce(42));

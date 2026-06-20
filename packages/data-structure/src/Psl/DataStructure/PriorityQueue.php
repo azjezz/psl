@@ -12,13 +12,9 @@ use function count;
 use function max;
 
 /**
- * @template T
- *
- * @implements PriorityQueueInterface<T>
- *
  * @api
  */
-final class PriorityQueue implements PriorityQueueInterface
+final class PriorityQueue<T> implements PriorityQueueInterface<T>
 {
     /**
      * @var array<int, non-empty-list<T>>
@@ -35,18 +31,16 @@ final class PriorityQueue implements PriorityQueueInterface
     #[Override]
     public static function default(): static
     {
-        return new self();
+        return new self::<T>();
     }
 
     /**
      * Adds a node to the queue.
      *
-     * @param T $node
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function enqueue(mixed $node, int $priority = 0): void
+    public function enqueue(T $node, int $priority = 0): void
     {
         $nodes = $this->queue[$priority] ?? [];
         $nodes[] = $node;
@@ -58,12 +52,10 @@ final class PriorityQueue implements PriorityQueueInterface
      * Retrieves, but does not remove, the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @return null|T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function peek(): mixed
+    public function peek(): null|T
     {
         if (0 === $this->count()) {
             return null;
@@ -85,12 +77,10 @@ final class PriorityQueue implements PriorityQueueInterface
      * Retrieves and removes the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @return null|T
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function pull(): mixed
+    public function pull(): null|T
     {
         try {
             return $this->dequeue();
@@ -104,12 +94,10 @@ final class PriorityQueue implements PriorityQueueInterface
      *
      * @throws Exception\UnderflowException If the queue is empty.
      *
-     * @return T
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function dequeue(): mixed
+    public function dequeue(): T
     {
         if (0 === $this->count()) {
             throw new Exception\UnderflowException('Cannot dequeue a node from an empty queue.');

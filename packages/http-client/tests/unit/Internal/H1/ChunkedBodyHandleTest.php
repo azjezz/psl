@@ -26,7 +26,7 @@ final class ChunkedBodyHandleTest extends TestCase
     private static function handle(string $raw): array
     {
         /** @var Async\Deferred<FieldMap> $deferred */
-        $deferred = new Async\Deferred();
+        $deferred = new Async\Deferred::<FieldMap>();
 
         return [new ChunkedBodyHandle(new IO\Reader(new FakeStream($raw)), $deferred), $deferred];
     }
@@ -135,7 +135,7 @@ final class ChunkedBodyHandleTest extends TestCase
 
         $stream = new SlowDripStream($raw, Duration::milliseconds(15));
         /** @var Async\Deferred<FieldMap> $deferred */
-        $deferred = new Async\Deferred();
+        $deferred = new Async\Deferred::<FieldMap>();
         $handle = new ChunkedBodyHandle(new IO\Reader($stream), $deferred);
 
         $start = Timestamp::monotonic();

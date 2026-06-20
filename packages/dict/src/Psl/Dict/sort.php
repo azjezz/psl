@@ -16,9 +16,6 @@ use function uasort;
  * If the optional comparator function isn't provided, the values will be sorted
  * in ascending order.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv, Tv): int)|null $comparator
  *
@@ -26,7 +23,7 @@ use function uasort;
  *
  * @api
  */
-function sort(iterable $iterable, null|Closure $comparator = null): array
+function sort<Tk: string|int, Tv>(iterable $iterable, null|Closure $comparator = null): array
 {
     if (is_array($iterable)) {
         $array = $iterable;

@@ -10,7 +10,7 @@ use Psl\IO;
 
 $cancellation = new Async\TimeoutCancellationToken(Duration::seconds(1));
 
-$awaitable = Async\run(static function () use ($cancellation): void {
+$awaitable = Async\run::<void>(static function () use ($cancellation): void {
     // Simulate a long-running task
     Async\sleep(Duration::seconds(4));
 

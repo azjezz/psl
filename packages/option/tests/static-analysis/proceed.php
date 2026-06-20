@@ -13,9 +13,9 @@ function proceed(): void
      *
      * @return non-empty-string
      */
-    function test_proceed(Option\Option $option): string
+    function test_proceed(Option\Option<int> $option): string
     {
-        return $option->proceed(
+        return $option->proceed::<string>(
             static fn(int $value): string => "There is {$value} of them.",
             static fn(): string => 'There are none.',
         );

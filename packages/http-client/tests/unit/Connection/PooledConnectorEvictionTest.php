@@ -93,7 +93,7 @@ final class PooledConnectorEvictionTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use ($listener, $maxRequests, $response): int {
+        $future = Async\run::<int>(static function () use ($listener, $maxRequests, $response): int {
             $acceptCount = 0;
             $handled = 0;
 
@@ -264,7 +264,7 @@ final class PooledConnectorEvictionTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($listener, $response): int {
+        $serverFuture = Async\run::<int>(static function () use ($listener, $response): int {
             $acceptCount = 0;
             $handled = 0;
 
@@ -339,7 +339,7 @@ final class PooledConnectorEvictionTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($listener, $response): int {
+        $serverFuture = Async\run::<int>(static function () use ($listener, $response): int {
             $acceptCount = 0;
             try {
                 $connections = [];
@@ -390,7 +390,7 @@ final class PooledConnectorEvictionTest extends TestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, string>($tasks);
 
         static::assertCount(3, $results);
         foreach ($results as $body) {
@@ -416,7 +416,7 @@ final class PooledConnectorEvictionTest extends TestCase
         $port3 = $listener3->getLocalAddress()->port;
 
         $startSingleServer =
-            static fn(TCP\ListenerInterface $listener): Async\Awaitable => Async\run(static function () use (
+            static fn(TCP\ListenerInterface $listener): Async\Awaitable<int> => Async\run::<int>(static function () use (
                 $listener,
                 $response,
             ): int {

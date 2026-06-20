@@ -6,9 +6,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Type;
 
-$shape = Type\shape([
+$shape = Type\shape::<string, string|array>([
     'name' => Type\string(),
-    'metadata' => Type\json_decoded(Type\shape([
+    'metadata' => Type\json_decoded::<array>(Type\shape::<string, string|bool>([
         'role' => Type\string(),
         'active' => Type\bool(),
     ])),

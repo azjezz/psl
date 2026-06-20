@@ -15,24 +15,18 @@ use function is_array;
 use function is_iterable;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
  * @extends Type\Type<array<Tk, Tv>>
  *
  * @internal
  */
-final readonly class DictType extends Type\Type
+final readonly class DictType<Tk: string|int, Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tk> $keyType
-     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $keyType,
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<Tk> $keyType,
+        private Type\TypeInterface<Tv> $valueType,
     ) {}
 
     /**

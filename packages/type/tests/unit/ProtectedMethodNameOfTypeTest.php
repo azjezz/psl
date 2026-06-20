@@ -8,10 +8,13 @@ use Override;
 use Psl\Type;
 use Psl\Type\Tests\Fixture\ClassWithMethods;
 
-final class ProtectedMethodNameOfTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<non-empty-string>
+ */
+final class ProtectedMethodNameOfTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\protected_method_name_of(ClassWithMethods::class);
     }

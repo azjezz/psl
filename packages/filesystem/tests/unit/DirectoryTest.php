@@ -39,7 +39,7 @@ final class DirectoryTest extends AbstractFilesystemTestCase
                 Str\join([$this->directory, 'foo'], Filesystem\SEPARATOR),
                 Str\join([$this->directory, 'hello.txt'], Filesystem\SEPARATOR),
             ],
-            Vec\sort($children),
+            Vec\sort::<string>($children),
         );
     }
 

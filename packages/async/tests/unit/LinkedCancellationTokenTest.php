@@ -188,7 +188,7 @@ final class LinkedCancellationTokenTest extends TestCase
 
     public function testLinkedWithTimeoutToken(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $signal = new Async\SignalCancellationToken();
             $timeout = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
             $linked = new Async\LinkedCancellationToken($signal, $timeout);
@@ -216,14 +216,14 @@ final class LinkedCancellationTokenTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $signal = new Async\SignalCancellationToken();
             $timeout = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
             $linked = new Async\LinkedCancellationToken($signal, $timeout);
 
-            $deferred = new Async\Deferred();
+            $deferred = new Async\Deferred::<null>();
 
-            Async\run(static function () use ($deferred): void {
+            Async\run::<void>(static function () use ($deferred): void {
                 Async\sleep(Duration::seconds(5));
                 $deferred->complete(null);
             })->ignore();

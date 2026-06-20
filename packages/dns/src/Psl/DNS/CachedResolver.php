@@ -52,9 +52,9 @@ final readonly class CachedResolver implements ResolverInterface
         $cacheKey = self::buildKey($name, $type, $ednsOptions);
 
         /** @var Ref<Duration|null> $ttl */
-        $ttl = new Ref(null);
+        $ttl = new Ref::<Duration|null>(null);
 
-        $response = $this->cache->compute(
+        $response = $this->cache->compute::<Response>(
             $cacheKey,
             function () use ($name, $type, $cancellation, $ednsOptions, $ttl): Response {
                 $response = $this->inner->query($name, $type, $cancellation, $ednsOptions);
@@ -72,7 +72,7 @@ final readonly class CachedResolver implements ResolverInterface
         );
 
         if ($ttl->value !== null) {
-            $this->cache->update($cacheKey, static fn(): Response => $response, $ttl->value);
+            $this->cache->update::<Response>($cacheKey, static fn(): Response => $response, $ttl->value);
         }
 
         return $response;

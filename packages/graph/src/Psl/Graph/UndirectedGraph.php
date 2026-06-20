@@ -13,14 +13,9 @@ use function array_values;
  *
  * Supports any node type (scalars, objects, arrays, resources, etc.).
  *
- * @template TNode
- * @template TWeight
- *
- * @implements GraphInterface<TNode, TWeight>
- *
  * @api
  */
-final readonly class UndirectedGraph implements GraphInterface
+final readonly class UndirectedGraph<TNode, TWeight> implements GraphInterface<TNode, TWeight>
 {
     /**
      * @param array<non-empty-string, TNode> $nodes Map from node key to node
@@ -48,13 +43,11 @@ final readonly class UndirectedGraph implements GraphInterface
     /**
      * Returns all edges from a given node.
      *
-     * @param TNode $from
-     *
      * @return list<Edge<TNode, TWeight>>
      *
      * @pure
      */
-    public function getEdgesFrom(mixed $from): array
+    public function getEdgesFrom(TNode $from): array
     {
         $key = Internal\get_node_key($from);
         return $this->edges[$key] ?? [];
@@ -63,11 +56,9 @@ final readonly class UndirectedGraph implements GraphInterface
     /**
      * Checks if a node exists in the graph.
      *
-     * @param TNode $node
-     *
      * @pure
      */
-    public function hasNode(mixed $node): bool
+    public function hasNode(TNode $node): bool
     {
         $key = Internal\get_node_key($node);
         return isset($this->nodes[$key]);
@@ -76,12 +67,9 @@ final readonly class UndirectedGraph implements GraphInterface
     /**
      * Checks if an edge exists between two nodes.
      *
-     * @param TNode $node1
-     * @param TNode $node2
-     *
      * @pure
      */
-    public function hasEdge(mixed $node1, mixed $node2): bool
+    public function hasEdge(TNode $node1, TNode $node2): bool
     {
         $key = Internal\get_node_key($node1);
         if (!isset($this->edges[$key])) {
@@ -102,15 +90,11 @@ final readonly class UndirectedGraph implements GraphInterface
     /**
      * Returns a new graph with the node added.
      *
-     * @param TNode $node
-     *
-     * @return UndirectedGraph<TNode, TWeight>
-     *
      * @internal
      *
      * @pure
      */
-    public function withNode(mixed $node): UndirectedGraph
+    public function withNode(TNode $node): UndirectedGraph<TNode, TWeight>
     {
         if ($this->hasNode($node)) {
             return $this;
@@ -122,29 +106,24 @@ final readonly class UndirectedGraph implements GraphInterface
         $nodes[$key] = $node;
         $edges[$key] = [];
 
-        return new UndirectedGraph($nodes, $edges);
+        return new UndirectedGraph::<TNode, TWeight>($nodes, $edges);
     }
 
     /**
      * Returns a new graph with the edge added.
      *
-     * @param Edge<TNode, TWeight> $edge
-     * @param TNode $from
-     *
-     * @return UndirectedGraph<TNode, TWeight>
-     *
      * @internal
      *
      * @pure
      */
-    public function withEdge(mixed $from, Edge $edge): UndirectedGraph
+    public function withEdge(TNode $from, Edge<TNode, TWeight> $edge): UndirectedGraph<TNode, TWeight>
     {
         $key = Internal\get_node_key($from);
         $edges = $this->edges;
         $edges[$key] ??= [];
         $edges[$key][] = $edge;
 
-        return new UndirectedGraph($this->nodes, $edges);
+        return new UndirectedGraph::<TNode, TWeight>($this->nodes, $edges);
     }
 
     /**
@@ -160,11 +139,7 @@ final readonly class UndirectedGraph implements GraphInterface
         $visited = [];
 
         $dfsCheck =
-            /**
-             * @param TNode $node
-             * @param TNode|null $parent
-             */
-            function (mixed $node, mixed $parent) use (&$visited, &$dfsCheck): bool {
+            function (TNode $node, TNode|null $parent) use (&$visited, &$dfsCheck): bool {
                 $key = Internal\get_node_key($node);
                 $visited[$key] = true;
 

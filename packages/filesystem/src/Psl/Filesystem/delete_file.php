@@ -28,7 +28,7 @@ function delete_file(string $file): void
         throw Exception\NotFileException::for($file);
     }
 
-    [$result, $error_message] = Internal\box(static fn(): bool => unlink($file));
+    [$result, $error_message] = Internal\box::<bool>(static fn(): bool => unlink($file));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(sprintf(

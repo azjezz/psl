@@ -29,7 +29,7 @@ function open(
     $keypair = $secretKey->bytes . $publicKey->bytes;
 
     try {
-        $plaintext = Internal\call_sodium(fn() => sodium_crypto_box_seal_open($ciphertext, $keypair));
+        $plaintext = Internal\call_sodium::<string|false>(fn() => sodium_crypto_box_seal_open($ciphertext, $keypair));
 
         if ($plaintext === false) {
             throw new Exception\DecryptionException('Asymmetric decryption failed.');

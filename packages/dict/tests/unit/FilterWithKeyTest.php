@@ -13,16 +13,14 @@ use Psl\Dict;
 final class FilterWithKeyTest extends TestCase
 {
     /**
-     * @template Tk of array-key
-     * @template Tv
-     * @param array<Tk, Tv> $expected
-     * @param iterable<Tk, Tv> $iterable
-     * @param (Closure(Tk, Tv): bool)|null $predicate
+     * @param array<array-key, mixed> $expected
+     * @param iterable<array-key, mixed> $iterable
+     * @param (Closure(array-key, mixed): bool)|null $predicate
      */
     #[DataProvider('provideData')]
     public function testFilterWithKey(array $expected, iterable $iterable, null|Closure $predicate = null): void
     {
-        $result = Dict\filter_with_key($iterable, $predicate);
+        $result = Dict\filter_with_key::<int, string>($iterable, $predicate);
 
         static::assertSame($expected, $result);
     }
@@ -40,7 +38,7 @@ final class FilterWithKeyTest extends TestCase
         yield [[1 => 'b'], ['a', 'b'], static fn(int $k, string $v): bool => 'a' !== $v && 0 !== $k];
         yield [
             [1 => 'b'],
-            Collection\Vector::fromArray(['a', 'b']),
+            Collection\Vector::<string>::fromArray(['a', 'b']),
             static fn(int $k, string $v): bool => 'a' !== $v && 0 !== $k,
         ];
     }

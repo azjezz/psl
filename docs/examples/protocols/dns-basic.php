@@ -16,7 +16,7 @@ $response = $resolver->query('example.com', RecordType::A);
 
 // Check the result
 if ($response->code->isSuccess()) {
-    foreach ($response->getAnswerRecords(ARecord::class) as $record) {
+    foreach ($response->getAnswerRecords::<ARecord>(ARecord::class) as $record) {
         $record->address; // Psl\IP\Address
     }
 }

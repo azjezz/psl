@@ -165,7 +165,7 @@ final class Context
     private function generateXChaCha20Block(): string
     {
         $zeros = str_repeat("\x00", $this->blockSize);
-        $keystream = Internal\call_sodium(fn() => sodium_crypto_stream_xchacha20_xor_ic(
+        $keystream = Internal\call_sodium::<string>(fn() => sodium_crypto_stream_xchacha20_xor_ic(
             $zeros,
             $this->iv,
             $this->chachaCounter,

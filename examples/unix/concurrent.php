@@ -22,7 +22,7 @@ if (PHP_OS_FAMILY === 'Windows') {
 
 $file = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($file): void {
         $listener = Unix\listen($file);
 

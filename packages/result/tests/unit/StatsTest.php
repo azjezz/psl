@@ -25,13 +25,13 @@ final class StatsTest extends TestCase
     {
         $stats = new Stats();
 
-        $new = $stats->apply(new Success(1));
+        $new = $stats->apply(new Success::<int>(1));
         static::assertNotSame($stats, $new);
         static::assertSame(1, $new->total());
         static::assertSame(1, $new->succeeded());
         static::assertSame(0, $new->failed());
 
-        $new = $new->apply(new Failure(new Exception('foo')));
+        $new = $new->apply(new Failure::<never, Exception>(new Exception('foo')));
         static::assertNotSame($stats, $new);
         static::assertSame(2, $new->total());
         static::assertSame(1, $new->succeeded());

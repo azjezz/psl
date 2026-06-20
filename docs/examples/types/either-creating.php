@@ -6,8 +6,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Either;
 
-$left = new Either\Left('not found');
-$right = new Either\Right(42);
+$left = new Either\Left::<string>('not found');
+$right = new Either\Right::<int>(42);
 
 $right->isRight(); // true
 $left->isLeft(); // true

@@ -13,7 +13,7 @@ final class AbsTest extends TestCase
     #[DataProvider('provideData')]
     public function testAbs(int|float $expected, int|float $number): void
     {
-        static::assertSame($expected, Math\abs($number));
+        static::assertSame($expected, Math\abs::<int|float>($number));
     }
 
     public static function provideData(): array

@@ -14,7 +14,7 @@ final class IntersectTest extends TestCase
     #[DataProvider('provideData')]
     public function testIntersect(array $expected, iterable $first, iterable $second, iterable ...$rest): void
     {
-        static::assertSame($expected, Dict\intersect($first, $second, ...$rest));
+        static::assertSame($expected, Dict\intersect::<int, int>($first, $second, ...$rest));
     }
 
     public static function provideData(): iterable
@@ -30,8 +30,8 @@ final class IntersectTest extends TestCase
         yield [[], [1, 2], ['foo' => 2], ['baz' => 1]];
         yield [[], [1, 2], ['foo' => 2], ['baz' => 1]];
         yield [[1, 2], [1, 2], ['foo' => 2, 'baz' => 1]];
-        yield [[1, 2, 3, 4, 5, 6], Vec\range(1, 8), Vec\range(1, 6)];
-        yield [[], Vec\range(1, 8), Vec\range(1, 6), []];
-        yield [[5 => 6], Vec\range(1, 8), Vec\range(1, 6), [5 => 6, 6 => 7]];
+        yield [[1, 2, 3, 4, 5, 6], Vec\range::<int>(1, 8), Vec\range::<int>(1, 6)];
+        yield [[], Vec\range::<int>(1, 8), Vec\range::<int>(1, 6), []];
+        yield [[5 => 6], Vec\range::<int>(1, 8), Vec\range::<int>(1, 6), [5 => 6, 6 => 7]];
     }
 }

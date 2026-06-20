@@ -19,7 +19,7 @@ final class IterBench
     #[ParamProviders('provideContainsData')]
     public function benchContainsArray(array $params): void
     {
-        $_ = Iter\contains($params['data'], $params['target']);
+        $_ = Iter\contains::<int>($params['data'], $params['target']);
     }
 
     /**
@@ -28,7 +28,7 @@ final class IterBench
     #[ParamProviders('provideContainsIterableData')]
     public function benchContainsIterable(array $params): void
     {
-        $_ = Iter\contains($params['data'], $params['target']);
+        $_ = Iter\contains::<int>($params['data'], $params['target']);
     }
 
     /**
@@ -37,7 +37,7 @@ final class IterBench
     #[ParamProviders('provideContainsKeyData')]
     public function benchContainsKeyArray(array $params): void
     {
-        $_ = Iter\contains_key($params['data'], $params['target']);
+        $_ = Iter\contains_key::<int, int>($params['data'], $params['target']);
     }
 
     /**
@@ -46,7 +46,7 @@ final class IterBench
     #[ParamProviders('provideContainsKeyIterableData')]
     public function benchContainsKeyIterable(array $params): void
     {
-        $_ = Iter\contains_key($params['data'], $params['target']);
+        $_ = Iter\contains_key::<int, int>($params['data'], $params['target']);
     }
 
     /**
@@ -55,7 +55,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchCount(array $params): void
     {
-        $_ = Iter\count($params['data']);
+        $_ = Iter\count::<int>($params['data']);
     }
 
     /**
@@ -64,7 +64,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchFirst(array $params): void
     {
-        $_ = Iter\first($params['data']);
+        $_ = Iter\first::<int>($params['data']);
     }
 
     /**
@@ -73,7 +73,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchFirstKey(array $params): void
     {
-        $_ = Iter\first_key($params['data']);
+        $_ = Iter\first_key::<int, int>($params['data']);
     }
 
     /**
@@ -82,7 +82,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchLastKey(array $params): void
     {
-        $_ = Iter\last_key($params['data']);
+        $_ = Iter\last_key::<int, int>($params['data']);
     }
 
     /**
@@ -91,7 +91,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchLast(array $params): void
     {
-        $_ = Iter\last($params['data']);
+        $_ = Iter\last::<int>($params['data']);
     }
 
     /**
@@ -100,7 +100,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchIsEmpty(array $params): void
     {
-        $_ = Iter\is_empty($params['data']);
+        $_ = Iter\is_empty::<int>($params['data']);
     }
 
     /**
@@ -109,7 +109,7 @@ final class IterBench
     #[ParamProviders('provideArrayData')]
     public function benchReduce(array $params): void
     {
-        $_ = Iter\reduce($params['data'], static fn(int $acc, int $v): int => $acc + $v, 0);
+        $_ = Iter\reduce::<int, int>($params['data'], static fn(int $acc, int $v): int => $acc + $v, 0);
     }
 
     /**
@@ -117,11 +117,11 @@ final class IterBench
      */
     public function provideContainsData(): iterable
     {
-        $large = Vec\range(1, 1000);
+        $large = Vec\range::<int>(1, 1000);
 
-        yield 'small, start' => ['data' => Vec\range(1, 10), 'target' => 1];
-        yield 'small, end' => ['data' => Vec\range(1, 10), 'target' => 10];
-        yield 'small, missing' => ['data' => Vec\range(1, 10), 'target' => 99];
+        yield 'small, start' => ['data' => Vec\range::<int>(1, 10), 'target' => 1];
+        yield 'small, end' => ['data' => Vec\range::<int>(1, 10), 'target' => 10];
+        yield 'small, missing' => ['data' => Vec\range::<int>(1, 10), 'target' => 99];
         yield 'large, start' => ['data' => $large, 'target' => 1];
         yield 'large, end' => ['data' => $large, 'target' => 1000];
         yield 'large, missing' => ['data' => $large, 'target' => 9999];
@@ -132,8 +132,8 @@ final class IterBench
      */
     public function provideContainsIterableData(): iterable
     {
-        yield 'small, start' => ['data' => new ArrayIterator(Vec\range(1, 10)), 'target' => 1];
-        yield 'large, end' => ['data' => new ArrayIterator(Vec\range(1, 1000)), 'target' => 1000];
+        yield 'small, start' => ['data' => new ArrayIterator(Vec\range::<int>(1, 10)), 'target' => 1];
+        yield 'large, end' => ['data' => new ArrayIterator(Vec\range::<int>(1, 1000)), 'target' => 1000];
     }
 
     /**
@@ -141,11 +141,11 @@ final class IterBench
      */
     public function provideContainsKeyData(): iterable
     {
-        $large = Vec\range(1, 1000);
+        $large = Vec\range::<int>(1, 1000);
 
-        yield 'small, start' => ['data' => Vec\range(1, 10), 'target' => 0];
-        yield 'small, end' => ['data' => Vec\range(1, 10), 'target' => 9];
-        yield 'small, missing' => ['data' => Vec\range(1, 10), 'target' => 99];
+        yield 'small, start' => ['data' => Vec\range::<int>(1, 10), 'target' => 0];
+        yield 'small, end' => ['data' => Vec\range::<int>(1, 10), 'target' => 9];
+        yield 'small, missing' => ['data' => Vec\range::<int>(1, 10), 'target' => 99];
         yield 'large, start' => ['data' => $large, 'target' => 0];
         yield 'large, end' => ['data' => $large, 'target' => 999];
         yield 'large, missing' => ['data' => $large, 'target' => 9999];
@@ -156,8 +156,8 @@ final class IterBench
      */
     public function provideContainsKeyIterableData(): iterable
     {
-        yield 'small, start' => ['data' => new ArrayIterator(Vec\range(1, 10)), 'target' => 0];
-        yield 'large, end' => ['data' => new ArrayIterator(Vec\range(1, 1000)), 'target' => 999];
+        yield 'small, start' => ['data' => new ArrayIterator(Vec\range::<int>(1, 10)), 'target' => 0];
+        yield 'large, end' => ['data' => new ArrayIterator(Vec\range::<int>(1, 1000)), 'target' => 999];
     }
 
     /**
@@ -165,7 +165,7 @@ final class IterBench
      */
     public function provideArrayData(): iterable
     {
-        yield 'small (10)' => ['data' => Vec\range(1, 10)];
-        yield 'large (1000)' => ['data' => Vec\range(1, 1000)];
+        yield 'small (10)' => ['data' => Vec\range::<int>(1, 10)];
+        yield 'large (1000)' => ['data' => Vec\range::<int>(1, 1000)];
     }
 }

@@ -24,13 +24,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template T
- *
- * @implements VectorInterface<T>
- *
  * @api
  */
-final readonly class Vector implements VectorInterface
+final readonly class Vector<T> implements VectorInterface<T>
 {
     /**
      * @var list<T> $elements
@@ -57,51 +53,40 @@ final readonly class Vector implements VectorInterface
     #[Override]
     public static function default(): static
     {
-        return new self([]);
+        return new self::<T>([]);
     }
 
     /**
      * Create a vector from the given $elements array.
      *
-     * @template Ts
-     *
-     * @param array<array-key, Ts> $elements
-     *
-     * @return Vector<Ts>
+     * @param array<array-key, T> $elements
      *
      * @pure
      */
-    public static function fromArray(array $elements): Vector
+    public static function fromArray(array $elements): Vector<T>
     {
-        return new self($elements);
+        return new self::<T>($elements);
     }
 
     /**
      * Create a vector from the given $items iterable.
      *
-     * @template Ts
-     *
-     * @param iterable<array-key, Ts> $items
-     *
-     * @return Vector<Ts>
+     * @param iterable<array-key, T> $items
      */
-    public static function fromItems(iterable $items): Vector
+    public static function fromItems(iterable $items): Vector<T>
     {
         $array = iterator_to_array($items);
 
-        return self::fromArray($array);
+        return self::<T>::fromArray($array);
     }
 
     /**
      * Returns the first value in the current `Vector`.
      *
-     * @return T|null The first value in the current `Vector`, or `null` if the
-     *                current `Vector` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): mixed
+    public function first(): T|null
     {
         return $this->elements[0] ?? null;
     }
@@ -109,13 +94,10 @@ final readonly class Vector implements VectorInterface
     /**
      * Returns the last value in the current `Vector`.
      *
-     * @return T|null The last value in the current `Vector`, or `null` if the
-     *                current `Vector` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): mixed
+    public function last(): T|null
     {
         $key = array_key_last($this->elements);
         if (null === $key) {
@@ -193,12 +175,10 @@ final readonly class Vector implements VectorInterface
      *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): mixed
+    public function at(int|string $k): T
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -238,12 +218,10 @@ final readonly class Vector implements VectorInterface
      *
      * @param int<0, max> $k
      *
-     * @return T|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): mixed
+    public function get(int|string $k): T|null
     {
         return $this->elements[$k] ?? null;
     }
@@ -281,15 +259,12 @@ final readonly class Vector implements VectorInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param T $searchValue The value that will be search for in the current
-     *                        collection.
-     *
      * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int
+    public function linearSearch(T $searchValue): null|int
     {
         $key = array_search($searchValue, $this->elements, true);
 
@@ -300,14 +275,12 @@ final readonly class Vector implements VectorInterface
      * Returns a `Vector` containing the values of the current
      * `Vector`.
      *
-     * @return Vector<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): Vector
+    public function values(): Vector<T>
     {
-        return self::fromArray($this->elements);
+        return self::<T>::fromArray($this->elements);
     }
 
     /**
@@ -318,9 +291,9 @@ final readonly class Vector implements VectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): Vector
+    public function keys(): Vector<int>
     {
-        return self::fromArray(array_keys($this->elements));
+        return self::<int>::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -335,14 +308,11 @@ final readonly class Vector implements VectorInterface
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `Vector` values.
-     *
-     * @return Vector<T> a Vector containing the values after a user-specified condition
-     *                   is applied.
      */
     #[Override]
-    public function filter(Closure $fn): Vector
+    public function filter(Closure $fn): Vector<T>
     {
-        return new Vector(array_filter($this->elements, $fn));
+        return new Vector::<T>(array_filter($this->elements, $fn));
     }
 
     /**
@@ -358,14 +328,11 @@ final readonly class Vector implements VectorInterface
      *
      * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
      *                                            `Vector` keys and values.
-     *
-     * @return Vector<T> a `Vector` containing the values after a user-specified
-     *                   condition is applied to the keys and values of the current `Vector`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): Vector
+    public function filterWithKey(Closure $fn): Vector<T>
     {
-        return new Vector(array_filter($this->elements, static fn($v, $k) => $fn($k, $v), ARRAY_FILTER_USE_BOTH));
+        return new Vector::<T>(array_filter($this->elements, static fn($v, $k) => $fn($k, $v), ARRAY_FILTER_USE_BOTH));
     }
 
     /**
@@ -378,18 +345,13 @@ final readonly class Vector implements VectorInterface
      * The keys will remain unchanged from the current `Vector` to the
      * returned `Vector`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `Vector` values.
-     *
-     * @return Vector<Tu> a `Vector` containing key/value pairs after a user-specified
-     *                    operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): Vector
+    public function map<Tu>(Closure $fn): Vector<Tu>
     {
-        return new Vector(array_map($fn, $this->elements));
+        return new Vector::<Tu>(array_map($fn, $this->elements));
     }
 
     /**
@@ -403,23 +365,18 @@ final readonly class Vector implements VectorInterface
      * The keys will remain unchanged from this `Vector` to the returned
      * `Vector`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `Vector` keys and values.
-     *
-     * @return Vector<Tu> a `Vector` containing the values after a user-specified
-     *                    operation on the current `Vector`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): Vector
+    public function mapWithKey<Tu>(Closure $fn): Vector<Tu>
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
             $result[$k] = $fn($k, $v);
         }
 
-        return new Vector($result);
+        return new Vector::<Tu>($result);
     }
 
     /**
@@ -431,8 +388,6 @@ final readonly class Vector implements VectorInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `VectorInterface`.
      *
      * @return Vector<array{0: T, 1: Tu}> The `Vector` that combines the values of the current
@@ -441,7 +396,7 @@ final readonly class Vector implements VectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): Vector
+    public function zip<Tu>(array $elements): Vector<array>
     {
         $elements = array_values($elements);
         $result = [];
@@ -453,7 +408,7 @@ final readonly class Vector implements VectorInterface
             $result[] = [$v, $elements[$i]];
         }
 
-        return Vector::fromArray($result);
+        return Vector::<array>::fromArray($result);
     }
 
     /**
@@ -468,13 +423,10 @@ final readonly class Vector implements VectorInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `Vector`.
      *
-     * @return Vector<T> A `Vector` that is a proper subset of the current
-     *                   `Vector` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): Vector
+    public function take(int $n): Vector<T>
     {
         return $this->slice(0, $n);
     }
@@ -489,12 +441,9 @@ final readonly class Vector implements VectorInterface
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return Vector<T> A `Vector` that is a proper subset of the current
-     *                   `Vector` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): Vector
+    public function takeWhile(Closure $fn): Vector<T>
     {
         $result = [];
         foreach ($this->elements as $v) {
@@ -505,7 +454,7 @@ final readonly class Vector implements VectorInterface
             $result[] = $v;
         }
 
-        return new Vector($result);
+        return new Vector::<T>($result);
     }
 
     /**
@@ -520,13 +469,10 @@ final readonly class Vector implements VectorInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `Vector`.
      *
-     * @return Vector<T> A `Vector` that is a proper subset of the current
-     *                   `Vector` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): Vector
+    public function drop(int $n): Vector<T>
     {
         return $this->slice($n);
     }
@@ -541,12 +487,9 @@ final readonly class Vector implements VectorInterface
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `Vector`.
-     *
-     * @return Vector<T> A `Vector` that is a proper subset of the current
-     *                   `Vector` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): Vector
+    public function dropWhile(Closure $fn): Vector<T>
     {
         $result = [];
         $dropping = true;
@@ -559,7 +502,7 @@ final readonly class Vector implements VectorInterface
             $result[] = $v;
         }
 
-        return new Vector($result);
+        return new Vector::<T>($result);
     }
 
     /**
@@ -577,16 +520,12 @@ final readonly class Vector implements VectorInterface
      *                           `Vector`.
      * @param null|int<0, max> $length The length of the returned `Vector`
      *
-     * @return Vector<T> A `Vector` that is a proper subset of the current
-     *                   `Vector` starting at `$start` up to but not including the
-     *                   element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): Vector
+    public function slice(int $start, null|int $length = null): Vector<T>
     {
-        return self::fromArray(array_slice($this->elements, $start, $length, true));
+        return self::<T>::fromArray(array_slice($this->elements, $start, $length, true));
     }
 
     /**
@@ -598,14 +537,11 @@ final readonly class Vector implements VectorInterface
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return Vector<Vector<T>> A `Vector` containing the original `Vector` split
-     *                           into chunks of the given size.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): Vector
+    public function chunk(int $size): Vector<Vector<T>>
     {
-        return static::fromArray(array_map(static::fromArray(...), array_chunk($this->toArray(), $size)));
+        return static::<Vector<T>>::fromArray(array_map(static::<T>::fromArray(...), array_chunk($this->toArray(), $size)));
     }
 }

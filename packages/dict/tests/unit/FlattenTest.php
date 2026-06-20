@@ -11,11 +11,11 @@ final class FlattenTest extends TestCase
 {
     public function testFlattenEmpty(): void
     {
-        static::assertSame([], Dict\flatten([]));
+        static::assertSame([], Dict\flatten::<string, int>([]));
     }
 
     public function testFlattenAllArrays(): void
     {
-        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\flatten([['a' => 1], ['b' => 2, 'c' => 3]]));
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\flatten::<string, int>([['a' => 1], ['b' => 2, 'c' => 3]]));
     }
 }

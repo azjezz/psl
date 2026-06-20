@@ -46,7 +46,7 @@ final class Gauge implements WidgetInterface
      */
     public function ratio(float $ratio): self
     {
-        $this->ratio = Math\clamp($ratio, 0.0, 1.0);
+        $this->ratio = Math\clamp::<float>($ratio, 0.0, 1.0);
         return $this;
     }
 
@@ -104,7 +104,7 @@ final class Gauge implements WidgetInterface
         $pctText = ' ' . $pct . '%';
         $pctLen = Str\width($pctText);
 
-        $barWidth = Math\maxva(0, $area->width - $labelLen - $pctLen);
+        $barWidth = Math\maxva::<int>(0, $area->width - $labelLen - $pctLen);
 
         $x = $area->x;
         if ($labelText !== '') {

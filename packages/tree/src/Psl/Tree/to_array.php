@@ -23,10 +23,6 @@ use function array_map;
  *          ],
  *      ]
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
- *
  * @return array{
  *   value: T,
  *   children: list<array{
@@ -51,7 +47,7 @@ use function array_map;
  *
  * @api
  */
-function to_array(NodeInterface $tree): array
+function to_array<T>(NodeInterface<T> $tree): array
 {
     if ($tree instanceof LeafNode) {
         return [

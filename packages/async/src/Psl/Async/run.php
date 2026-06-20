@@ -11,17 +11,13 @@ use Throwable;
 /**
  * Create a new fiber asynchronously using the given closure.
  *
- * @template T
- *
  * @param (Closure(): T) $closure
- *
- * @return Awaitable<T>
  *
  * @api
  */
-function run(Closure $closure): Awaitable
+function run<T>(Closure $closure): Awaitable<T>
 {
-    $state = new Internal\State();
+    $state = new Internal\State::<T>();
 
     EventLoop::defer(static function () use ($closure, $state): void {
         try {
@@ -33,5 +29,5 @@ function run(Closure $closure): Awaitable
         }
     });
 
-    return new Awaitable($state);
+    return new Awaitable::<T>($state);
 }

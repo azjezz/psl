@@ -23,20 +23,15 @@ use Psl\Interoperability;
  * and the historical changes in time zone definitions. Time zone identifiers like "America/Los_Angeles" automatically
  * account for these variations correctly across different dates.
  *
- * @implements Interoperability\ToStdlib<DateTimeZone>
- * @implements Interoperability\FromStdlib<DateTimeZone>
- * @implements Interoperability\ToIntl<IntlTimeZone>
- * @implements Interoperability\FromIntl<IntlTimeZone>
- *
  * @mago-expect analysis:reference-to-undefined-variable
  *
  * @api
  */
 enum Timezone: string implements
-    Interoperability\ToStdlib,
-    Interoperability\FromStdlib,
-    Interoperability\ToIntl,
-    Interoperability\FromIntl
+    Interoperability\ToStdlib<DateTimeZone>,
+    Interoperability\FromStdlib<DateTimeZone>,
+    Interoperability\ToIntl<IntlTimeZone>,
+    Interoperability\FromIntl<IntlTimeZone>
 {
     case UTC = 'UTC';
     case Minus1100 = '-11:00';
@@ -627,7 +622,7 @@ enum Timezone: string implements
      * @psalm-mutation-free
      */
     #[Override]
-    public function toStdlib(): mixed
+    public function toStdlib(): DateTimeZone
     {
         return new DateTimeZone($this->value);
     }
@@ -656,7 +651,7 @@ enum Timezone: string implements
      * @psalm-mutation-free
      */
     #[Override]
-    public function toIntl(): mixed
+    public function toIntl(): IntlTimeZone
     {
         return Internal\to_intl_timezone($this);
     }

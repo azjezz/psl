@@ -6,17 +6,17 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Option;
 
-$opt = Option\some(5);
+$opt = Option\some::<int>(5);
 
 // map: transform the inner value
-$opt->map(fn(int $v) => $v * 2); // Some(10)
-Option\none()->map(fn(int $v) => $v * 2); // None
+$opt->map::<int>(fn(int $v) => $v * 2); // Some(10)
+Option\none()->map::<int>(fn(int $v) => $v * 2); // None
 
 // andThen: chain operations that return Options (flatMap)
-Option\some('hello')
-    ->andThen(fn(string $v) => Option\from_nullable($v !== '' ? $v : null))
-    ->andThen(fn(string $v) => Option\some(strlen($v)));
+Option\some::<string>('hello')
+    ->andThen::<string>(fn(string $v) => Option\from_nullable::<string>($v !== '' ? $v : null))
+    ->andThen::<int>(fn(string $v) => Option\some::<int>(strlen($v)));
 // Some(5) if non-empty string, None otherwise
 
 // mapOr / mapOrElse: transform with a default
-Option\none()->mapOr(fn(int $v) => $v * 2, 0); // Some(0)
+Option\none()->mapOr::<int>(fn(int $v) => $v * 2, 0); // Some(0)

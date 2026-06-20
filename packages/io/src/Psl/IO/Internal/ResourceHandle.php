@@ -57,14 +57,14 @@ class ResourceHandle implements
     /**
      * @var null|Async\Sequence<array{string, Async\CancellationTokenInterface, bool}, int<0, max>>
      */
-    private null|Async\Sequence $writeSequence = null;
+    private null|Async\Sequence<array, int> $writeSequence = null;
     private null|Suspension $writeSuspension = null;
     private string $writeWatcher = 'invalid';
 
     /**
      * @var null|Async\Sequence<array{null|int<1, max>, Async\CancellationTokenInterface}, string>
      */
-    private null|Async\Sequence $readSequence = null;
+    private null|Async\Sequence<array, string> $readSequence = null;
     private null|Suspension $readSuspension = null;
     private string $readWatcher = 'invalid';
 
@@ -112,7 +112,7 @@ class ResourceHandle implements
                 $suspension?->resume();
             });
 
-            $this->readSequence = new Async\Sequence(
+            $this->readSequence = new Async\Sequence::<array, string>(
                 /**
                  * @param array{null|int<1, max>, Async\CancellationTokenInterface} $input
                  */
@@ -139,7 +139,7 @@ class ResourceHandle implements
                 $suspension?->resume();
             });
 
-            $this->writeSequence = new Async\Sequence(
+            $this->writeSequence = new Async\Sequence::<array, int>(
                 /**
                  * @param array{string, Async\CancellationTokenInterface, bool} $input
                  *

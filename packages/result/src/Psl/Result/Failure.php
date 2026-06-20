@@ -11,26 +11,16 @@ use Throwable;
 /**
  * Represents the result of failed operation.
  *
- * @template-covariant    T
- * @template-covariant    Te of Throwable
- *
- * @implements  ResultInterface<T>
- *
  * @api
  */
-final readonly class Failure implements ResultInterface
+final readonly class Failure<out T, out Te: Throwable> implements ResultInterface<T>
 {
-    /**
-     * @var Te
-     */
-    private Throwable $throwable;
+    private Te $throwable;
 
     /**
-     * @param Te $throwable
-     *
      * @psalm-mutation-free
      */
-    public function __construct(Throwable $throwable)
+    public function __construct(Te $throwable)
     {
         $this->throwable = $throwable;
     }
@@ -48,15 +38,9 @@ final readonly class Failure implements ResultInterface
 
     /**
      * Unwrap the Result if it is succeeded or return $default value.
-     *
-     * @template D
-     *
-     * @param D $default
-     *
-     * @return D
      */
     #[Override]
-    public function unwrapOr(mixed $default): mixed
+    public function unwrapOr<D>(D $default): D
     {
         return $default;
     }
@@ -64,12 +48,10 @@ final readonly class Failure implements ResultInterface
     /**
      * Since this is a failed result wrapper, this always returns the `Throwable` thrown during the operation.
      *
-     * @return Te - The `Throwable` thrown during the operation.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function getThrowable(): Throwable
+    public function getThrowable(): Te
     {
         return $this->throwable;
     }
@@ -99,15 +81,11 @@ final readonly class Failure implements ResultInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(T): Ts $success
      * @param Closure(Throwable): Ts $failure
-     *
-     * @return Ts
      */
     #[Override]
-    public function proceed(Closure $success, Closure $failure): mixed
+    public function proceed<Ts>(Closure $success, Closure $failure): Ts
     {
         return $failure($this->throwable);
     }
@@ -115,60 +93,46 @@ final readonly class Failure implements ResultInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(T): Ts $success
      * @param Closure(Throwable): Ts $failure
-     *
-     * @return ResultInterface<Ts>
      */
     #[Override]
-    public function then(Closure $success, Closure $failure): ResultInterface
+    public function then<Ts>(Closure $success, Closure $failure): ResultInterface<Ts>
     {
-        return namespace\wrap(fn(): mixed => $failure($this->throwable));
+        return namespace\wrap::<Ts>(fn(): mixed => $failure($this->throwable));
     }
 
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(T): Ts $success
-     *
-     * @return Failure<Ts, Te>
      */
     #[Override]
-    public function map(Closure $success): Failure
+    public function map<Ts>(Closure $success): Failure<Ts, Te>
     {
-        return new Failure($this->throwable);
+        return new Failure::<Ts, Te>($this->throwable);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(Throwable): Ts $failure
-     *
-     * @return ResultInterface<Ts>
      */
     #[Override]
-    public function catch(Closure $failure): ResultInterface
+    public function catch<Ts>(Closure $failure): ResultInterface<Ts>
     {
-        return namespace\wrap(fn(): mixed => $failure($this->throwable));
+        return namespace\wrap::<Ts>(fn(): mixed => $failure($this->throwable));
     }
 
     /**
      * {@inheritDoc}
      *
      * @param Closure(): void $always
-     *
-     * @return ResultInterface<T>
      */
     #[Override]
-    public function always(Closure $always): ResultInterface
+    public function always(Closure $always): ResultInterface<T>
     {
-        return namespace\wrap(function () use ($always): never {
+        return namespace\wrap::<T>(function () use ($always): never {
             $always();
 
             throw $this->throwable;

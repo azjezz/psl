@@ -9,13 +9,13 @@ use Psl\TCP;
 
 $listener = TCP\listen('127.0.0.1');
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         echo "Listening on {$listener->getLocalAddress()->toString()}\n";
 
         // Accept one connection then shut down
         $connection = $listener->accept();
-        Async\run(static function () use ($connection): void {
+        Async\run::<void>(static function () use ($connection): void {
             $data = $connection->readAll();
             $connection->writeAll($data);
             $connection->close();

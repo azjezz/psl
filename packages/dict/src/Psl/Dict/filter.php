@@ -23,9 +23,6 @@ use function is_array;
  *      Dict\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
  *      => Dict(1 => 'bar', 2 => 'baz')
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): bool)|null $predicate
  *
@@ -33,7 +30,7 @@ use function is_array;
  *
  * @api
  */
-function filter(iterable $iterable, null|Closure $predicate = null): array
+function filter<Tk: string|int, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
     $predicate ??= static fn(mixed $value): bool => (
         // @mago-expect analysis:mixed-operand

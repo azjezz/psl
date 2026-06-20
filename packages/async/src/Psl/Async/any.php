@@ -12,21 +12,17 @@ use Throwable;
  *
  * If you want the first awaitable completed, successful or not, use {@see first()} instead.
  *
- * @template T
- *
  * @param iterable<Awaitable<T>> $awaitables
  *
  * @throws Exception\CompositeException If all $awaitables errored.
  * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
- * @return T
- *
  * @api
  */
-function any(iterable $awaitables): mixed
+function any<T>(iterable $awaitables): T
 {
     $errors = [];
-    foreach (Awaitable::iterate($awaitables) as $first) {
+    foreach (Awaitable::iterate::<int, T>($awaitables) as $first) {
         try {
             $result = $first->await();
             foreach ($awaitables as $awaitable) {

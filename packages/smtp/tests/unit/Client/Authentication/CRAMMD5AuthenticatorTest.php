@@ -32,7 +32,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
 
         $challenge = '<1234.5678@mail.example.com>';
 
-        Async\run(static function () use ($serverStream, $challenge): void {
+        Async\run::<void>(static function () use ($serverStream, $challenge): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -66,7 +66,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
 
         $challenge = '<test@example.com>';
 
-        Async\run(static function () use ($serverStream, $challenge): void {
+        Async\run::<void>(static function () use ($serverStream, $challenge): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -98,7 +98,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('CRAM-MD5');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -143,7 +143,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -154,7 +154,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -185,7 +185,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
 
         $challenge = '<multi@example.com>';
 
-        Async\run(static function () use ($serverStream, $challenge): void {
+        Async\run::<void>(static function () use ($serverStream, $challenge): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -216,7 +216,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
         $challenge = 'PDE4OTYuNjk3MTcwOTUyQHBvc3RvZmZpY2UucmVzdG9uLm1jaS5uZXQ+';
         $rawChallenge = base64_decode($challenge, true);
 
-        Async\run(static function () use ($serverStream, $challenge, $rawChallenge): void {
+        Async\run::<void>(static function () use ($serverStream, $challenge, $rawChallenge): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -257,7 +257,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -268,7 +268,7 @@ final class CRAMMD5AuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream, $authMechanisms): void {
+        Async\run::<void>(static function () use ($serverStream, $authMechanisms): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();

@@ -17,5 +17,5 @@ function take_collection_classname(string $_): void {}
  */
 function tests(): void
 {
-    namespace\take_collection_classname(Type\class_string(Psl\Collection\CollectionInterface::class)->assert('foo'));
+    namespace\take_collection_classname(Type\class_string::<Psl\Collection\CollectionInterface>(Psl\Collection\CollectionInterface::class)->assert('foo'));
 }

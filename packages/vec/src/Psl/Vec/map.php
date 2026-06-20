@@ -22,10 +22,6 @@ use function is_array;
  *     Vec\map([1, 2, 3, 4, 5], fn($i) => $i * 2);
  *     => Vec(2, 4, 6, 8, 10)
  *
- * @template Tk
- * @template Tv
- * @template T
- *
  * @param iterable<Tk, Tv> $iterable Iterable to be mapped over
  * @param (Closure(Tv): T) $function
  *
@@ -35,7 +31,7 @@ use function is_array;
  *
  * @api
  */
-function map(iterable $iterable, Closure $function): array
+function map<Tk, Tv, T>(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
         // array_map preserves keys, so if input is a list, output is a list

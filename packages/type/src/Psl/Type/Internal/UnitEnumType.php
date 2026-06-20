@@ -13,13 +13,9 @@ use UnitEnum;
 use function sprintf;
 
 /**
- * @template T of UnitEnum
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class UnitEnumType extends Type\Type
+final readonly class UnitEnumType<T: UnitEnum> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free
@@ -38,11 +34,9 @@ final readonly class UnitEnumType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return T
      */
     #[Override]
-    public function coerce(mixed $value): UnitEnum
+    public function coerce(mixed $value): T
     {
         if ($value instanceof $this->enum) {
             return $value;
@@ -54,12 +48,10 @@ final readonly class UnitEnumType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return T
-     *
      * @psalm-assert T $value
      */
     #[Override]
-    public function assert(mixed $value): UnitEnum
+    public function assert(mixed $value): T
     {
         if ($value instanceof $this->enum) {
             return $value;

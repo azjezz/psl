@@ -16,23 +16,19 @@ use function is_iterable;
 use function sprintf;
 
 /**
- * @template Tv
- *
  * @extends Type\Type<non-empty-list<Tv>>
  *
  * @internal
  *
  * @mago-expect analysis:mixed-assignment
  */
-final readonly class NonEmptyVecType extends Type\Type
+final readonly class NonEmptyVecType<Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<Tv> $valueType,
     ) {}
 
     /**
@@ -71,7 +67,7 @@ final readonly class NonEmptyVecType extends Type\Type
      * @return non-empty-list<Tv>
      */
     #[Override]
-    public function coerce(mixed $value): iterable
+    public function coerce(mixed $value): array
     {
         if (is_iterable($value)) {
             /** @var Type\Type<Tv> $valueType */

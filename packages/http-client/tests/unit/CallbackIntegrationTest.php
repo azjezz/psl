@@ -261,7 +261,7 @@ final class CallbackIntegrationTest extends TestCase
     ): array {
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
 
-        Async\run(static function () use ($listener, $serverHandler): void {
+        Async\run::<void>(static function () use ($listener, $serverHandler): void {
             $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
             $serverHandler($conn);
         })->ignore();

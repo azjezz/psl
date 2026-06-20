@@ -16,24 +16,16 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends Type\Type<Collection\MutableMapInterface<Tk, Tv>>
- *
  * @internal
  */
-final readonly class MutableMapType extends Type\Type
+final readonly class MutableMapType<Tk: string|int, Tv> extends Type\Type<Collection\MutableMapInterface<Tk, Tv>>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tk> $keyType
-     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $keyType,
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<Tk> $keyType,
+        private Type\TypeInterface<Tv> $valueType,
     ) {}
 
     /**
@@ -58,11 +50,9 @@ final readonly class MutableMapType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return Collection\MutableMapInterface<Tk, Tv>
      */
     #[Override]
-    public function coerce(mixed $value): Collection\MutableMapInterface
+    public function coerce(mixed $value): Collection\MutableMapInterface<Tk, Tv>
     {
         if (is_iterable($value)) {
             /** @var Type\Type<Tk> $keyType */
@@ -119,7 +109,7 @@ final readonly class MutableMapType extends Type\Type
                 $dict[$k] = $v;
             }
 
-            return new Collection\MutableMap($dict);
+            return new Collection\MutableMap::<Tk, Tv>($dict);
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -128,12 +118,10 @@ final readonly class MutableMapType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return Collection\MutableMapInterface<Tk, Tv>
-     *
      * @psalm-assert Collection\MutableMapInterface<Tk, Tv> $value
      */
     #[Override]
-    public function assert(mixed $value): Collection\MutableMapInterface
+    public function assert(mixed $value): Collection\MutableMapInterface<Tk, Tv>
     {
         if (is_object($value) && $value instanceof Collection\MutableMapInterface) {
             /** @var Type\Type<Tk> $keyType */
@@ -175,7 +163,7 @@ final readonly class MutableMapType extends Type\Type
                 $dict[$k] = $v;
             }
 
-            return new Collection\MutableMap($dict);
+            return new Collection\MutableMap::<Tk, Tv>($dict);
         }
 
         throw AssertException::withValue($value, $this->toString());

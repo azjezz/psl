@@ -23,9 +23,9 @@ final class TaskGroupTest extends TestCase
 
     public function testAllTasksRun(): void
     {
-        $ref = new Ref('');
+        $ref = new Ref::<string>('');
 
-        Async\run(static function () use ($ref): void {
+        Async\run::<void>(static function () use ($ref): void {
             $group = new Async\TaskGroup();
 
             $group->defer(static function () use ($ref): void {
@@ -44,8 +44,8 @@ final class TaskGroupTest extends TestCase
 
     public function testTasksRunConcurrently(): void
     {
-        $result = Async\run(static function (): string {
-            $ref = new Ref('');
+        $result = Async\run::<string>(static function (): string {
+            $ref = new Ref::<string>('');
             $group = new Async\TaskGroup();
 
             $group->defer(static function () use ($ref): void {
@@ -70,7 +70,7 @@ final class TaskGroupTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('boom');
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $group = new Async\TaskGroup();
 
             $group->defer(static function (): void {
@@ -85,7 +85,7 @@ final class TaskGroupTest extends TestCase
     {
         $this->expectException(Async\Exception\CompositeException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $group = new Async\TaskGroup();
 
             $group->defer(static function (): void {
@@ -104,7 +104,7 @@ final class TaskGroupTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $group = new Async\TaskGroup();
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
@@ -120,7 +120,7 @@ final class TaskGroupTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $token = new Async\SignalCancellationToken();
             $token->cancel();
 
@@ -138,7 +138,7 @@ final class TaskGroupTest extends TestCase
     {
         $count = 0;
 
-        Async\run(static function () use (&$count): void {
+        Async\run::<void>(static function () use (&$count): void {
             $group = new Async\TaskGroup();
 
             $group->defer(static function () use (&$count): void {
@@ -154,9 +154,9 @@ final class TaskGroupTest extends TestCase
 
     public function testDeferAfterAwaitAll(): void
     {
-        $ref = new Ref('');
+        $ref = new Ref::<string>('');
 
-        Async\run(static function () use ($ref): void {
+        Async\run::<void>(static function () use ($ref): void {
             $group = new Async\TaskGroup();
 
             $group->defer(static function () use ($ref): void {

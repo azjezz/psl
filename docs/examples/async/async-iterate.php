@@ -9,22 +9,22 @@ use Psl\DateTime\Duration;
 use Psl\IO;
 
 $handles = [
-    Async\run(static function () {
+    Async\run::<string>(static function () {
         Async\sleep(Duration::seconds(1));
         return 'a';
     }),
-    Async\run(static fn() => 'b'),
-    Async\run(static function () {
+    Async\run::<string>(static fn() => 'b'),
+    Async\run::<string>(static function () {
         Async\sleep(Duration::milliseconds(300));
         return 'c';
     }),
-    Async\run(static function () {
+    Async\run::<string>(static function () {
         Async\sleep(Duration::milliseconds(100));
         return 'd';
     }),
 ];
 
-foreach (Async\Awaitable::iterate($handles) as $k => $awaitable) {
+foreach (Async\Awaitable::iterate::<int, string>($handles) as $k => $awaitable) {
     $result = $awaitable->await();
     IO\write_line($k . ': ' . $result);
 }

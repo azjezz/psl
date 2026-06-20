@@ -18,5 +18,5 @@ use function sodium_crypto_box_seal;
  */
 function seal(#[SensitiveParameter] string $plaintext, #[SensitiveParameter] PublicKey $publicKey): string
 {
-    return Internal\call_sodium(fn() => sodium_crypto_box_seal($plaintext, $publicKey->bytes));
+    return Internal\call_sodium::<string>(fn() => sodium_crypto_box_seal($plaintext, $publicKey->bytes));
 }

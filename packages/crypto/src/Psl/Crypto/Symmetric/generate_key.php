@@ -15,5 +15,5 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_keygen;
  */
 function generate_key(): Key
 {
-    return new Key(Internal\call_sodium(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_keygen()));
+    return new Key(Internal\call_sodium::<string>(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_keygen()));
 }

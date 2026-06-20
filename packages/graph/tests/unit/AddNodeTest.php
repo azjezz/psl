@@ -13,8 +13,8 @@ final class AddNodeTest extends TestCase
 {
     public function testAddNodeToDirectedGraph(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
 
         static::assertTrue($graph->hasNode('A'));
         static::assertSame(['A'], $graph->getNodes());
@@ -22,8 +22,8 @@ final class AddNodeTest extends TestCase
 
     public function testAddNodeToUndirectedGraph(): void
     {
-        $graph = Graph\undirected();
-        $graph = Graph\add_node($graph, 'A');
+        $graph = Graph\undirected::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
 
         static::assertTrue($graph->hasNode('A'));
         static::assertSame(['A'], $graph->getNodes());
@@ -31,10 +31,10 @@ final class AddNodeTest extends TestCase
 
     public function testAddMultipleNodes(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
-        $graph = Graph\add_node($graph, 'B');
-        $graph = Graph\add_node($graph, 'C');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
+        $graph = Graph\add_node::<string, int>($graph, 'B');
+        $graph = Graph\add_node::<string, int>($graph, 'C');
 
         static::assertCount(3, $graph->getNodes());
         static::assertTrue($graph->hasNode('A'));
@@ -44,9 +44,9 @@ final class AddNodeTest extends TestCase
 
     public function testAddDuplicateNodeReturnsSameGraph(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
-        $graph2 = Graph\add_node($graph, 'A');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
+        $graph2 = Graph\add_node::<string, int>($graph, 'A');
 
         static::assertSame($graph, $graph2);
     }
@@ -54,8 +54,8 @@ final class AddNodeTest extends TestCase
     #[DataProvider('provideNodeTypes')]
     public function testAddNodeWithVariousTypes(mixed $node): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, $node);
+        $graph = Graph\directed::<mixed, mixed>();
+        $graph = Graph\add_node::<mixed, mixed>($graph, $node);
 
         static::assertTrue($graph->hasNode($node));
         static::assertCount(1, $graph->getNodes());
@@ -74,10 +74,10 @@ final class AddNodeTest extends TestCase
 
     public function testAddEdgeWithIntNodes(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 1, 2);
-        $graph = Graph\add_edge($graph, 2, 3);
+        $graph = Graph\directed::<int, int>();
+        $graph = Graph\add_edge::<int, int>($graph, 1, 2);
+        $graph = Graph\add_edge::<int, int>($graph, 2, 3);
 
-        static::assertSame([1, 2, 3], Graph\dfs($graph, 1));
+        static::assertSame([1, 2, 3], Graph\dfs::<int, int>($graph, 1));
     }
 }

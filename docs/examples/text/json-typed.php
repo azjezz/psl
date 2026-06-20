@@ -8,7 +8,7 @@ use Psl\Json;
 use Psl\Type;
 
 // Decode and validate as a specific shape
-$user = Json\typed('{"name":"Alice","age":30}', Type\shape([
+$user = Json\typed::<array>('{"name":"Alice","age":30}', Type\shape::<string, string|int>([
     'name' => Type\string(),
     'age' => Type\int(),
 ]));
@@ -16,7 +16,7 @@ $user = Json\typed('{"name":"Alice","age":30}', Type\shape([
 
 // If the JSON structure doesn't match, you get a clear exception
 try {
-    Json\typed('{"name":"Alice"}', Type\shape([
+    Json\typed::<array>('{"name":"Alice"}', Type\shape::<string, string|int>([
         'name' => Type\string(),
         'age' => Type\int(),
     ]));
@@ -25,6 +25,6 @@ try {
 }
 
 // Works with any Type -- vectors, optionals, nested shapes
-$ids = Json\typed('[1, 2, 3]', Type\vec(Type\int()));
+$ids = Json\typed::<array>('[1, 2, 3]', Type\vec::<int>(Type\int()));
 
 // [1, 2, 3] as list<int>

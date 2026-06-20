@@ -12,7 +12,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 [$read, $write] = IO\pipe();
 
-$he = Async\run(static fn(): string => $read->readFixedSize(2));
+$he = Async\run::<string>(static fn(): string => $read->readFixedSize(2));
 
 Async\sleep(Psl\DateTime\Duration::milliseconds(200));
 

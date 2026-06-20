@@ -16,19 +16,14 @@ use Closure;
  *
  * Reductions returns a list of every accumulator throughout the way.
  *
- * @template Tk
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Ts, Tk, Tv): Ts) $function
- * @param Ts $initial
  *
  * @return list<Ts>
  *
  * @api
  */
-function reductions(iterable $iterable, Closure $function, mixed $initial): array
+function reductions<Tk, Tv, Ts>(iterable $iterable, Closure $function, Ts $initial): array
 {
     $accumulators = [];
     $accumulator = $initial;

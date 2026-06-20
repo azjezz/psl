@@ -20,38 +20,28 @@ use function array_shift;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template Tk
- * @template Tv
- *
  * @internal
  *
  * @codeCoverageIgnore
  */
-final class AwaitableIterator
+final class AwaitableIterator<Tk, Tv>
 {
-    /**
-     * @var AwaitableIteratorQueue<Tk, Tv>
-     */
-    private readonly AwaitableIteratorQueue $queue;
+    private readonly AwaitableIteratorQueue<Tk, Tv> $queue;
 
     /**
      * @var null|Awaitable<void>|Awaitable<null>|Awaitable<array{Tk, Awaitable<Tv>}>
      */
-    private null|Awaitable $complete = null;
+    private null|Awaitable<void>|Awaitable<null>|Awaitable<array> $complete = null;
 
     public function __construct()
     {
-        $this->queue = new AwaitableIteratorQueue();
+        $this->queue = new AwaitableIteratorQueue::<Tk, Tv>();
     }
 
     /**
-     * @param State<Tv> $state
-     * @param Tk $key
-     * @param Awaitable<Tv> $awaitable
-     *
      * @throws Psl\Exception\InvariantViolationException If the iterator has already been marked as complete.
      */
-    public function enqueue(State $state, mixed $key, Awaitable $awaitable): void
+    public function enqueue(State<Tv> $state, Tk $key, Awaitable<Tv> $awaitable): void
     {
         if (null !== $this->complete) {
             Psl\invariant_violation('Iterator has already been marked as complete');
@@ -59,10 +49,7 @@ final class AwaitableIterator
 
         $queue = $this->queue; // Using separate object to avoid a circular reference.
         $id = $state->subscribe(
-            /**
-             * @param Tv|null $_result
-             */
-            static function (null|Throwable $_error, mixed $_result, string $id) use ($key, $awaitable, $queue): void {
+            static function (null|Throwable $_error, Tv|null $_result, string $id) use ($key, $awaitable, $queue): void {
                 unset($queue->pending[$id]);
 
                 if ($queue->suspension) {
@@ -87,7 +74,7 @@ final class AwaitableIterator
             Psl\invariant_violation('Iterator has already been marked as complete');
         }
 
-        $this->complete = Awaitable::complete(null);
+        $this->complete = Awaitable::<null>::complete(null);
 
         if (!$this->queue->pending && $this->queue->suspension) {
             $this->queue->suspension->resume();

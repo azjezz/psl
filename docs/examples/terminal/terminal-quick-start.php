@@ -10,9 +10,9 @@ use Psl\Terminal\Widget;
 
 final class MyState {}
 
-$app = Terminal\Application::create(new MyState(), title: 'My App');
+$app = Terminal\Application::create::<MyState>(new MyState(), title: 'My App');
 
-$app->on(Event\Key::class, static function (Event\Key $event, MyState $_state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, MyState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

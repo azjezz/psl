@@ -11,10 +11,10 @@ use Psl\IO;
 
 /** @var Channel\ReceiverInterface<string> $receiver */
 /** @var Channel\SenderInterface<string> $sender */
-[$receiver, $sender] = Channel\bounded(1);
+[$receiver, $sender] = Channel\bounded::<string>(1);
 
 // Producer sends one message then stops
-Async\run(static function () use ($sender): void {
+Async\run::<void>(static function () use ($sender): void {
     $sender->send('hello');
     Async\sleep(Duration::seconds(5));
     $sender->send('never arrives');

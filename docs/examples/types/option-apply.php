@@ -6,6 +6,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Option;
 
-$result = Option\some('admin')
+$result = Option\some::<string>('admin')
     ->apply(fn(string $role) => print "Found role: {$role}\n")
-    ->map(fn(string $role) => strtoupper($role));
+    ->map::<string>(fn(string $role) => strtoupper($role));

@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Psl\Interoperability;
 
 /**
- * @template T
- *
  * @api
  */
-interface ToIntl
+interface ToIntl<T>
 {
-    /**
-     * @return T
-     */
-    public function toIntl(): mixed;
+    public function toIntl(): T;
 }

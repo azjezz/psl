@@ -11,14 +11,13 @@ use Psl\Vec;
 final class SortTest extends TestCase
 {
     /**
-     * @template T
-     * @param list<T> $expected
-     * @param (callable(T, T): int)|null $comparator
+     * @param list<mixed> $expected
+     * @param (callable(mixed, mixed): int)|null $comparator
      */
     #[DataProvider('provideData')]
     public function testSort(array $expected, array $array, null|callable $comparator = null): void
     {
-        static::assertSame($expected, Vec\sort($array, $comparator));
+        static::assertSame($expected, Vec\sort::<mixed>($array, $comparator));
     }
 
     public static function provideData(): array

@@ -12,14 +12,14 @@ final class AfterTest extends TestCase
 {
     public function testItCombinesAFunctionToExecuteAFunctionAfterAnotherFunction(): void
     {
-        $x = Fun\after(static fn(string $x): string => $x . ' world', static fn(string $z): string => $z . '!!');
+        $x = Fun\after::<string, string, string>(static fn(string $x): string => $x . ' world', static fn(string $z): string => $z . '!!');
 
         static::assertSame('Hello world!!', $x('Hello'));
     }
 
     public function testItCombinesAFunctionThatDealWithDifferentTypes(): void
     {
-        $x = Fun\after(Str\length(...), static fn(int $z): string => $z . '!');
+        $x = Fun\after::<string, int, string>(Str\length(...), static fn(int $z): string => $z . '!');
 
         static::assertSame('5!', $x('Hello'));
     }

@@ -15,23 +15,19 @@ use function is_array;
 use function is_iterable;
 
 /**
- * @template Tv
- *
  * @extends Type\Type<list<Tv>>
  *
  * @internal
  *
  * @mago-expect analysis:mixed-assignment
  */
-final readonly class VecType extends Type\Type
+final readonly class VecType<Tv> extends Type\Type<array>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<Tv> $valueType,
     ) {}
 
     /**
@@ -61,7 +57,7 @@ final readonly class VecType extends Type\Type
      * @return list<Tv>
      */
     #[Override]
-    public function coerce(mixed $value): iterable
+    public function coerce(mixed $value): array
     {
         if (!is_iterable($value)) {
             throw CoercionException::withValue($value, $this->toString());

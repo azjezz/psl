@@ -5,11 +5,6 @@ declare(strict_types=1);
 namespace Psl\Comparison;
 
 /**
- * @template T
- *
- * @param T $a
- * @param T $b
- *
  * This function can compare 2 values of a similar type.
  * When the type happens to be mixed or never, it will fall back to PHP's internal comparison rules:
  *
@@ -18,7 +13,7 @@ namespace Psl\Comparison;
  *
  * @api
  */
-function compare(mixed $a, mixed $b): Order
+function compare<T>(T $a, T $b): Order
 {
     if ($a instanceof Comparable) {
         return $a->compare($b);

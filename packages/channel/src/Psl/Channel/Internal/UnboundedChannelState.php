@@ -15,11 +15,9 @@ use function array_splice;
 use function count;
 
 /**
- * @template T
- *
  * @internal
  */
-final class UnboundedChannelState implements ChannelInterface
+final class UnboundedChannelState<T> implements ChannelInterface
 {
     /**
      * @var list<Suspension<mixed>>
@@ -117,12 +115,10 @@ final class UnboundedChannelState implements ChannelInterface
     }
 
     /**
-     * @param T $message
-     *
      * @throws Exception\ClosedChannelException If the channel is closed.
      * @throws Exception\FullChannelException If the channel is full.
      */
-    public function send(mixed $message): void
+    public function send(T $message): void
     {
         if ($this->closed) {
             throw Exception\ClosedChannelException::forSending();
@@ -136,10 +132,8 @@ final class UnboundedChannelState implements ChannelInterface
     /**
      * @throws Exception\ClosedChannelException If the channel is closed, and there's no more messages to receive.
      * @throws Exception\EmptyChannelException If the channel is empty.
-     *
-     * @return T
      */
-    public function receive(): mixed
+    public function receive(): T
     {
         if (!$this->messages) {
             if ($this->closed) {

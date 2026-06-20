@@ -13,6 +13,6 @@ class NotEqualTest extends AbstractComparisonTestCase
     #[DataProvider('provideComparisonCases')]
     public function testItCanNotEqual(mixed $a, mixed $b, Order $expected): void
     {
-        static::assertSame($expected !== Order::Equal, Comparison\not_equal($a, $b));
+        static::assertSame($expected !== Order::Equal, Comparison\not_equal::<mixed>($a, $b));
     }
 }

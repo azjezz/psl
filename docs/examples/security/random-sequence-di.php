@@ -20,7 +20,7 @@ use Psl\RandomSequence\SequenceInterface;
 function pick_winner(array $participants, SequenceInterface $rng): string
 {
     /** @var int<0, max> $index */
-    $index = $rng->next() % Iter\count($participants);
+    $index = $rng->next() % Iter\count::<string>($participants);
 
     return $participants[$index];
 }

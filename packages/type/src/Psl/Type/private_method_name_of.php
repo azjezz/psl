@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function private_method_name_of(string $classname): TypeInterface
+function private_method_name_of(string $classname): TypeInterface<string>
 {
     return new Internal\PrivateMethodNameOfType($classname);
 }

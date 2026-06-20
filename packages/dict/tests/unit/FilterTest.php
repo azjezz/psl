@@ -15,7 +15,7 @@ final class FilterTest extends TestCase
     #[DataProvider('provideData')]
     public function testFilter(array $expected, array $array, null|Closure $predicate = null): void
     {
-        $result = Dict\filter($array, $predicate);
+        $result = Dict\filter::<int, string>($array, $predicate);
 
         static::assertSame($expected, $result);
     }
@@ -31,15 +31,15 @@ final class FilterTest extends TestCase
 
     public function testFilterWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 0, 'c' => 3]);
+        $iterator = Iter\Iterator::<string, int>::create(['a' => 1, 'b' => 0, 'c' => 3]);
 
-        static::assertSame(['a' => 1, 'c' => 3], Dict\filter($iterator));
+        static::assertSame(['a' => 1, 'c' => 3], Dict\filter::<string, int>($iterator));
     }
 
     public function testFilterWithNonArrayIterableAndPredicate(): void
     {
-        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2, 'c' => 3]);
+        $iterator = Iter\Iterator::<string, int>::create(['a' => 1, 'b' => 2, 'c' => 3]);
 
-        static::assertSame(['b' => 2, 'c' => 3], Dict\filter($iterator, static fn(int $v): bool => $v > 1));
+        static::assertSame(['b' => 2, 'c' => 3], Dict\filter::<string, int>($iterator, static fn(int $v): bool => $v > 1));
     }
 }

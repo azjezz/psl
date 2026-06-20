@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function scalar(): TypeInterface
+function scalar(): TypeInterface<int|float|string|bool>
 {
     static $instance = new Internal\ScalarType();
 

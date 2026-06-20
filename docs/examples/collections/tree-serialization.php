@@ -8,10 +8,10 @@ use Psl\Iter;
 use Psl\Str;
 use Psl\Tree;
 
-$tree = Tree\tree('root', [Tree\leaf('a'), Tree\leaf('b')]);
+$tree = Tree\tree::<string>('root', [Tree\leaf::<string>('a'), Tree\leaf::<string>('b')]);
 
 // Build a custom string representation
-$result = Tree\traverse(
+$result = Tree\traverse::<string, string>(
     $tree,
     /**
      * @param non-empty-string $value
@@ -21,7 +21,7 @@ $result = Tree\traverse(
      */
     function (string $value, Closure $traverse): string {
         $children = $traverse();
-        return Iter\is_empty($children) ? $value : $value . '(' . Str\join($children, ',') . ')';
+        return Iter\is_empty::<string>($children) ? $value : $value . '(' . Str\join($children, ',') . ')';
     },
 );
 

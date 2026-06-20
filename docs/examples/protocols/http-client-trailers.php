@@ -14,7 +14,7 @@ $client = new Client\Client();
 
 // Sending request trailers using an Awaitable<FieldMap>.
 // Trailers are sent after the body with chunked transfer encoding (H1) or after DATA frames (H2).
-$deferred = new Async\Deferred();
+$deferred = new Async\Deferred::<Message\FieldMap>();
 $request = new Message\Request(
     method: Message\METHOD_POST,
     url: URL\parse('https://example.com/upload'),

@@ -10,45 +10,35 @@ use Override;
 /**
  * An interface representing a stack data structure ( LIFO ).
  *
- * @template T
- *
  * @see https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
  *
  * @api
  */
-interface StackInterface extends Countable
+interface StackInterface<T> extends Countable
 {
     /**
      * Adds an item to the stack.
-     *
-     * @param T $item
      */
-    public function push(mixed $item): void;
+    public function push(T $item): void;
 
     /**
      * Retrieves, but does remove, the most recently added item that was not yet removed,
      * or returns null if this queue is empty.
-     *
-     * @return null|T
      */
-    public function peek(): mixed;
+    public function peek(): null|T;
 
     /**
      * Retrieves and removes the most recently added item that was not yet removed,
      * or returns null if this queue is empty.
-     *
-     * @return null|T
      */
-    public function pull(): mixed;
+    public function pull(): null|T;
 
     /**
      * Retrieve and removes the most recently added item that was not yet removed.
      *
      * @throws Exception\UnderflowException If the stack is empty.
-     *
-     * @return T
      */
-    public function pop(): mixed;
+    public function pop(): T;
 
     /**
      * Count the items in the stack.

@@ -11,7 +11,7 @@ use Psl\URL;
 
 $client = new Client\Client();
 
-$transactions = Async\concurrently([
+$transactions = Async\concurrently::<string, Message\Transaction>([
     'users' => static fn() => $client->send(new Message\Request(
         method: Message\METHOD_GET,
         url: URL\parse('https://httpbin.org/get?resource=users'),

@@ -17,14 +17,9 @@ use Psl\Option;
  * the three positions are equal citizens. Primary use case: three-way diff of two
  * collections (insert / delete / update events).
  *
- * @template-covariant TLeft
- * @template-covariant TRight
- *
- * @extends Comparison\Equable<EitherOrBoth<TLeft, TRight>>
- *
  * @api
  */
-interface EitherOrBoth extends Comparison\Equable
+interface EitherOrBoth<out TLeft, out TRight> extends Comparison\Equable<EitherOrBoth<mixed, mixed>>
 {
     /**
      * Returns true if this is exclusively a Left (not Both).
@@ -66,81 +61,61 @@ interface EitherOrBoth extends Comparison\Equable
      *
      * @throws Exception\MissingLeftException If this is a Right.
      *
-     * @return TLeft
-     *
      * @psalm-mutation-free
      */
-    public function getLeft(): mixed;
+    public function getLeft(): TLeft;
 
     /**
      * Returns the contained right value.
      *
      * @throws Exception\MissingRightException If this is a Left.
      *
-     * @return TRight
-     *
      * @psalm-mutation-free
      */
-    public function getRight(): mixed;
+    public function getRight(): TRight;
 
     /**
      * Converts the left value to an Option. Some when a left value is present, None otherwise.
      *
-     * @return Option\Option<TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function unwrapLeft(): Option\Option;
+    public function unwrapLeft(): Option\Option<TLeft>;
 
     /**
      * Converts the right value to an Option. Some when a right value is present, None otherwise.
      *
-     * @return Option\Option<TRight>
-     *
      * @psalm-mutation-free
      */
-    public function unwrapRight(): Option\Option;
+    public function unwrapRight(): Option\Option<TRight>;
 
     /**
      * Apply the same closure to whichever side(s) are present.
      *
      * On {@see Both} the closure runs twice, once per side, independently.
      *
-     * @template TResult
-     *
      * @param (Closure(TLeft|TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return EitherOrBoth<TResult, TResult>
      */
-    public function map(Closure $closure): EitherOrBoth;
+    public function map<TResult>(Closure $closure): EitherOrBoth<TResult, TResult>;
 
     /**
      * Map the left side if present, leave the right side untouched.
      *
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return EitherOrBoth<TResult, TRight>
      */
-    public function mapLeft(Closure $closure): EitherOrBoth;
+    public function mapLeft<TResult>(Closure $closure): EitherOrBoth<TResult, TRight>;
 
     /**
      * Map the right side if present, leave the left side untouched.
      *
-     * @template TResult
-     *
      * @param (Closure(TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return EitherOrBoth<TLeft, TResult>
      */
-    public function mapRight(Closure $closure): EitherOrBoth;
+    public function mapRight<TResult>(Closure $closure): EitherOrBoth<TLeft, TResult>;
 
     /**
      * Map each side independently with its own closure.
@@ -148,18 +123,13 @@ interface EitherOrBoth extends Comparison\Equable
      * On {@see Left}, only the left closure runs; on {@see Right}, only the right;
      * on {@see Both}, both run.
      *
-     * @template TResultLeft
-     * @template TResultRight
-     *
      * @param (Closure(TLeft): TResultLeft)   $left
      * @param (Closure(TRight): TResultRight) $right
      *
      * @param-immediately-invoked-callable $left
      * @param-immediately-invoked-callable $right
-     *
-     * @return EitherOrBoth<TResultLeft, TResultRight>
      */
-    public function mapAny(Closure $left, Closure $right): EitherOrBoth;
+    public function mapAny<TResultLeft, TResultRight>(Closure $left, Closure $right): EitherOrBoth<TResultLeft, TResultRight>;
 
     /**
      * Swap the Left and Right sides.
@@ -167,19 +137,15 @@ interface EitherOrBoth extends Comparison\Equable
      * {@see Left} becomes {@see Right}, {@see Right} becomes {@see Left},
      * and {@see Both}(l, r) becomes {@see Both}(r, l).
      *
-     * @return EitherOrBoth<TRight, TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function swap(): EitherOrBoth;
+    public function swap(): EitherOrBoth<TRight, TLeft>;
 
     /**
      * Pattern-match on the variant and dispatch to the matching closure.
      *
      * Argument order is positional: left first, right second, both third.
      * No happy-path convention applies — the three variants are equal citizens.
-     *
-     * @template TResult
      *
      * @param (Closure(TLeft): TResult)         $left  Called when this is a Left.
      * @param (Closure(TRight): TResult)        $right Called when this is a Right.
@@ -188,10 +154,8 @@ interface EitherOrBoth extends Comparison\Equable
      * @param-immediately-invoked-callable $left
      * @param-immediately-invoked-callable $right
      * @param-immediately-invoked-callable $both
-     *
-     * @return TResult
      */
-    public function proceed(Closure $left, Closure $right, Closure $both): mixed;
+    public function proceed<TResult>(Closure $left, Closure $right, Closure $both): TResult;
 
     /**
      * Run a side-effect closure on the contained value(s) and return self unchanged.
@@ -202,10 +166,8 @@ interface EitherOrBoth extends Comparison\Equable
      * @param (Closure(TLeft|TRight): mixed) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return EitherOrBoth<TLeft, TRight>
      */
-    public function apply(Closure $closure): EitherOrBoth;
+    public function apply(Closure $closure): EitherOrBoth<TLeft, TRight>;
 
     /**
      * Returns true if a left value is present and equals the given value.

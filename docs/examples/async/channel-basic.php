@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Channel;
 
 // Bounded: holds at most 10 messages
-[$receiver, $sender] = Channel\bounded(10);
+[$receiver, $sender] = Channel\bounded::<string>(10);
 
 // Unbounded: no capacity limit
-[$receiver, $sender] = Channel\unbounded();
+[$receiver, $sender] = Channel\unbounded::<string>();

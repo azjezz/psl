@@ -28,7 +28,7 @@ final class ResponseTest extends TestCase
     public function testConstructionWithAllParameters(): void
     {
         $body = new IO\MemoryHandle('hello world');
-        $trailers = Async\Awaitable::complete(FieldMap::from([['checksum', 'abc']]));
+        $trailers = Async\Awaitable::<FieldMap>::complete(FieldMap::from([['checksum', 'abc']]));
         $response = new Response(
             Message\STATUS_CREATED,
             ProtocolVersion::V20,
@@ -145,7 +145,7 @@ final class ResponseTest extends TestCase
     public function testWithTrailers(): void
     {
         $response = new Response(Message\STATUS_OK);
-        $trailers = Async\Awaitable::complete(FieldMap::from([['grpc-status', '0']]));
+        $trailers = Async\Awaitable::<FieldMap>::complete(FieldMap::from([['grpc-status', '0']]));
         $modified = $response->withTrailers($trailers);
 
         static::assertNull($response->trailers);

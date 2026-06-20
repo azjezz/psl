@@ -9,7 +9,7 @@ use Psl\IO;
 
 // Single-closure apply: runs on whichever side(s) are present.
 // On Left/Right the closure is called once; on Both it runs twice (once per side).
-$event = new EitherOrBoth\Both('new', 'old');
+$event = new EitherOrBoth\Both::<string, string>('new', 'old');
 
 $event->apply(static fn(string $v): mixed => IO\write_error_line('value: %s', $v));
 

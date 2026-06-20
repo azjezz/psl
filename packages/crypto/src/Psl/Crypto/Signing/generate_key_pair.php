@@ -18,11 +18,11 @@ use function sodium_memzero;
  */
 function generate_key_pair(): KeyPair
 {
-    $keypair = Internal\call_sodium(fn() => sodium_crypto_sign_keypair());
+    $keypair = Internal\call_sodium::<string>(fn() => sodium_crypto_sign_keypair());
     /** @var non-empty-string $rawSecretKey */
-    $rawSecretKey = Internal\call_sodium(fn() => sodium_crypto_sign_secretkey($keypair));
+    $rawSecretKey = Internal\call_sodium::<string>(fn() => sodium_crypto_sign_secretkey($keypair));
     /** @var non-empty-string $rawPublicKey */
-    $rawPublicKey = Internal\call_sodium(fn() => sodium_crypto_sign_publickey($keypair));
+    $rawPublicKey = Internal\call_sodium::<string>(fn() => sodium_crypto_sign_publickey($keypair));
 
     $secretKey = new SecretKey($rawSecretKey);
     $publicKey = new PublicKey($rawPublicKey);

@@ -36,7 +36,7 @@ final class MathBench
     #[ParamProviders('provideData')]
     public function benchMax(array $params): void
     {
-        $_ = Math\max($params['data']);
+        $_ = Math\max::<int>($params['data']);
     }
 
     /**
@@ -45,7 +45,7 @@ final class MathBench
     #[ParamProviders('provideData')]
     public function benchMin(array $params): void
     {
-        $_ = Math\min($params['data']);
+        $_ = Math\min::<int>($params['data']);
     }
 
     /**

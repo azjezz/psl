@@ -11,8 +11,8 @@ final class AddEdgeTest extends TestCase
 {
     public function testAddEdgeToDirectedGraph(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
 
         static::assertTrue($graph->hasEdge('A', 'B'));
         static::assertFalse($graph->hasEdge('B', 'A'));
@@ -20,8 +20,8 @@ final class AddEdgeTest extends TestCase
 
     public function testAddEdgeToUndirectedGraph(): void
     {
-        $graph = Graph\undirected();
-        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\undirected::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
 
         static::assertTrue($graph->hasEdge('A', 'B'));
         static::assertTrue($graph->hasEdge('B', 'A'));
@@ -29,8 +29,8 @@ final class AddEdgeTest extends TestCase
 
     public function testAddEdgeAutomaticallyAddsNodes(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
 
         static::assertTrue($graph->hasNode('A'));
         static::assertTrue($graph->hasNode('B'));
@@ -38,8 +38,8 @@ final class AddEdgeTest extends TestCase
 
     public function testAddWeightedEdge(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B', 5);
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B', 5);
 
         $edges = $graph->getEdgesFrom('A');
         static::assertCount(1, $edges);
@@ -49,10 +49,10 @@ final class AddEdgeTest extends TestCase
 
     public function testAddMultipleEdges(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'A', 'C');
-        $graph = Graph\add_edge($graph, 'B', 'C');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'C');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'C');
 
         static::assertTrue($graph->hasEdge('A', 'B'));
         static::assertTrue($graph->hasEdge('A', 'C'));
@@ -61,10 +61,10 @@ final class AddEdgeTest extends TestCase
 
     public function testAddEdgeToExistingNodes(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
-        $graph = Graph\add_node($graph, 'B');
-        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
+        $graph = Graph\add_node::<string, int>($graph, 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
 
         static::assertTrue($graph->hasEdge('A', 'B'));
         static::assertCount(2, $graph->getNodes());

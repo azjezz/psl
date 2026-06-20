@@ -16,17 +16,14 @@ use Psl\Comparison\Comparable;
 use Psl\Comparison\Order;
 use stdClass;
 
-/**
- * @implements Comparable<Size>
- */
-abstract class Size implements Comparable
+abstract class Size implements Comparable<self>
 {
     abstract public function normalizedValue(): int;
 
     #[Override]
     public function compare(mixed $other): Order
     {
-        return Comparison\compare($this->normalizedValue(), $other->normalizedValue());
+        return Comparison\compare::<int>($this->normalizedValue(), $other->normalizedValue());
     }
 }
 
@@ -58,7 +55,7 @@ function test_covariant_limitations(): Order
 
 function compare_mixed(mixed $a, mixed $b): Order
 {
-    return Comparison\compare($a, $b);
+    return Comparison\compare::<mixed>($a, $b);
 }
 
 function test_mixed(): void

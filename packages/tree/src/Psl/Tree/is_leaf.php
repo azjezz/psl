@@ -15,10 +15,6 @@ namespace Psl\Tree;
  *      Tree\is_leaf(Tree\tree('value', [Tree\leaf('child')]))
  *      => false
  *
- * @template T
- *
- * @param NodeInterface<T> $node
- *
  * @return bool
  *
  * @psalm-assert-if-true LeafNode $node
@@ -27,7 +23,7 @@ namespace Psl\Tree;
  *
  * @api
  */
-function is_leaf(NodeInterface $node): bool
+function is_leaf<T>(NodeInterface<T> $node): bool
 {
     return $node instanceof LeafNode;
 }

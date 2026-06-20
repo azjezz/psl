@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function f32(): TypeInterface
+function f32(): TypeInterface<float>
 {
     static $instance = new Internal\F32Type();
 

@@ -19,27 +19,27 @@ final class RightTest extends TestCase
 {
     public function testIsLeft(): void
     {
-        static::assertFalse(new Right('a')->isLeft());
+        static::assertFalse(new Right::<string>('a')->isLeft());
     }
 
     public function testIsRight(): void
     {
-        static::assertTrue(new Right('a')->isRight());
+        static::assertTrue(new Right::<string>('a')->isRight());
     }
 
     public function testIsBoth(): void
     {
-        static::assertFalse(new Right('a')->isBoth());
+        static::assertFalse(new Right::<string>('a')->isBoth());
     }
 
     public function testHasLeft(): void
     {
-        static::assertFalse(new Right('a')->hasLeft());
+        static::assertFalse(new Right::<string>('a')->hasLeft());
     }
 
     public function testHasRight(): void
     {
-        static::assertTrue(new Right('a')->hasRight());
+        static::assertTrue(new Right::<string>('a')->hasRight());
     }
 
     public function testGetLeftThrows(): void
@@ -47,22 +47,22 @@ final class RightTest extends TestCase
         $this->expectException(EitherOrBoth\Exception\MissingLeftException::class);
         $this->expectExceptionMessage('Attempting to get a left value from a right.');
 
-        new Right('a')->getLeft();
+        new Right::<string>('a')->getLeft();
     }
 
     public function testGetRight(): void
     {
-        static::assertSame('a', new Right('a')->getRight());
+        static::assertSame('a', new Right::<string>('a')->getRight());
     }
 
     public function testUnwrapLeft(): void
     {
-        static::assertTrue(new Right('a')->unwrapLeft()->isNone());
+        static::assertTrue(new Right::<string>('a')->unwrapLeft()->isNone());
     }
 
     public function testUnwrapRight(): void
     {
-        $option = new Right('a')->unwrapRight();
+        $option = new Right::<string>('a')->unwrapRight();
 
         static::assertTrue($option->isSome());
         static::assertSame('a', $option->unwrap());
@@ -70,7 +70,7 @@ final class RightTest extends TestCase
 
     public function testMap(): void
     {
-        $result = new Right('hello')->map(Str\uppercase(...));
+        $result = new Right::<string>('hello')->map::<string>(Str\uppercase(...));
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame('HELLO', $result->getRight());
@@ -78,10 +78,10 @@ final class RightTest extends TestCase
 
     public function testMapLeftIsNoOpAndReturnsSelf(): void
     {
-        $right = new Right('hello');
-        $spy = new Ref(0);
+        $right = new Right::<string>('hello');
+        $spy = new Ref::<int>(0);
 
-        $result = $right->mapLeft(static function () use ($spy): string {
+        $result = $right->mapLeft::<string>(static function () use ($spy): string {
             $spy->value++;
             return 'not called';
         });
@@ -92,7 +92,7 @@ final class RightTest extends TestCase
 
     public function testMapRight(): void
     {
-        $result = new Right('hello')->mapRight(Str\uppercase(...));
+        $result = new Right::<string>('hello')->mapRight::<string>(Str\uppercase(...));
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame('HELLO', $result->getRight());
@@ -100,10 +100,10 @@ final class RightTest extends TestCase
 
     public function testMapAnyOnlyCallsRight(): void
     {
-        $leftSpy = new Ref(0);
-        $rightSpy = new Ref(0);
+        $leftSpy = new Ref::<int>(0);
+        $rightSpy = new Ref::<int>(0);
 
-        $result = new Right('a')->mapAny(static function () use ($leftSpy): string {
+        $result = new Right::<string>('a')->mapAny::<string, string>(static function () use ($leftSpy): string {
             $leftSpy->value++;
             return 'never';
         }, static function (string $v) use ($rightSpy): string {
@@ -119,7 +119,7 @@ final class RightTest extends TestCase
 
     public function testSwap(): void
     {
-        $result = new Right('a')->swap();
+        $result = new Right::<string>('a')->swap();
 
         static::assertInstanceOf(Left::class, $result);
         static::assertSame('a', $result->getLeft());
@@ -127,11 +127,11 @@ final class RightTest extends TestCase
 
     public function testProceedCallsRightOnly(): void
     {
-        $leftSpy = new Ref(0);
-        $rightSpy = new Ref(0);
-        $bothSpy = new Ref(0);
+        $leftSpy = new Ref::<int>(0);
+        $rightSpy = new Ref::<int>(0);
+        $bothSpy = new Ref::<int>(0);
 
-        $result = new Right('hello')->proceed(
+        $result = new Right::<string>('hello')->proceed::<string>(
             left: static function () use ($leftSpy): string {
                 $leftSpy->value++;
                 return 'left';
@@ -154,9 +154,9 @@ final class RightTest extends TestCase
 
     public function testApplyCallsClosureOnceWithRightValueAndReturnsSelf(): void
     {
-        $right = new Right('hello');
-        $captured = new Ref('');
-        $callCount = new Ref(0);
+        $right = new Right::<string>('hello');
+        $captured = new Ref::<string>('');
+        $callCount = new Ref::<int>(0);
 
         $result = $right->apply(static function (string $v) use ($captured, $callCount): void {
             $captured->value = $v;
@@ -170,7 +170,7 @@ final class RightTest extends TestCase
 
     public function testContainsLeftIsAlwaysFalse(): void
     {
-        $right = new Right('hello');
+        $right = new Right::<string>('hello');
 
         static::assertFalse($right->containsLeft('hello'));
         static::assertFalse($right->containsLeft('world'));
@@ -178,7 +178,7 @@ final class RightTest extends TestCase
 
     public function testContainsRight(): void
     {
-        $right = new Right('hello');
+        $right = new Right::<string>('hello');
 
         static::assertTrue($right->containsRight('hello'));
         static::assertFalse($right->containsRight('world'));
@@ -186,18 +186,18 @@ final class RightTest extends TestCase
 
     public function testEquals(): void
     {
-        $a = new Right('a');
+        $a = new Right::<string>('a');
 
         static::assertInstanceOf(Equable::class, $a);
-        static::assertTrue($a->equals(new Right('a')));
-        static::assertFalse($a->equals(new Right('b')));
-        static::assertFalse($a->equals(new Left('a')));
-        static::assertFalse($a->equals(new Both('a', 'a')));
+        static::assertTrue($a->equals(new Right::<string>('a')));
+        static::assertFalse($a->equals(new Right::<string>('b')));
+        static::assertFalse($a->equals(new Left::<string>('a')));
+        static::assertFalse($a->equals(new Both::<string, string>('a', 'a')));
     }
 
     public function testRightFactoryFunction(): void
     {
-        $result = EitherOrBoth\right('hello');
+        $result = EitherOrBoth\right::<string>('hello');
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame('hello', $result->getRight());

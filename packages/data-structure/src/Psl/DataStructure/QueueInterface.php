@@ -11,45 +11,35 @@ use Psl\Default\DefaultInterface;
 /**
  * An interface representing a queue data structure ( FIFO ).
  *
- * @template T
- *
  * @see https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)
  *
  * @api
  */
-interface QueueInterface extends Countable, DefaultInterface
+interface QueueInterface<T> extends Countable, DefaultInterface
 {
     /**
      * Adds a node to the queue.
-     *
-     * @param T $node
      */
-    public function enqueue(mixed $node): void;
+    public function enqueue(T $node): void;
 
     /**
      * Retrieves, but does not remove, the node at the head of this queue,
      * or returns null if this queue is empty.
-     *
-     * @return null|T
      */
-    public function peek(): mixed;
+    public function peek(): null|T;
 
     /**
      * Retrieves and removes the node at the head of this queue,
      * or returns null if this queue is empty.
-     *
-     * @return null|T
      */
-    public function pull(): mixed;
+    public function pull(): null|T;
 
     /**
      * Retrieves and removes the node at the head of this queue.
      *
      * @throws Exception\UnderflowException If the queue is empty.
-     *
-     * @return T
      */
-    public function dequeue(): mixed;
+    public function dequeue(): T;
 
     /**
      * Count the nodes in the queue.

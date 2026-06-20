@@ -101,5 +101,5 @@ $response = $resolver->query('php-standard-library.dev', RecordType::A);
 
 IO\write_line(
     'php-standard-library.dev -> %s',
-    $response->getFirstAnswerRecord(ARecord::class)?->address->toString() ?? '<unknown>',
+    $response->getFirstAnswerRecord::<ARecord>(ARecord::class)?->address->toString() ?? '<unknown>',
 );

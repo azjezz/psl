@@ -6,5 +6,5 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Either;
 
-$left = new Either\Left('hello');
+$left = new Either\Left::<string>('hello');
 $right = $left->swap(); // Right('hello')

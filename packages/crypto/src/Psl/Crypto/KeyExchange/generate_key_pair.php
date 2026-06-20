@@ -20,7 +20,7 @@ function generate_key_pair(): KeyPair
 {
     $secretKeyBytes = SecureRandom\bytes(namespace\SECRET_KEY_BYTES);
     /** @var non-empty-string $publicKeyBytes */
-    $publicKeyBytes = Internal\call_sodium(fn() => sodium_crypto_box_publickey_from_secretkey($secretKeyBytes));
+    $publicKeyBytes = Internal\call_sodium::<string>(fn() => sodium_crypto_box_publickey_from_secretkey($secretKeyBytes));
 
     return new KeyPair(new PublicKey($publicKeyBytes), new SecretKey($secretKeyBytes));
 }

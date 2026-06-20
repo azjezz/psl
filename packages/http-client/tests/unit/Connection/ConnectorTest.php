@@ -48,7 +48,7 @@ final class ConnectorTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->close();
@@ -93,7 +93,7 @@ final class ConnectorTest extends TestCase
         /** @var int<0, 65535> $proxyPort */
         $proxyPort = $proxyListener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($proxyListener): void {
+        $serverFuture = Async\run::<void>(static function () use ($proxyListener): void {
             try {
                 $conn = $proxyListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->close();
@@ -145,7 +145,7 @@ final class ConnectorTest extends TestCase
         /** @var int<0, 65535> $proxyPort */
         $proxyPort = $proxyListener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($proxyListener): void {
+        $serverFuture = Async\run::<void>(static function () use ($proxyListener): void {
             try {
                 $conn = $proxyListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->close();
@@ -195,7 +195,7 @@ final class ConnectorTest extends TestCase
         $proxyPort = $proxyListener->getLocalAddress()->port;
 
         $proxyWasContacted = false;
-        $proxyFuture = Async\run(static function () use ($proxyListener, &$proxyWasContacted): void {
+        $proxyFuture = Async\run::<void>(static function () use ($proxyListener, &$proxyWasContacted): void {
             try {
                 $proxyListener->accept(new TimeoutCancellationToken(Duration::milliseconds(500)));
                 $proxyWasContacted = true;
@@ -211,7 +211,7 @@ final class ConnectorTest extends TestCase
         /** @var int<0, 65535> $targetPort */
         $targetPort = $targetListener->getLocalAddress()->port;
 
-        $targetFuture = Async\run(static function () use ($targetListener): void {
+        $targetFuture = Async\run::<void>(static function () use ($targetListener): void {
             try {
                 $conn = $targetListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->read(cancellation: new TimeoutCancellationToken(Duration::milliseconds(500)));
@@ -281,7 +281,7 @@ final class ConnectorTest extends TestCase
         $capturedRequestLine = '';
         $capturedHeaders = '';
 
-        $serverFuture = Async\run(static function () use (
+        $serverFuture = Async\run::<void>(static function () use (
             $proxyListener,
             $response,
             &$capturedRequestLine,
@@ -359,7 +359,7 @@ final class ConnectorTest extends TestCase
 
         try {
             $listener = Unix\listen($socketPath);
-            $serverFuture = Async\run(static function () use ($listener): void {
+            $serverFuture = Async\run::<void>(static function () use ($listener): void {
                 try {
                     $conn = $listener->accept();
                     $conn->read(cancellation: new TimeoutCancellationToken(Duration::seconds(5)));
@@ -401,7 +401,7 @@ final class ConnectorTest extends TestCase
         /** @var int<0, 65535> $proxyPort */
         $proxyPort = $proxyListener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($proxyListener): void {
+        $serverFuture = Async\run::<void>(static function () use ($proxyListener): void {
             try {
                 $conn = $proxyListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->close();
@@ -496,7 +496,7 @@ final class ConnectorTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $server = new H2\ServerConnection($conn);
@@ -565,11 +565,11 @@ final class ConnectorTest extends TestCase
      *
      * @return Async\Awaitable<void>
      */
-    private static function startH2UnixServer(string $socketPath, Closure $handler): Async\Awaitable
+    private static function startH2UnixServer(string $socketPath, Closure $handler): Async\Awaitable<void>
     {
         $listener = Unix\listen($socketPath);
 
-        return Async\run(static function () use ($listener, $handler): void {
+        return Async\run::<void>(static function () use ($listener, $handler): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);

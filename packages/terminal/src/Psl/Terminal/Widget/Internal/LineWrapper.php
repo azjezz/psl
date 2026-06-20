@@ -147,8 +147,8 @@ final class LineWrapper
                 continue;
             }
 
-            $sliceStart = Math\maxva(0, $startPos - $currentPos);
-            $sliceEnd = Math\minva($spanLen, $endPos - $currentPos);
+            $sliceStart = Math\maxva::<int>(0, $startPos - $currentPos);
+            $sliceEnd = Math\minva::<int>($spanLen, $endPos - $currentPos);
             $sliceLen = $sliceEnd - $sliceStart;
 
             if ($sliceLen > 0) {

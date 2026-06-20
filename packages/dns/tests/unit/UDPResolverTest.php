@@ -78,7 +78,7 @@ final class UDPResolverTest extends TestCase
         $socket = Socket::bind('127.0.0.1', 0);
         $address = $socket->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($socket): void {
+        $serverFuture = Async\run::<void>(static function () use ($socket): void {
             [$data, $peer] = $socket->receiveFrom(512);
             $id = new Reader($data)->u16();
 
@@ -123,7 +123,7 @@ final class UDPResolverTest extends TestCase
         $socket = Socket::bind('127.0.0.1', 0);
         $address = $socket->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($socket): void {
+        $serverFuture = Async\run::<void>(static function () use ($socket): void {
             [$data, $peer] = $socket->receiveFrom(512);
             $id = new Reader($data)->u16();
 
@@ -170,7 +170,7 @@ final class UDPResolverTest extends TestCase
         $spoofServer = Socket::bind('127.0.0.1', 0);
         $spoofAddress = $spoofServer->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($targetServer, $spoofServer): void {
+        $serverFuture = Async\run::<void>(static function () use ($targetServer, $spoofServer): void {
             [$query, $clientPeer] = $targetServer->receiveFrom(512);
             $reader = new Reader($query);
             $id = $reader->u16();
@@ -210,7 +210,7 @@ final class UDPResolverTest extends TestCase
         $socket = Socket::bind('127.0.0.1', 0);
         $address = $socket->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($socket): void {
+        $serverFuture = Async\run::<void>(static function () use ($socket): void {
             [$data, $peer] = $socket->receiveFrom(512);
             $id = new Reader($data)->u16();
             $wrongId = ($id + 1) & 0xFFFF;
@@ -257,7 +257,7 @@ final class UDPResolverTest extends TestCase
         $socket = Socket::bind('127.0.0.1', 0);
         $address = $socket->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($socket): void {
+        $serverFuture = Async\run::<void>(static function () use ($socket): void {
             [$data, $peer] = $socket->receiveFrom(512);
             $id = new Reader($data)->u16();
 

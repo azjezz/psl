@@ -20,13 +20,11 @@ use function explode;
  * An Interval has a start and end, both of which are {@see TemporalInterface}
  * instances. The start must be before or at the same time as the end.
  *
- * @implements Comparison\Equable<Interval>
- *
  * @immutable
  *
  * @api
  */
-final readonly class Interval implements Comparison\Equable, JsonSerializable, Stringable
+final readonly class Interval implements Comparison\Equable<Interval>, JsonSerializable, Stringable
 {
     /**
      * @pure
@@ -243,12 +241,10 @@ final readonly class Interval implements Comparison\Equable, JsonSerializable, S
      *
      * Two intervals are equal if their start and end points represent the same moments in time.
      *
-     * @param Interval $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function equals(mixed $other): bool
+    public function equals(Interval $other): bool
     {
         return $this->start->atTheSameTime($other->start) && $this->end->atTheSameTime($other->end);
     }

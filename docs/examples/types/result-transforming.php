@@ -8,9 +8,9 @@ use Psl\File;
 use Psl\Result;
 use Psl\Str;
 
-$lines = Result\wrap(fn() => File\read(__FILE__))
-    ->map(fn(string $content) => Str\split($content, "\n"))
-    ->catch(fn(Throwable $_e) => []);
+$lines = Result\wrap::<string>(fn() => File\read(__FILE__))
+    ->map::<array>(fn(string $content) => Str\split($content, "\n"))
+    ->catch::<array>(fn(Throwable $_e) => []);
 
 // Success: maps content to lines
 // Failure: recovers with empty array

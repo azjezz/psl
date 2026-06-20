@@ -14,7 +14,7 @@ final class LastKeyTest extends TestCase
     #[DataProvider('provideData')]
     public function testLastKey(null|int|array $expected, iterable $iterable): void
     {
-        $result = Iter\last_key($iterable);
+        $result = Iter\last_key::<int|null|array, int|null|string>($iterable);
 
         static::assertSame($expected, $result);
     }
@@ -22,10 +22,10 @@ final class LastKeyTest extends TestCase
     public static function provideData(): iterable
     {
         yield [3, [1, 2, 3, 4]];
-        yield [3, Iter\to_iterator([1, 2, 3, 4])];
-        yield [3, Vec\range(1, 4)];
-        yield [4, Vec\range(4, 8)];
-        yield [4, Iter\to_iterator(Vec\range(4, 8))];
+        yield [3, Iter\to_iterator::<int, int>([1, 2, 3, 4])];
+        yield [3, Vec\range::<int>(1, 4)];
+        yield [4, Vec\range::<int>(4, 8)];
+        yield [4, Iter\to_iterator::<int, int>(Vec\range::<int>(4, 8))];
         yield [null, []];
         yield [0, [null]];
         yield [1, [null, null]];

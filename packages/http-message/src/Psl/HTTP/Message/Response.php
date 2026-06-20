@@ -93,7 +93,7 @@ final readonly class Response extends Message
         ProtocolVersion $protocolVersion = ProtocolVersion::V11,
         FieldMap $headers = new FieldMap(),
         null|IO\ReadHandleInterface $body = null,
-        null|Async\Awaitable $trailers = null,
+        null|Async\Awaitable<FieldMap> $trailers = null,
     ) {
         $this->status = $status;
 
@@ -231,7 +231,7 @@ final readonly class Response extends Message
      *
      * @return self A new response instance with the specified trailers.
      */
-    public function withTrailers(null|Async\Awaitable $trailers): self
+    public function withTrailers(null|Async\Awaitable<FieldMap> $trailers): self
     {
         return new self($this->status, $this->protocolVersion, $this->headers, $this->body, $trailers);
     }

@@ -8,15 +8,10 @@ use Closure;
 
 /**
  * @internal
- *
- * @template T
  */
-final class LazyEvaluator
+final class LazyEvaluator<T>
 {
-    /**
-     * @var T|null
-     */
-    private mixed $instance = null;
+    private T|null $instance = null;
 
     private bool $initialized = false;
 
@@ -27,10 +22,7 @@ final class LazyEvaluator
         private readonly Closure $initializer,
     ) {}
 
-    /**
-     * @return T
-     */
-    public function __invoke(): mixed
+    public function __invoke(): T
     {
         if (!$this->initialized) {
             $this->instance = ($this->initializer)();

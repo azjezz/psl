@@ -11,7 +11,7 @@ use Psl\UDP;
 $socket = UDP\Socket::bind('127.0.0.1');
 $serverAddress = $socket->getLocalAddress();
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($socket): void {
         // Peek at data without consuming it
         [$data, $_sender] = $socket->peekFrom(1024);

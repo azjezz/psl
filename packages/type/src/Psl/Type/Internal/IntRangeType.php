@@ -20,11 +20,9 @@ use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
 /**
- * @extends Type\Type<int>
- *
  * @internal
  */
-final readonly class IntRangeType extends Type\Type
+final readonly class IntRangeType extends Type\Type<int>
 {
     public function __construct(
         private int $min,

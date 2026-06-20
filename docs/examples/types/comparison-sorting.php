@@ -33,7 +33,7 @@ final readonly class Money implements Comparison\Comparable, Comparison\Equable
             );
         }
 
-        return Comparison\compare($this->cents, $other->cents);
+        return Comparison\compare::<int>($this->cents, $other->cents);
     }
 
     /**
@@ -41,12 +41,12 @@ final readonly class Money implements Comparison\Comparable, Comparison\Equable
      */
     public function equals(mixed $other): bool
     {
-        return Comparison\equal($this, $other);
+        return Comparison\equal::<Money>($this, $other);
     }
 }
 
 $prices = [new Money(1000, 'USD'), new Money(500, 'USD'), new Money(750, 'USD')];
 
-$sorted = Vec\sort($prices, Comparison\sort(...));
+$sorted = Vec\sort::<Money>($prices, Comparison\sort(...));
 
 // [Money(500), Money(750), Money(1000)]

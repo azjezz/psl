@@ -45,7 +45,7 @@ final class InteropRoundTripTest extends TestCase
     #[DataProvider('provideRawStories')]
     public function testEncodeDecodeRoundTrip(string $file): void
     {
-        $story = Json\typed(File\read($file), self::storyType());
+        $story = Json\typed::<array>(File\read($file), self::storyType());
 
         $encoder = new Encoder();
         $decoder = new Decoder(4_096, 1_000_000);
@@ -72,7 +72,7 @@ final class InteropRoundTripTest extends TestCase
     #[DataProvider('provideRawStories')]
     public function testEncodeDecodeWithSmallTable(string $file): void
     {
-        $story = Json\typed(File\read($file), self::storyType());
+        $story = Json\typed::<array>(File\read($file), self::storyType());
 
         $encoder = new Encoder(256);
         $decoder = new Decoder(256, 1_000_000);
@@ -100,11 +100,11 @@ final class InteropRoundTripTest extends TestCase
      *     }>,
      * }>
      */
-    private static function storyType(): Type\TypeInterface
+    private static function storyType(): Type\TypeInterface<array>
     {
-        return Type\shape([
-            'cases' => Type\vec(Type\shape([
-                'headers' => Type\vec(Type\dict(Type\non_empty_string(), Type\string())),
+        return Type\shape::<string, array>([
+            'cases' => Type\vec::<array>(Type\shape::<string, array>([
+                'headers' => Type\vec::<array>(Type\dict::<string, string>(Type\non_empty_string(), Type\string())),
             ])),
         ]);
     }

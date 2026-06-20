@@ -9,7 +9,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function int_range(int $min, int $max): TypeInterface
+function int_range(int $min, int $max): TypeInterface<int>
 {
     return new Internal\IntRangeType($min, $max);
 }

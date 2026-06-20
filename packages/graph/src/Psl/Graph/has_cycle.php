@@ -18,16 +18,11 @@ namespace Psl\Graph;
  *      $graph = Graph\add_edge($graph, 'C', 'A');
  *      Graph\has_cycle($graph) // true
  *
- * @template TNode
- * @template TWeight
- *
- * @param GraphInterface<TNode, TWeight> $graph
- *
  * @pure
  *
  * @api
  */
-function has_cycle(GraphInterface $graph): bool
+function has_cycle<TNode, TWeight>(GraphInterface<TNode, TWeight> $graph): bool
 {
     return $graph->hasCycle();
 }

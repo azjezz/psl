@@ -17,7 +17,7 @@ final class ReduceWithKeysTest extends TestCase
         callable $function,
         null|int $initial = null,
     ): void {
-        static::assertSame($expected, Iter\reduce_with_keys($iterable, $function, $initial));
+        static::assertSame($expected, Iter\reduce_with_keys::<int, int, null|int>($iterable, $function, $initial));
     }
 
     public static function provideData(): iterable
@@ -26,7 +26,7 @@ final class ReduceWithKeysTest extends TestCase
         yield [6, [1, 2, 3], static fn(int $accumulator, int $_k, int $v): int => $accumulator + $v, 0];
         yield [
             6,
-            Iter\to_iterator([1, 2, 3]),
+            Iter\to_iterator::<int, int>([1, 2, 3]),
             static fn(int $accumulator, int $_k, int $v): int => $accumulator + $v,
             0,
         ];

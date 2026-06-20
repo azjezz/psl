@@ -13,21 +13,15 @@ use Override;
  *
  * Every concrete mutable class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends AccessibleCollectionInterface<Tk, Tv>
- * @extends MutableCollectionInterface<Tk, Tv>
- * @extends MutableIndexAccessInterface<Tk, Tv>
  * @extends ArrayAccess<Tk, Tv>
  *
  * @api
  */
-interface MutableAccessibleCollectionInterface extends
-    AccessibleCollectionInterface,
+interface MutableAccessibleCollectionInterface<Tk: string|int, Tv> extends
+    AccessibleCollectionInterface<Tk, Tv>,
     ArrayAccess,
-    MutableCollectionInterface,
-    MutableIndexAccessInterface
+    MutableCollectionInterface<Tk, Tv>,
+    MutableIndexAccessInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
@@ -38,7 +32,7 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): MutableAccessibleCollectionInterface;
+    public function values(): MutableAccessibleCollectionInterface<int, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the keys of the current
@@ -49,7 +43,7 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): MutableAccessibleCollectionInterface;
+    public function keys(): MutableAccessibleCollectionInterface<int, Tk>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
@@ -63,12 +57,9 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                `MutableAccessibleCollectionInterface` values.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
-     *                                                      the values after a user-specified condition is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableAccessibleCollectionInterface;
+    public function filter(Closure $fn): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
@@ -82,14 +73,9 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                    `MutableAccessibleCollectionInterface` keys and values.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` containing
-     *                                                      the values after a user-specified condition is applied
-     *                                                      to the keys and values of the current
-     *                                                      `MutableAccessibleCollectionInterface`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableAccessibleCollectionInterface;
+    public function filterWithKey(Closure $fn): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -100,21 +86,15 @@ interface MutableAccessibleCollectionInterface extends
      *
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
-     *
-     * @param Tk $k The key to remove.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> Returns itself.
      */
     #[Override]
-    public function remove(int|string $k): MutableAccessibleCollectionInterface;
+    public function remove(Tk $k): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Removes all elements from the collection.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv>
      */
     #[Override]
-    public function clear(): MutableAccessibleCollectionInterface;
+    public function clear(): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -123,8 +103,6 @@ interface MutableAccessibleCollectionInterface extends
      * If the number of elements of the `MutableAccessibleCollectionInterface` are not equal to the
      * number of elements in `$elements`, then only the combined elements up to and including
      * the final element of the one with the least number of elements is included.
-     *
-     * @template Tu
      *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableAccessibleCollectionInterface`.
      *
@@ -136,7 +114,7 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableAccessibleCollectionInterface;
+    public function zip<Tu>(array $elements): MutableAccessibleCollectionInterface<Tk, array>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the first `n` values of the current
@@ -149,14 +127,10 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @param int<0, max> $n The last element that will be included in the returned `MutableAccessibleCollectionInterface`.
      *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
-     *                                                      subset of the current `MutableAccessibleCollectionInterface`
-     *                                                      up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableAccessibleCollectionInterface;
+    public function take(int $n): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
@@ -168,13 +142,9 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                condition.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
-     *                                                      subset of the current `MutableAccessibleCollectionInterface`
-     *                                                      up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableAccessibleCollectionInterface;
+    public function takeWhile(Closure $fn): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values after the `n`-th element of
@@ -188,14 +158,10 @@ interface MutableAccessibleCollectionInterface extends
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MutableAccessibleCollectionInterface`.
      *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
-     *                                                      subset of the current `MutableAccessibleCollectionInterface`
-     *                                                      containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableAccessibleCollectionInterface;
+    public function drop(int $n): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the values of the current
@@ -207,13 +173,9 @@ interface MutableAccessibleCollectionInterface extends
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `MutableAccessibleCollectionInterface`.
-     *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
-     *                                                      subset of the current `MutableAccessibleCollectionInterface`
-     *                                                      starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableAccessibleCollectionInterface;
+    public function dropWhile(Closure $fn): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a subset of the current `MutableAccessibleCollectionInterface` starting from a given key up
@@ -229,15 +191,10 @@ interface MutableAccessibleCollectionInterface extends
      * @param int<0, max> $start The starting key of this Vector to begin the returned `MutableAccessibleCollectionInterface`
      * @param null|int<0, max> $length The length of the returned `MutableAccessibleCollectionInterface`
      *
-     * @return MutableAccessibleCollectionInterface<Tk, Tv> A `MutableAccessibleCollectionInterface` that is a proper
-     *                                                      subset of the current `MutableAccessibleCollectionInterface`
-     *                                                      starting at `$start` up to but not including the element
-     *                                                      `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableAccessibleCollectionInterface;
+    public function slice(int $start, null|int $length = null): MutableAccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableAccessibleCollectionInterface` containing the original `MutableAccessibleCollectionInterface` split into
@@ -254,7 +211,7 @@ interface MutableAccessibleCollectionInterface extends
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableAccessibleCollectionInterface;
+    public function chunk(int $size): MutableAccessibleCollectionInterface<int, MutableAccessibleCollectionInterface<Tk, Tv>>;
 
     /**
      * Determines if the specified offset exists in the current collection.
@@ -280,25 +237,22 @@ interface MutableAccessibleCollectionInterface extends
      * @throws Exception\InvalidOffsetException If the offset type is not valid.
      * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
      *
-     * @return Tv The value at the specified offset.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function offsetGet(mixed $offset): mixed;
+    public function offsetGet(mixed $offset): Tv|null;
 
     /**
      * Sets the value at the specified offset.
      *
      * @param mixed $offset The offset to assign the value to.
-     * @param Tv $value The value to set.
      *
      * @psalm-external-mutation-free
      *
      * @throws Exception\InvalidOffsetException If the offset type is not valid.
      */
     #[Override]
-    public function offsetSet(mixed $offset, mixed $value): void;
+    public function offsetSet(mixed $offset, Tv $value): void;
 
     /**
      * Unsets the value at the specified offset.

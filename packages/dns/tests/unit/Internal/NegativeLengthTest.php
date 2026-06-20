@@ -100,8 +100,8 @@ final class NegativeLengthTest extends TestCase
         $writer = $writer
             ->u16($id)
             ->u16($flags)
-            ->u16(Iter\count($questions))
-            ->u16(Iter\count($answers))
+            ->u16(Iter\count::<array>($questions))
+            ->u16(Iter\count::<array>($answers))
             ->u16(0)
             ->u16(0);
 

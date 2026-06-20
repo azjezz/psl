@@ -52,7 +52,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);
@@ -106,7 +106,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener, $serverHandler): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener, $serverHandler): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);
@@ -372,7 +372,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);
@@ -451,7 +451,7 @@ final class TransportTest extends TestCase
             $conn1 = new H2Connection($h2Session, $metadata);
             $conn2 = new H2Connection($h2Session, $metadata);
 
-            [$tx1, $tx2] = Async\concurrently([
+            [$tx1, $tx2] = Async\concurrently::<int, Transaction>([
                 static fn() => $conn1->exchange($request1, $config1),
                 static fn() => $conn2->exchange($request2, $config2),
             ]);
@@ -534,7 +534,7 @@ final class TransportTest extends TestCase
             url: $url,
             requestTarget: '/',
             body: new IO\MemoryHandle('data'),
-            trailers: Async\Awaitable::complete(FieldMap::from([
+            trailers: Async\Awaitable::<FieldMap>::complete(FieldMap::from([
                 ['x-checksum', 'deadbeef'],
             ])),
         );
@@ -556,7 +556,7 @@ final class TransportTest extends TestCase
             method: 'GET',
             url: $url,
             requestTarget: '/',
-            trailers: Async\Awaitable::complete(FieldMap::from([
+            trailers: Async\Awaitable::<FieldMap>::complete(FieldMap::from([
                 ['x-checksum', 'deadbeef'],
             ])),
         );
@@ -1030,7 +1030,7 @@ final class TransportTest extends TestCase
             $session->acquireStream();
 
             $caught = null;
-            $waiterFuture = Async\run(static function () use ($session, &$caught): void {
+            $waiterFuture = Async\run::<void>(static function () use ($session, &$caught): void {
                 try {
                     $session->acquireStream();
                 } catch (Exception\RuntimeException $e) {
@@ -1056,7 +1056,7 @@ final class TransportTest extends TestCase
         $listenerA = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $addressA = $listenerA->getLocalAddress();
 
-        $serverFutureA = Async\run(static function () use ($listenerA): void {
+        $serverFutureA = Async\run::<void>(static function () use ($listenerA): void {
             try {
                 $conn = $listenerA->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1089,7 +1089,7 @@ final class TransportTest extends TestCase
         $listenerB = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $addressB = $listenerB->getLocalAddress();
 
-        $serverFutureB = Async\run(static function () use ($listenerB): void {
+        $serverFutureB = Async\run::<void>(static function () use ($listenerB): void {
             try {
                 $conn = $listenerB->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1187,7 +1187,7 @@ final class TransportTest extends TestCase
         $listenerA = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $addressA = $listenerA->getLocalAddress();
 
-        $serverFutureA = Async\run(static function () use ($listenerA): void {
+        $serverFutureA = Async\run::<void>(static function () use ($listenerA): void {
             try {
                 $conn = $listenerA->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1220,7 +1220,7 @@ final class TransportTest extends TestCase
         $listenerB = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $addressB = $listenerB->getLocalAddress();
 
-        $serverFutureB = Async\run(static function () use ($listenerB): void {
+        $serverFutureB = Async\run::<void>(static function () use ($listenerB): void {
             try {
                 $conn = $listenerB->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1348,7 +1348,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1422,7 +1422,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1480,7 +1480,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);
@@ -1533,7 +1533,7 @@ final class TransportTest extends TestCase
                 };
             }
 
-            $results = Async\concurrently($tasks);
+            $results = Async\concurrently::<int, bool>($tasks);
 
             foreach ($results as $i => $cancelled) {
                 static::assertTrue($cancelled, "Request {$i} should have been cancelled");
@@ -1553,7 +1553,7 @@ final class TransportTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);

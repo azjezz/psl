@@ -10,7 +10,7 @@ use Psl\IO;
 use Psl\URL;
 
 /** @var Async\Deferred<Message\FieldMap> $deferred */
-$deferred = new Async\Deferred();
+$deferred = new Async\Deferred::<Message\FieldMap>();
 $request = new Message\Request(
     method: Message\METHOD_POST,
     url: URL\parse('https://example.com/upload'),

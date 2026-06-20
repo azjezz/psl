@@ -22,6 +22,6 @@ function matches(string $subject, string $pattern, int $offset = 0): bool
 {
     $_ = [];
     return (
-        Internal\call_preg('preg_match', static fn(): int|false => preg_match($pattern, $subject, $_, 0, $offset)) === 1
+        Internal\call_preg::<int|false>('preg_match', static fn(): int|false => preg_match($pattern, $subject, $_, 0, $offset)) === 1
     );
 }

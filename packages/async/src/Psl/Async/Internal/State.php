@@ -22,11 +22,9 @@ use Throwable;
  *
  * @internal
  *
- * @template T
- *
  * @codeCoverageIgnore
  */
-final class State
+final class State<T>
 {
     private bool $complete = false;
 
@@ -37,10 +35,7 @@ final class State
      */
     private array $callbacks = [];
 
-    /**
-     * @var T|null
-     */
-    private mixed $result = null;
+    private T|null $result = null;
 
     private null|Throwable $throwable = null;
 
@@ -96,12 +91,10 @@ final class State
     /**
      * Completes the operation with a result value.
      *
-     * @param T $result Result of the operation.
-     *
      * @throws Psl\Exception\InvariantViolationException If the operation is no longer pending.
      * @throws Psl\Exception\InvariantViolationException If $result is an instance of {@see Awaitable}.
      */
-    public function complete(mixed $result): void
+    public function complete(T $result): void
     {
         if ($this->complete) {
             Psl\invariant_violation('Operation is no longer pending.');
@@ -157,10 +150,8 @@ final class State
      * cycle when the state is already resolved.
      *
      * @throws Throwable If the operation completed with an error.
-     *
-     * @return T
      */
-    public function getResult(): mixed
+    public function getResult(): T
     {
         Psl\invariant($this->complete, 'Cannot get result of an incomplete operation.');
 

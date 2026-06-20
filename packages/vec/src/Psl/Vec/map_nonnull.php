@@ -20,10 +20,6 @@ use Closure;
  *      Vec\map_nonnull([1, 2, 3], fn($v) => $v > 1 ? $v * 2 : null);
  *      => Vec(4, 6)
  *
- * @template Tk
- * @template Tv
- * @template T
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): (T|null)) $function
  *
@@ -31,7 +27,7 @@ use Closure;
  *
  * @api
  */
-function map_nonnull(iterable $iterable, Closure $function): array
+function map_nonnull<Tk, Tv, T>(iterable $iterable, Closure $function): array
 {
     $result = [];
     foreach ($iterable as $value) {

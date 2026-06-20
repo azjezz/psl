@@ -14,7 +14,7 @@ final class FlatMapTest extends TestCase
     #[DataProvider('provideData')]
     public function testFlatMap(array $expected, array $array, callable $function): void
     {
-        $result = Vec\flat_map($array, $function);
+        $result = Vec\flat_map::<int, int>($array, $function);
 
         static::assertSame($expected, [...$result]);
     }

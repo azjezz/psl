@@ -17,7 +17,7 @@ final class UnboundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         static::assertNull($receiver->getCapacity());
         static::assertNull($sender->getCapacity());
@@ -29,7 +29,7 @@ final class UnboundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         static::assertFalse($receiver->isClosed());
         static::assertFalse($sender->isClosed());
@@ -46,7 +46,7 @@ final class UnboundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         static::assertFalse($receiver->isClosed());
         static::assertFalse($sender->isClosed());
@@ -63,7 +63,7 @@ final class UnboundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         static::assertSame(0, $receiver->count());
         static::assertSame(0, $sender->count());
@@ -96,7 +96,7 @@ final class UnboundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         static::assertFalse($receiver->isFull());
         static::assertFalse($sender->isFull());
@@ -113,7 +113,7 @@ final class UnboundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         static::assertTrue($receiver->isEmpty());
         static::assertTrue($sender->isEmpty());
@@ -127,7 +127,7 @@ final class UnboundedChannelTest extends TestCase
     public function testSendThrowsForClosedChannel(): void
     {
         /** @var Channel\SenderInterface<string> $sender */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         $receiver->close();
 
@@ -139,7 +139,7 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveThrowsForClosedEmptyChannel(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         $sender->close();
 
@@ -151,7 +151,7 @@ final class UnboundedChannelTest extends TestCase
     public function testTryReceiveThrowsForEmptyChannel(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $_] = Channel\unbounded();
+        [$receiver, $_] = Channel\unbounded::<string>();
 
         $this->expectException(Channel\Exception\EmptyChannelException::class);
 
@@ -161,7 +161,7 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveWaitsWhenChannelIsEmpty(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         Async\Scheduler::delay(Duration::milliseconds(1), static fn(): null => $sender->send('hello'));
 
@@ -172,7 +172,7 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveThrowsForLateClosedChannel(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         Async\Scheduler::delay(Duration::milliseconds(1), static function () use ($sender): void {
             $sender->close();
@@ -186,11 +186,11 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveCancelledWhileWaitingForMessage(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        Async\run(static function () use ($sender): void {
+        Async\run::<void>(static function () use ($sender): void {
             Async\sleep(Duration::seconds(5));
             $sender->send('never');
         })->ignore();
@@ -203,15 +203,15 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveCancelledWhileQueuedBehindPreviousReceive(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
-        $first = Async\run($receiver->receive(...));
+        $first = Async\run::<string>($receiver->receive(...));
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        $second = Async\run(static fn(): string => $receiver->receive($token));
+        $second = Async\run::<string>(static fn(): string => $receiver->receive($token));
 
-        Async\run(static function () use ($sender): void {
+        Async\run::<void>(static function () use ($sender): void {
             Async\sleep(Duration::milliseconds(50));
             $sender->send('hello');
         })->ignore();
@@ -229,12 +229,12 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveWithAlreadyCancelledTokenOnEmptyChannel(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
-        Async\run(static function () use ($sender): void {
+        Async\run::<void>(static function () use ($sender): void {
             Async\sleep(Duration::seconds(5));
             $sender->send('never');
         })->ignore();
@@ -247,10 +247,10 @@ final class UnboundedChannelTest extends TestCase
     public function testReceiveWaitsForPreviousOperationsWhenChannelIsEmpty(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<string>();
 
-        $one = Async\run($receiver->receive(...));
-        $two = Async\run($receiver->receive(...));
+        $one = Async\run::<string>($receiver->receive(...));
+        $two = Async\run::<string>($receiver->receive(...));
 
         Async\Scheduler::defer(static fn(): null => $sender->send('foo'));
         Async\Scheduler::defer(static fn(): null => $sender->send('bar'));

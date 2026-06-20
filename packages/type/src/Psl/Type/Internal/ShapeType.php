@@ -22,16 +22,13 @@ use function is_int;
 use function is_iterable;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
  * @extends Type\Type<array<Tk, Tv>>
  *
  * @mago-expect lint:kan-defect
  *
  * @internal
  */
-final readonly class ShapeType extends Type\Type
+final readonly class ShapeType<Tk: string|int, Tv> extends Type\Type<array>
 {
     /**
      * @var array<Tk, Type\TypeInterface<Tv>>
@@ -49,7 +46,7 @@ final readonly class ShapeType extends Type\Type
     ) {
         $this->requiredElements = array_filter(
             $elements_types,
-            static fn(Type\TypeInterface $element): bool => !$element->isOptional(),
+            static fn(Type\TypeInterface<Tv> $element): bool => !$element->isOptional(),
         );
     }
 

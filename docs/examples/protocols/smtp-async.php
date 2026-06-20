@@ -23,7 +23,7 @@ $sender = new Mailbox('noreply', 'example.com');
 $recipients = ['alice@example.com', 'bob@example.com', 'carol@example.com'];
 
 // Send to all recipients concurrently, reusing pooled connections
-Async\concurrently(Vec\map($recipients, static fn(string $address): Closure => static function () use (
+Async\concurrently::<int, void>(Vec\map::<int, string, Closure>($recipients, static fn(string $address): Closure => static function () use (
     $transport,
     $sender,
     $address,

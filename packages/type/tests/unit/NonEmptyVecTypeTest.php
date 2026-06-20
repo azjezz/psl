@@ -17,12 +17,12 @@ use RuntimeException;
 /**
  * @extends TypeTestCase<non-empty-list<mixed>>
  */
-final class NonEmptyVecTypeTest extends TypeTestCase
+final class NonEmptyVecTypeTest extends TypeTestCase<array>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<array>
     {
-        return Type\non_empty_vec(Type\int());
+        return Type\non_empty_vec::<int>(Type\int());
     }
 
     #[Override]
@@ -39,32 +39,32 @@ final class NonEmptyVecTypeTest extends TypeTestCase
         ];
 
         yield [
-            new Collection\Vector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Vector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            new Collection\Map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Map::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            new Collection\Vector(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
+            new Collection\Vector::<string>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            new Collection\Map(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
+            new Collection\Map::<int, string>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            Dict\map_keys::<int, string, int>(Vec\range::<int>(1, 10), static fn(int $key): string => (string) $key),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
@@ -91,9 +91,9 @@ final class NonEmptyVecTypeTest extends TypeTestCase
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'non-empty-vec<int>'];
-        yield [Type\non_empty_vec(Type\string()), 'non-empty-vec<string>'];
+        yield [Type\non_empty_vec::<string>(Type\string()), 'non-empty-vec<string>'];
         yield [
-            Type\non_empty_vec(Type\instance_of(Iter\Iterator::class)),
+            Type\non_empty_vec::<Iter\Iterator>(Type\instance_of::<Iter\Iterator>(Iter\Iterator::class)),
             'non-empty-vec<Psl\Iter\Iterator>',
         ];
     }
@@ -101,12 +101,12 @@ final class NonEmptyVecTypeTest extends TypeTestCase
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'invalid assertion value' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             ['nope'],
             'Expected "vec<int>", got "string" at path "0".',
         ];
         yield 'nested' => [
-            Type\vec(Type\vec(Type\int())),
+            Type\vec::<array>(Type\vec::<int>(Type\int())),
             [['nope']],
             'Expected "vec<vec<int>>", got "string" at path "0.0".',
         ];
@@ -115,19 +115,19 @@ final class NonEmptyVecTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'invalid coercion value' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             ['nope'],
             'Could not coerce "string" to type "vec<int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "vec<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
@@ -135,7 +135,7 @@ final class NonEmptyVecTypeTest extends TypeTestCase
             'Could not coerce "string" to type "vec<int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
@@ -143,14 +143,14 @@ final class NonEmptyVecTypeTest extends TypeTestCase
             'Could not coerce "null" to type "vec<int>" at path "0.next()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "vec<int>" at path "null".',
         ];
         yield 'iterator yielding object key' => [
-            Type\vec(Type\int()),
+            Type\vec::<int>(Type\int()),
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
@@ -160,7 +160,7 @@ final class NonEmptyVecTypeTest extends TypeTestCase
 
     #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -174,7 +174,7 @@ final class NonEmptyVecTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {

@@ -15,7 +15,7 @@ final class FilterKeysTest extends TestCase
     #[DataProvider('provideData')]
     public function testFilter(array $expected, iterable $iterable, null|Closure $predicate = null): void
     {
-        $result = Vec\filter_keys($iterable, $predicate);
+        $result = Vec\filter_keys::<int, string>($iterable, $predicate);
 
         static::assertSame($expected, $result);
     }
@@ -26,9 +26,9 @@ final class FilterKeysTest extends TestCase
         yield [['b'], ['a', 'b']];
         yield [['a'], ['a', 'b'], static fn(int $k): bool => 1 !== $k];
         yield [['b'], ['a', 'b'], static fn(int $k): bool => 0 !== $k];
-        yield [['b'], Collection\Vector::fromArray(['a', 'b']), static fn(int $k): bool => 0 !== $k];
-        yield [[], Collection\Vector::fromArray(['a', 'b']), static fn(int $_): bool => false];
-        yield [[], Collection\Vector::fromArray([]), static fn(int $_): bool => false];
+        yield [['b'], Collection\Vector::<string>::fromArray(['a', 'b']), static fn(int $k): bool => 0 !== $k];
+        yield [[], Collection\Vector::<string>::fromArray(['a', 'b']), static fn(int $_): bool => false];
+        yield [[], Collection\Vector::<string>::fromArray([]), static fn(int $_): bool => false];
         yield [[], ['a', 'b'], static fn(int $_): bool => false];
         yield [['a', 'b'], ['a', 'b'], static fn(int $_): bool => true];
     }

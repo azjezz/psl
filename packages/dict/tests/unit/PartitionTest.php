@@ -15,7 +15,7 @@ final class PartitionTest extends TestCase
     #[DataProvider('provideData')]
     public function testPartition(array $expected, array $array, Closure $predicate): void
     {
-        static::assertSame($expected, Dict\partition($array, $predicate));
+        static::assertSame($expected, Dict\partition::<int, string>($array, $predicate));
     }
 
     public static function provideData(): array

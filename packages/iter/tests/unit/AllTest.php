@@ -13,7 +13,7 @@ final class AllTest extends TestCase
     #[DataProvider('provideData')]
     public function testAll(bool $expected, iterable $iterable, callable $predicate): void
     {
-        static::assertSame($expected, Iter\all($iterable, $predicate));
+        static::assertSame($expected, Iter\all::<bool|int>($iterable, $predicate));
     }
 
     public static function provideData(): iterable

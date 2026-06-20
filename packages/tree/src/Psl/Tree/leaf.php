@@ -11,17 +11,11 @@ namespace Psl\Tree;
  *
  *      Tree\leaf('value')
  *
- * @template T
- *
- * @param T $value
- *
- * @return LeafNode<T>
- *
  * @pure
  *
  * @api
  */
-function leaf(mixed $value): LeafNode
+function leaf<T>(T $value): LeafNode<T>
 {
-    return new LeafNode($value);
+    return new LeafNode::<T>($value);
 }

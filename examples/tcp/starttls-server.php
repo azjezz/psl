@@ -19,7 +19,7 @@ $tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create($certFile, 
 
 $acceptor = new TLS\Acceptor($tlsConfig);
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($acceptor): void {
         $listener = TCP\listen('localhost', 9025);
         IO\write_error_line('< STARTTLS server listening on port 9025');

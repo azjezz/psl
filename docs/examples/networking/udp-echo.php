@@ -11,7 +11,7 @@ use Psl\UDP;
 $server = UDP\Socket::bind('127.0.0.1', 0);
 $serverAddress = $server->getLocalAddress();
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($server): void {
         [$data, $sender] = $server->receiveFrom(1024);
         $server->sendTo("echo: {$data}", $sender);

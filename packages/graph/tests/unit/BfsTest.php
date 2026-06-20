@@ -13,31 +13,31 @@ final class BfsTest extends TestCase
 {
     public function testBfsOnSingleNode(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
 
-        static::assertSame(['A'], Graph\bfs($graph, 'A'));
+        static::assertSame(['A'], Graph\bfs::<string, int>($graph, 'A'));
     }
 
     public function testBfsOnLinearGraph(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'B', 'C');
-        $graph = Graph\add_edge($graph, 'C', 'D');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'C');
+        $graph = Graph\add_edge::<string, int>($graph, 'C', 'D');
 
-        static::assertSame(['A', 'B', 'C', 'D'], Graph\bfs($graph, 'A'));
+        static::assertSame(['A', 'B', 'C', 'D'], Graph\bfs::<string, int>($graph, 'A'));
     }
 
     public function testBfsOnTreeGraph(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'A', 'C');
-        $graph = Graph\add_edge($graph, 'B', 'D');
-        $graph = Graph\add_edge($graph, 'B', 'E');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'C');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'D');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'E');
 
-        $result = Graph\bfs($graph, 'A');
+        $result = Graph\bfs::<string, int>($graph, 'A');
         static::assertSame('A', $result[0]);
         static::assertContains('B', $result);
         static::assertContains('C', $result);
@@ -54,19 +54,19 @@ final class BfsTest extends TestCase
 
     public function testBfsFromNonExistentNode(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
 
-        static::assertSame([], Graph\bfs($graph, 'B'));
+        static::assertSame([], Graph\bfs::<string, int>($graph, 'B'));
     }
 
     public function testBfsOnDisconnectedGraph(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_node($graph, 'C');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_node::<string, int>($graph, 'C');
 
-        $result = Graph\bfs($graph, 'A');
+        $result = Graph\bfs::<string, int>($graph, 'A');
         static::assertContains('A', $result);
         static::assertContains('B', $result);
         static::assertNotContains('C', $result);

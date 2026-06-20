@@ -79,7 +79,7 @@ final class SocksProxyTest extends TestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, int>($tasks);
 
         static::assertCount(5, $results);
         foreach ($results as $status) {

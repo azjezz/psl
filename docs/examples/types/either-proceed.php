@@ -7,9 +7,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Either;
 
 /** @var Either\Either<string, int> $either */
-$either = new Either\Right(42);
+$either = new Either\Right::<int>(42);
 
-$message = $either->proceed(
+$message = $either->proceed::<string>(
     static fn(int $value): string => "Got value: {$value}",
     static fn(string $error): string => "Error: {$error}",
 );

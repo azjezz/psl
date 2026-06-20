@@ -7,19 +7,11 @@ namespace Psl\Math;
 /**
  * Returns the smallest number of all the given numbers.
  *
- * @template T of int|float
- *
- * @param T $first
- * @param T $second
- * @param T ...$rest
- *
- * @return T
- *
  * @pure
  *
  * @api
  */
-function minva(int|float $first, int|float $second, int|float ...$rest): int|float
+function minva<T: int|float>(T $first, T $second, T ...$rest): T
 {
     $min = $first < $second ? $first : $second;
     foreach ($rest as $number) {

@@ -13,35 +13,26 @@ use Psl\Type\TypeInterface;
 use Throwable;
 
 /**
- * @template I
- * @template O
- *
- * @extends Type\Type<O>
- *
  * @internal
  */
-final readonly class ConvertedType extends Type\Type
+final readonly class ConvertedType<I, O> extends Type\Type<O>
 {
     /**
      * @psalm-mutation-free
      *
-     * @param TypeInterface<I> $from
-     * @param TypeInterface<O> $into
      * @param (Closure(I): O) $converter
      */
     public function __construct(
-        private TypeInterface $from,
-        private TypeInterface $into,
+        private TypeInterface<I> $from,
+        private TypeInterface<O> $into,
         private Closure $converter,
     ) {}
 
     /**
      * @throws CoercionException
-     *
-     * @return O
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): O
     {
         if ($this->into->matches($value)) {
             return $value;
@@ -77,11 +68,9 @@ final readonly class ConvertedType extends Type\Type
      * @psalm-assert O $value
      *
      * @throws AssertException
-     *
-     * @return O
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): O
     {
         return $this->into->assert($value);
     }

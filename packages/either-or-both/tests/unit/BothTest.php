@@ -19,42 +19,42 @@ final class BothTest extends TestCase
 {
     public function testIsLeft(): void
     {
-        static::assertFalse(new Both('l', 'r')->isLeft());
+        static::assertFalse(new Both::<string, string>('l', 'r')->isLeft());
     }
 
     public function testIsRight(): void
     {
-        static::assertFalse(new Both('l', 'r')->isRight());
+        static::assertFalse(new Both::<string, string>('l', 'r')->isRight());
     }
 
     public function testIsBoth(): void
     {
-        static::assertTrue(new Both('l', 'r')->isBoth());
+        static::assertTrue(new Both::<string, string>('l', 'r')->isBoth());
     }
 
     public function testHasLeft(): void
     {
-        static::assertTrue(new Both('l', 'r')->hasLeft());
+        static::assertTrue(new Both::<string, string>('l', 'r')->hasLeft());
     }
 
     public function testHasRight(): void
     {
-        static::assertTrue(new Both('l', 'r')->hasRight());
+        static::assertTrue(new Both::<string, string>('l', 'r')->hasRight());
     }
 
     public function testGetLeft(): void
     {
-        static::assertSame('l', new Both('l', 'r')->getLeft());
+        static::assertSame('l', new Both::<string, string>('l', 'r')->getLeft());
     }
 
     public function testGetRight(): void
     {
-        static::assertSame('r', new Both('l', 'r')->getRight());
+        static::assertSame('r', new Both::<string, string>('l', 'r')->getRight());
     }
 
     public function testUnwrapLeft(): void
     {
-        $option = new Both('l', 'r')->unwrapLeft();
+        $option = new Both::<string, string>('l', 'r')->unwrapLeft();
 
         static::assertTrue($option->isSome());
         static::assertSame('l', $option->unwrap());
@@ -62,7 +62,7 @@ final class BothTest extends TestCase
 
     public function testUnwrapRight(): void
     {
-        $option = new Both('l', 'r')->unwrapRight();
+        $option = new Both::<string, string>('l', 'r')->unwrapRight();
 
         static::assertTrue($option->isSome());
         static::assertSame('r', $option->unwrap());
@@ -70,13 +70,13 @@ final class BothTest extends TestCase
 
     public function testMapRunsClosureTwice(): void
     {
-        $callCount = new Ref(0);
+        $callCount = new Ref::<int>(0);
         $closure = static function (string $v) use ($callCount): string {
             $callCount->value++;
             return Str\uppercase($v);
         };
 
-        $result = new Both('hello', 'world')->map($closure);
+        $result = new Both::<string, string>('hello', 'world')->map::<string>($closure);
 
         static::assertInstanceOf(Both::class, $result);
         static::assertSame('HELLO', $result->getLeft());
@@ -86,7 +86,7 @@ final class BothTest extends TestCase
 
     public function testMapLeftKeepsRightUntouched(): void
     {
-        $result = new Both('hello', 'world')->mapLeft(Str\uppercase(...));
+        $result = new Both::<string, string>('hello', 'world')->mapLeft::<string>(Str\uppercase(...));
 
         static::assertInstanceOf(Both::class, $result);
         static::assertSame('HELLO', $result->getLeft());
@@ -95,7 +95,7 @@ final class BothTest extends TestCase
 
     public function testMapRightKeepsLeftUntouched(): void
     {
-        $result = new Both('hello', 'world')->mapRight(Str\uppercase(...));
+        $result = new Both::<string, string>('hello', 'world')->mapRight::<string>(Str\uppercase(...));
 
         static::assertInstanceOf(Both::class, $result);
         static::assertSame('hello', $result->getLeft());
@@ -104,10 +104,10 @@ final class BothTest extends TestCase
 
     public function testMapAnyCallsBothIndependently(): void
     {
-        $leftSpy = new Ref(0);
-        $rightSpy = new Ref(0);
+        $leftSpy = new Ref::<int>(0);
+        $rightSpy = new Ref::<int>(0);
 
-        $result = new Both('hello', 'world')->mapAny(static function (string $v) use ($leftSpy): int {
+        $result = new Both::<string, string>('hello', 'world')->mapAny::<int, string>(static function (string $v) use ($leftSpy): int {
             $leftSpy->value++;
             return Str\length($v);
         }, static function (string $v) use ($rightSpy): string {
@@ -124,7 +124,7 @@ final class BothTest extends TestCase
 
     public function testSwap(): void
     {
-        $result = new Both('l', 'r')->swap();
+        $result = new Both::<string, string>('l', 'r')->swap();
 
         static::assertInstanceOf(Both::class, $result);
         static::assertSame('r', $result->getLeft());
@@ -133,7 +133,7 @@ final class BothTest extends TestCase
 
     public function testSwapRoundTripIsIdentity(): void
     {
-        $original = new Both('l', 'r');
+        $original = new Both::<string, string>('l', 'r');
         $swappedTwice = $original->swap()->swap();
 
         static::assertTrue($original->equals($swappedTwice));
@@ -141,11 +141,11 @@ final class BothTest extends TestCase
 
     public function testProceedCallsBothOnly(): void
     {
-        $leftSpy = new Ref(0);
-        $rightSpy = new Ref(0);
-        $bothSpy = new Ref(0);
+        $leftSpy = new Ref::<int>(0);
+        $rightSpy = new Ref::<int>(0);
+        $bothSpy = new Ref::<int>(0);
 
-        $result = new Both('hello', 'world')->proceed(
+        $result = new Both::<string, string>('hello', 'world')->proceed::<string>(
             left: static function () use ($leftSpy): string {
                 $leftSpy->value++;
                 return 'left';
@@ -168,8 +168,8 @@ final class BothTest extends TestCase
 
     public function testApplyRunsClosureTwiceAndReturnsSelf(): void
     {
-        $both = new Both('hello', 'world');
-        $captured = new Ref([]);
+        $both = new Both::<string, string>('hello', 'world');
+        $captured = new Ref::<array>([]);
 
         $result = $both->apply(static function (string $v) use ($captured): void {
             $captured->value = [...$captured->value, $v];
@@ -181,7 +181,7 @@ final class BothTest extends TestCase
 
     public function testContainsLeft(): void
     {
-        $both = new Both('l', 'r');
+        $both = new Both::<string, string>('l', 'r');
 
         static::assertTrue($both->containsLeft('l'));
         static::assertFalse($both->containsLeft('r'));
@@ -190,7 +190,7 @@ final class BothTest extends TestCase
 
     public function testContainsRight(): void
     {
-        $both = new Both('l', 'r');
+        $both = new Both::<string, string>('l', 'r');
 
         static::assertTrue($both->containsRight('r'));
         static::assertFalse($both->containsRight('l'));
@@ -199,20 +199,20 @@ final class BothTest extends TestCase
 
     public function testEquals(): void
     {
-        $a = new Both('l', 'r');
+        $a = new Both::<string, string>('l', 'r');
 
         static::assertInstanceOf(Equable::class, $a);
-        static::assertTrue($a->equals(new Both('l', 'r')));
-        static::assertFalse($a->equals(new Both('l', 'different')));
-        static::assertFalse($a->equals(new Both('different', 'r')));
-        static::assertFalse($a->equals(new Both('r', 'l'))); // swapped values are not equal
-        static::assertFalse($a->equals(new Left('l')));
-        static::assertFalse($a->equals(new Right('r')));
+        static::assertTrue($a->equals(new Both::<string, string>('l', 'r')));
+        static::assertFalse($a->equals(new Both::<string, string>('l', 'different')));
+        static::assertFalse($a->equals(new Both::<string, string>('different', 'r')));
+        static::assertFalse($a->equals(new Both::<string, string>('r', 'l'))); // swapped values are not equal
+        static::assertFalse($a->equals(new Left::<string>('l')));
+        static::assertFalse($a->equals(new Right::<string>('r')));
     }
 
     public function testBothFactoryFunction(): void
     {
-        $result = EitherOrBoth\both('l', 'r');
+        $result = EitherOrBoth\both::<string, string>('l', 'r');
 
         static::assertInstanceOf(Both::class, $result);
         static::assertSame('l', $result->getLeft());

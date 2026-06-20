@@ -27,7 +27,7 @@ final class TCPResolverTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($server): void {
+        $serverFuture = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             for ($i = 0; $i < 2; $i++) {
@@ -90,7 +90,7 @@ final class TCPResolverTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($server): void {
+        $serverFuture = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->close();
             $server->close();
@@ -112,7 +112,7 @@ final class TCPResolverTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($server): void {
+        $serverFuture = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $lengthData = $client->readFixedSize(2);
@@ -202,7 +202,7 @@ final class TCPResolverTest extends TestCase
 
         $connectionClosed = false;
 
-        $serverFuture = Async\run(static function () use ($server, &$connectionClosed): void {
+        $serverFuture = Async\run::<void>(static function () use ($server, &$connectionClosed): void {
             $client = $server->accept();
 
             $lengthData = $client->readFixedSize(2);
@@ -263,7 +263,7 @@ final class TCPResolverTest extends TestCase
         $localAddress = $server->getLocalAddress();
         $connectionCount = 0;
 
-        $serverFuture = Async\run(static function () use ($server, &$connectionCount): void {
+        $serverFuture = Async\run::<void>(static function () use ($server, &$connectionCount): void {
             $client = $server->accept();
             $connectionCount++;
 
@@ -324,7 +324,7 @@ final class TCPResolverTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($server): void {
+        $serverFuture = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->close();
             $server->close();
@@ -346,7 +346,7 @@ final class TCPResolverTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($server): void {
+        $serverFuture = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->close();
             $server->close();
@@ -369,7 +369,7 @@ final class TCPResolverTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $localAddress = $server->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($server): void {
+        $serverFuture = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $lengthData = $client->readFixedSize(2);

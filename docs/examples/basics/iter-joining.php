@@ -12,9 +12,9 @@ use Psl\Vec;
 // -- Sorted inputs: merge_join_by
 // Both inputs must already be sorted according to the comparator. Lazy, O(1) memory
 // on first traversal. The returned `Iter\Iterator` is rewindable.
-$events = Vec\map(
-    Iter\merge_join_by([1, 2, 4], [2, 3, 4], static fn(int $a, int $b): Order => Order::from($a <=> $b)),
-    static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+$events = Vec\map::<int, EitherOrBoth\EitherOrBoth<int, int>, string>(
+    Iter\merge_join_by::<int, int>([1, 2, 4], [2, 3, 4], static fn(int $a, int $b): Order => Order::from($a <=> $b)),
+    static fn(EitherOrBoth\EitherOrBoth<int, int> $e): string => $e->proceed::<string>(
         left: static fn(int $v): string => "left:{$v}",
         right: static fn(int $v): string => "right:{$v}",
         both: static fn(int $l, int $r): string => "both:{$l}={$r}",
@@ -31,15 +31,15 @@ $incoming = [['id' => 1, 'name' => 'Ada'], ['id' => 3, 'name' => 'Grace']];
 /** @var list<array{id: int, name: string}> $current */
 $current = [['id' => 1, 'name' => 'Ada (old)'], ['id' => 2, 'name' => 'Linus']];
 
-$changelog = Vec\map(
-    Iter\merge_join_by_key(
+$changelog = Vec\map::<int, EitherOrBoth\EitherOrBoth<array, array>, string>(
+    Iter\merge_join_by_key::<array, int>(
         $incoming,
         $current,
         /** @param array{id: int, name: string} $r */
         static fn(array $r): int => $r['id'],
     ),
     /** @param EitherOrBoth\EitherOrBoth<array{id: int, name: string}, array{id: int, name: string}> $e */
-    static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+    static fn(EitherOrBoth\EitherOrBoth<array, array> $e): string => $e->proceed::<string>(
         /** @param array{id: int, name: string} $r */
         left: static fn(array $r): string => "+ {$r['id']} {$r['name']}",
         /** @param array{id: int, name: string} $r */

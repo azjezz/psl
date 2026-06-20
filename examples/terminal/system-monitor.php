@@ -99,7 +99,7 @@ function generate_processes(): array
 
     foreach ($commands as $i => $cmd) {
         /** @var non-negative-int $statusIdx */
-        $statusIdx = PseudoRandom\int(0, Iter\count($statuses) - 1);
+        $statusIdx = PseudoRandom\int(0, Iter\count::<string>($statuses) - 1);
         $processes[] = new Process(
             pid: 1000 + (($i * 137) % 9000),
             command: $cmd,
@@ -125,7 +125,7 @@ function random_walk(float $current, float $min, float $max, float $step): float
 {
     $delta = (PseudoRandom\float() - 0.5) * 2.0 * $step;
 
-    return Math\clamp($current + $delta, $min, $max);
+    return Math\clamp::<float>($current + $delta, $min, $max);
 }
 
 final class ViewState
@@ -269,7 +269,7 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
         ]),
     ])->render($memRows[3], $buffer);
 
-    $tableRows = Vec\map($state->processes, static fn(Process $p): array => [
+    $tableRows = Vec\map::<int, Process, array>($state->processes, static fn(Process $p): array => [
         Widget\Span::raw((string) $p->pid),
         Widget\Span::raw($p->command),
         Widget\Span::styled(Str\format('%.1f', $p->cpu), ...match (true) {
@@ -311,9 +311,9 @@ function render_overview(Terminal\Rect $main, MonitorState $state, Terminal\Buff
 
     $procBlock->render($processSection, $table, $buffer);
 
-    $processCount = Iter\count($state->processes);
+    $processCount = Iter\count::<Process>($state->processes);
     $blockInner = Widget\Block::new()->border(Widget\Border::rounded())->innerArea($processSection);
-    $visibleRows = Math\maxva(1, $blockInner->height - 2);
+    $visibleRows = Math\maxva::<int>(1, $blockInner->height - 2);
     $state->view->visible_rows = $visibleRows;
 
     $scrollbarRect = new Terminal\Rect($processSection->right() - 2, $blockInner->y, 1, $blockInner->height);
@@ -361,8 +361,8 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
         ->titleStyle(Ansi\foreground(Color\bright_green()), Style\bold())
         ->border(Widget\Border::rounded());
 
-    $avgCpu = Iter\count($state->cpu_values) > 0
-        ? Math\sum_floats($state->cpu_values) / Iter\count($state->cpu_values)
+    $avgCpu = Iter\count::<float>($state->cpu_values) > 0
+        ? Math\sum_floats($state->cpu_values) / Iter\count::<float>($state->cpu_values)
         : 0.0;
 
     $infoBlock->render(
@@ -386,7 +386,7 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
             ]),
             Widget\Line::new([
                 Widget\Span::styled('Cores: ', Ansi\foreground(Color\bright_white())),
-                Widget\Span::styled((string) Iter\count($state->cpu_values), Ansi\foreground(Color\bright_cyan())),
+                Widget\Span::styled((string) Iter\count::<float>($state->cpu_values), Ansi\foreground(Color\bright_cyan())),
                 Widget\Span::styled('    Swap: ', Ansi\foreground(Color\bright_white())),
                 Widget\Span::styled(
                     Str\format('%.1fG / %.1fG', $state->swap_used, $state->swap_total),
@@ -395,9 +395,9 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
             ]),
             Widget\Line::new([
                 Widget\Span::styled('Processes: ', Ansi\foreground(Color\bright_white())),
-                Widget\Span::styled((string) Iter\count($state->processes), Ansi\foreground(Color\bright_magenta())),
+                Widget\Span::styled((string) Iter\count::<Process>($state->processes), Ansi\foreground(Color\bright_magenta())),
                 Widget\Span::styled('    History points: ', Ansi\foreground(Color\bright_white())),
-                Widget\Span::styled((string) Iter\count($state->cpu_history), Ansi\foreground(Color\bright_cyan())),
+                Widget\Span::styled((string) Iter\count::<float>($state->cpu_history), Ansi\foreground(Color\bright_cyan())),
             ]),
         ]),
         $buffer,
@@ -405,7 +405,7 @@ function render_details(Terminal\Rect $main, MonitorState $state, Terminal\Buffe
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(new MonitorState(), title: 'System Monitor');
+    $app = Terminal\Application::create::<MonitorState>(new MonitorState(), title: 'System Monitor');
 
     $app->interval(DateTime\Duration::seconds(1), static function (MonitorState $state): void {
         foreach ($state->cpu_values as $i => $v) {
@@ -415,10 +415,10 @@ Async\main(static function (): int {
         $state->mem_used = namespace\random_walk($state->mem_used, 0.5, $state->mem_total - 0.5, 0.3);
         $state->swap_used = namespace\random_walk($state->swap_used, 0.0, $state->swap_total, 0.1);
 
-        $avg = Math\sum_floats($state->cpu_values) / Iter\count($state->cpu_values);
+        $avg = Math\sum_floats($state->cpu_values) / Iter\count::<float>($state->cpu_values);
         $state->cpu_history[] = $avg / 100.0;
-        if (Iter\count($state->cpu_history) > 120) {
-            $state->cpu_history = Vec\drop($state->cpu_history, 1);
+        if (Iter\count::<float>($state->cpu_history) > 120) {
+            $state->cpu_history = Vec\drop::<float>($state->cpu_history, 1);
         }
 
         $updated = [];
@@ -433,7 +433,7 @@ Async\main(static function (): int {
             );
         }
 
-        $state->processes = Vec\sort($updated, static fn(Process $a, Process $b): int => match (
+        $state->processes = Vec\sort::<Process>($updated, static fn(Process $a, Process $b): int => match (
             $state->view->sort_col
         ) {
             'cpu' => $b->cpu <=> $a->cpu,
@@ -442,7 +442,7 @@ Async\main(static function (): int {
         });
     });
 
-    $app->on(Event\Key::class, static function (Event\Key $event, MonitorState $state) use ($app): void {
+    $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, MonitorState $state) use ($app): void {
         if ($event->is('ctrl+c')) {
             $app->stop();
             return;
@@ -457,10 +457,10 @@ Async\main(static function (): int {
             return;
         }
 
-        $processCount = Iter\count($state->processes);
+        $processCount = Iter\count::<Process>($state->processes);
 
         if ($event->is('up') && $processCount > 0) {
-            $state->view->selected = Math\maxva(0, $state->view->selected - 1);
+            $state->view->selected = Math\maxva::<int>(0, $state->view->selected - 1);
             if ($state->view->selected < $state->view->proc_scroll) {
                 $state->view->proc_scroll = $state->view->selected;
             }
@@ -469,7 +469,7 @@ Async\main(static function (): int {
         }
 
         if ($event->is('down') && $processCount > 0) {
-            $state->view->selected = Math\minva($processCount - 1, $state->view->selected + 1);
+            $state->view->selected = Math\minva::<int>($processCount - 1, $state->view->selected + 1);
             $visible = $state->view->visible_rows;
             if ($state->view->selected >= ($state->view->proc_scroll + $visible)) {
                 $state->view->proc_scroll = $state->view->selected - $visible + 1;
@@ -496,24 +496,24 @@ Async\main(static function (): int {
 
         if ($event->is('end') && $processCount > 0) {
             $state->view->selected = $processCount - 1;
-            $state->view->proc_scroll = Math\maxva(0, $processCount - $state->view->visible_rows);
+            $state->view->proc_scroll = Math\maxva::<int>(0, $processCount - $state->view->visible_rows);
             return;
         }
     });
 
-    $app->on(Event\Mouse::class, static function (Event\Mouse $event, MonitorState $state): void {
+    $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, MonitorState $state): void {
         if ($state->view->active_tab !== 0) {
             return;
         }
 
-        $processCount = Iter\count($state->processes);
+        $processCount = Iter\count::<Process>($state->processes);
 
         if ($event->kind === Event\MouseKind::ScrollUp) {
-            $state->view->proc_scroll = Math\maxva(0, $state->view->proc_scroll - 3);
+            $state->view->proc_scroll = Math\maxva::<int>(0, $state->view->proc_scroll - 3);
         }
 
         if ($event->kind === Event\MouseKind::ScrollDown) {
-            $state->view->proc_scroll = Math\minva(Math\maxva(0, $processCount - 1), $state->view->proc_scroll + 3);
+            $state->view->proc_scroll = Math\minva::<int>(Math\maxva::<int>(0, $processCount - 1), $state->view->proc_scroll + 3);
         }
     });
 
@@ -555,8 +555,8 @@ Async\main(static function (): int {
             Layout\fixed($rightLen),
         ]);
 
-        $avgCpu = Iter\count($state->cpu_values) > 0
-            ? Math\sum_floats($state->cpu_values) / Iter\count($state->cpu_values)
+        $avgCpu = Iter\count::<float>($state->cpu_values) > 0
+            ? Math\sum_floats($state->cpu_values) / Iter\count::<float>($state->cpu_values)
             : 0.0;
 
         Widget\Paragraph::new([Widget\Line::new([

@@ -170,7 +170,7 @@ final readonly class Git
      */
     private function run(string ...$args): string
     {
-        $args = Vec\values($args);
+        $args = Vec\values::<string>($args);
 
         Log\command('git ' . Str\join($args, ' '));
 

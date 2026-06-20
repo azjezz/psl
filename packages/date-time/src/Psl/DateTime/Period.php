@@ -277,12 +277,10 @@ final readonly class Period implements TemporalAmountInterface
     /**
      * Evaluates whether this period is equivalent to another.
      *
-     * @param TemporalAmountInterface $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function equals(mixed $other): bool
+    public function equals(TemporalAmountInterface $other): bool
     {
         if (!$other instanceof Period) {
             // @codeCoverageIgnoreStart

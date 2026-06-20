@@ -62,5 +62,5 @@ function returns_falsy_match(null $state = null): bool
  */
 function returns_mixed_in_shape(mixed $data): array
 {
-    return Type\shape(['mightBeNull' => Type\nonnull()])->coerce($data);
+    return Type\shape::<string, mixed>(['mightBeNull' => Type\nonnull()])->coerce($data);
 }

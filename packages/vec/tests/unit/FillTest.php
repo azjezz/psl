@@ -11,7 +11,7 @@ final class FillTest extends TestCase
 {
     public function testFill(): void
     {
-        $result = Vec\fill(5, 42);
+        $result = Vec\fill::<int>(5, 42);
 
         static::assertSame([42, 42, 42, 42, 42], $result);
     }

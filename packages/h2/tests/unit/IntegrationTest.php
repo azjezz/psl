@@ -567,12 +567,12 @@ final class IntegrationTest extends TestCase
 
         $client->sendData($streamId, 'client hello');
 
-        $serverData = $this->readUntilEvent($server, Event\DataReceived::class);
+        $serverData = $this->readUntilEvent::<Event\DataReceived>($server, Event\DataReceived::class);
         static::assertSame('client hello', $serverData->data);
 
         $server->sendData($streamId, 'server hello');
 
-        $clientData = $this->readUntilEvent($client, Event\DataReceived::class);
+        $clientData = $this->readUntilEvent::<Event\DataReceived>($client, Event\DataReceived::class);
         static::assertSame('server hello', $clientData->data);
     }
 
@@ -682,7 +682,7 @@ final class IntegrationTest extends TestCase
 
         $client->sendAllData($streamId, '', true);
 
-        $data = $this->readUntilEvent($server, Event\DataReceived::class);
+        $data = $this->readUntilEvent::<Event\DataReceived>($server, Event\DataReceived::class);
         static::assertSame('', $data->data);
         static::assertTrue($data->endStream);
     }
@@ -714,12 +714,12 @@ final class IntegrationTest extends TestCase
             new Header(':authority', 'example.com'),
         ]);
 
-        $push = $this->readUntilEvent($client, Event\PushPromiseReceived::class);
+        $push = $this->readUntilEvent::<Event\PushPromiseReceived>($client, Event\PushPromiseReceived::class);
         static::assertSame($promisedStreamId, $push->promisedStreamId);
 
         $client->rejectPush($promisedStreamId);
 
-        $reset = $this->readUntilEvent($server, Event\StreamReset::class);
+        $reset = $this->readUntilEvent::<Event\StreamReset>($server, Event\StreamReset::class);
         static::assertSame($promisedStreamId, $reset->streamId);
         static::assertSame(ErrorCode::Cancel, $reset->errorCode);
     }
@@ -782,13 +782,11 @@ final class IntegrationTest extends TestCase
     /**
      * Read events until one of the expected type is found.
      *
-     * @template T of Event\EventInterface
-     *
      * @param class-string<T> $eventClass
      *
      * @return T
      */
-    private function readUntilEvent(ConnectionInterface $conn, string $eventClass): Event\EventInterface
+    private function readUntilEvent<T: Event\EventInterface>(ConnectionInterface $conn, string $eventClass): T
     {
         while (true) {
             $events = $conn->readEvent();
@@ -868,7 +866,7 @@ final class IntegrationTest extends TestCase
         $server->sendHeadersWithStatus($sid, '200', [], true);
 
         // Read response - HeadersReceived and StreamClosed may come in one readEvent call
-        $this->readUntilEvent($client, Event\HeadersReceived::class);
+        $this->readUntilEvent::<Event\HeadersReceived>($client, Event\HeadersReceived::class);
 
         // After receiving response with endStream on a HalfClosedLocal stream, it closes
         static::assertSame(StreamState::Closed, $client->getStreamState($sid));
@@ -891,11 +889,11 @@ final class IntegrationTest extends TestCase
         $client->sendHeaders($sid, [new Header('x-checksum', 'abc123')], true);
 
         $server->readEvent(); // headers
-        $data = $this->readUntilEvent($server, Event\DataReceived::class);
+        $data = $this->readUntilEvent::<Event\DataReceived>($server, Event\DataReceived::class);
         static::assertSame('body', $data->data);
         static::assertFalse($data->endStream);
 
-        $trailers = $this->readUntilEvent($server, Event\HeadersReceived::class);
+        $trailers = $this->readUntilEvent::<Event\HeadersReceived>($server, Event\HeadersReceived::class);
         static::assertTrue($trailers->endStream);
 
         $map = [];
@@ -921,7 +919,7 @@ final class IntegrationTest extends TestCase
         $server->readEvent();
 
         $client->resetStream($sid, ErrorCode::Cancel);
-        $reset = $this->readUntilEvent($server, Event\StreamReset::class);
+        $reset = $this->readUntilEvent::<Event\StreamReset>($server, Event\StreamReset::class);
         static::assertSame($sid, $reset->streamId);
         static::assertSame(ErrorCode::Cancel, $reset->errorCode);
     }
@@ -945,7 +943,7 @@ final class IntegrationTest extends TestCase
         $server->readEvent();
 
         $server->resetStream($sid, ErrorCode::RefusedStream);
-        $reset = $this->readUntilEvent($client, Event\StreamReset::class);
+        $reset = $this->readUntilEvent::<Event\StreamReset>($client, Event\StreamReset::class);
         static::assertSame(ErrorCode::RefusedStream, $reset->errorCode);
     }
 
@@ -980,9 +978,9 @@ final class IntegrationTest extends TestCase
             );
         });
 
-        $h1 = $this->readUntilEvent($server, Event\HeadersReceived::class);
+        $h1 = $this->readUntilEvent::<Event\HeadersReceived>($server, Event\HeadersReceived::class);
         static::assertSame($s1, $h1->streamId);
-        $h3 = $this->readUntilEvent($server, Event\HeadersReceived::class);
+        $h3 = $this->readUntilEvent::<Event\HeadersReceived>($server, Event\HeadersReceived::class);
         static::assertSame($s3, $h3->streamId);
     }
 
@@ -993,11 +991,11 @@ final class IntegrationTest extends TestCase
 
         $client->ping('AAAAAAAA');
 
-        $ping = $this->readUntilEvent($server, Event\PingReceived::class);
+        $ping = $this->readUntilEvent::<Event\PingReceived>($server, Event\PingReceived::class);
         static::assertSame('AAAAAAAA', $ping->opaqueData);
         static::assertFalse($ping->ack);
 
-        $ack = $this->readUntilEvent($client, Event\PingReceived::class);
+        $ack = $this->readUntilEvent::<Event\PingReceived>($client, Event\PingReceived::class);
         static::assertTrue($ack->ack);
         static::assertSame('AAAAAAAA', $ack->opaqueData);
     }
@@ -1011,7 +1009,7 @@ final class IntegrationTest extends TestCase
         static::assertTrue($server->isConnected());
 
         $client->goAway(ErrorCode::NoError, 'bye');
-        $this->readUntilEvent($server, Event\GoAwayReceived::class);
+        $this->readUntilEvent::<Event\GoAwayReceived>($server, Event\GoAwayReceived::class);
 
         static::assertFalse($server->isConnected());
         static::assertFalse($client->isConnected());
@@ -1052,7 +1050,7 @@ final class IntegrationTest extends TestCase
         $server->readEvent();
         $server->sendHeadersWithStatus($s1, '200', [], true);
 
-        $this->readUntilEvent($client, Event\HeadersReceived::class);
+        $this->readUntilEvent::<Event\HeadersReceived>($client, Event\HeadersReceived::class);
         static::assertSame(1, $client->activeStreamCount());
     }
 
@@ -1098,7 +1096,7 @@ final class IntegrationTest extends TestCase
         $this->completeHandshake($client, $server);
 
         $server->goAway(ErrorCode::NoError);
-        $this->readUntilEvent($client, Event\GoAwayReceived::class);
+        $this->readUntilEvent::<Event\GoAwayReceived>($client, Event\GoAwayReceived::class);
         static::assertFalse($client->isConnected());
     }
 }

@@ -56,13 +56,13 @@ final readonly class MonolithicRepository
                 continue;
             }
 
-            $composerJson = Json\typed(
+            $composerJson = Json\typed::<array>(
                 File\read($composerPath),
-                Type\shape([
+                Type\shape::<string, string|array>([
                     'name' => Type\non_empty_string(),
-                    'description' => Type\optional(Type\string()),
-                    'keywords' => Type\optional(Type\vec(Type\non_empty_string())),
-                    'require' => Type\dict(Type\non_empty_string(), Type\non_empty_string()),
+                    'description' => Type\optional::<string>(Type\string()),
+                    'keywords' => Type\optional::<array>(Type\vec::<string>(Type\non_empty_string())),
+                    'require' => Type\dict::<string, string>(Type\non_empty_string(), Type\non_empty_string()),
                 ], allowUnknownFields: true),
             );
 
@@ -71,8 +71,8 @@ final readonly class MonolithicRepository
                 continue;
             }
 
-            $dependencies = Vec\filter(
-                Vec\keys($composerJson['require']),
+            $dependencies = Vec\filter::<string>(
+                Vec\keys::<string, string>($composerJson['require']),
                 static fn(string $pkg): bool => Str\starts_with($pkg, self::ORG . '/'),
             );
 
@@ -86,11 +86,11 @@ final readonly class MonolithicRepository
             );
         }
 
-        $rootComposer = Json\typed(
+        $rootComposer = Json\typed::<array>(
             File\read($rootPath . '/composer.json'),
-            Type\shape([
-                'description' => Type\optional(Type\string()),
-                'keywords' => Type\optional(Type\vec(Type\non_empty_string())),
+            Type\shape::<string, string|array>([
+                'description' => Type\optional::<string>(Type\string()),
+                'keywords' => Type\optional::<array>(Type\vec::<string>(Type\non_empty_string())),
             ], allowUnknownFields: true),
         );
 
@@ -138,7 +138,7 @@ final readonly class MonolithicRepository
     {
         $version = $tag;
         $parts = Str\split($version, '.');
-        if (Iter\count($parts) < 3) {
+        if (Iter\count::<string>($parts) < 3) {
             return 'next';
         }
 
@@ -160,6 +160,6 @@ final readonly class MonolithicRepository
         $version = $tag;
         $parts = Str\split($version, '.');
 
-        return Iter\count($parts) >= 3 && (int) $parts[2] === 0;
+        return Iter\count::<string>($parts) >= 3 && (int) $parts[2] === 0;
     }
 }

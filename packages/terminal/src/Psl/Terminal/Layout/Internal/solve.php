@@ -49,7 +49,7 @@ function solve(Rect $rect, array $constraints, bool $vertical): array
         $fixedTotal += $size;
     }
 
-    $remaining = Math\maxva(0, $totalSpace - $fixedTotal);
+    $remaining = Math\maxva::<int>(0, $totalSpace - $fixedTotal);
     $fillSize = $fillCount > 0 ? (int) ($remaining / $fillCount) : 0;
     $fillRemainder = $fillCount > 0 ? $remaining % $fillCount : 0;
 
@@ -72,7 +72,7 @@ function solve(Rect $rect, array $constraints, bool $vertical): array
             $remaining = $excess;
             for ($i = $count - 1; $i >= 0 && $remaining > 0; $i--) {
                 $share = (int) Math\round(($sizes[$i] / $shrinkableTotal) * $excess);
-                $reduction = Math\minva($sizes[$i], $share, $remaining);
+                $reduction = Math\minva::<int>($sizes[$i], $share, $remaining);
                 $sizes[$i] -= $reduction;
                 $remaining -= $reduction;
             }

@@ -62,7 +62,7 @@ final class Menu implements WidgetInterface
      */
     public function scroll(int $offset): self
     {
-        $this->scrollOffset = Math\maxva(0, $offset);
+        $this->scrollOffset = Math\maxva::<int>(0, $offset);
         return $this;
     }
 
@@ -83,8 +83,8 @@ final class Menu implements WidgetInterface
         }
 
         $itemCount = count($this->items);
-        $maxScroll = Math\maxva(0, $itemCount - $area->height);
-        $scrollOffset = Math\minva($this->scrollOffset, $maxScroll);
+        $maxScroll = Math\maxva::<int>(0, $itemCount - $area->height);
+        $scrollOffset = Math\minva::<int>($this->scrollOffset, $maxScroll);
 
         $row = 0;
         for ($i = $scrollOffset; $i < $itemCount; $i++) {

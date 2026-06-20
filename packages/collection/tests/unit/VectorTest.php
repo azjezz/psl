@@ -18,20 +18,16 @@ final class VectorTest extends AbstractVectorTestCase
 
     public function testFromItems(): void
     {
-        $vector = Vector::fromItems([1, 2, 3]);
+        $vector = Vector::<int>::fromItems([1, 2, 3]);
         static::assertSame([1, 2, 3], $vector->toArray());
     }
 
     /**
-     * @template T
-     *
      * @param array<T> $items
-     *
-     * @return Vector<T>
      */
     #[Override]
-    protected function create(array $items): Vector
+    protected function create<T>(array $items): Vector<T>
     {
-        return new Vector($items);
+        return new Vector::<mixed>($items);
     }
 }

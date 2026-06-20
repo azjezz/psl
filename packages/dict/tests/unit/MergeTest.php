@@ -14,7 +14,7 @@ final class MergeTest extends TestCase
     #[DataProvider('provideData')]
     public function testMerge(array $expected, array $array, array ...$arrays): void
     {
-        static::assertSame($expected, Dict\merge($array, ...$arrays));
+        static::assertSame($expected, Dict\merge::<string|int, string|int>($array, ...$arrays));
     }
 
     public static function provideData(): array
@@ -46,16 +46,16 @@ final class MergeTest extends TestCase
 
     public function testMergeWithMixedArrayAndNonArrayRest(): void
     {
-        $iterator = Iter\Iterator::create(['c' => 'd']);
-        $result = Dict\merge(['a' => 'b'], $iterator);
+        $iterator = Iter\Iterator::<string, string>::create(['c' => 'd']);
+        $result = Dict\merge::<string, string>(['a' => 'b'], $iterator);
 
         static::assertSame(['a' => 'b', 'c' => 'd'], $result);
     }
 
     public function testMergeWithNonArrayFirst(): void
     {
-        $iterator = Iter\Iterator::create(['a' => 'b']);
-        $result = Dict\merge($iterator, ['c' => 'd']);
+        $iterator = Iter\Iterator::<string, string>::create(['a' => 'b']);
+        $result = Dict\merge::<string, string>($iterator, ['c' => 'd']);
 
         static::assertSame(['a' => 'b', 'c' => 'd'], $result);
     }

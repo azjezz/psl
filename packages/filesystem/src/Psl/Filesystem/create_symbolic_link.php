@@ -42,7 +42,7 @@ function create_symbolic_link(string $source, string $destination): void
     } catch (Exception\NotFoundException) {
     }
 
-    [$result, $error_message] = Internal\box(static fn(): bool => symlink($source, $destination));
+    [$result, $error_message] = Internal\box::<bool>(static fn(): bool => symlink($source, $destination));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(sprintf(

@@ -11,7 +11,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function mixed_vec(): TypeInterface
+function mixed_vec(): TypeInterface<array>
 {
     return new Internal\MixedVecType();
 }

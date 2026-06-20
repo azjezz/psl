@@ -22,16 +22,13 @@ use Closure;
  *      )
  *      => ['a', 'b', 'c']
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
  * @param (Closure(T): bool) $predicate
  *
  * @return list<T>|null null if no node matches the predicate
  *
  * @api
  */
-function path_to(NodeInterface $tree, Closure $predicate): null|array
+function path_to<T>(NodeInterface<T> $tree, Closure $predicate): null|array
 {
     $value = $tree->getValue();
 
@@ -44,7 +41,7 @@ function path_to(NodeInterface $tree, Closure $predicate): null|array
     }
 
     foreach ($tree->getChildren() as $child) {
-        $childPath = namespace\path_to($child, $predicate);
+        $childPath = namespace\path_to::<T>($child, $predicate);
         if (null !== $childPath) {
             return [$value, ...$childPath];
         }

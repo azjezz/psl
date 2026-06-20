@@ -22,7 +22,7 @@ function create_directory(string $directory, int $permissions = 0o777): void
         return;
     }
 
-    [$result, $error_message] = Internal\box(static fn(): bool => mkdir($directory, $permissions, true));
+    [$result, $error_message] = Internal\box::<bool>(static fn(): bool => mkdir($directory, $permissions, true));
 
     // @codeCoverageIgnoreStart
     if (false === $result) {

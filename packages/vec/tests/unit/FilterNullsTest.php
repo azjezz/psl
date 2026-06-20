@@ -13,20 +13,20 @@ final class FilterNullsTest extends TestCase
 {
     public function testFilterNulls(): void
     {
-        static::assertCount(0, Vec\filter_nulls([]));
-        static::assertCount(0, Vec\filter_nulls([null, null]));
-        static::assertCount(1, Vec\filter_nulls([null, false]));
-        static::assertCount(1, Vec\filter_nulls([null, 'null']));
-        static::assertCount(1, Vec\filter_nulls(['null']));
-        static::assertCount(1, Vec\filter_nulls(Iter\Iterator::create(['null'])));
-        static::assertCount(0, Vec\filter_nulls(Iter\Iterator::create([null])));
-        static::assertCount(0, Vec\filter_nulls(Iter\Iterator::create([null, null])));
-        static::assertCount(3, Vec\filter_nulls(Iter\Iterator::create([null, false, '', 0])));
-        static::assertCount(3, Vec\filter_nulls(new Collection\Vector([null, false, '', 0])));
-        static::assertCount(3, Vec\filter_nulls(new Collection\Map([null, false, '', 0])));
+        static::assertCount(0, Vec\filter_nulls::<int|float|string|bool>([]));
+        static::assertCount(0, Vec\filter_nulls::<int|float|string|bool>([null, null]));
+        static::assertCount(1, Vec\filter_nulls::<bool>([null, false]));
+        static::assertCount(1, Vec\filter_nulls::<string>([null, 'null']));
+        static::assertCount(1, Vec\filter_nulls::<string>(['null']));
+        static::assertCount(1, Vec\filter_nulls::<string>(Iter\Iterator::<int, string>::create(['null'])));
+        static::assertCount(0, Vec\filter_nulls::<int|float|string|bool>(Iter\Iterator::<int, null>::create([null])));
+        static::assertCount(0, Vec\filter_nulls::<int|float|string|bool>(Iter\Iterator::<int, null>::create([null, null])));
+        static::assertCount(3, Vec\filter_nulls::<bool|string|int>(Iter\Iterator::<int, bool|string|int|null>::create([null, false, '', 0])));
+        static::assertCount(3, Vec\filter_nulls::<bool|string|int>(new Collection\Vector::<bool|string|int|null>([null, false, '', 0])));
+        static::assertCount(3, Vec\filter_nulls::<bool|string|int>(new Collection\Map::<int, bool|string|int|null>([null, false, '', 0])));
         static::assertCount(
             3,
-            Vec\filter_nulls(
+            Vec\filter_nulls::<bool|string|int>(
                 (static function (): iterable {
                     yield null;
                     yield false;

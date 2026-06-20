@@ -8,10 +8,13 @@ use Override;
 use Psl\Type;
 use Psl\Type\Tests\Fixture\ClassWithConstants;
 
-final class ConstantNameOfTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<non-empty-string>
+ */
+final class ConstantNameOfTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\constant_name_of(ClassWithConstants::class);
     }

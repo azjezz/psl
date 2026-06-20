@@ -12,7 +12,7 @@ final class ConnectTest extends TestCase
 {
     public function testConnectReturnsConnectedSocket(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $serverAddr = $server->getLocalAddress();
 
@@ -29,7 +29,7 @@ final class ConnectTest extends TestCase
 
     public function testConnectCanSendAndReceive(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $serverAddr = $server->getLocalAddress();
 

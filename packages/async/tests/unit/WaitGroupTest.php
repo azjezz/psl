@@ -50,13 +50,13 @@ final class WaitGroupTest extends TestCase
 
     public function testWaitBlocksUntilDone(): void
     {
-        $ref = new Ref('');
+        $ref = new Ref::<string>('');
 
-        Async\run(static function () use ($ref): void {
+        Async\run::<void>(static function () use ($ref): void {
             $wg = new Async\WaitGroup();
 
             $wg->add();
-            Async\run(static function () use ($wg, $ref): void {
+            Async\run::<void>(static function () use ($wg, $ref): void {
                 Async\sleep(Duration::milliseconds(10));
                 $ref->value .= 'task';
                 $wg->done();
@@ -73,16 +73,16 @@ final class WaitGroupTest extends TestCase
     {
         $count = 0;
 
-        Async\run(static function () use (&$count): void {
+        Async\run::<void>(static function () use (&$count): void {
             $wg = new Async\WaitGroup();
             $wg->add();
 
-            $a = Async\run(static function () use ($wg, &$count): void {
+            $a = Async\run::<void>(static function () use ($wg, &$count): void {
                 $wg->wait();
                 $count++;
             });
 
-            $b = Async\run(static function () use ($wg, &$count): void {
+            $b = Async\run::<void>(static function () use ($wg, &$count): void {
                 $wg->wait();
                 $count++;
             });
@@ -101,13 +101,13 @@ final class WaitGroupTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $wg = new Async\WaitGroup();
             $wg->add();
 
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-            Async\run(static function () use ($wg): void {
+            Async\run::<void>(static function () use ($wg): void {
                 Async\sleep(Duration::seconds(5));
                 $wg->done();
             })->ignore();
@@ -124,28 +124,28 @@ final class WaitGroupTest extends TestCase
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
-        Async\run(static function () use ($wg): void {
+        Async\run::<void>(static function () use ($wg): void {
             Async\sleep(Duration::seconds(5));
             $wg->done();
         })->ignore();
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function () use ($wg, $token): void {
+        Async\run::<void>(static function () use ($wg, $token): void {
             $wg->wait($token);
         })->await();
     }
 
     public function testCancelledWaitDoesNotAffectOtherWaiters(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $wg = new Async\WaitGroup();
             $wg->add();
             $normalCompleted = false;
 
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-            Async\run(static function () use ($wg, $token): void {
+            Async\run::<void>(static function () use ($wg, $token): void {
                 try {
                     $wg->wait($token);
                 } catch (Async\Exception\CancelledException) {
@@ -153,7 +153,7 @@ final class WaitGroupTest extends TestCase
                 }
             })->ignore();
 
-            Async\run(static function () use ($wg, &$normalCompleted): void {
+            Async\run::<void>(static function () use ($wg, &$normalCompleted): void {
                 $wg->wait();
                 $normalCompleted = true;
             })->ignore();
@@ -170,13 +170,13 @@ final class WaitGroupTest extends TestCase
 
     public function testReusable(): void
     {
-        $ref = new Ref('');
+        $ref = new Ref::<string>('');
 
-        Async\run(static function () use ($ref): void {
+        Async\run::<void>(static function () use ($ref): void {
             $wg = new Async\WaitGroup();
 
             $wg->add();
-            Async\run(static function () use ($wg, $ref): void {
+            Async\run::<void>(static function () use ($wg, $ref): void {
                 $ref->value .= 'a';
                 $wg->done();
             })->ignore();
@@ -184,7 +184,7 @@ final class WaitGroupTest extends TestCase
             $wg->wait();
 
             $wg->add();
-            Async\run(static function () use ($wg, $ref): void {
+            Async\run::<void>(static function () use ($wg, $ref): void {
                 $ref->value .= 'b';
                 $wg->done();
             })->ignore();
@@ -199,12 +199,12 @@ final class WaitGroupTest extends TestCase
     {
         $count = 0;
 
-        Async\run(static function () use (&$count): void {
+        Async\run::<void>(static function () use (&$count): void {
             $wg = new Async\WaitGroup();
 
             for ($i = 0; $i < 5; $i++) {
                 $wg->add();
-                Async\run(static function () use ($wg, &$count): void {
+                Async\run::<void>(static function () use ($wg, &$count): void {
                     Async\sleep(Duration::milliseconds(5));
                     $count++;
                     $wg->done();

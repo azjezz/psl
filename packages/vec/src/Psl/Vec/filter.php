@@ -24,8 +24,6 @@ use function is_array;
  *      Vec\filter(['foo', 'bar', 'baz', 'qux'], fn(string $value): bool => Str\contains($value, 'a'));
  *      => Vec('bar', 'baz')
  *
- * @template T
- *
  * @param iterable<T> $iterable
  * @param (Closure(T): bool)|null $predicate
  *
@@ -33,13 +31,9 @@ use function is_array;
  *
  * @api
  */
-function filter(iterable $iterable, null|Closure $predicate = null): array
+function filter<T>(iterable $iterable, null|Closure $predicate = null): array
 {
-    $predicate ??=
-        /**
-         * @param T $value
-         */
-        static fn(mixed $value): bool => (bool) $value;
+    $predicate ??= static fn(T $value): bool => (bool) $value;
 
     if (is_array($iterable)) {
         return array_values(array_filter($iterable, $predicate));

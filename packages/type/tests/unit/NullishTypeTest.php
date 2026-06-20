@@ -7,12 +7,12 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class NullishTypeTest extends TypeTestCase
+final class NullishTypeTest extends TypeTestCase<string|null>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string|null>
     {
-        return Type\nullish(Type\string());
+        return Type\nullish::<string>(Type\string());
     }
 
     #[Override]

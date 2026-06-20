@@ -25,14 +25,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @implements MapInterface<Tk, Tv>
- *
  * @api
  */
-final readonly class Map implements MapInterface
+final readonly class Map<Tk: string|int, Tv> implements MapInterface<Tk, Tv>
 {
     /**
      * @var array<Tk, Tv> $elements
@@ -59,47 +54,34 @@ final readonly class Map implements MapInterface
     #[Override]
     public static function default(): static
     {
-        return new self([]);
+        return new self::<Tk, Tv>([]);
     }
 
     /**
-     * @template Tsk of array-key
-     * @template Tsv
-     *
-     * @param array<Tsk, Tsv> $elements
-     *
-     * @return Map<Tsk, Tsv>
+     * @param array<Tk, Tv> $elements
      *
      * @pure
      */
-    public static function fromArray(array $elements): Map
+    public static function fromArray(array $elements): Map<Tk, Tv>
     {
-        return new self($elements);
+        return new self::<Tk, Tv>($elements);
     }
 
     /**
-     * @template Tsk of array-key
-     * @template Tsv
-     *
-     * @param array<Tsk, Tsv> $items
-     *
-     * @return Map<Tsk, Tsv>
+     * @param array<Tk, Tv> $items
      */
-    public static function fromItems(iterable $items): Map
+    public static function fromItems(iterable $items): Map<Tk, Tv>
     {
-        return self::fromArray(iterator_to_array($items));
+        return self::<Tk, Tv>::fromArray(iterator_to_array($items));
     }
 
     /**
      * Returns the first value in the current collection.
      *
-     * @return Tv|null The first value in the current collection, or `null` if the
-     *                 current collection is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): mixed
+    public function first(): Tv|null
     {
         $key = $this->firstKey();
         if (null === $key) {
@@ -112,13 +94,10 @@ final readonly class Map implements MapInterface
     /**
      * Returns the first key in the current collection.
      *
-     * @return Tk|null The first key in the current collection, or `null` if the
-     *                 current collection is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): int|string|null
+    public function firstKey(): Tk|null
     {
         return array_key_first($this->elements);
     }
@@ -126,13 +105,10 @@ final readonly class Map implements MapInterface
     /**
      * Returns the last value in the current collection.
      *
-     * @return Tv|null The last value in the current collection, or `null` if the
-     *                 current collection is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): mixed
+    public function last(): Tv|null
     {
         $key = $this->lastKey();
         if (null === $key) {
@@ -145,13 +121,10 @@ final readonly class Map implements MapInterface
     /**
      * Returns the last key in the current collection.
      *
-     * @return Tk|null The last key in the current collection, or `null` if the
-     *                 current collection is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): int|string|null
+    public function lastKey(): Tk|null
     {
         return array_key_last($this->elements);
     }
@@ -161,15 +134,10 @@ final readonly class Map implements MapInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param Tv $searchValue The value that will be search for in the current
-     *                         collection.
-     *
-     * @return Tk|null The key (index) where that value is found; null if it is not found
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): int|string|null
+    public function linearSearch(Tv $searchValue): Tk|null
     {
         $key = array_search($searchValue, $this->elements, true);
 
@@ -248,16 +216,12 @@ final readonly class Map implements MapInterface
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @param Tk $k
-     *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return Tv
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): mixed
+    public function at(Tk $k): Tv
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -269,12 +233,10 @@ final readonly class Map implements MapInterface
     /**
      * Determines if the specified key is in the current map.
      *
-     * @param Tk $k
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function contains(int|string $k): bool
+    public function contains(Tk $k): bool
     {
         return array_key_exists($k, $this->elements);
     }
@@ -282,12 +244,10 @@ final readonly class Map implements MapInterface
     /**
      * Alias of `contains`.
      *
-     * @param Tk $k
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function containsKey(int|string $k): bool
+    public function containsKey(Tk $k): bool
     {
         return $this->contains($k);
     }
@@ -295,14 +255,10 @@ final readonly class Map implements MapInterface
     /**
      * Returns the value at the specified key in the current map.
      *
-     * @param Tk $k
-     *
-     * @return Tv|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): mixed
+    public function get(Tk $k): Tv|null
     {
         return $this->elements[$k] ?? null;
     }
@@ -311,27 +267,23 @@ final readonly class Map implements MapInterface
      * Returns a `Vector` containing the values of the current
      * `Map`.
      *
-     * @return Vector<Tv>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): Vector
+    public function values(): Vector<Tv>
     {
-        return Vector::fromArray($this->elements);
+        return Vector::<Tv>::fromArray($this->elements);
     }
 
     /**
      * Returns a `Vector` containing the keys of the current `Map`.
      *
-     * @return Vector<Tk>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): Vector
+    public function keys(): Vector<Tk>
     {
-        return Vector::fromArray(array_keys($this->elements));
+        return Vector::<Tk>::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -346,14 +298,11 @@ final readonly class Map implements MapInterface
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                `Map` values.
-     *
-     * @return Map<Tk, Tv> A Map containing the values after a user-specified condition
-     *                     is applied.
      */
     #[Override]
-    public function filter(Closure $fn): Map
+    public function filter(Closure $fn): Map<Tk, Tv>
     {
-        return new Map(array_filter($this->elements, $fn));
+        return new Map::<Tk, Tv>(array_filter($this->elements, $fn));
     }
 
     /**
@@ -369,14 +318,11 @@ final readonly class Map implements MapInterface
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                    `Map` keys and values.
-     *
-     * @return Map<Tk, Tv> A `Map` containing the values after a user-specified
-     *                     condition is applied to the keys and values of the current `Map`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): Map
+    public function filterWithKey(Closure $fn): Map<Tk, Tv>
     {
-        return new Map(array_filter($this->elements, static fn($v, $k) => $fn($k, $v), ARRAY_FILTER_USE_BOTH));
+        return new Map::<Tk, Tv>(array_filter($this->elements, static fn($v, $k) => $fn($k, $v), ARRAY_FILTER_USE_BOTH));
     }
 
     /**
@@ -389,18 +335,13 @@ final readonly class Map implements MapInterface
      * The keys will remain unchanged from the current `Map` to the
      * returned `Map`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                              `Map` values.
-     *
-     * @return Map<Tk, Tu> A `Map` containing key/value pairs after a user-specified
-     *                     operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): Map
+    public function map<Tu>(Closure $fn): Map<Tk, Tu>
     {
-        return new Map(array_map($fn, $this->elements));
+        return new Map::<Tk, Tu>(array_map($fn, $this->elements));
     }
 
     /**
@@ -414,23 +355,18 @@ final readonly class Map implements MapInterface
      * The keys will remain unchanged from this `Map` to the returned
      * `Map`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `Map` keys and values.
-     *
-     * @return Map<Tk, Tu> A `Map` containing the values after a user-specified
-     *                     operation on the current `Map`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): Map
+    public function mapWithKey<Tu>(Closure $fn): Map<Tk, Tu>
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
             $result[$k] = $fn($k, $v);
         }
 
-        return new Map($result);
+        return new Map::<Tk, Tu>($result);
     }
 
     /**
@@ -442,8 +378,6 @@ final readonly class Map implements MapInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `Map`.
      *
      * @return Map<Tk, array{0: Tv, 1: Tu}> The `Map` that combines the values of the current `Map` with the provided elements.
@@ -451,7 +385,7 @@ final readonly class Map implements MapInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): Map
+    public function zip<Tu>(array $elements): Map<Tk, array>
     {
         $elements = array_values($elements);
         $count = count($elements);
@@ -467,7 +401,7 @@ final readonly class Map implements MapInterface
             $i++;
         }
 
-        return new Map($result);
+        return new Map::<Tk, array>($result);
     }
 
     /**
@@ -482,13 +416,10 @@ final readonly class Map implements MapInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `Map`.
      *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                     `Map` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): Map
+    public function take(int $n): Map<Tk, Tv>
     {
         return $this->slice(0, $n);
     }
@@ -503,12 +434,9 @@ final readonly class Map implements MapInterface
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                condition.
-     *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                     `Map` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): Map
+    public function takeWhile(Closure $fn): Map<Tk, Tv>
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -519,7 +447,7 @@ final readonly class Map implements MapInterface
             $result[$k] = $v;
         }
 
-        return new Map($result);
+        return new Map::<Tk, Tv>($result);
     }
 
     /**
@@ -534,13 +462,10 @@ final readonly class Map implements MapInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `Map`.
      *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                     `Map` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): Map
+    public function drop(int $n): Map<Tk, Tv>
     {
         return $this->slice($n);
     }
@@ -555,12 +480,9 @@ final readonly class Map implements MapInterface
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `Map`.
-     *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                     `Map` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): Map
+    public function dropWhile(Closure $fn): Map<Tk, Tv>
     {
         $result = [];
         $dropping = true;
@@ -573,7 +495,7 @@ final readonly class Map implements MapInterface
             $result[$k] = $v;
         }
 
-        return new Map($result);
+        return new Map::<Tk, Tv>($result);
     }
 
     /**
@@ -590,15 +512,12 @@ final readonly class Map implements MapInterface
      *                           `Map`.
      * @param null|int<0, max> $length The length of the returned `Map`
      *
-     * @return Map<Tk, Tv> A `Map` that is a proper subset of the current
-     *                     `Map` starting at `$start` up to but not including the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): Map
+    public function slice(int $start, null|int $length = null): Map<Tk, Tv>
     {
-        return self::fromArray(array_slice($this->elements, $start, $length, true));
+        return self::<Tk, Tv>::fromArray(array_slice($this->elements, $start, $length, true));
     }
 
     /**
@@ -609,15 +528,13 @@ final readonly class Map implements MapInterface
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return Vector<Map<Tk, Tv>> A `Vector` containing the original `Map` split into chunks of the given size.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): Vector
+    public function chunk(int $size): Vector<Map<Tk, Tv>>
     {
-        $chunks = array_map(static fn(array $chunk): Map => new Map($chunk), array_chunk($this->elements, $size, true));
+        $chunks = array_map(static fn(array $chunk): Map => new Map::<Tk, Tv>($chunk), array_chunk($this->elements, $size, true));
 
-        return Vector::fromArray($chunks);
+        return Vector::<Map<Tk, Tv>>::fromArray($chunks);
     }
 }

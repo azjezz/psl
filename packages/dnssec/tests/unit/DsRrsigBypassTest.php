@@ -192,7 +192,7 @@ final class DsRrsigBypassTest extends TestCase
         $rrsigPrefix = new Writer()
             ->u16(RecordType::DNSKEY->value)
             ->u8(8)
-            ->u8(Byte\length($signer) > 0 ? Iter\count(Byte\split($signer, '.')) : 0)
+            ->u8(Byte\length($signer) > 0 ? Iter\count::<string>(Byte\split($signer, '.')) : 0)
             ->u32(3600)
             ->u32($expiration)
             ->u32($inception)
@@ -220,7 +220,7 @@ final class DsRrsigBypassTest extends TestCase
                 ->toString();
         }
 
-        $canonicalRrs = Vec\sort($canonicalRrs);
+        $canonicalRrs = Vec\sort::<string>($canonicalRrs);
 
         return $rrsigPrefix . Str\join($canonicalRrs, '');
     }

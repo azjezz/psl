@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Channel;
 use Psl\IO;
 
-[$receiver, $sender] = Channel\bounded(1);
+[$receiver, $sender] = Channel\bounded::<string>(1);
 
 $sender->trySend('first');
 

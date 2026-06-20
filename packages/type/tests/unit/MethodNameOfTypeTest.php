@@ -8,10 +8,13 @@ use Override;
 use Psl\Collection;
 use Psl\Type;
 
-final class MethodNameOfTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<non-empty-string>
+ */
+final class MethodNameOfTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\method_name_of(Collection\VectorInterface::class);
     }

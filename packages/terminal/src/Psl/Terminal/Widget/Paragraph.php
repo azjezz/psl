@@ -53,7 +53,7 @@ final class Paragraph implements WidgetInterface
 
     public function scroll(int $offset): self
     {
-        $this->scrollOffset = Math\maxva(0, $offset);
+        $this->scrollOffset = Math\maxva::<int>(0, $offset);
         return $this;
     }
 
@@ -71,8 +71,8 @@ final class Paragraph implements WidgetInterface
 
         $wrappedLines = Internal\LineWrapper::wrap($this->lines, $this->wrap, $area->width);
 
-        $maxScroll = Math\maxva(0, count($wrappedLines) - $area->height);
-        $scrollOffset = Math\minva($this->scrollOffset, $maxScroll);
+        $maxScroll = Math\maxva::<int>(0, count($wrappedLines) - $area->height);
+        $scrollOffset = Math\minva::<int>($this->scrollOffset, $maxScroll);
         $visibleLines = array_slice($wrappedLines, $scrollOffset, $area->height);
 
         foreach ($visibleLines as $lineIndex => $line) {
@@ -90,8 +90,8 @@ final class Paragraph implements WidgetInterface
         $lineWidth = $line->width();
         $startX = match ($this->alignment) {
             Alignment::Left => $area->x,
-            Alignment::Right => $area->x + Math\maxva(0, $area->width - $lineWidth),
-            Alignment::Center => $area->x + (int) (Math\maxva(0, $area->width - $lineWidth) / 2),
+            Alignment::Right => $area->x + Math\maxva::<int>(0, $area->width - $lineWidth),
+            Alignment::Center => $area->x + (int) (Math\maxva::<int>(0, $area->width - $lineWidth) / 2),
         };
 
         $x = $startX;

@@ -16,9 +16,6 @@ use function uksort;
  * If the optional comparator function isn't provided, the keys will be sorted in
  * ascending order.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tk, Tk): int)|null $comparator
  *
@@ -26,7 +23,7 @@ use function uksort;
  *
  * @api
  */
-function sort_by_key(iterable $iterable, null|Closure $comparator = null): array
+function sort_by_key<Tk: string|int, Tv>(iterable $iterable, null|Closure $comparator = null): array
 {
     if (is_array($iterable)) {
         $result = $iterable;

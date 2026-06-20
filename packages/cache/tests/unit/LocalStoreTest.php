@@ -16,7 +16,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore();
 
-        $value = $store->compute('key', static fn(): string => 'hello');
+        $value = $store->compute::<string>('key', static fn(): string => 'hello');
 
         static::assertSame('hello', $value);
     }
@@ -31,8 +31,8 @@ final class LocalStoreTest extends TestCase
             return 'value';
         };
 
-        $store->compute('key', $computer);
-        $store->compute('key', $computer);
+        $store->compute::<string>('key', $computer);
+        $store->compute::<string>('key', $computer);
 
         static::assertSame(1, $calls);
     }
@@ -40,7 +40,7 @@ final class LocalStoreTest extends TestCase
     public function testGetReturnsComputedValue(): void
     {
         $store = new LocalStore();
-        $store->compute('key', static fn(): string => 'cached');
+        $store->compute::<string>('key', static fn(): string => 'cached');
 
         static::assertSame('cached', $store->get('key'));
     }
@@ -56,7 +56,7 @@ final class LocalStoreTest extends TestCase
     public function testDeleteRemovesEntry(): void
     {
         $store = new LocalStore();
-        $store->compute('key', static fn(): string => 'value');
+        $store->compute::<string>('key', static fn(): string => 'value');
 
         $store->delete('key');
 
@@ -75,12 +75,12 @@ final class LocalStoreTest extends TestCase
     public function testUpdateAlwaysInvokesComputer(): void
     {
         $store = new LocalStore();
-        $store->compute('counter', static fn(): int => 0);
+        $store->compute::<int>('counter', static fn(): int => 0);
 
-        $result = $store->update('counter', static fn(null|int $old): int => ($old ?? 0) + 1);
+        $result = $store->update::<int>('counter', static fn(null|int $old): int => ($old ?? 0) + 1);
         static::assertSame(1, $result);
 
-        $result = $store->update('counter', static fn(null|int $old): int => ($old ?? 0) + 1);
+        $result = $store->update::<int>('counter', static fn(null|int $old): int => ($old ?? 0) + 1);
         static::assertSame(2, $result);
 
         static::assertSame(2, $store->get('counter'));
@@ -90,7 +90,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore();
 
-        $result = $store->update('new', static fn(null|int $old): int => ($old ?? 0) + 10);
+        $result = $store->update::<int>('new', static fn(null|int $old): int => ($old ?? 0) + 10);
 
         static::assertSame(10, $result);
         static::assertSame(10, $store->get('new'));
@@ -100,11 +100,11 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 3);
 
-        $store->compute('a', static fn(): string => 'A');
-        $store->compute('b', static fn(): string => 'B');
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('a', static fn(): string => 'A');
+        $store->compute::<string>('b', static fn(): string => 'B');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
-        $store->compute('d', static fn(): string => 'D');
+        $store->compute::<string>('d', static fn(): string => 'D');
 
         $this->expectException(UnavailableItemException::class);
         $store->get('a');
@@ -114,13 +114,13 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 3);
 
-        $store->compute('a', static fn(): string => 'A');
-        $store->compute('b', static fn(): string => 'B');
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('a', static fn(): string => 'A');
+        $store->compute::<string>('b', static fn(): string => 'B');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
         $store->get('a');
 
-        $store->compute('d', static fn(): string => 'D');
+        $store->compute::<string>('d', static fn(): string => 'D');
 
         static::assertSame('A', $store->get('a'));
         static::assertSame('D', $store->get('d'));
@@ -133,7 +133,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('key', static fn(): string => 'value', Duration::milliseconds(100));
+        $store->compute::<string>('key', static fn(): string => 'value', Duration::milliseconds(100));
 
         static::assertSame('value', $store->get('key'));
 
@@ -148,7 +148,7 @@ final class LocalStoreTest extends TestCase
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
         $calls = 0;
 
-        $store->compute(
+        $store->compute::<string>(
             'key',
             static function () use (&$calls): string {
                 $calls++;
@@ -161,7 +161,7 @@ final class LocalStoreTest extends TestCase
 
         Async\sleep(Duration::milliseconds(200));
 
-        $value = $store->compute(
+        $value = $store->compute::<string>(
             'key',
             static function () use (&$calls): string {
                 $calls++;
@@ -178,7 +178,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('permanent', static fn(): string => 'forever');
+        $store->compute::<string>('permanent', static fn(): string => 'forever');
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -189,8 +189,8 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 1);
 
-        $store->compute('a', static fn(): string => 'A');
-        $store->compute('b', static fn(): string => 'B');
+        $store->compute::<string>('a', static fn(): string => 'A');
+        $store->compute::<string>('b', static fn(): string => 'B');
 
         static::assertSame('B', $store->get('b'));
 
@@ -202,9 +202,9 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore();
 
-        $store->compute('x', static fn(): int => 1);
-        $store->compute('y', static fn(): int => 2);
-        $store->compute('z', static fn(): int => 3);
+        $store->compute::<int>('x', static fn(): int => 1);
+        $store->compute::<int>('y', static fn(): int => 2);
+        $store->compute::<int>('z', static fn(): int => 3);
 
         static::assertSame(1, $store->get('x'));
         static::assertSame(2, $store->get('y'));
@@ -215,7 +215,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->update('key', static fn(null|string $old): string => 'value', Duration::milliseconds(100));
+        $store->update::<string>('key', static fn(null|string $old): string => 'value', Duration::milliseconds(100));
 
         static::assertSame('value', $store->get('key'));
 
@@ -236,9 +236,9 @@ final class LocalStoreTest extends TestCase
             return 'result';
         };
 
-        [$a, $b] = Async\concurrently([
-            static fn() => $store->compute('key', $computer),
-            static fn() => $store->compute('key', $computer),
+        [$a, $b] = Async\concurrently::<int, string>([
+            static fn() => $store->compute::<string>('key', $computer),
+            static fn() => $store->compute::<string>('key', $computer),
         ]);
 
         static::assertSame('result', $a);
@@ -256,9 +256,9 @@ final class LocalStoreTest extends TestCase
             return 'result';
         };
 
-        Async\concurrently([
-            static fn() => $store->compute('a', $computer),
-            static fn() => $store->compute('b', $computer),
+        Async\concurrently::<int, string>([
+            static fn() => $store->compute::<string>('a', $computer),
+            static fn() => $store->compute::<string>('b', $computer),
         ]);
 
         static::assertSame(2, $calls);
@@ -268,13 +268,13 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 3);
 
-        $store->compute('a', static fn(): string => 'A');
-        $store->compute('b', static fn(): string => 'B');
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('a', static fn(): string => 'A');
+        $store->compute::<string>('b', static fn(): string => 'B');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
-        $store->update('a', static fn(null|string $old): string => 'A2');
+        $store->update::<string>('a', static fn(null|string $old): string => 'A2');
 
-        $store->compute('d', static fn(): string => 'D');
+        $store->compute::<string>('d', static fn(): string => 'D');
 
         static::assertSame('A2', $store->get('a'));
 
@@ -287,13 +287,13 @@ final class LocalStoreTest extends TestCase
         $store = new LocalStore();
 
         for ($i = 1; $i <= 1000; $i++) {
-            $store->compute('key' . $i, static fn() => $i);
+            $store->compute::<int>('key' . $i, static fn() => $i);
         }
 
         static::assertSame(1, $store->get('key1'));
         static::assertSame(1000, $store->get('key1000'));
 
-        $store->compute('key1001', static fn() => 1001);
+        $store->compute::<int>('key1001', static fn() => 1001);
 
         static::assertSame(1001, $store->get('key1001'));
 
@@ -305,13 +305,13 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 3);
 
-        $store->compute('a', static fn(): string => 'A');
-        $store->compute('b', static fn(): string => 'B');
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('a', static fn(): string => 'A');
+        $store->compute::<string>('b', static fn(): string => 'B');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
-        $store->compute('a', static fn(): string => 'should not be called');
+        $store->compute::<string>('a', static fn(): string => 'should not be called');
 
-        $store->compute('d', static fn(): string => 'D');
+        $store->compute::<string>('d', static fn(): string => 'D');
 
         static::assertSame('A', $store->get('a'));
         static::assertSame('C', $store->get('c'));
@@ -325,8 +325,8 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('permanent', static fn(): string => 'stays');
-        $store->compute('expires', static fn(): string => 'goes', Duration::milliseconds(80));
+        $store->compute::<string>('permanent', static fn(): string => 'stays');
+        $store->compute::<string>('expires', static fn(): string => 'goes', Duration::milliseconds(80));
 
         static::assertSame('goes', $store->get('expires'));
 
@@ -342,8 +342,8 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('short', static fn(): string => 'a', Duration::milliseconds(60));
-        $store->compute('long', static fn(): string => 'b', Duration::milliseconds(300));
+        $store->compute::<string>('short', static fn(): string => 'a', Duration::milliseconds(60));
+        $store->compute::<string>('long', static fn(): string => 'b', Duration::milliseconds(300));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -357,16 +357,16 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('temp', static fn(): string => 'val', Duration::milliseconds(60));
+        $store->compute::<string>('temp', static fn(): string => 'val', Duration::milliseconds(60));
 
         Async\sleep(Duration::milliseconds(200));
 
-        $store->compute('permanent', static fn(): string => 'stays');
+        $store->compute::<string>('permanent', static fn(): string => 'stays');
 
         Async\sleep(Duration::milliseconds(150));
         static::assertSame('stays', $store->get('permanent'));
 
-        $store->compute('temp2', static fn(): string => 'val2', Duration::milliseconds(60));
+        $store->compute::<string>('temp2', static fn(): string => 'val2', Duration::milliseconds(60));
         static::assertSame('val2', $store->get('temp2'));
 
         Async\sleep(Duration::milliseconds(200));
@@ -379,17 +379,17 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 5, cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(60));
-        $store->compute('b', static fn(): string => 'B', Duration::milliseconds(60));
-        $store->compute('c', static fn(): string => 'C', Duration::milliseconds(60));
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('b', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute::<string>('c', static fn(): string => 'C', Duration::milliseconds(60));
 
         Async\sleep(Duration::milliseconds(200));
 
-        $store->compute('d', static fn(): string => 'D');
-        $store->compute('e', static fn(): string => 'E');
-        $store->compute('f', static fn(): string => 'F');
-        $store->compute('g', static fn(): string => 'G');
-        $store->compute('h', static fn(): string => 'H');
+        $store->compute::<string>('d', static fn(): string => 'D');
+        $store->compute::<string>('e', static fn(): string => 'E');
+        $store->compute::<string>('f', static fn(): string => 'F');
+        $store->compute::<string>('g', static fn(): string => 'G');
+        $store->compute::<string>('h', static fn(): string => 'H');
 
         static::assertSame('D', $store->get('d'));
         static::assertSame('H', $store->get('h'));
@@ -399,8 +399,8 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('short', static fn(): string => 'A', Duration::milliseconds(60));
-        $store->compute('long', static fn(): string => 'B', Duration::milliseconds(300));
+        $store->compute::<string>('short', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('long', static fn(): string => 'B', Duration::milliseconds(300));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -431,7 +431,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(40));
 
-        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(50));
+        $store->compute::<string>('key', static fn(): string => 'val', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -443,7 +443,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore();
 
-        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(50));
+        $store->compute::<string>('key', static fn(): string => 'val', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(200));
 
@@ -465,9 +465,9 @@ final class LocalStoreTest extends TestCase
         $store = new LocalStore();
         $computed = false;
 
-        Async\concurrently([
+        Async\concurrently::<string, mixed>([
             'compute' => static function () use ($store, &$computed): string {
-                return $store->compute('key', static function () use (&$computed): string {
+                return $store->compute::<string>('key', static function () use (&$computed): string {
                     Async\sleep(Duration::milliseconds(50));
                     $computed = true;
                     return 'value';
@@ -489,13 +489,13 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 3);
 
-        $store->compute('a', static fn(): string => 'A');
-        $store->compute('b', static fn(): string => 'B');
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('a', static fn(): string => 'A');
+        $store->compute::<string>('b', static fn(): string => 'B');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
         $store->delete('b');
 
-        $store->compute('d', static fn(): string => 'D');
+        $store->compute::<string>('d', static fn(): string => 'D');
 
         static::assertSame('A', $store->get('a'));
         static::assertSame('C', $store->get('c'));
@@ -506,10 +506,10 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('expire1', static fn(): string => 'A', Duration::milliseconds(60));
-        $store->compute('expire2', static fn(): string => 'B', Duration::milliseconds(60));
-        $store->compute('keep', static fn(): string => 'C', Duration::milliseconds(500));
-        $store->compute('permanent', static fn(): string => 'D');
+        $store->compute::<string>('expire1', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('expire2', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute::<string>('keep', static fn(): string => 'C', Duration::milliseconds(500));
+        $store->compute::<string>('permanent', static fn(): string => 'D');
 
         Async\sleep(Duration::milliseconds(200));
 
@@ -544,17 +544,17 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 4, cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(60));
-        $store->compute('b', static fn(): string => 'B', Duration::milliseconds(60));
-        $store->compute('c', static fn(): string => 'C', Duration::milliseconds(60));
-        $store->compute('d', static fn(): string => 'D', Duration::milliseconds(60));
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('b', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute::<string>('c', static fn(): string => 'C', Duration::milliseconds(60));
+        $store->compute::<string>('d', static fn(): string => 'D', Duration::milliseconds(60));
 
         Async\sleep(Duration::milliseconds(200));
 
-        $store->compute('e', static fn(): string => 'E');
-        $store->compute('f', static fn(): string => 'F');
-        $store->compute('g', static fn(): string => 'G');
-        $store->compute('h', static fn(): string => 'H');
+        $store->compute::<string>('e', static fn(): string => 'E');
+        $store->compute::<string>('f', static fn(): string => 'F');
+        $store->compute::<string>('g', static fn(): string => 'G');
+        $store->compute::<string>('h', static fn(): string => 'H');
 
         static::assertSame('E', $store->get('e'));
         static::assertSame('F', $store->get('f'));
@@ -566,12 +566,12 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 2);
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(500));
-        $store->compute('b', static fn(): string => 'B');
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(500));
+        $store->compute::<string>('b', static fn(): string => 'B');
 
         $store->delete('a');
 
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
         static::assertSame('B', $store->get('b'));
         static::assertSame('C', $store->get('c'));
@@ -581,15 +581,15 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 3, cleanupInterval: Duration::seconds(60));
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(50));
-        $store->compute('b', static fn(): string => 'B');
-        $store->compute('c', static fn(): string => 'C');
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(50));
+        $store->compute::<string>('b', static fn(): string => 'B');
+        $store->compute::<string>('c', static fn(): string => 'C');
 
         Async\sleep(Duration::milliseconds(100));
 
-        $store->compute('a', static fn(): string => 'A2');
+        $store->compute::<string>('a', static fn(): string => 'A2');
 
-        $store->compute('d', static fn(): string => 'D');
+        $store->compute::<string>('d', static fn(): string => 'D');
 
         static::assertSame('A2', $store->get('a'));
         static::assertSame('C', $store->get('c'));
@@ -600,9 +600,9 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(maxSize: 10, cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('expire1', static fn(): string => 'A', Duration::milliseconds(60));
-        $store->compute('permanent', static fn(): string => 'B');
-        $store->compute('expire2', static fn(): string => 'C', Duration::milliseconds(60));
+        $store->compute::<string>('expire1', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('permanent', static fn(): string => 'B');
+        $store->compute::<string>('expire2', static fn(): string => 'C', Duration::milliseconds(60));
 
         Async\sleep(Duration::milliseconds(200));
 
@@ -636,7 +636,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::seconds(1));
 
-        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(50));
+        $store->compute::<string>('key', static fn(): string => 'val', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(1200));
 
@@ -648,11 +648,11 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(60));
 
         Async\sleep(Duration::milliseconds(200));
 
-        $store->compute('b', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute::<string>('b', static fn(): string => 'B', Duration::milliseconds(60));
         static::assertSame('B', $store->get('b'));
 
         Async\sleep(Duration::milliseconds(200));
@@ -665,9 +665,9 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(50));
 
-        $store->compute('no-ttl', static fn(): string => 'permanent');
+        $store->compute::<string>('no-ttl', static fn(): string => 'permanent');
 
-        $store->compute('with-ttl', static fn(): string => 'temporary', Duration::milliseconds(80));
+        $store->compute::<string>('with-ttl', static fn(): string => 'temporary', Duration::milliseconds(80));
 
         Async\sleep(Duration::milliseconds(200));
 
@@ -681,7 +681,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: null);
 
-        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(80));
+        $store->compute::<string>('key', static fn(): string => 'val', Duration::milliseconds(80));
 
         Async\sleep(Duration::milliseconds(200));
 
@@ -693,7 +693,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(40));
 
-        $store->compute('first', static fn(): string => 'A', Duration::milliseconds(60));
+        $store->compute::<string>('first', static fn(): string => 'A', Duration::milliseconds(60));
 
         Async\sleep(Duration::milliseconds(200));
 
@@ -712,7 +712,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = $this->createStoreAfterFirstTtlExpires();
 
-        $store->compute('second', static fn(): string => 'B', Duration::milliseconds(60));
+        $store->compute::<string>('second', static fn(): string => 'B', Duration::milliseconds(60));
         static::assertSame('B', $store->get('second'));
 
         Async\sleep(Duration::milliseconds(200));
@@ -725,10 +725,10 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
-        $store->compute('no-ttl-1', static fn(): string => 'permanent1');
-        $store->compute('no-ttl-2', static fn(): string => 'permanent2');
+        $store->compute::<string>('no-ttl-1', static fn(): string => 'permanent1');
+        $store->compute::<string>('no-ttl-2', static fn(): string => 'permanent2');
 
-        $store->compute('ttl-entry', static fn(): string => 'temporary', Duration::milliseconds(50));
+        $store->compute::<string>('ttl-entry', static fn(): string => 'temporary', Duration::milliseconds(50));
 
         static::assertSame('temporary', $store->get('ttl-entry'));
 
@@ -769,9 +769,9 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(50));
-        $store->compute('b', static fn(): string => 'B', Duration::milliseconds(50));
-        $store->compute('c', static fn(): string => 'C', Duration::milliseconds(50));
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(50));
+        $store->compute::<string>('b', static fn(): string => 'B', Duration::milliseconds(50));
+        $store->compute::<string>('c', static fn(): string => 'C', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -782,13 +782,13 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
-        $store->compute('permanent', static fn(): string => 'value');
+        $store->compute::<string>('permanent', static fn(): string => 'value');
 
         Async\sleep(Duration::milliseconds(100));
 
         static::assertSame('value', $store->get('permanent'));
 
-        $store->compute('temp', static fn(): string => 'gone', Duration::milliseconds(50));
+        $store->compute::<string>('temp', static fn(): string => 'gone', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -803,7 +803,7 @@ final class LocalStoreTest extends TestCase
         $customInterval = Duration::milliseconds(25);
         $store = new LocalStore(cleanupInterval: $customInterval);
 
-        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(40));
+        $store->compute::<string>('key', static fn(): string => 'val', Duration::milliseconds(40));
 
         Async\sleep(Duration::milliseconds(120));
 
@@ -815,7 +815,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: null);
 
-        $store->compute('a', static fn(): string => 'A', Duration::milliseconds(40));
+        $store->compute::<string>('a', static fn(): string => 'A', Duration::milliseconds(40));
 
         Async\sleep(Duration::milliseconds(100));
 
@@ -827,7 +827,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::seconds(10));
 
-        $store->compute('key', static fn(): string => 'val', Duration::milliseconds(40));
+        $store->compute::<string>('key', static fn(): string => 'val', Duration::milliseconds(40));
 
         Async\sleep(Duration::milliseconds(100));
 
@@ -840,7 +840,7 @@ final class LocalStoreTest extends TestCase
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
         for ($i = 0; $i < 5; $i++) {
-            $store->compute('key' . $i, static fn() => $i);
+            $store->compute::<int>('key' . $i, static fn() => $i);
         }
 
         Async\sleep(Duration::milliseconds(100));
@@ -854,10 +854,10 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
-        $store->compute('p1', static fn(): string => 'P1');
-        $store->compute('p2', static fn(): string => 'P2');
+        $store->compute::<string>('p1', static fn(): string => 'P1');
+        $store->compute::<string>('p2', static fn(): string => 'P2');
 
-        $store->compute('ttl1', static fn(): string => 'T1', Duration::milliseconds(50));
+        $store->compute::<string>('ttl1', static fn(): string => 'T1', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -884,7 +884,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = $this->createStoreWithPermanentAndExpiredTtl();
 
-        $store->compute('ttl2', static fn(): string => 'T2', Duration::milliseconds(50));
+        $store->compute::<string>('ttl2', static fn(): string => 'T2', Duration::milliseconds(50));
         static::assertSame('T2', $store->get('ttl2'));
 
         Async\sleep(Duration::milliseconds(150));
@@ -897,7 +897,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
-        $store->compute('temp1', static fn(): string => 'A', Duration::milliseconds(50));
+        $store->compute::<string>('temp1', static fn(): string => 'A', Duration::milliseconds(50));
 
         Async\sleep(Duration::milliseconds(150));
 
@@ -916,7 +916,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = $this->createStoreAfterTempExpires();
 
-        $store->compute('temp2', static fn(): string => 'B', Duration::milliseconds(50));
+        $store->compute::<string>('temp2', static fn(): string => 'B', Duration::milliseconds(50));
         static::assertSame('B', $store->get('temp2'));
 
         Async\sleep(Duration::milliseconds(150));
@@ -929,7 +929,7 @@ final class LocalStoreTest extends TestCase
     {
         $store = new LocalStore(cleanupInterval: Duration::milliseconds(30));
 
-        $store->update('key', static fn(null|string $old): string => 'val', Duration::milliseconds(50));
+        $store->update::<string>('key', static fn(null|string $old): string => 'val', Duration::milliseconds(50));
 
         static::assertSame('val', $store->get('key'));
 

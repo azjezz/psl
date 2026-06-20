@@ -18,7 +18,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         static::assertSame(1, $receiver->getCapacity());
         static::assertSame(1, $sender->getCapacity());
@@ -30,7 +30,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         static::assertFalse($receiver->isClosed());
         static::assertFalse($sender->isClosed());
@@ -47,7 +47,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         static::assertFalse($receiver->isClosed());
         static::assertFalse($sender->isClosed());
@@ -64,7 +64,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(2);
+        [$receiver, $sender] = Channel\bounded::<string>(2);
 
         static::assertSame(0, $receiver->count());
         static::assertSame(0, $sender->count());
@@ -97,7 +97,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         static::assertFalse($receiver->isFull());
         static::assertFalse($sender->isFull());
@@ -113,7 +113,7 @@ final class BoundedChannelTest extends TestCase
         /**
          * @var Channel\SenderInterface<string> $sender
          */
-        [$_, $sender] = Channel\bounded(1);
+        [$_, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('hello');
 
@@ -128,7 +128,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('hello');
 
@@ -147,7 +147,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $receiver->close();
 
@@ -163,7 +163,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('hello');
 
@@ -183,7 +183,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('hello');
         $receiver->close();
@@ -200,7 +200,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $receiver->close();
 
@@ -216,7 +216,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->close();
 
@@ -232,7 +232,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static function () use ($sender): void {
             $sender->close();
@@ -250,7 +250,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->close();
 
@@ -266,7 +266,7 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         Async\Scheduler::delay(DateTime\Duration::milliseconds(1), static fn(): null => $sender->send('hello'));
 
@@ -280,7 +280,7 @@ final class BoundedChannelTest extends TestCase
         /**
          * @var Channel\ReceiverInterface<string> $receiver
          */
-        [$receiver, $_] = Channel\bounded(1);
+        [$receiver, $_] = Channel\bounded::<string>(1);
 
         $this->expectException(Channel\Exception\EmptyChannelException::class);
         $this->expectExceptionMessage('Attempted to receiver from an empty channel.');
@@ -294,13 +294,13 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         // fill the channel.
         $sender->send('foo');
 
-        $one = Async\run(static fn(): null => $sender->send('bar'));
-        $two = Async\run(static fn(): null => $sender->send('baz'));
+        $one = Async\run::<null>(static fn(): null => $sender->send('bar'));
+        $two = Async\run::<null>(static fn(): null => $sender->send('baz'));
 
         Async\Scheduler::defer(static function () use ($receiver): void {
             $receiver->receive();
@@ -323,10 +323,10 @@ final class BoundedChannelTest extends TestCase
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
-        $one = Async\run($receiver->receive(...));
-        $two = Async\run($receiver->receive(...));
+        $one = Async\run::<string>($receiver->receive(...));
+        $two = Async\run::<string>($receiver->receive(...));
 
         Async\Scheduler::defer(static fn(): null => $sender->send('foo'));
         Async\Scheduler::defer(static fn(): null => $sender->send('bar'));
@@ -341,11 +341,11 @@ final class BoundedChannelTest extends TestCase
     public function testReceiveCancelledWhileWaitingForMessage(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        Async\run(static function () use ($sender): void {
+        Async\run::<void>(static function () use ($sender): void {
             Async\sleep(Duration::seconds(5));
             $sender->send('never');
         })->ignore();
@@ -358,13 +358,13 @@ final class BoundedChannelTest extends TestCase
     public function testSendCancelledWhileWaitingForSpace(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('fills-channel');
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        Async\run(static function () use ($receiver): void {
+        Async\run::<void>(static function () use ($receiver): void {
             Async\sleep(Duration::seconds(5));
             $receiver->receive();
         })->ignore();
@@ -377,15 +377,15 @@ final class BoundedChannelTest extends TestCase
     public function testReceiveCancelledWhileQueuedBehindPreviousReceive(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
-        $first = Async\run($receiver->receive(...));
+        $first = Async\run::<string>($receiver->receive(...));
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        $second = Async\run(static fn(): string => $receiver->receive($token));
+        $second = Async\run::<string>(static fn(): string => $receiver->receive($token));
 
-        Async\run(static function () use ($sender): void {
+        Async\run::<void>(static function () use ($sender): void {
             Async\sleep(Duration::milliseconds(50));
             $sender->send('hello');
         })->ignore();
@@ -403,21 +403,21 @@ final class BoundedChannelTest extends TestCase
     public function testSendCancelledWhileQueuedBehindPreviousSend(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('fills');
 
-        $first = Async\run(static function () use ($sender): void {
+        $first = Async\run::<void>(static function () use ($sender): void {
             $sender->send('queued-1');
         });
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        $second = Async\run(static function () use ($sender, $token): void {
+        $second = Async\run::<void>(static function () use ($sender, $token): void {
             $sender->send('queued-2', $token);
         });
 
-        Async\run(static function () use ($receiver): void {
+        Async\run::<void>(static function () use ($receiver): void {
             Async\sleep(Duration::milliseconds(50));
             $receiver->receive();
             $receiver->receive();
@@ -436,12 +436,12 @@ final class BoundedChannelTest extends TestCase
     public function testReceiveWithAlreadyCancelledTokenOnEmptyChannel(): void
     {
         /** @var Channel\ReceiverInterface<string> $receiver */
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
-        Async\run(static function () use ($sender): void {
+        Async\run::<void>(static function () use ($sender): void {
             Async\sleep(Duration::seconds(5));
             $sender->send('never');
         })->ignore();
@@ -453,14 +453,14 @@ final class BoundedChannelTest extends TestCase
 
     public function testSendWithAlreadyCancelledTokenOnFullChannel(): void
     {
-        [$receiver, $sender] = Channel\bounded(1);
+        [$receiver, $sender] = Channel\bounded::<string>(1);
 
         $sender->send('fills');
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
-        Async\run(static function () use ($receiver): void {
+        Async\run::<void>(static function () use ($receiver): void {
             Async\sleep(Duration::seconds(5));
             $receiver->receive();
         })->ignore();

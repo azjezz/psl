@@ -7,10 +7,10 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class ArrayKeyTypeTest extends TypeTestCase
+final class ArrayKeyTypeTest extends TypeTestCase<string|int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string|int>
     {
         return Type\array_key();
     }

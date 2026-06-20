@@ -14,21 +14,15 @@ use function sprintf;
 use function str_ends_with;
 
 /**
- * @template T of string|int|float|bool
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class LiteralScalarType extends Type\Type
+final readonly class LiteralScalarType<T: string|int|float|bool> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param T $value
      */
     public function __construct(
-        private string|int|float|bool $value,
+        private T $value,
     ) {}
 
     /**
@@ -42,11 +36,9 @@ final readonly class LiteralScalarType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return T
      */
     #[Override]
-    public function coerce(mixed $value): string|int|float|bool
+    public function coerce(mixed $value): T
     {
         $expectedScalarValue = $this->value;
         if ($value === $expectedScalarValue) {

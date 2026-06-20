@@ -13,7 +13,7 @@ final class KeyedSemaphoreTest extends TestCase
 {
     public function testItCallsTheOperation(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, int $input): int {
+        $ks = new Async\KeyedSemaphore::<string, int, int>(1, static function (string $key, int $input): int {
             static::assertSame('one', $key);
 
             return $input * 2;
@@ -24,12 +24,12 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testSequenceOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSemaphore<string, array{time: ?DateTime\Duration, value: string}, void>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, array $data) use ($spy): void {
+        $ks = new Async\KeyedSemaphore::<string, array, void>(1, static function (string $key, array $data) use ($spy): void {
             static::assertSame('operation', $key);
 
             if (null !== $data['time']) {
@@ -39,19 +39,19 @@ final class KeyedSemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn(): null => $ks->waitFor('operation', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
         ]))->ignore();
-        Async\run(static fn(): null => $ks->waitFor('operation', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
         ]))->ignore();
-        Async\run(static fn(): null => $ks->waitFor('operation', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]))->ignore();
-        $last = Async\run(static fn(): null => $ks->waitFor('operation', [
+        $last = Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => null,
             'value' => 'd',
         ]));
@@ -62,12 +62,12 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSemaphore<string, array{time: ?DateTime\Duration, value: string}, void>
          */
-        $ks = new Async\KeyedSemaphore(2, static function (string $_, array $data) use ($spy): void {
+        $ks = new Async\KeyedSemaphore::<string, array, void>(2, static function (string $_, array $data) use ($spy): void {
             if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
@@ -75,19 +75,19 @@ final class KeyedSemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn(): null => $ks->waitFor('key', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
         ]))->ignore();
-        Async\run(static fn(): null => $ks->waitFor('key', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
         ]))->ignore();
-        $beforeLast = Async\run(static fn(): null => $ks->waitFor('key', [
+        $beforeLast = Async\run::<null>(static fn(): null => $ks->waitFor('key', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]));
-        Async\run(static fn(): null => $ks->waitFor('key', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('key', [
             'time' => null,
             'value' => 'd',
         ]))->ignore();
@@ -99,18 +99,18 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testOperationIsStartedIfLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSemaphore<string, string, void>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input) use ($spy): void {
+        $ks = new Async\KeyedSemaphore::<string, string, void>(1, static function (string $_, string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn(): null => $ks->waitFor('x', 'hello'));
+        $awaitable = Async\run::<null>(static fn(): null => $ks->waitFor('x', 'hello'));
 
         Async\later();
 
@@ -121,19 +121,19 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testOperationIsNotStartedIfLimitIsReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSemaphore<string, string, void>
          */
-        $semaphore = new Async\KeyedSemaphore(1, static function (string $_, string $input) use ($spy): void {
+        $semaphore = new Async\KeyedSemaphore::<string, string, void>(1, static function (string $_, string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn(): null => $semaphore->waitFor('x', 'hello'))->ignore();
-        $awaitable = Async\run(static fn(): null => $semaphore->waitFor('x', 'world'));
+        Async\run::<null>(static fn(): null => $semaphore->waitFor('x', 'hello'))->ignore();
+        $awaitable = Async\run::<null>(static fn(): null => $semaphore->waitFor('x', 'world'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -147,7 +147,7 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $semaphore = new Async\KeyedSemaphore(1, static fn(string $_, string $input): string => $input);
+        $semaphore = new Async\KeyedSemaphore::<string, string, string>(1, static fn(string $_, string $input): string => $input);
 
         $semaphore->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -159,14 +159,14 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
-        $two = Async\run(static fn(): string => $ks->waitFor('foo', 'two'));
+        $one = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'one'));
+        $two = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'two'));
 
         Async\sleep(DateTime\Duration::milliseconds(10));
 
@@ -185,22 +185,22 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
         $ingoing = [
-            Async\run(static fn(): string => $ks->waitFor('foo', 'ingoing')),
-            Async\run(static fn(): string => $ks->waitFor('bar', 'ingoing')),
-            Async\run(static fn(): string => $ks->waitFor('baz', 'ingoing')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'ingoing')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'ingoing')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('baz', 'ingoing')),
         ];
 
         $pending = [
-            Async\run(static fn(): string => $ks->waitFor('foo', 'pending')),
-            Async\run(static fn(): string => $ks->waitFor('bar', 'pending')),
-            Async\run(static fn(): string => $ks->waitFor('baz', 'pending')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'pending')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'pending')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('baz', 'pending')),
         ];
 
         Async\sleep(DateTime\Duration::milliseconds(10));
@@ -225,7 +225,7 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
@@ -233,8 +233,8 @@ final class KeyedSemaphoreTest extends TestCase
 
         $key = 'foo';
 
-        $one = Async\run(static fn(): string => $ks->waitFor($key, 'one'));
-        $two = Async\run(static fn(): string => $ks->waitFor($key, 'two'));
+        $one = Async\run::<string>(static fn(): string => $ks->waitFor($key, 'one'));
+        $two = Async\run::<string>(static fn(): string => $ks->waitFor($key, 'two'));
         static::assertSame(0, $ks->getOngoingOperations($key));
         static::assertSame(0, $ks->getPendingOperations($key));
         static::assertFalse($ks->hasOngoingOperations($key));
@@ -277,12 +277,12 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
+        $one = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'one'));
         Async\later();
         static::assertFalse($one->isComplete());
         $ks->waitForPending('foo');
@@ -295,7 +295,7 @@ final class KeyedSemaphoreTest extends TestCase
         /**
          * @var Async\KeyedSemaphore<string, string, string>
          */
-        $ks = new Async\KeyedSemaphore(1, static function (string $_, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
             return $input;
         });
@@ -306,8 +306,8 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
-        $fooOne = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
-        $barOne = Async\run(static fn(): string => $ks->waitFor('bar', 'one'));
+        $fooOne = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'one'));
+        $barOne = Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'one'));
 
         Async\later();
 
@@ -316,8 +316,8 @@ final class KeyedSemaphoreTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
-        $fooTwo = Async\run(static fn(): string => $ks->waitFor('foo', 'two'));
-        $barTwo = Async\run(static fn(): string => $ks->waitFor('bar', 'two'));
+        $fooTwo = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'two'));
+        $barTwo = Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'two'));
 
         Async\later();
 
@@ -345,7 +345,7 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testWaitForPendingReturnsImmediatelyWhenNotAtLimit(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static fn(string $key, string $input): string => $input);
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static fn(string $key, string $input): string => $input);
 
         $ks->waitForPending('key');
 
@@ -354,68 +354,68 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testWaitForCancelledWhileWaitingForSlot(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
     }
 
     public function testWaitForPendingCancelledWhileWaiting(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): null => $ks->waitForPending('key', $token))->await();
+        Async\run::<null>(static fn(): null => $ks->waitForPending('key', $token))->await();
     }
 
     public function testWaitForWithAlreadyCancelledToken(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
     }
 
     public function testCancelledWaitForDoesNotAffectOtherOperations(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(30));
 
             return $input;
         });
 
-        $first = Async\run(static fn(): string => $ks->waitFor('key', 'first'));
+        $first = Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'));
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
-        $second = Async\run(static fn(): string => $ks->waitFor('key', 'second', $token));
+        $second = Async\run::<string>(static fn(): string => $ks->waitFor('key', 'second', $token));
 
         try {
             $second->await();
@@ -430,18 +430,18 @@ final class KeyedSemaphoreTest extends TestCase
 
     public function testCancelledWaitForOnOneKeyDoesNotAffectOtherKey(): void
     {
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(30));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('a', 'first-a'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('a', 'first-a'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
-        $cancelled = Async\run(static fn(): string => $ks->waitFor('a', 'second-a', $token));
+        $cancelled = Async\run::<string>(static fn(): string => $ks->waitFor('a', 'second-a', $token));
 
-        $other = Async\run(static fn(): string => $ks->waitFor('b', 'first-b'));
+        $other = Async\run::<string>(static fn(): string => $ks->waitFor('b', 'first-b'));
 
         try {
             $cancelled->await();
@@ -458,7 +458,7 @@ final class KeyedSemaphoreTest extends TestCase
         $innerResult = null;
 
         /** @var Async\KeyedSemaphore<string, string, string> */
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, string $input) use (
+        $ks = new Async\KeyedSemaphore::<string, string, string>(1, static function (string $key, string $input) use (
             &$ks,
             &$innerResult,
         ): string {
@@ -480,7 +480,7 @@ final class KeyedSemaphoreTest extends TestCase
         $innerResult = null;
 
         /** @var Async\KeyedSemaphore<string, int, int> */
-        $ks = new Async\KeyedSemaphore(1, static function (string $key, int $input) use (&$ks, &$innerResult): int {
+        $ks = new Async\KeyedSemaphore::<string, int, int>(1, static function (string $key, int $input) use (&$ks, &$innerResult): int {
             if ($input === 1) {
                 $innerResult = $ks->waitFor($key, 2);
             }
@@ -499,7 +499,7 @@ final class KeyedSemaphoreTest extends TestCase
         $callCount = 0;
 
         /** @var Async\KeyedSemaphore<string, string, string> */
-        $ks = new Async\KeyedSemaphore(2, static function (string $key, string $input) use (&$ks, &$callCount): string {
+        $ks = new Async\KeyedSemaphore::<string, string, string>(2, static function (string $key, string $input) use (&$ks, &$callCount): string {
             $callCount++;
             if ($input === 'outer') {
                 return $ks->waitFor($key, 'inner');
@@ -509,8 +509,8 @@ final class KeyedSemaphoreTest extends TestCase
         });
 
         // Fill both slots, then one of them re-enters.
-        $a = Async\run(static fn(): string => $ks->waitFor('x', 'outer'));
-        $b = Async\run(static fn(): string => $ks->waitFor('x', 'filler'));
+        $a = Async\run::<string>(static fn(): string => $ks->waitFor('x', 'outer'));
+        $b = Async\run::<string>(static fn(): string => $ks->waitFor('x', 'filler'));
 
         Async\later();
 

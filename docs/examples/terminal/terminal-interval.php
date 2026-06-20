@@ -14,9 +14,9 @@ final class TimerState
     public int $ticks = 0;
 }
 
-$app = Terminal\Application::create(new TimerState(), title: 'Interval Demo');
+$app = Terminal\Application::create::<TimerState>(new TimerState(), title: 'Interval Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, TimerState $_state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, TimerState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

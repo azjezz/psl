@@ -9,10 +9,6 @@ use Closure;
 /**
  * Returns a closure that calls the next functions with the result of the first one.
  *
- * @template I
- * @template O
- * @template R
- *
  * @param (Closure(I): O) $first
  * @param (Closure(O): R) $next
  *
@@ -22,7 +18,7 @@ use Closure;
  *
  * @api
  */
-function after(Closure $first, Closure $next): Closure
+function after<I, O, R>(Closure $first, Closure $next): Closure
 {
     return static fn(mixed $input): mixed => $next($first($input));
 }

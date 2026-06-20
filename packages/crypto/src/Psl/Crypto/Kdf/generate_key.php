@@ -16,7 +16,7 @@ use function sodium_crypto_kdf_keygen;
 function generate_key(): Key
 {
     /** @var non-empty-string $raw */
-    $raw = Internal\call_sodium(static fn() => sodium_crypto_kdf_keygen());
+    $raw = Internal\call_sodium::<string>(static fn() => sodium_crypto_kdf_keygen());
 
     return new Key($raw);
 }

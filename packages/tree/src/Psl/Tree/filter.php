@@ -26,16 +26,13 @@ use Closure;
  *      )
  *      => Tree\tree(2, [Tree\tree(3, [])])
  *
- * @template T
- *
- * @param NodeInterface<T>   $node
  * @param (Closure(T): bool) $predicate
  *
  * @return TreeNode<T>|null null if root doesn't match predicate
  *
  * @api
  */
-function filter(NodeInterface $node, Closure $predicate): null|TreeNode
+function filter<T>(NodeInterface<T> $node, Closure $predicate): null|TreeNode<T>
 {
     if (!$predicate($node->getValue())) {
         return null;
@@ -44,12 +41,12 @@ function filter(NodeInterface $node, Closure $predicate): null|TreeNode
     $filteredChildren = [];
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
-            $filtered = namespace\filter($child, $predicate);
+            $filtered = namespace\filter::<T>($child, $predicate);
             if (null !== $filtered) {
                 $filteredChildren[] = $filtered;
             }
         }
     }
 
-    return new TreeNode($node->getValue(), $filteredChildren);
+    return new TreeNode::<T>($node->getValue(), $filteredChildren);
 }

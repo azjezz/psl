@@ -30,7 +30,7 @@ final readonly class Encryptor implements Crypto\EncryptorInterface
      */
     public function seal(#[SensitiveParameter] string $plaintext): string
     {
-        return Internal\call_sodium(fn() => sodium_crypto_box_seal($plaintext, $this->publicKey->bytes));
+        return Internal\call_sodium::<string>(fn() => sodium_crypto_box_seal($plaintext, $this->publicKey->bytes));
     }
 
     /**
@@ -41,7 +41,7 @@ final readonly class Encryptor implements Crypto\EncryptorInterface
         $keypair = $this->secretKey->bytes . $this->publicKey->bytes;
 
         try {
-            $plaintext = Internal\call_sodium(static fn() => sodium_crypto_box_seal_open($ciphertext, $keypair));
+            $plaintext = Internal\call_sodium::<string|false>(static fn() => sodium_crypto_box_seal_open($ciphertext, $keypair));
 
             if ($plaintext === false) {
                 throw new Exception\DecryptionException('Asymmetric decryption failed.');

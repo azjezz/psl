@@ -41,11 +41,11 @@ function create_releases(Client\Client $httpClient, MonolithicRepository $monore
         ['content-type', 'application/json'],
     ]);
 
-    $errorType = Type\shape([
+    $errorType = Type\shape::<string, string>([
         'message' => Type\string(),
     ], allowUnknownFields: true);
 
-    $semaphore = new Async\Semaphore(10, static function (Package $package) use (
+    $semaphore = new Async\Semaphore::<Package, void>(10, static function (Package $package) use (
         $org,
         $tag,
         $headers,
@@ -70,7 +70,7 @@ function create_releases(Client\Client $httpClient, MonolithicRepository $monore
 
         if ($transaction->response->status >= 300) {
             $content = $transaction->response->body?->readAll() ?? '';
-            $body = Json\typed($content, $errorType);
+            $body = Json\typed::<array>($content, $errorType);
             Log\error('%s release failed: %s', $package->name, $body['message']);
             return;
         }
@@ -80,10 +80,10 @@ function create_releases(Client\Client $httpClient, MonolithicRepository $monore
 
     $awaitables = [];
     foreach ($monorepo->packages as $package) {
-        $awaitables[] = Async\run(static fn() => $semaphore->waitFor($package));
+        $awaitables[] = Async\run::<void>(static fn() => $semaphore->waitFor($package));
     }
 
-    Async\all($awaitables);
+    Async\all::<int, void>($awaitables);
 
     // Create release for the main repo
     $transaction = $httpClient->send(new Message\Request(
@@ -101,7 +101,7 @@ function create_releases(Client\Client $httpClient, MonolithicRepository $monore
 
     if ($transaction->response->status >= 300) {
         $content = $transaction->response->body?->readAll() ?? '';
-        $body = Json\typed($content, $errorType);
+        $body = Json\typed::<array>($content, $errorType);
         Log\error('main repo release failed: %s', $body['message']);
         return;
     }

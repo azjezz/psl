@@ -18,19 +18,19 @@ $txt = $resolver->query('example.com', Record\RecordType::TXT);
 $srv = $resolver->query('_http._tcp.example.com', Record\RecordType::SRV);
 
 // Extract typed records from a response
-foreach ($a->getAnswerRecords(Record\ARecord::class) as $record) {
+foreach ($a->getAnswerRecords::<Record\ARecord>(Record\ARecord::class) as $record) {
     $record->name; // "example.com"
     $record->duration; // TTL as Duration
     $record->address; // Psl\IP\Address
 }
 
-foreach ($mx->getAnswerRecords(Record\MXRecord::class) as $record) {
+foreach ($mx->getAnswerRecords::<Record\MXRecord>(Record\MXRecord::class) as $record) {
     $record->preference; // int
     $record->exchange; // "mail.example.com"
 }
 
 // Reverse lookup
 $ptr = $resolver->reverseQuery(Address::parse('8.8.8.8'));
-foreach ($ptr->getAnswerRecords(Record\PTRRecord::class) as $record) {
+foreach ($ptr->getAnswerRecords::<Record\PTRRecord>(Record\PTRRecord::class) as $record) {
     $record->target; // "dns.google"
 }

@@ -16,7 +16,7 @@ final class MapNonnullTest extends TestCase
     #[DataProvider('provideData')]
     public function testMapNonnull(array $expected, iterable $iterable, Closure $function): void
     {
-        $result = Vec\map_nonnull($iterable, $function);
+        $result = Vec\map_nonnull::<int, int, int>($iterable, $function);
 
         static::assertSame($expected, $result);
     }
@@ -30,10 +30,10 @@ final class MapNonnullTest extends TestCase
         yield [[], [null, null], static fn(null|string $v): null|string => $v];
         yield [['1', '2', '3'], [1, 2, 3], static fn(int $v): null|string => (string) $v];
         yield [[0, 0, 0], [1, 2, 3], static fn(int $v): int => 0];
-        yield [[4, 6], Collection\Vector::fromArray([1, 2, 3]), static fn(int $v): null|int => $v > 1 ? $v * 2 : null];
+        yield [[4, 6], Collection\Vector::<int>::fromArray([1, 2, 3]), static fn(int $v): null|int => $v > 1 ? $v * 2 : null];
         yield [
             [2, 4],
-            Iter\Iterator::create([1, 2, 3, 4]),
+            Iter\Iterator::<int, int>::create([1, 2, 3, 4]),
             static fn(int $v): null|int => ($v % 2) === 0 ? $v : null,
         ];
     }

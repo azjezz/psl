@@ -14,11 +14,9 @@ use function is_int;
 use function is_string;
 
 /**
- * @extends Type\Type<string>
- *
  * @internal
  */
-final readonly class StringType extends Type\Type
+final readonly class StringType extends Type\Type<string>
 {
     /**
      * @psalm-assert-if-true string $value

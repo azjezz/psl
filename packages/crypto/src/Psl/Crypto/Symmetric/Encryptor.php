@@ -30,7 +30,7 @@ final readonly class Encryptor implements EncryptorInterface
     public function seal(#[SensitiveParameter] string $plaintext, string $additionalData = ''): string
     {
         $nonce = SecureRandom\bytes(namespace\NONCE_BYTES);
-        $ciphertext = Internal\call_sodium(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_encrypt(
+        $ciphertext = Internal\call_sodium::<string>(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_encrypt(
             $plaintext,
             $additionalData,
             $nonce,
@@ -53,7 +53,7 @@ final readonly class Encryptor implements EncryptorInterface
         $nonce = substr($ciphertext, 0, namespace\NONCE_BYTES);
         $encrypted = substr($ciphertext, namespace\NONCE_BYTES);
 
-        $plaintext = Internal\call_sodium(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
+        $plaintext = Internal\call_sodium::<string|false>(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
             $encrypted,
             $additionalData,
             $nonce,

@@ -36,7 +36,7 @@ function file_size(string $file): int
     }
 
     // @codeCoverageIgnoreStart
-    [$size, $message] = Internal\box(static fn(): int|false => filesize($file));
+    [$size, $message] = Internal\box::<int|false>(static fn(): int|false => filesize($file));
     if (false === $size) {
         throw new Exception\RuntimeException(sprintf(
             'Error reading the size of file "%s": %s',

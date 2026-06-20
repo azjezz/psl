@@ -15,7 +15,7 @@ Async\Scheduler::delay(Duration::milliseconds(50), static fn() => $token->cancel
     new RuntimeException('Client disconnected'),
 ));
 
-$deferred = new Async\Deferred();
+$deferred = new Async\Deferred::<string>();
 
 try {
     // This will be cancelled before the deferred completes

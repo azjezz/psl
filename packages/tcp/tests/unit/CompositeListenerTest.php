@@ -22,7 +22,7 @@ final class CompositeListenerTest extends TestCase
 
         $composite = new Network\CompositeListener([$listener1, $listener2]);
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($composite): void {
                 $stream1 = $composite->accept();
                 $data1 = $stream1->read();
@@ -117,7 +117,7 @@ final class CompositeListenerTest extends TestCase
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(50));
 
         try {
-            Async\run(static function () use ($composite, $token): void {
+            Async\run::<void>(static function () use ($composite, $token): void {
                 $composite->accept($token);
             })->await();
 
@@ -138,7 +138,7 @@ final class CompositeListenerTest extends TestCase
 
         $this->expectException(Network\Exception\AlreadyStoppedException::class);
 
-        Async\run(static function () use ($composite): void {
+        Async\run::<void>(static function () use ($composite): void {
             $composite->accept();
         })->await();
     }
@@ -160,7 +160,7 @@ final class CompositeListenerTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 18_304);
         $composite = new Network\CompositeListener([$listener]);
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($composite): void {
                 $stream = $composite->accept();
                 $data = $stream->read();
@@ -185,7 +185,7 @@ final class CompositeListenerTest extends TestCase
 
         $this->expectException(Network\Exception\AlreadyStoppedException::class);
 
-        Async\run(static function () use ($composite): void {
+        Async\run::<void>(static function () use ($composite): void {
             $composite->accept();
         })->await();
     }
@@ -198,7 +198,7 @@ final class CompositeListenerTest extends TestCase
         $composite->close();
 
         try {
-            Async\run(static function () use ($composite): void {
+            Async\run::<void>(static function () use ($composite): void {
                 $composite->accept();
             })->await();
 
@@ -227,7 +227,7 @@ final class CompositeListenerTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 18_309);
         $composite = new Network\CompositeListener([$listener]);
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($composite): void {
                 $stream = $composite->accept();
 
@@ -254,7 +254,7 @@ final class CompositeListenerTest extends TestCase
 
         $this->expectException(Network\Exception\AlreadyStoppedException::class);
 
-        Async\run(static function () use ($composite): void {
+        Async\run::<void>(static function () use ($composite): void {
             $composite->accept();
         })->await();
     }
@@ -285,7 +285,7 @@ final class CompositeListenerTest extends TestCase
 
         $this->expectException(Network\Exception\AlreadyStoppedException::class);
 
-        Async\run(static function () use ($composite): void {
+        Async\run::<void>(static function () use ($composite): void {
             $composite->accept();
         })->await();
     }
@@ -303,7 +303,7 @@ final class CompositeListenerTest extends TestCase
 
         $this->expectException(Network\Exception\AlreadyStoppedException::class);
 
-        Async\run(static function () use ($composite): void {
+        Async\run::<void>(static function () use ($composite): void {
             $composite->accept();
         })->await();
     }
@@ -316,7 +316,7 @@ final class CompositeListenerTest extends TestCase
         $composite->close();
 
         try {
-            Async\run(static function () use ($composite): void {
+            Async\run::<void>(static function () use ($composite): void {
                 $composite->accept();
             })->await();
 
@@ -336,7 +336,7 @@ final class CompositeListenerTest extends TestCase
         $threw = false;
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(100));
         try {
-            Async\run(static function () use ($composite, $token): void {
+            Async\run::<void>(static function () use ($composite, $token): void {
                 $composite->accept($token);
             })->await();
         } catch (Network\Exception\AlreadyStoppedException) {
@@ -369,14 +369,14 @@ final class CompositeListenerTest extends TestCase
         $slow = new SlowClosingListener();
         $composite = new Network\CompositeListener([$slow]);
 
-        Async\run(static function () use ($composite): void {
+        Async\run::<void>(static function () use ($composite): void {
             Async\later();
             $composite->close();
         });
 
         $threw = false;
         try {
-            Async\run(static function () use ($composite): void {
+            Async\run::<void>(static function () use ($composite): void {
                 $token = new Async\TimeoutCancellationToken(Duration::seconds(2));
                 $composite->accept($token);
             })->await();

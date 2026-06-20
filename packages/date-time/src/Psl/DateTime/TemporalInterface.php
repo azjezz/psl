@@ -15,12 +15,9 @@ use Stringable;
 /**
  * Represents a temporal object that can be manipulated and compared.
  *
- * @template-extends Comparable<TemporalInterface>
- * @template-extends Equable<TemporalInterface>
- *
  * @api
  */
-interface TemporalInterface extends Comparable, Equable, JsonSerializable, Stringable
+interface TemporalInterface extends Comparable<TemporalInterface>, Equable<TemporalInterface>, JsonSerializable, Stringable
 {
     /**
      * Returns the timestamp representation of this temporal object.
@@ -32,24 +29,20 @@ interface TemporalInterface extends Comparable, Equable, JsonSerializable, Strin
     /**
      * Compare this {@see TemporalInterface} object to the given one.
      *
-     * @param TemporalInterface $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function compare(mixed $other): Order;
+    public function compare(TemporalInterface $other): Order;
 
     /**
      * Checks if this {@see TemporalInterface} object represents the same time as the given one.
      *
      * Note: this method is an alias for {@see TemporalInterface::atTheSameTime()}.
      *
-     * @param TemporalInterface $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function equals(mixed $other): bool;
+    public function equals(TemporalInterface $other): bool;
 
     /**
      * Checks if this temporal object represents the same time as the given one.

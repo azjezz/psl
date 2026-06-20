@@ -24,13 +24,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @template T of array-key
- *
- * @implements SetInterface<T>
- *
  * @api
  */
-final readonly class Set implements SetInterface
+final readonly class Set<T: string|int> implements SetInterface<T>
 {
     /**
      * @var array<T, T> $elements
@@ -64,73 +60,58 @@ final readonly class Set implements SetInterface
     #[Override]
     public static function default(): static
     {
-        return new self([]);
+        return new self::<T>([]);
     }
 
     /**
      * Create a set from the given array, using the values of the array as the set values.
      *
-     * @template Ts of array-key
-     *
-     * @param array<array-key, Ts> $elements
-     *
-     * @return Set<Ts>
+     * @param array<array-key, T> $elements
      *
      * @pure
      */
-    public static function fromArray(array $elements): Set
+    public static function fromArray(array $elements): Set<T>
     {
-        return new self($elements);
+        return new self::<T>($elements);
     }
 
     /**
      * Create a set from the given items, using the keys of the array as the set values.
      *
-     * @template Ts of array-key
-     *
-     * @param iterable<array-key, Ts> $items
-     *
-     * @return Set<Ts>
+     * @param iterable<array-key, T> $items
      */
-    public static function fromItems(iterable $items): Set
+    public static function fromItems(iterable $items): Set<T>
     {
         $array = iterator_to_array($items);
 
-        return self::fromArray($array);
+        return self::<T>::fromArray($array);
     }
 
     /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
-     * @template Ts of array-key
-     *
-     * @param array<Ts, mixed> $elements
-     *
-     * @return Set<Ts>
+     * @param array<T, mixed> $elements
      *
      * @pure
      */
-    public static function fromArrayKeys(array $elements): Set
+    public static function fromArrayKeys(array $elements): Set<T>
     {
-        /** @var array<Ts, Ts> $set */
+        /** @var array<T, T> $set */
         $set = [];
         foreach ($elements as $key => $_) {
             $set[$key] = $key;
         }
 
-        return new self($set);
+        return new self::<T>($set);
     }
 
     /**
      * Returns the first value in the current `Set`.
      *
-     * @return T|null The first value in the current `Set`, or `null` if the
-     *                current `Set` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): null|int|string
+    public function first(): T|null
     {
         return array_key_first($this->elements);
     }
@@ -138,13 +119,10 @@ final readonly class Set implements SetInterface
     /**
      * Returns the last value in the current `Set`.
      *
-     * @return T|null The last value in the current `Set`, or `null` if the
-     *                current `Set` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): null|int|string
+    public function last(): T|null
     {
         return array_key_last($this->elements);
     }
@@ -217,16 +195,12 @@ final readonly class Set implements SetInterface
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * an {@see Exception\OutOfBoundsException} is thrown to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return T
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): int|string
+    public function at(T $k): T
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -242,14 +216,12 @@ final readonly class Set implements SetInterface
      * If the value exists, it returns true to indicate presence in the set. If the value does not exist,
      * it returns false to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @return bool True if the value is in the set, false otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function contains(int|string $k): bool
+    public function contains(T $k): bool
     {
         return array_key_exists($k, $this->elements);
     }
@@ -257,14 +229,12 @@ final readonly class Set implements SetInterface
     /**
      * Alias of `contains`.
      *
-     * @param T $k
-     *
      * @return bool True if the value is in the set, false otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function containsKey(int|string $k): bool
+    public function containsKey(T $k): bool
     {
         return $this->contains($k);
     }
@@ -276,14 +246,10 @@ final readonly class Set implements SetInterface
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * null is returned to indicate the absence of the value.
      *
-     * @param T $k
-     *
-     * @return T|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): null|int|string
+    public function get(T $k): T|null
     {
         return $this->elements[$k] ?? null;
     }
@@ -293,13 +259,10 @@ final readonly class Set implements SetInterface
      *
      * As {@see Set} does not have keys, this method acts as an alias for {@see Set::first()}.
      *
-     * @return T|null The first value in the current `Set`, or `null` if the
-     *                current `Set` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): null|int|string
+    public function firstKey(): T|null
     {
         return $this->first();
     }
@@ -309,13 +272,10 @@ final readonly class Set implements SetInterface
      *
      * As {@see Set} does not have keys, this method acts as an alias for {@see Set::last()}.
      *
-     * @return T|null The last value in the current `Set`, or `null` if the
-     *                current `Set` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): null|int|string
+    public function lastKey(): T|null
     {
         return $this->last();
     }
@@ -327,14 +287,10 @@ final readonly class Set implements SetInterface
      *
      * As {@see Set} does not have keys, this method returns the value itself.
      *
-     * @param T $searchValue The value that will be search for in the current `Set`.
-     *
-     * @return T|null The value if its found, null otherwise.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int|string
+    public function linearSearch(T $searchValue): T|null
     {
         foreach ($this->elements as $key => $element) {
             if ($searchValue !== $element) {
@@ -350,27 +306,23 @@ final readonly class Set implements SetInterface
     /**
      * Returns a `Vector` containing the values of the current `Set`.
      *
-     * @return Vector<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): Vector
+    public function values(): Vector<T>
     {
-        return Vector::fromArray($this->elements);
+        return Vector::<T>::fromArray($this->elements);
     }
 
     /**
      * As {@see Set} does not have keys, this method acts as an alias for {@see Set::values()}.
      *
-     * @return Vector<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): Vector
+    public function keys(): Vector<T>
     {
-        return Vector::fromArray(array_keys($this->elements));
+        return Vector::<T>::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -382,14 +334,11 @@ final readonly class Set implements SetInterface
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `Set` values.
-     *
-     * @return Set<T> a Set containing the values after a user-specified condition
-     *                is applied.
      */
     #[Override]
-    public function filter(Closure $fn): Set
+    public function filter(Closure $fn): Set<T>
     {
-        return new Set(array_filter($this->elements, $fn, ARRAY_FILTER_USE_KEY));
+        return new Set::<T>(array_filter($this->elements, $fn, ARRAY_FILTER_USE_KEY));
     }
 
     /**
@@ -403,11 +352,9 @@ final readonly class Set implements SetInterface
      * It's particularly useful when the distinction between keys and values is relevant for the condition.
      *
      * @param (Closure(T, T): bool) $fn T
-     *
-     * @return Set<T>
      */
     #[Override]
-    public function filterWithKey(Closure $fn): Set
+    public function filterWithKey(Closure $fn): Set<T>
     {
         return $this->filter(
             /**
@@ -424,18 +371,13 @@ final readonly class Set implements SetInterface
      * Every value in the current Map is affected by a call to `map()`, unlike
      * `filter()` where only values that meet a certain criteria are affected.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `Set` values.
-     *
-     * @return Set<Tu> a `Set` containing key/value pairs after a user-specified
-     *                 operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): Set
+    public function map<Tu: string|int>(Closure $fn): Set<Tu>
     {
-        return new Set(array_map($fn, $this->elements));
+        return new Set::<Tu>(array_map($fn, $this->elements));
     }
 
     /**
@@ -448,16 +390,12 @@ final readonly class Set implements SetInterface
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
-     *
-     * @return Set<Tu>
      */
     #[Override]
-    public function mapWithKey(Closure $fn): Set
+    public function mapWithKey<Tu: string|int>(Closure $fn): Set<Tu>
     {
-        return $this->map(
+        return $this->map::<Tu>(
             /**
              * @param T $k
              */
@@ -468,8 +406,6 @@ final readonly class Set implements SetInterface
     /**
      * Always throws an exception since `Set` can only contain array-key values.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `SetInterface`.
      *
      * @psalm-mutation-free
@@ -477,7 +413,7 @@ final readonly class Set implements SetInterface
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never
+    public function zip<Tu>(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a Set.');
     }
@@ -494,13 +430,10 @@ final readonly class Set implements SetInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `Set`.
      *
-     * @return Set<T> A `Set` that is a proper subset of the current
-     *                `Set` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): Set
+    public function take(int $n): Set<T>
     {
         return $this->slice(0, $n);
     }
@@ -515,12 +448,9 @@ final readonly class Set implements SetInterface
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return Set<T> A `Set` that is a proper subset of the current
-     *                `Set` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): Set
+    public function takeWhile(Closure $fn): Set<T>
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -531,7 +461,7 @@ final readonly class Set implements SetInterface
             $result[$k] = $v;
         }
 
-        return new Set($result);
+        return new Set::<T>($result);
     }
 
     /**
@@ -546,13 +476,10 @@ final readonly class Set implements SetInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `Set`.
      *
-     * @return Set<T> A `Set` that is a proper subset of the current
-     *                `Set` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): Set
+    public function drop(int $n): Set<T>
     {
         return $this->slice($n);
     }
@@ -567,12 +494,9 @@ final readonly class Set implements SetInterface
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `Set`.
-     *
-     * @return Set<T> A `Set` that is a proper subset of the current
-     *                `Set` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): Set
+    public function dropWhile(Closure $fn): Set<T>
     {
         $result = [];
         $dropping = true;
@@ -585,7 +509,7 @@ final readonly class Set implements SetInterface
             $result[$k] = $v;
         }
 
-        return new Set($result);
+        return new Set::<T>($result);
     }
 
     /**
@@ -603,16 +527,12 @@ final readonly class Set implements SetInterface
      *                           `Set`.
      * @param int<0, max> $length The length of the returned `Set`.
      *
-     * @return Set<T> A `Set` that is a proper subset of the current
-     *                `Set` starting at `$start` up to but not including
-     *                the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): Set
+    public function slice(int $start, null|int $length = null): Set<T>
     {
-        return self::fromArray(array_slice($this->elements, $start, $length, true));
+        return self::<T>::fromArray(array_slice($this->elements, $start, $length, true));
     }
 
     /**
@@ -624,14 +544,11 @@ final readonly class Set implements SetInterface
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return Vector<Set<T>> A `Vector` containing the original `Set` split
-     *                        into chunks of the given size.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): Vector
+    public function chunk(int $size): Vector<Set<T>>
     {
-        return Vector::fromArray(array_map(static::fromArray(...), array_chunk($this->toArray(), $size)));
+        return Vector::<Set<T>>::fromArray(array_map(static::<T>::fromArray(...), array_chunk($this->toArray(), $size)));
     }
 }

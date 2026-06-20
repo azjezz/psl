@@ -9,19 +9,15 @@ namespace Psl\Async;
  *
  * If you want the first awaitable completed without an error, use {@see any()} instead.
  *
- * @template T
- *
  * @param iterable<Awaitable<T>> $awaitables
  *
  * @throws Exception\InvalidArgumentException If $awaitables is empty.
  *
- * @return T
- *
  * @api
  */
-function first(iterable $awaitables): mixed
+function first<T>(iterable $awaitables): T
 {
-    foreach (Awaitable::iterate($awaitables) as $first) {
+    foreach (Awaitable::iterate::<int, T>($awaitables) as $first) {
         foreach ($awaitables as $awaitable) {
             if ($awaitable === $first) {
                 continue;

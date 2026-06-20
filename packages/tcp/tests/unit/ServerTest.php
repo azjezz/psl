@@ -64,7 +64,7 @@ final class ServerTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true, backlog: 64));
         $address = $listener->getLocalAddress();
 
-        [$server1, $client1, $client2] = Async\concurrently([
+        [$server1, $client1, $client2] = Async\concurrently::<int, Network\StreamInterface>([
             $listener->accept(...),
             static fn(): Network\StreamInterface => TCP\connect('127.0.0.1', $address->port),
             static fn(): Network\StreamInterface => TCP\connect('127.0.0.1', $address->port),
@@ -91,9 +91,9 @@ final class ServerTest extends TestCase
     {
         $listener = TCP\listen('127.0.0.1');
 
-        $first = Async\run($listener->accept(...));
+        $first = Async\run::<TCP\StreamInterface>($listener->accept(...));
 
-        [$second_connection, $client_one, $client_two] = Async\concurrently([
+        [$second_connection, $client_one, $client_two] = Async\concurrently::<int, Network\StreamInterface>([
             $listener->accept(...),
             static fn(): Network\StreamInterface => TCP\connect('127.0.0.1', $listener->getLocalAddress()->port),
             static fn(): Network\StreamInterface => TCP\connect('127.0.0.1', $listener->getLocalAddress()->port),

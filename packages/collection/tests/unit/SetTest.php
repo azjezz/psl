@@ -18,7 +18,7 @@ final class SetTest extends AbstractSetTestCase
 
     public function testFromItems(): void
     {
-        $set = Set::fromItems(['foo', 'bar', 'baz']);
+        $set = Set::<string>::fromItems(['foo', 'bar', 'baz']);
 
         static::assertTrue($set->contains('foo'));
         static::assertTrue($set->contains('bar'));
@@ -26,21 +26,17 @@ final class SetTest extends AbstractSetTestCase
     }
 
     /**
-     * @template T of array-key
-     *
      * @param array<T, mixed> $items
-     *
-     * @return Set<T>
      */
     #[Override]
-    protected function createFromList(array $items): Set
+    protected function createFromList<T: string|int>(array $items): Set<T>
     {
-        return Set::fromArray($items);
+        return Set::<string|int>::fromArray($items);
     }
 
     public function testFromArrayKeysConstructor(): void
     {
-        $set = Set::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
+        $set = Set::<string>::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
 
         static::assertCount(3, $set);
         static::assertTrue($set->contains('foo'));
@@ -51,7 +47,7 @@ final class SetTest extends AbstractSetTestCase
     #[Override]
     public function testJsonSerialize(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz', 'qux']);
 
         static::assertSame(['foo', 'bar', 'baz', 'qux'], $set->jsonSerialize());
     }

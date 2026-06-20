@@ -12,13 +12,9 @@ use function count;
 /**
  * A basic implementation of a queue data structure ( FIFO ).
  *
- * @template T
- *
- * @implements QueueInterface<T>
- *
  * @api
  */
-final class Queue implements QueueInterface
+final class Queue<T> implements QueueInterface<T>
 {
     /**
      * @var list<T>
@@ -35,18 +31,16 @@ final class Queue implements QueueInterface
     #[Override]
     public static function default(): static
     {
-        return new self();
+        return new self::<T>();
     }
 
     /**
      * Adds a node to the queue.
      *
-     * @param T $node
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function enqueue(mixed $node): void
+    public function enqueue(T $node): void
     {
         $this->queue[] = $node;
     }
@@ -55,12 +49,10 @@ final class Queue implements QueueInterface
      * Retrieves, but does not remove, the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @return null|T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function peek(): mixed
+    public function peek(): null|T
     {
         return $this->queue[0] ?? null;
     }
@@ -69,12 +61,10 @@ final class Queue implements QueueInterface
      * Retrieves and removes the node at the head of this queue,
      * or returns null if this queue is empty.
      *
-     * @return null|T
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function pull(): mixed
+    public function pull(): null|T
     {
         return array_shift($this->queue);
     }
@@ -84,12 +74,10 @@ final class Queue implements QueueInterface
      *
      * @throws Exception\UnderflowException If the queue is empty.
      *
-     * @return T
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function dequeue(): mixed
+    public function dequeue(): T
     {
         if ([] === $this->queue) {
             throw new Exception\UnderflowException('Cannot dequeue a node from an empty queue.');

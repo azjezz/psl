@@ -14,11 +14,9 @@ use function is_string;
 use function mb_strtolower;
 
 /**
- * @extends Type\Type<bool>
- *
  * @internal
  */
-final readonly class BoolType extends Type\Type
+final readonly class BoolType extends Type\Type<bool>
 {
     /**
      * @psalm-assert-if-true bool $value

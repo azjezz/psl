@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\DataStructure;
 
-$pq = new DataStructure\PriorityQueue();
+$pq = new DataStructure\PriorityQueue::<string>();
 
 $pq->enqueue('low-priority task', priority: 1);
 $pq->enqueue('high-priority task', priority: 10);

@@ -12,16 +12,16 @@ final class FromNullableTest extends TestCase
 {
     public function testIsSome(): void
     {
-        static::assertTrue(Option\from_nullable(1)->isSome());
-        static::assertTrue(Option\from_nullable(1.1)->isSome());
-        static::assertTrue(Option\from_nullable(true)->isSome());
-        static::assertTrue(Option\from_nullable(false)->isSome());
-        static::assertTrue(Option\from_nullable('hello')->isSome());
-        static::assertTrue(Option\from_nullable([])->isSome());
-        static::assertTrue(Option\from_nullable(new stdClass())->isSome());
-        static::assertTrue(Option\from_nullable(static fn(): string => '')->isSome());
+        static::assertTrue(Option\from_nullable::<int>(1)->isSome());
+        static::assertTrue(Option\from_nullable::<float>(1.1)->isSome());
+        static::assertTrue(Option\from_nullable::<bool>(true)->isSome());
+        static::assertTrue(Option\from_nullable::<bool>(false)->isSome());
+        static::assertTrue(Option\from_nullable::<string>('hello')->isSome());
+        static::assertTrue(Option\from_nullable::<array>([])->isSome());
+        static::assertTrue(Option\from_nullable::<stdClass>(new stdClass())->isSome());
+        static::assertTrue(Option\from_nullable::<\Closure>(static fn(): string => '')->isSome());
         static::assertTrue(
-            Option\from_nullable(static function (): iterable {
+            Option\from_nullable::<\Closure>(static function (): iterable {
                 yield 'hello';
             })->isSome(),
         );
@@ -29,7 +29,7 @@ final class FromNullableTest extends TestCase
 
     public function testIsNone(): void
     {
-        $option = Option\from_nullable(null);
+        $option = Option\from_nullable::<null>(null);
 
         static::assertTrue($option->isNone());
     }

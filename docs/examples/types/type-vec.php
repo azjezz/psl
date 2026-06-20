@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Type;
 
-$vec = Type\vec(Type\shape([
+$vec = Type\vec::<array>(Type\shape::<string, string>([
     'user' => Type\string(),
     'comment' => Type\string(),
 ]));

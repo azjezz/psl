@@ -28,7 +28,7 @@ final class PlainAuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('PLAIN');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -54,7 +54,7 @@ final class PlainAuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('PLAIN');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -79,7 +79,7 @@ final class PlainAuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('PLAIN');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -123,7 +123,7 @@ final class PlainAuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -134,7 +134,7 @@ final class PlainAuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -163,7 +163,7 @@ final class PlainAuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('LOGIN PLAIN XOAUTH2');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -184,7 +184,7 @@ final class PlainAuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('PLAIN');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -218,7 +218,7 @@ final class PlainAuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -229,7 +229,7 @@ final class PlainAuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream, $authMechanisms): void {
+        Async\run::<void>(static function () use ($serverStream, $authMechanisms): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();

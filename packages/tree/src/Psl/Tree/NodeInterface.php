@@ -9,20 +9,16 @@ use JsonSerializable;
 /**
  * Base interface for all tree nodes.
  *
- * @template-covariant T
- *
  * @psalm-inheritors LeafNode|TreeNode
  *
  * @api
  */
-interface NodeInterface extends JsonSerializable
+interface NodeInterface<out T> extends JsonSerializable
 {
     /**
      * Returns the value stored in this node.
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
-    public function getValue(): mixed;
+    public function getValue(): T;
 }

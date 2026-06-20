@@ -17,7 +17,7 @@ final class ConnectedSocketTest extends TestCase
 {
     public function testSendAndReceive(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $client = UDP\Socket::bind('127.0.0.1', 0);
             $connected = $client->connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
@@ -39,7 +39,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testSendReturnsByteCount(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -56,7 +56,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testPeekDoesNotConsumeData(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -78,7 +78,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testSendWithTimeout(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -97,7 +97,7 @@ final class ConnectedSocketTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
             try {
@@ -114,7 +114,7 @@ final class ConnectedSocketTest extends TestCase
         $this->expectException(Network\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('exceeds maximum size');
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
             try {
@@ -128,7 +128,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testGetPeerAddress(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $serverAddr = $server->getLocalAddress();
             $connected = UDP\connect($serverAddr->host, $serverAddr->port);
@@ -145,7 +145,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testGetLocalAddress(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -160,7 +160,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testGetStreamReturnsResource(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -173,7 +173,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testGetStreamReturnsNullAfterClose(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -188,7 +188,7 @@ final class ConnectedSocketTest extends TestCase
     {
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -201,7 +201,7 @@ final class ConnectedSocketTest extends TestCase
 
     public function testDoubleCloseDoesNotThrow(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -217,7 +217,7 @@ final class ConnectedSocketTest extends TestCase
     {
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -232,7 +232,7 @@ final class ConnectedSocketTest extends TestCase
     {
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -247,7 +247,7 @@ final class ConnectedSocketTest extends TestCase
     {
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
 
@@ -262,7 +262,7 @@ final class ConnectedSocketTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $server = UDP\Socket::bind('127.0.0.1', 0);
             $connected = UDP\connect($server->getLocalAddress()->host, $server->getLocalAddress()->port);
             try {

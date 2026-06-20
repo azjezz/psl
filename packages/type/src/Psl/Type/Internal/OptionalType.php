@@ -10,30 +10,22 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @template T
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class OptionalType extends Type\Type
+final readonly class OptionalType<T> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $inner
      */
     public function __construct(
-        private Type\TypeInterface $inner,
+        private Type\TypeInterface<T> $inner,
     ) {}
 
     /**
      * @throws CoercionException
-     *
-     * @return T
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): T
     {
         return $this->inner->coerce($value);
     }
@@ -41,12 +33,10 @@ final readonly class OptionalType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return T
-     *
      * @psalm-assert T $value
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): T
     {
         return $this->inner->assert($value);
     }

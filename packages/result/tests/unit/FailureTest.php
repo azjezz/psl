@@ -14,20 +14,20 @@ final class FailureTest extends TestCase
 {
     public function testIsSucceeded(): void
     {
-        $wrapper = new Failure(new Exception('foo'));
+        $wrapper = new Failure::<never, Exception>(new Exception('foo'));
         static::assertFalse($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
-        $wrapper = new Failure(new Exception('foo'));
+        $wrapper = new Failure::<never, Exception>(new Exception('foo'));
         static::assertTrue($wrapper->isFailed());
     }
 
     public function testGetResult(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
+        $wrapper = new Failure::<never, Exception>($exception);
 
         $this->expectExceptionObject($exception);
         $wrapper->getResult();
@@ -35,8 +35,8 @@ final class FailureTest extends TestCase
 
     public function testUnwrapFailure(): void
     {
-        $result = new Failure(new Exception());
-        $value = $result->unwrapOr(null);
+        $result = new Failure::<never, Exception>(new Exception());
+        $value = $result->unwrapOr::<null>(null);
 
         static::assertNull($value);
     }
@@ -44,7 +44,7 @@ final class FailureTest extends TestCase
     public function testGetException(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
+        $wrapper = new Failure::<never, Exception>($exception);
         $e = $wrapper->getThrowable();
         static::assertSame($exception, $e);
     }
@@ -52,8 +52,8 @@ final class FailureTest extends TestCase
     public function testProceed(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
-        $actual = $wrapper->proceed(static fn(string $_): int => 200, static fn(Exception $_): int => 404);
+        $wrapper = new Failure::<never, Exception>($exception);
+        $actual = $wrapper->proceed::<int>(static fn(string $_): int => 200, static fn(Exception $_): int => 404);
 
         static::assertSame(404, $actual);
     }
@@ -61,8 +61,8 @@ final class FailureTest extends TestCase
     public function testThenToSuccess(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
-        $actual = $wrapper->then(
+        $wrapper = new Failure::<never, Exception>($exception);
+        $actual = $wrapper->then::<string>(
             static function (): never {
                 throw new Exception('Dont call us, we\'ll call you!');
             },
@@ -76,8 +76,8 @@ final class FailureTest extends TestCase
     public function testThenToFailure(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
-        $actual = $wrapper->then(static function (): never {
+        $wrapper = new Failure::<never, Exception>($exception);
+        $actual = $wrapper->then::<never>(static function (): never {
             throw new Exception('Dont call us, we\'ll call you!');
         }, Fun\rethrow());
 
@@ -88,15 +88,15 @@ final class FailureTest extends TestCase
     public function testCatch(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
-        $actual = $wrapper->catch(Fun\rethrow());
+        $wrapper = new Failure::<never, Exception>($exception);
+        $actual = $wrapper->catch::<never>(Fun\rethrow());
 
         static::assertFalse($actual->isSucceeded());
         static::assertSame($actual->getThrowable(), $exception);
 
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
-        $actual = $wrapper->catch(static fn(Exception $exception): Exception => $exception);
+        $wrapper = new Failure::<never, Exception>($exception);
+        $actual = $wrapper->catch::<Exception>(static fn(Exception $exception): Exception => $exception);
 
         static::assertTrue($actual->isSucceeded());
         static::assertSame($exception, $actual->getResult());
@@ -105,8 +105,8 @@ final class FailureTest extends TestCase
     public function testMap(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
-        $actual = $wrapper->map(static function (): never {
+        $wrapper = new Failure::<never, Exception>($exception);
+        $actual = $wrapper->map::<never>(static function (): never {
             throw new Exception('Dont call us, we\'ll call you!');
         });
 
@@ -116,9 +116,9 @@ final class FailureTest extends TestCase
 
     public function testAlways(): void
     {
-        $ref = new Psl\Ref('');
+        $ref = new Psl\Ref::<string>('');
         $exception = new Exception('bar');
-        $wrapper = new Failure($exception);
+        $wrapper = new Failure::<never, Exception>($exception);
         $actual = $wrapper->always(static function () use ($ref): void {
             $ref->value .= 'hello';
         });

@@ -16,19 +16,19 @@ final class SequenceTest extends TestCase
 {
     public function testItCallsTheOperation(): void
     {
-        $sequence = new Async\Sequence(static fn(int $input): int => $input * 2);
+        $sequence = new Async\Sequence::<int, int>(static fn(int $input): int => $input * 2);
 
         static::assertSame(4, $sequence->waitFor(2));
     }
 
     public function testSequenceOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Sequence<array{time: ?float, value: string}, void>
          */
-        $sequence = new Async\Sequence(static function (array $data) use ($spy): void {
+        $sequence = new Async\Sequence::<array, void>(static function (array $data) use ($spy): void {
             if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
@@ -36,19 +36,19 @@ final class SequenceTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn(): null => $sequence->waitFor([
+        Async\run::<null>(static fn(): null => $sequence->waitFor([
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
         ]))->ignore();
-        Async\run(static fn(): null => $sequence->waitFor([
+        Async\run::<null>(static fn(): null => $sequence->waitFor([
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
         ]))->ignore();
-        Async\run(static fn(): null => $sequence->waitFor([
+        Async\run::<null>(static fn(): null => $sequence->waitFor([
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]))->ignore();
-        $last = Async\run(static fn(): null => $sequence->waitFor([
+        $last = Async\run::<null>(static fn(): null => $sequence->waitFor([
             'time' => null,
             'value' => 'd',
         ]));
@@ -59,18 +59,18 @@ final class SequenceTest extends TestCase
 
     public function testOperationIsStartedIfLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Sequence<string, void>
          */
-        $sequence = new Async\Sequence(static function (string $input) use ($spy): void {
+        $sequence = new Async\Sequence::<string, void>(static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn(): null => $sequence->waitFor('hello'));
+        $awaitable = Async\run::<null>(static fn(): null => $sequence->waitFor('hello'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -81,19 +81,19 @@ final class SequenceTest extends TestCase
 
     public function testOperationIsNotStartedIfLimitIsReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Sequence<string, void>
          */
-        $sequence = new Async\Sequence(static function (string $input) use ($spy): void {
+        $sequence = new Async\Sequence::<string, void>(static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn(): null => $sequence->waitFor('hello'));
-        $awaitable = Async\run(static fn(): null => $sequence->waitFor('world'));
+        Async\run::<null>(static fn(): null => $sequence->waitFor('hello'));
+        $awaitable = Async\run::<null>(static fn(): null => $sequence->waitFor('world'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -107,7 +107,7 @@ final class SequenceTest extends TestCase
         /**
          * @var Async\Sequence<string, string>
          */
-        $sequence = new Async\Sequence(static fn(string $input): string => $input);
+        $sequence = new Async\Sequence::<string, string>(static fn(string $input): string => $input);
 
         $sequence->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -119,14 +119,14 @@ final class SequenceTest extends TestCase
         /**
          * @var Async\Sequence<string, string>
          */
-        $sequence = new Async\Sequence(static function (string $input): string {
+        $sequence = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $sequence->waitFor('one'));
-        $two = Async\run(static fn(): string => $sequence->waitFor('two'));
+        $one = Async\run::<string>(static fn(): string => $sequence->waitFor('one'));
+        $two = Async\run::<string>(static fn(): string => $sequence->waitFor('two'));
 
         Async\sleep(DateTime\Duration::milliseconds(10));
 
@@ -145,9 +145,9 @@ final class SequenceTest extends TestCase
      */
     public function testBug327(): void
     {
-        $ref = new Psl\Ref('');
+        $ref = new Psl\Ref::<string>('');
 
-        $sequence = new Async\Sequence(static function (DateTime\Duration $value) use ($ref): void {
+        $sequence = new Async\Sequence::<DateTime\Duration, void>(static function (DateTime\Duration $value) use ($ref): void {
             $ref->value .= Str\format('%f', $value->getTotalSeconds());
 
             Async\sleep($value);
@@ -155,7 +155,7 @@ final class SequenceTest extends TestCase
 
         $time = microtime(true);
 
-        Async\concurrently([
+        Async\concurrently::<int, null>([
             static function () use ($sequence): void {
                 $sequence->waitFor(DateTime\Duration::milliseconds(20));
                 $sequence->waitFor(DateTime\Duration::milliseconds(20));
@@ -174,14 +174,14 @@ final class SequenceTest extends TestCase
         /**
          * @var Async\Sequence<string, string>
          */
-        $s = new Async\Sequence(static function (string $input): string {
+        $s = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $s->waitFor('one'));
-        $two = Async\run(static fn(): string => $s->waitFor('two'));
+        $one = Async\run::<string>(static fn(): string => $s->waitFor('one'));
+        $two = Async\run::<string>(static fn(): string => $s->waitFor('two'));
         static::assertFalse($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
@@ -204,14 +204,14 @@ final class SequenceTest extends TestCase
         /**
          * @var Async\Sequence<string, string>
          */
-        $s = new Async\Sequence(static function (string $input): string {
+        $s = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $s->waitFor('one'));
-        $two = Async\run(static fn(): string => $s->waitFor('two'));
+        $one = Async\run::<string>(static fn(): string => $s->waitFor('one'));
+        $two = Async\run::<string>(static fn(): string => $s->waitFor('two'));
         static::assertFalse($s->hasOngoingOperations());
         static::assertFalse($s->hasPendingOperations());
         static::assertSame(0, $s->getPendingOperations());
@@ -233,7 +233,7 @@ final class SequenceTest extends TestCase
 
     public function testWaitForPendingReturnsImmediatelyWhenNotIngoing(): void
     {
-        $s = new Async\Sequence(static fn(string $input): string => $input);
+        $s = new Async\Sequence::<string, string>(static fn(string $input): string => $input);
 
         $s->waitForPending();
 
@@ -242,68 +242,68 @@ final class SequenceTest extends TestCase
 
     public function testWaitForCancelledWhileWaiting(): void
     {
-        $sequence = new Async\Sequence(static function (string $input): string {
+        $sequence = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $sequence->waitFor('first'))->ignore();
+        Async\run::<string>(static fn(): string => $sequence->waitFor('first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $sequence->waitFor('second', $token))->await();
+        Async\run::<string>(static fn(): string => $sequence->waitFor('second', $token))->await();
     }
 
     public function testWaitForPendingCancelledWhileWaiting(): void
     {
-        $sequence = new Async\Sequence(static function (string $input): string {
+        $sequence = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $sequence->waitFor('first'))->ignore();
+        Async\run::<string>(static fn(): string => $sequence->waitFor('first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): null => $sequence->waitForPending($token))->await();
+        Async\run::<null>(static fn(): null => $sequence->waitForPending($token))->await();
     }
 
     public function testWaitForWithAlreadyCancelledToken(): void
     {
-        $sequence = new Async\Sequence(static function (string $input): string {
+        $sequence = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $sequence->waitFor('first'))->ignore();
+        Async\run::<string>(static fn(): string => $sequence->waitFor('first'))->ignore();
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $sequence->waitFor('second', $token))->await();
+        Async\run::<string>(static fn(): string => $sequence->waitFor('second', $token))->await();
     }
 
     public function testCancelledWaitForDoesNotAffectOtherOperations(): void
     {
-        $sequence = new Async\Sequence(static function (string $input): string {
+        $sequence = new Async\Sequence::<string, string>(static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(30));
 
             return $input;
         });
 
-        $first = Async\run(static fn(): string => $sequence->waitFor('first'));
+        $first = Async\run::<string>(static fn(): string => $sequence->waitFor('first'));
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
-        $second = Async\run(static fn(): string => $sequence->waitFor('second', $token));
+        $second = Async\run::<string>(static fn(): string => $sequence->waitFor('second', $token));
 
         try {
             $second->await();

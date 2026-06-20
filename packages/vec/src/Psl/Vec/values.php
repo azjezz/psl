@@ -10,15 +10,13 @@ use function is_array;
 /**
  * Return all the values of an array.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @return list<T>
  *
  * @api
  */
-function values(iterable $iterable): array
+function values<T>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_values($iterable);

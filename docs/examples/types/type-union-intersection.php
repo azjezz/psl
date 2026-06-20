@@ -17,7 +17,7 @@ interface Exportable
 }
 
 // Value must satisfy either type
-$stringOrInt = Type\union(Type\string(), Type\int());
+$stringOrInt = Type\union::<string|int>(Type\string(), Type\int());
 
 // Value must satisfy both types
-$loggableAndExportable = Type\intersection(Type\instance_of(Loggable::class), Type\instance_of(Exportable::class));
+$loggableAndExportable = Type\intersection::<Loggable, Exportable>(Type\instance_of::<Loggable>(Loggable::class), Type\instance_of::<Exportable>(Exportable::class));

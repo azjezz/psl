@@ -8,9 +8,9 @@ use Psl\Async;
 use Psl\Str;
 
 /** @var Async\Awaitable<string> $promise */
-$promise = Async\run(static fn() => 'hello');
+$promise = Async\run::<string>(static fn() => 'hello');
 
-$upper = $promise->map(fn(string $body) => Str\uppercase($body));
+$upper = $promise->map::<string>(fn(string $body) => Str\uppercase($body));
 // If $promise resolves with 'hello', $upper resolves with 'HELLO'
 // If $promise is rejected, $upper is also rejected with the same exception
 

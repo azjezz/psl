@@ -29,15 +29,15 @@ function return_non_empty_keyed_array(): array
 
 function test(): void
 {
-    namespace\take_integer(Iter\last(namespace\return_non_empty_integer_list()));
+    namespace\take_integer(Iter\last::<int>(namespace\return_non_empty_integer_list()));
 
-    namespace\take_integer(Iter\last_key(namespace\return_non_empty_integer_list()));
+    namespace\take_integer(Iter\last_key::<int, int>(namespace\return_non_empty_integer_list()));
 
-    namespace\take_integer(Iter\last(namespace\return_non_empty_integer_array()));
+    namespace\take_integer(Iter\last::<int>(namespace\return_non_empty_integer_array()));
 
-    namespace\take_integer(Iter\last_key(namespace\return_non_empty_integer_array()));
+    namespace\take_integer(Iter\last_key::<int, int>(namespace\return_non_empty_integer_array()));
 
-    namespace\take_integer(Iter\last(namespace\return_non_empty_keyed_array()));
+    namespace\take_integer(Iter\last::<int>(namespace\return_non_empty_keyed_array()));
 
-    namespace\take_integer(Iter\last_key(namespace\return_non_empty_keyed_array()));
+    namespace\take_integer(Iter\last_key::<int, int>(namespace\return_non_empty_keyed_array()));
 }

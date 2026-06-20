@@ -23,11 +23,11 @@ function split(MonolithicRepository $monorepo, Git $git, string $branch): void
 {
     $git->truncateHistoryAt('packages/');
 
-    Log\info('Splitting %d packages (5 concurrent)...', Iter\count($monorepo->packages));
+    Log\info('Splitting %d packages (5 concurrent)...', Iter\count::<Package>($monorepo->packages));
 
     /** @var list<array{Package, non-empty-string}> $splits */
     $splits = [];
-    $splitSemaphore = new Async\Semaphore(5, static function (Package $package) use ($git, &$splits): void {
+    $splitSemaphore = new Async\Semaphore::<Package, void>(5, static function (Package $package) use ($git, &$splits): void {
         $prefix = 'packages/' . $package->directory;
         $splitBranch = 'split-' . $package->directory;
 
@@ -40,14 +40,14 @@ function split(MonolithicRepository $monorepo, Git $git, string $branch): void
 
     $awaitables = [];
     foreach ($monorepo->packages as $package) {
-        $awaitables[] = Async\run(static fn() => $splitSemaphore->waitFor($package));
+        $awaitables[] = Async\run::<void>(static fn() => $splitSemaphore->waitFor($package));
     }
 
-    Async\all($awaitables);
+    Async\all::<int, void>($awaitables);
 
-    Log\info('Pushing %d packages (10 concurrent)...', Iter\count($splits));
+    Log\info('Pushing %d packages (10 concurrent)...', Iter\count::<array>($splits));
 
-    $pushSemaphore = new Async\Semaphore(
+    $pushSemaphore = new Async\Semaphore::<array, void>(
         10,
         /** @param array{Package, non-empty-string} $entry */
         static function (array $entry) use ($git, $branch): void {
@@ -61,8 +61,8 @@ function split(MonolithicRepository $monorepo, Git $git, string $branch): void
 
     $awaitables = [];
     foreach ($splits as $entry) {
-        $awaitables[] = Async\run(static fn() => $pushSemaphore->waitFor($entry));
+        $awaitables[] = Async\run::<void>(static fn() => $pushSemaphore->waitFor($entry));
     }
 
-    Async\all($awaitables);
+    Async\all::<int, void>($awaitables);
 }

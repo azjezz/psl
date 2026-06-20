@@ -15,24 +15,24 @@ final class AllTest extends TestCase
     public function testAll(): void
     {
         $awaitables = [
-            'a' => Async\run(static function (): string {
+            'a' => Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(3));
 
                 return 'a';
             }),
-            'b' => Async\run(static function (): string {
+            'b' => Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(1));
 
                 return 'b';
             }),
-            'c' => Async\run(static function (): string {
+            'c' => Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(10));
 
                 return 'c';
             }),
         ];
 
-        $results = Async\all($awaitables);
+        $results = Async\all::<string, string>($awaitables);
 
         static::assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $results);
     }
@@ -42,10 +42,10 @@ final class AllTest extends TestCase
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('a');
 
-        Async\all([
+        Async\all::<int, string>([
             Async\Awaitable::error(new InvariantViolationException('a')),
-            Async\Awaitable::complete('b'),
-            Async\Awaitable::complete('c'),
+            Async\Awaitable::<string>::complete('b'),
+            Async\Awaitable::<string>::complete('c'),
         ]);
 
         Async\Scheduler::run();
@@ -54,10 +54,10 @@ final class AllTest extends TestCase
     public function testAllCompositeException(): void
     {
         try {
-            Async\all([
+            Async\all::<int, string>([
                 Async\Awaitable::error(new InvariantViolationException('a')),
                 Async\Awaitable::error(new InvariantViolationException('b')),
-                Async\Awaitable::complete('c'),
+                Async\Awaitable::<string>::complete('c'),
             ]);
         } catch (Async\Exception\CompositeException $exception) {
             $reasons = $exception->getReasons();
@@ -73,28 +73,28 @@ final class AllTest extends TestCase
     public function testAllAwaitablesAreCompletedAtALaterTime(): void
     {
         /** @var Psl\Ref<string> */
-        $ref = new Psl\Ref('');
+        $ref = new Psl\Ref::<string>('');
 
         try {
-            Async\all([
-                Async\run(static function () use ($ref): void {
+            Async\all::<int, void>([
+                Async\run::<void>(static function () use ($ref): void {
                     $ref->value .= 'a';
 
                     throw new InvariantViolationException('a');
                 }),
-                Async\run(static function () use ($ref): void {
+                Async\run::<void>(static function () use ($ref): void {
                     Async\sleep(DateTime\Duration::milliseconds(20));
 
                     $ref->value .= 'b';
 
                     throw new InvariantViolationException('b');
                 }),
-                Async\run(static function () use ($ref): void {
+                Async\run::<void>(static function () use ($ref): void {
                     Async\sleep(DateTime\Duration::milliseconds(50));
 
                     $ref->value .= 'c';
                 }),
-                Async\run(static function () use ($ref): void {
+                Async\run::<void>(static function () use ($ref): void {
                     Async\sleep(DateTime\Duration::microseconds(5));
 
                     Async\later();

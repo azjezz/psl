@@ -25,13 +25,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_BOTH;
 
 /**
- * @template T
- *
- * @implements MutableVectorInterface<T>
- *
  * @api
  */
-final class MutableVector implements MutableVectorInterface
+final class MutableVector<T> implements MutableVectorInterface<T>
 {
     /**
      * @var list<T> $elements
@@ -60,51 +56,40 @@ final class MutableVector implements MutableVectorInterface
     #[Override]
     public static function default(): static
     {
-        return new self([]);
+        return new self::<T>([]);
     }
 
     /**
      * Create a vector from the given $elements array.
      *
-     * @template Ts
-     *
-     * @param array<array-key, Ts> $elements
-     *
-     * @return MutableVector<Ts>
+     * @param array<array-key, T> $elements
      *
      * @pure
      */
-    public static function fromArray(array $elements): MutableVector
+    public static function fromArray(array $elements): MutableVector<T>
     {
-        return new self($elements);
+        return new self::<T>($elements);
     }
 
     /**
      * Create a vector from the given $items iterable.
      *
-     * @template Ts
-     *
-     * @param iterable<array-key, Ts> $items
-     *
-     * @return MutableVector<Ts>
+     * @param iterable<array-key, T> $items
      */
-    public static function fromItems(iterable $items): MutableVector
+    public static function fromItems(iterable $items): MutableVector<T>
     {
         $array = iterator_to_array($items);
 
-        return self::fromArray($array);
+        return self::<T>::fromArray($array);
     }
 
     /**
      * Returns the first value in the current `MutableVector`.
      *
-     * @return T|null The first value in the current `MutableVector`, or `null` if the
-     *                current `MutableVector` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): mixed
+    public function first(): T|null
     {
         return $this->elements[0] ?? null;
     }
@@ -112,13 +97,10 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Returns the last value in the current `MutableVector`.
      *
-     * @return T|null The last value in the current `MutableVector`, or `null` if the
-     *                current `MutableVector` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): mixed
+    public function last(): T|null
     {
         $key = $this->lastKey();
         if (null === $key) {
@@ -196,12 +178,10 @@ final class MutableVector implements MutableVectorInterface
      *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
      *
-     * @return T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): mixed
+    public function at(int|string $k): T
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -241,12 +221,10 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param int<0, max> $k
      *
-     * @return T|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): mixed
+    public function get(int|string $k): T|null
     {
         return $this->elements[$k] ?? null;
     }
@@ -284,15 +262,12 @@ final class MutableVector implements MutableVectorInterface
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param T $searchValue The value that will be search for in the current
-     *                        collection.
-     *
      * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int
+    public function linearSearch(T $searchValue): null|int
     {
         $key = array_search($searchValue, $this->elements, true);
 
@@ -310,16 +285,13 @@ final class MutableVector implements MutableVectorInterface
      * vector will be reflected in the returned vector.
      *
      * @param int<0, max> $k The key to which we will set the value
-     * @param T $v The value to set
      *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return MutableVector<T> returns itself
      *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function set(int|string $k, mixed $v): MutableVector
+    public function set(int|string $k, T $v): MutableVector<T>
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -343,12 +315,10 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param array<int<0, max>, T> $elements The elements with the new values to set
      *
-     * @return MutableVector<T> returns itself
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function setAll(array $elements): MutableVector
+    public function setAll(array $elements): MutableVector<T>
     {
         foreach ($elements as $k => $v) {
             $this->set($k, $v);
@@ -372,12 +342,10 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param int<0, max> $k The key to remove.
      *
-     * @return MutableVector<T> returns itself.
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function remove(int|string $k): MutableVector
+    public function remove(int|string $k): MutableVector<T>
     {
         if ($this->contains($k)) {
             $elements = $this->elements;
@@ -391,12 +359,10 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Removes all elements from the vector.
      *
-     * @return MutableVector<T> Returns itself
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function clear(): MutableVector
+    public function clear(): MutableVector<T>
     {
         $this->elements = [];
 
@@ -406,14 +372,10 @@ final class MutableVector implements MutableVectorInterface
     /**
      * Add a value to the vector and return the vector itself.
      *
-     * @param T $v The value to add.
-     *
-     * @return MutableVector<T> Returns itself.
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function add(mixed $v): MutableVector
+    public function add(T $v): MutableVector<T>
     {
         $this->elements[] = $v;
 
@@ -425,12 +387,10 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param iterable<T> $elements The elements with the new values to add
      *
-     * @return MutableVector<T> returns itself.
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function addAll(iterable $elements): MutableVector
+    public function addAll(iterable $elements): MutableVector<T>
     {
         foreach ($elements as $item) {
             $this->add($item);
@@ -443,14 +403,12 @@ final class MutableVector implements MutableVectorInterface
      * Returns a `MutableVector` containing the values of the current
      * `MutableVector`.
      *
-     * @return MutableVector<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): MutableVector
+    public function values(): MutableVector<T>
     {
-        return MutableVector::fromArray($this->elements);
+        return MutableVector::<T>::fromArray($this->elements);
     }
 
     /**
@@ -461,9 +419,9 @@ final class MutableVector implements MutableVectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): MutableVector
+    public function keys(): MutableVector<int>
     {
-        return MutableVector::fromArray(array_keys($this->elements));
+        return MutableVector::<int>::fromArray(array_keys($this->elements));
     }
 
     /**
@@ -478,14 +436,11 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `MutableVector` values.
-     *
-     * @return MutableVector<T> A `MutableVector` containing the values after a user-specified condition
-     *                          is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableVector
+    public function filter(Closure $fn): MutableVector<T>
     {
-        return new MutableVector(array_filter($this->elements, $fn));
+        return new MutableVector::<T>(array_filter($this->elements, $fn));
     }
 
     /**
@@ -501,14 +456,11 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
      *                                            `MutableVector` keys and values.
-     *
-     * @return MutableVector<T> A `MutableVector` containing the values after a user-specified
-     *                          condition is applied to the keys and values of the current `MutableVector`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableVector
+    public function filterWithKey(Closure $fn): MutableVector<T>
     {
-        return new MutableVector(array_filter(
+        return new MutableVector::<T>(array_filter(
             $this->elements,
             static fn($v, $k) => $fn($k, $v),
             ARRAY_FILTER_USE_BOTH,
@@ -525,18 +477,13 @@ final class MutableVector implements MutableVectorInterface
      * The keys will remain unchanged from the current `MutableVector` to the
      * returned `MutableVector`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableVector` values.
-     *
-     * @return MutableVector<Tu> A `MutableVector` containing key/value pairs after a user-specified
-     *                           operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableVector
+    public function map<Tu>(Closure $fn): MutableVector<Tu>
     {
-        return new MutableVector(array_map($fn, $this->elements));
+        return new MutableVector::<Tu>(array_map($fn, $this->elements));
     }
 
     /**
@@ -550,23 +497,18 @@ final class MutableVector implements MutableVectorInterface
      * The keys will remain unchanged from this `MutableVector` to the returned
      * `MutableVector`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `MutableVector` keys and values
-     *
-     * @return MutableVector<Tu> A `MutableVector` containing the values after a user-specified
-     *                           operation on the current `MutableVector`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableVector
+    public function mapWithKey<Tu>(Closure $fn): MutableVector<Tu>
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
             $result[$k] = $fn($k, $v);
         }
 
-        return new MutableVector($result);
+        return new MutableVector::<Tu>($result);
     }
 
     /**
@@ -578,8 +520,6 @@ final class MutableVector implements MutableVectorInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableVector`.
      *
      * @return MutableVector<array{0: T, 1: Tu}> The `MutableVector` that combines the values of the current
@@ -588,7 +528,7 @@ final class MutableVector implements MutableVectorInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableVector
+    public function zip<Tu>(array $elements): MutableVector<array>
     {
         $elements = array_values($elements);
         $result = [];
@@ -600,7 +540,7 @@ final class MutableVector implements MutableVectorInterface
             $result[] = [$v, $elements[$i]];
         }
 
-        return MutableVector::fromArray($result);
+        return MutableVector::<array>::fromArray($result);
     }
 
     /**
@@ -615,13 +555,10 @@ final class MutableVector implements MutableVectorInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `MutableVector`.
      *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *                          `MutableVector` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableVector
+    public function take(int $n): MutableVector<T>
     {
         return $this->slice(0, $n);
     }
@@ -636,12 +573,9 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *                          `MutableVector` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableVector
+    public function takeWhile(Closure $fn): MutableVector<T>
     {
         $result = [];
         foreach ($this->elements as $v) {
@@ -652,7 +586,7 @@ final class MutableVector implements MutableVectorInterface
             $result[] = $v;
         }
 
-        return new MutableVector($result);
+        return new MutableVector::<T>($result);
     }
 
     /**
@@ -667,13 +601,10 @@ final class MutableVector implements MutableVectorInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MutableVector`.
      *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *                          `MutableVector` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableVector
+    public function drop(int $n): MutableVector<T>
     {
         return $this->slice($n);
     }
@@ -688,12 +619,9 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `MutableVector`.
-     *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *                          `MutableVector` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableVector
+    public function dropWhile(Closure $fn): MutableVector<T>
     {
         $result = [];
         $dropping = true;
@@ -706,7 +634,7 @@ final class MutableVector implements MutableVectorInterface
             $result[] = $v;
         }
 
-        return new MutableVector($result);
+        return new MutableVector::<T>($result);
     }
 
     /**
@@ -724,16 +652,12 @@ final class MutableVector implements MutableVectorInterface
      *                           `MutableVector`.
      * @param null|int<0, max> $length The length of the returned `MutableVector`
      *
-     * @return MutableVector<T> A `MutableVector` that is a proper subset of the current
-     *                          `MutableVector` starting at `$start` up to but not including
-     *                          the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableVector
+    public function slice(int $start, null|int $length = null): MutableVector<T>
     {
-        return MutableVector::fromArray(array_slice($this->elements, $start, $length, true));
+        return MutableVector::<T>::fromArray(array_slice($this->elements, $start, $length, true));
     }
 
     /**
@@ -745,15 +669,12 @@ final class MutableVector implements MutableVectorInterface
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return MutableVector<MutableVector<T>> A `MutableVector` containing the original
-     *                                         `MutableVector` split into chunks of the given size.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableVector
+    public function chunk(int $size): MutableVector<MutableVector<T>>
     {
-        return static::fromArray(array_map(MutableVector::fromArray(...), array_chunk($this->toArray(), $size)));
+        return static::<MutableVector<T>>::fromArray(array_map(MutableVector::<T>::fromArray(...), array_chunk($this->toArray(), $size)));
     }
 
     /**
@@ -762,8 +683,6 @@ final class MutableVector implements MutableVectorInterface
      * @param mixed $offset An offset to check for.
      *
      * @throws Exception\InvalidOffsetException If the offset type is not a positive integer.
-     *
-     * @return bool Returns true if the specified offset exists, false otherwise.
      *
      * @psalm-mutation-free
      *
@@ -787,14 +706,12 @@ final class MutableVector implements MutableVectorInterface
      * @throws Exception\InvalidOffsetException If the offset type is not a positive integer.
      * @throws Exception\OutOfBoundsException If the offset does not exist.
      *
-     * @return T|null The value at the specified offset, null if the offset does not exist.
-     *
      * @psalm-mutation-free
      *
      * @psalm-assert int<0, max> $offset
      */
     #[Override]
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(mixed $offset): T|null
     {
         if (!is_int($offset) || $offset < 0) {
             throw new Exception\InvalidOffsetException('Invalid vector read offset type, expected a positive integer.');
@@ -807,7 +724,6 @@ final class MutableVector implements MutableVectorInterface
      * Sets the value at the specified offset.
      *
      * @param mixed $offset The offset to assign the value to.
-     * @param T $value The value to set.
      *
      * @psalm-external-mutation-free
      *
@@ -817,7 +733,7 @@ final class MutableVector implements MutableVectorInterface
      * @throws Exception\OutOfBoundsException If the offset is out-of-bounds.
      */
     #[Override]
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(mixed $offset, T $value): void
     {
         if (null === $offset) {
             $this->add($value);

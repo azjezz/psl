@@ -11,37 +11,37 @@ final class ContainsTest extends TestCase
 {
     public function testContainsReturnsTrueWhenValueExists(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\leaf(2),
-            Tree\tree(3, [Tree\leaf(4)]),
+        $tree = Tree\tree::<int>(1, [
+            Tree\leaf::<int>(2),
+            Tree\tree::<int>(3, [Tree\leaf::<int>(4)]),
         ]);
 
-        static::assertTrue(Tree\contains($tree, 4));
-        static::assertTrue(Tree\contains($tree, 1));
-        static::assertTrue(Tree\contains($tree, 3));
+        static::assertTrue(Tree\contains::<int>($tree, 4));
+        static::assertTrue(Tree\contains::<int>($tree, 1));
+        static::assertTrue(Tree\contains::<int>($tree, 3));
     }
 
     public function testContainsReturnsFalseWhenValueDoesNotExist(): void
     {
-        $tree = Tree\tree(1, [Tree\leaf(2), Tree\leaf(3)]);
+        $tree = Tree\tree::<int>(1, [Tree\leaf::<int>(2), Tree\leaf::<int>(3)]);
 
-        static::assertFalse(Tree\contains($tree, 10));
-        static::assertFalse(Tree\contains($tree, 0));
+        static::assertFalse(Tree\contains::<int>($tree, 10));
+        static::assertFalse(Tree\contains::<int>($tree, 0));
     }
 
     public function testContainsUsesStrictComparison(): void
     {
-        $tree = Tree\tree('1', [Tree\leaf('2')]);
+        $tree = Tree\tree::<string>('1', [Tree\leaf::<string>('2')]);
 
-        static::assertFalse(Tree\contains($tree, 1));
-        static::assertTrue(Tree\contains($tree, '1'));
+        static::assertFalse(Tree\contains::<string>($tree, 1));
+        static::assertTrue(Tree\contains::<string>($tree, '1'));
     }
 
     public function testContainsInSingleNode(): void
     {
-        $tree = Tree\leaf(42);
+        $tree = Tree\leaf::<int>(42);
 
-        static::assertTrue(Tree\contains($tree, 42));
-        static::assertFalse(Tree\contains($tree, 0));
+        static::assertTrue(Tree\contains::<int>($tree, 42));
+        static::assertFalse(Tree\contains::<int>($tree, 0));
     }
 }

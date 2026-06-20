@@ -18,7 +18,7 @@ use function is_iterable;
  *
  * @internal
  */
-final readonly class MixedDictType extends Type\Type
+final readonly class MixedDictType extends Type\Type<array>
 {
     /**
      * @throws CoercionException

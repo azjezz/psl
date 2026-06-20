@@ -17,7 +17,7 @@ function styled(string $text, Ansi\ControlSequenceIntroducer ...$style): string
         return $text;
     }
 
-    $prefix = Str\join(Vec\map($style, static fn(Ansi\ControlSequenceIntroducer $s): string => $s->toString()), '');
+    $prefix = Str\join(Vec\map::<int, Ansi\ControlSequenceIntroducer, string>($style, static fn(Ansi\ControlSequenceIntroducer $s): string => $s->toString()), '');
 
     return $prefix . $text . "\e[0m";
 }

@@ -7,22 +7,22 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Math;
 use Psl\Tree;
 
-$tree = Tree\tree(1, [Tree\leaf(2), Tree\leaf(3)]);
+$tree = Tree\tree::<int>(1, [Tree\leaf::<int>(2), Tree\leaf::<int>(3)]);
 
 // Map: apply a function to every node value
-$doubled = Tree\map($tree, fn(int $x): int => $x * 2);
+$doubled = Tree\map::<int, int>($tree, fn(int $x): int => $x * 2);
 // Result: tree(2, [leaf(4), leaf(6)])
 
 // Filter: keep only nodes matching a predicate
-$filtered = Tree\filter($tree, fn(int $x): bool => $x >= 2);
+$filtered = Tree\filter::<int>($tree, fn(int $x): bool => $x >= 2);
 // Result: tree(2, [leaf(3)]) -- root must match or null is returned
 
 // Reduce: collapse the tree to a single value (pre-order)
-$sum = Tree\reduce($tree, fn(int $acc, int $x): int => $acc + $x, 0);
+$sum = Tree\reduce::<int, int>($tree, fn(int $acc, int $x): int => $acc + $x, 0);
 // Result: 6
 
 // Fold: post-order fold with access to children results
-$result = Tree\fold(
+$result = Tree\fold::<int, int>(
     $tree,
     /**
      * @param int $value

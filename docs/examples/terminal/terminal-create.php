@@ -9,7 +9,7 @@ use Psl\Terminal;
 
 final class AppState {}
 
-$app = Terminal\Application::create(
+$app = Terminal\Application::create::<AppState>(
     state: new AppState(),
     title: 'My App',
     tickInterval: DateTime\Duration::milliseconds(16), // ~60 ticks/s (default: 16ms)

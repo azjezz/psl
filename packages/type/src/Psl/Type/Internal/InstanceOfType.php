@@ -10,13 +10,9 @@ use Psl\Type\Exception\CoercionException;
 use Psl\Type\Type;
 
 /**
- * @template T as object
- *
- * @extends Type<T>
- *
  * @internal
  */
-final readonly class InstanceOfType extends Type
+final readonly class InstanceOfType<T: object> extends Type<T>
 {
     /**
      * @var class-string<T> $classname
@@ -44,11 +40,9 @@ final readonly class InstanceOfType extends Type
 
     /**
      * @throws CoercionException
-     *
-     * @return T
      */
     #[Override]
-    public function coerce(mixed $value): object
+    public function coerce(mixed $value): T
     {
         if ($value instanceof $this->classname) {
             return $value;
@@ -60,12 +54,10 @@ final readonly class InstanceOfType extends Type
     /**
      * @throws AssertException
      *
-     * @return T
-     *
      * @psalm-assert T $value
      */
     #[Override]
-    public function assert(mixed $value): object
+    public function assert(mixed $value): T
     {
         if ($value instanceof $this->classname) {
             return $value;

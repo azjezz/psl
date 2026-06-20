@@ -12,7 +12,7 @@ use Psl\Collection\Set;
  *
  * @var Set<string> $tags
  */
-$tags = Set::fromArray(['php', 'psl', 'php']); // duplicates removed
+$tags = Set::fromArray::<string>(['php', 'psl', 'php']); // duplicates removed
 $tags->count(); // 2
 $tags->contains('php'); // true
 $tags->contains('rust'); // false
@@ -22,7 +22,7 @@ $tags->contains('rust'); // false
  *
  * @var MutableSet<string> $visited
  */
-$visited = MutableSet::fromArray([]);
+$visited = MutableSet::fromArray::<string>([]);
 $visited->add('page-a');
 $visited->add('page-b');
 $visited->add('page-a'); // no-op, already present

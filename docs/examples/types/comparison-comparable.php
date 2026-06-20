@@ -23,18 +23,18 @@ final readonly class Money implements Comparison\Comparable, Comparison\Equable
             );
         }
 
-        return Comparison\compare($this->cents, $other->cents);
+        return Comparison\compare::<int>($this->cents, $other->cents);
     }
 
     public function equals(mixed $other): bool
     {
-        return Comparison\equal($this, $other);
+        return Comparison\equal::<Money>($this, $other);
     }
 }
 
 $a = new Money(500, 'USD');
 $b = new Money(1000, 'USD');
 
-Comparison\less($a, $b); // true
-Comparison\greater($b, $a); // true
-Comparison\equal($a, $a); // true
+Comparison\less::<Money>($a, $b); // true
+Comparison\greater::<Money>($b, $a); // true
+Comparison\equal::<Money>($a, $a); // true

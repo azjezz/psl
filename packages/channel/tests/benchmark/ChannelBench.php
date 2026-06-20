@@ -17,7 +17,7 @@ final class ChannelBench
     #[ParamProviders('provideBoundedData')]
     public function benchBoundedChannelSendReceive(array $params): void
     {
-        [$receiver, $sender] = Channel\bounded($params['capacity']);
+        [$receiver, $sender] = Channel\bounded::<int>($params['capacity']);
         for ($i = 0; $i < $params['messages']; $i++) {
             $sender->send($i);
             $receiver->receive();
@@ -30,7 +30,7 @@ final class ChannelBench
     #[ParamProviders('provideUnboundedData')]
     public function benchUnboundedChannelSendReceive(array $params): void
     {
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<int>();
         for ($i = 0; $i < $params['messages']; $i++) {
             $sender->send($i);
         }
@@ -46,7 +46,7 @@ final class ChannelBench
     #[ParamProviders('provideUnboundedData')]
     public function benchUnboundedChannelInterleaved(array $params): void
     {
-        [$receiver, $sender] = Channel\unbounded();
+        [$receiver, $sender] = Channel\unbounded::<int>();
         for ($i = 0; $i < $params['messages']; $i++) {
             $sender->send($i);
             $receiver->receive();

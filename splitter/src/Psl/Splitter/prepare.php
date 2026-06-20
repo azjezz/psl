@@ -42,8 +42,8 @@ function prepare(MonolithicRepository $monorepo, string $version): void
         }
 
         $content = File\read($file);
-        $composer = Json\typed($content, Type\shape([
-            'extra' => Type\optional(Type\dict(Type\non_empty_string(), Type\mixed())),
+        $composer = Json\typed::<array>($content, Type\shape::<string, array>([
+            'extra' => Type\optional::<array>(Type\dict::<string, mixed>(Type\non_empty_string(), Type\mixed())),
         ], allowUnknownFields: true));
 
         $composer['extra'] ??= [];
@@ -53,7 +53,7 @@ function prepare(MonolithicRepository $monorepo, string $version): void
         File\write($file, $encoded . "\n", File\WriteMode::Truncate);
     }
 
-    $semaphore = new Async\Semaphore(
+    $semaphore = new Async\Semaphore::<string, void>(
         10,
         /** @param non-empty-string $file */
         static function (string $file) use ($alias, $target): void {
@@ -77,8 +77,8 @@ function prepare(MonolithicRepository $monorepo, string $version): void
 
     $awaitables = [];
     foreach ($files as $file) {
-        $awaitables[] = Async\run(static fn() => $semaphore->waitFor($file));
+        $awaitables[] = Async\run::<void>(static fn() => $semaphore->waitFor($file));
     }
 
-    Async\all($awaitables);
+    Async\all::<int, void>($awaitables);
 }

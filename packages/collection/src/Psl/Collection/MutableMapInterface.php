@@ -8,36 +8,26 @@ use Closure;
 use Override;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends MapInterface<Tk, Tv>
- * @extends MutableAccessibleCollectionInterface<Tk, Tv>
- *
  * @api
  */
-interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionInterface
+interface MutableMapInterface<Tk: string|int, Tv> extends MapInterface<Tk, Tv>, MutableAccessibleCollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableVectorInterface` containing the values of the current
      * `MutableMapInterface`.
      *
-     * @return MutableVectorInterface<Tv>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): MutableVectorInterface;
+    public function values(): MutableVectorInterface<Tv>;
 
     /**
      * Returns a `MutableVectorInterface` containing the keys of the current `MutableMapInterface`.
      *
-     * @return MutableVectorInterface<Tk>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): MutableVectorInterface;
+    public function keys(): MutableVectorInterface<Tk>;
 
     /**
      * Returns a `MutableMapInterface` containing the values of the current `MutableMapInterface`
@@ -51,12 +41,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @param (Closure(Tv): bool) $fn - The callback containing the condition to apply to the current
      *                                `MutableMapInterface` values.
-     *
-     * @return MutableMapInterface<Tk, Tv> - a MutableMapInterface containing the values after a user-specified
-     *                                     condition is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableMapInterface;
+    public function filter(Closure $fn): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableMapInterface` containing the values of the current `MutableMapInterface`
@@ -71,13 +58,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @param (Closure(Tk, Tv): bool) $fn - The callback containing the condition to apply to
      *                                    the current `MutableMapInterface` keys and values.
-     *
-     * @return MutableMapInterface<Tk, Tv> - a `MutableMapInterface` containing the values after a user-specified
-     *                                     condition is applied to the keys and values of the
-     *                                     current `MutableMapInterface`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableMapInterface;
+    public function filterWithKey(Closure $fn): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableMapInterface` after an operation has been applied to each value
@@ -89,16 +72,11 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys will remain unchanged from the current `MutableMapInterface` to the
      * returned `MutableMapInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn - The callback containing the operation to apply to the current
      *                              `MutableMapInterface` values.
-     *
-     * @return MutableMapInterface<Tk, Tu> - a `MutableMapInterface` containing key/value pairs after
-     *                                     a user-specified operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableMapInterface;
+    public function map<Tu>(Closure $fn): MutableMapInterface<Tk, Tu>;
 
     /**
      * Returns a `MutableMapInterface` after an operation has been applied to each key and
@@ -111,75 +89,53 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * The keys will remain unchanged from this `MutableMapInterface` to the returned
      * `MutableMapInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `MutableMapInterface` keys and values.
-     *
-     * @return MutableMapInterface<Tk, Tu> A `MutableMapInterface` containing the values after a user-specified
-     *                                     operation on the current `MutableMapInterface`'s keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableMapInterface;
+    public function mapWithKey<Tu>(Closure $fn): MutableMapInterface<Tk, Tu>;
 
     /**
      * Returns the first value in the current `MutableMapInterface`.
      *
-     * @return Tv|null The first value in the current `MutableMapInterface`, or `null` if the
-     *                 current `MutableMapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): mixed;
+    public function first(): Tv|null;
 
     /**
      * Returns the first key in the current `MutableMapInterface`.
      *
-     * @return Tk|null The first key in the current `MutableMapInterface`, or `null` if the
-     *                 current `MutableMapInterface` is empty
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): int|string|null;
+    public function firstKey(): Tk|null;
 
     /**
      * Returns the last value in the current `MutableMapInterface`.
      *
-     * @return Tv|null The last value in the current `MutableMapInterface`, or `null` if the
-     *                 current `MutableMapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): mixed;
+    public function last(): Tv|null;
 
     /**
      * Returns the last key in the current `MutableMapInterface`.
      *
-     * @return Tk|null The last key in the current `MutableMapInterface`, or `null` if the
-     *                 current `MutableMapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): int|string|null;
+    public function lastKey(): Tk|null;
 
     /**
      * Returns the index of the first element that matches the search value.
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param Tv $searchValue The value that will be search for in the current
-     *                         `MutableMapInterface`.
-     *
-     * @return Tk|null The key (index) where that value is found; null if it is not found.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): int|string|null;
+    public function linearSearch(Tv $searchValue): Tk|null;
 
     /**
      * Returns a `MutableMapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -190,8 +146,6 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableMapInterface`.
      *
      * @return MutableMapInterface<Tk, array{0: Tv, 1: Tu}> - The `MutableMapInterface` that combines
@@ -201,7 +155,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableMapInterface;
+    public function zip<Tu>(array $elements): MutableMapInterface<Tk, array>;
 
     /**
      * Returns a `MutableMapInterface` containing the first `n` values of the current
@@ -214,13 +168,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @param int<0, max> $n The last element that will be included in the returned `MutableMapInterface`.
      *
-     * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                     `MutableMapInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableMapInterface;
+    public function take(int $n): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableMapInterface` containing the values of the current `MutableMapInterface`
@@ -231,12 +182,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * `MutableMapInterface`.
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping condition.
-     *
-     * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                     `MutableMapInterface` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableMapInterface;
+    public function takeWhile(Closure $fn): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableMapInterface` containing the values after the `n`-th element of
@@ -250,13 +198,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the first one in
      *                       the returned `MutableMapInterface`.
      *
-     * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                     `MutableMapInterface` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableMapInterface;
+    public function drop(int $n): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableMapInterface` containing the values of the current `MutableMapInterface`
@@ -268,12 +213,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `MutableMapInterface`.
-     *
-     * @return MutableMapInterface<Tk, Tv> A `MutableMapInterface` that is a proper subset of the current
-     *                                     `MutableMapInterface` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableMapInterface;
+    public function dropWhile(Closure $fn): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a subset of the current `MutableMapInterface` starting from a given key up
@@ -290,14 +232,10 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *                           `MutableMapInterface`.
      * @param null|int<0, max> $length The length of the returned `MutableMapInterface`.
      *
-     * @return MutableMapInterface<Tk, Tv> - A `MutableMapInterface` that is a proper subset of the current
-     *                                     `MutableMapInterface` starting at `$start` up to but not including
-     *                                     the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableMapInterface;
+    public function slice(int $start, null|int $length = null): MutableMapInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableVectorInterface` containing the original `MutableMapInterface` split into
@@ -314,7 +252,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableVectorInterface;
+    public function chunk(int $size): MutableVectorInterface<MutableMapInterface<Tk, Tv>>;
 
     /**
      * Stores a value into the current collection with the specified key,
@@ -326,12 +264,9 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * It returns the current collection, meaning changes made to the current
      * collection will be reflected in the returned collection.
      *
-     * @param Tk $k The key to which we will set the value.
-     * @param Tv $v The value to set.
-     *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function set(int|string $k, mixed $v): MutableMapInterface;
+    public function set(Tk $k, Tv $v): MutableMapInterface<Tk, Tv>;
 
     /**
      * For every element in the provided elements, stores a value into the
@@ -348,17 +283,14 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function setAll(array $elements): MutableMapInterface;
+    public function setAll(array $elements): MutableMapInterface<Tk, Tv>;
 
     /**
      * Add a value to the collection and return the collection itself.
      *
-     * @param Tk $k The key to which we will add the value.
-     * @param Tv $v The value to set.
-     *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function add(int|string $k, mixed $v): MutableMapInterface;
+    public function add(Tk $k, Tv $v): MutableMapInterface<Tk, Tv>;
 
     /**
      * For every element in the provided elements array, add the value into the current collection.
@@ -367,7 +299,7 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
-    public function addAll(iterable $elements): MutableMapInterface;
+    public function addAll(iterable $elements): MutableMapInterface<Tk, Tv>;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -379,18 +311,14 @@ interface MutableMapInterface extends MapInterface, MutableAccessibleCollectionI
      * It the current collection, meaning changes made to the current collection
      * will be reflected in the returned collection.
      *
-     * @param Tk $k The key to remove.
-     *
      * @return MutableMapInterface<Tk, Tv> Returns itself.
      */
     #[Override]
-    public function remove(int|string $k): MutableMapInterface;
+    public function remove(Tk $k): MutableMapInterface<Tk, Tv>;
 
     /**
      * Removes all elements from the collection.
-     *
-     * @return MutableMapInterface<Tk, Tv>
      */
     #[Override]
-    public function clear(): MutableMapInterface;
+    public function clear(): MutableMapInterface<Tk, Tv>;
 }

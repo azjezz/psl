@@ -11,104 +11,104 @@ final class ToIndexTest extends TestCase
 {
     public function testToIndexFindsRootNode(): void
     {
-        $tree = Tree\tree('a', [Tree\leaf('b')]);
+        $tree = Tree\tree::<string>('a', [Tree\leaf::<string>('b')]);
 
-        $result = Tree\to_index($tree, static fn(string $x): bool => $x === 'a');
+        $result = Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'a');
 
         static::assertSame([], $result);
     }
 
     public function testToIndexFindsDirectChild(): void
     {
-        $tree = Tree\tree('a', [
-            Tree\leaf('b'),
-            Tree\leaf('c'),
+        $tree = Tree\tree::<string>('a', [
+            Tree\leaf::<string>('b'),
+            Tree\leaf::<string>('c'),
         ]);
 
-        static::assertSame([0], Tree\to_index($tree, static fn(string $x): bool => $x === 'b'));
-        static::assertSame([1], Tree\to_index($tree, static fn(string $x): bool => $x === 'c'));
+        static::assertSame([0], Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'b'));
+        static::assertSame([1], Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'c'));
     }
 
     public function testToIndexFindsNestedChild(): void
     {
-        $tree = Tree\tree('a', [
-            Tree\tree('b', [Tree\leaf('c')]),
-            Tree\leaf('d'),
+        $tree = Tree\tree::<string>('a', [
+            Tree\tree::<string>('b', [Tree\leaf::<string>('c')]),
+            Tree\leaf::<string>('d'),
         ]);
 
-        $result = Tree\to_index($tree, static fn(string $x): bool => $x === 'c');
+        $result = Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'c');
 
         static::assertSame([0, 0], $result);
     }
 
     public function testToIndexReturnsNullWhenNotFound(): void
     {
-        $tree = Tree\tree('a', [Tree\leaf('b')]);
+        $tree = Tree\tree::<string>('a', [Tree\leaf::<string>('b')]);
 
-        $result = Tree\to_index($tree, static fn(string $x): bool => $x === 'z');
+        $result = Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'z');
 
         static::assertNull($result);
     }
 
     public function testToIndexDeepNesting(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\tree(2, [
-                Tree\tree(3, [
-                    Tree\leaf(4),
+        $tree = Tree\tree::<int>(1, [
+            Tree\tree::<int>(2, [
+                Tree\tree::<int>(3, [
+                    Tree\leaf::<int>(4),
                 ]),
             ]),
         ]);
 
-        $result = Tree\to_index($tree, static fn(int $x): bool => $x === 4);
+        $result = Tree\to_index::<int>($tree, static fn(int $x): bool => $x === 4);
 
         static::assertSame([0, 0, 0], $result);
     }
 
     public function testToIndexFindsFirstMatch(): void
     {
-        $tree = Tree\tree('a', [
-            Tree\leaf('x'),
-            Tree\leaf('x'),
-            Tree\leaf('x'),
+        $tree = Tree\tree::<string>('a', [
+            Tree\leaf::<string>('x'),
+            Tree\leaf::<string>('x'),
+            Tree\leaf::<string>('x'),
         ]);
 
         // Should find the first match at index 0
-        $result = Tree\to_index($tree, static fn(string $x): bool => $x === 'x');
+        $result = Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'x');
 
         static::assertSame([0], $result);
     }
 
     public function testToIndexWithComplexPredicate(): void
     {
-        $tree = Tree\tree(['id' => 1], [
-            Tree\tree(['id' => 2], [
-                Tree\leaf(['id' => 3]),
+        $tree = Tree\tree::<array>(['id' => 1], [
+            Tree\tree::<array>(['id' => 2], [
+                Tree\leaf::<array>(['id' => 3]),
             ]),
-            Tree\leaf(['id' => 4]),
+            Tree\leaf::<array>(['id' => 4]),
         ]);
 
-        $result = Tree\to_index($tree, static fn(array $x): bool => $x['id'] === 3);
+        $result = Tree\to_index::<array>($tree, static fn(array $x): bool => $x['id'] === 3);
 
         static::assertSame([0, 0], $result);
     }
 
     public function testToIndexWithMultipleLevels(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\tree('a', [
-                Tree\leaf('a1'),
-                Tree\leaf('a2'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\tree::<string>('a', [
+                Tree\leaf::<string>('a1'),
+                Tree\leaf::<string>('a2'),
             ]),
-            Tree\tree('b', [
-                Tree\leaf('b1'),
-                Tree\leaf('b2'),
+            Tree\tree::<string>('b', [
+                Tree\leaf::<string>('b1'),
+                Tree\leaf::<string>('b2'),
             ]),
-            Tree\leaf('c'),
+            Tree\leaf::<string>('c'),
         ]);
 
-        static::assertSame([0, 1], Tree\to_index($tree, static fn(string $x): bool => $x === 'a2'));
-        static::assertSame([1, 0], Tree\to_index($tree, static fn(string $x): bool => $x === 'b1'));
-        static::assertSame([2], Tree\to_index($tree, static fn(string $x): bool => $x === 'c'));
+        static::assertSame([0, 1], Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'a2'));
+        static::assertSame([1, 0], Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'b1'));
+        static::assertSame([2], Tree\to_index::<string>($tree, static fn(string $x): bool => $x === 'c'));
     }
 }

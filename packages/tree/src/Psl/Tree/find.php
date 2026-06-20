@@ -17,16 +17,11 @@ use Closure;
  *      )
  *      => 2
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
  * @param (Closure(T): bool) $predicate
- *
- * @return T|null
  *
  * @api
  */
-function find(NodeInterface $tree, Closure $predicate): mixed
+function find<T>(NodeInterface<T> $tree, Closure $predicate): T|null
 {
     $value = $tree->getValue();
     if ($predicate($value)) {
@@ -39,7 +34,7 @@ function find(NodeInterface $tree, Closure $predicate): mixed
 
     foreach ($tree->getChildren() as $child) {
         /** @var T|null $result */
-        $result = namespace\find($child, $predicate);
+        $result = namespace\find::<T>($child, $predicate);
         if (null !== $result) {
             return $result;
         }

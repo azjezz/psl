@@ -7,16 +7,11 @@ namespace Psl\Channel\Internal;
 use Override;
 
 /**
- * @template T of UnboundedChannelState|BoundedChannelState
- *
  * @internal
  */
-trait ChannelSideTrait
+trait ChannelSideTrait<T: UnboundedChannelState|BoundedChannelState>
 {
-    /**
-     * @var T
-     */
-    protected UnboundedChannelState|BoundedChannelState $state;
+    protected T $state;
 
     /**
      * Returns the channel capacity if it’s bounded.

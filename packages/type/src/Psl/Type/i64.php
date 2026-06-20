@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function i64(): TypeInterface
+function i64(): TypeInterface<int>
 {
     static $instance = new Internal\I64Type();
 

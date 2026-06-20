@@ -21,25 +21,19 @@ use function array_map;
  *      )
  *      => Tree\tree(2, [Tree\leaf(4), Tree\leaf(6)])
  *
- * @template T
- * @template Tu
- *
- * @param NodeInterface<T> $node
  * @param (Closure(T): Tu) $function
- *
- * @return NodeInterface<Tu>
  *
  * @api
  */
-function map(NodeInterface $node, Closure $function): NodeInterface
+function map<T, Tu>(NodeInterface<T> $node, Closure $function): NodeInterface<Tu>
 {
     if (!$node instanceof TreeNode) {
-        return new LeafNode($function($node->getValue()));
+        return new LeafNode::<Tu>($function($node->getValue()));
     }
 
-    return new TreeNode(
+    return new TreeNode::<Tu>(
         $function($node->getValue()),
-        array_map(static fn(NodeInterface $child): NodeInterface => namespace\map(
+        array_map(static fn(NodeInterface<T> $child): NodeInterface<Tu> => namespace\map::<T, Tu>(
             $child,
             $function,
         ), $node->getChildren()),

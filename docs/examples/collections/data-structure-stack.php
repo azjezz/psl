@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\DataStructure;
 
-$stack = new DataStructure\Stack();
+$stack = new DataStructure\Stack::<string>();
 
 $stack->push('first');
 $stack->push('second');

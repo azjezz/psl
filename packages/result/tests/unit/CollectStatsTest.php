@@ -14,10 +14,10 @@ final class CollectStatsTest extends TestCase
 {
     public function testWithStatsResult(): void
     {
-        $success = new Success(1);
-        $failure = new Failure(new Exception('foo'));
+        $success = new Success::<int>(1);
+        $failure = new Failure::<never, Exception>(new Exception('foo'));
 
-        $stats = Result\collect_stats([$success, $success, $failure]);
+        $stats = Result\collect_stats::<int>([$success, $success, $failure]);
 
         static::assertSame(3, $stats->total());
         static::assertSame(2, $stats->succeeded());

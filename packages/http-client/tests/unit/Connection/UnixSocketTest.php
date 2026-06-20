@@ -54,7 +54,7 @@ final class UnixSocketTest extends TestCase
 
         try {
             $listener = Unix\listen($socketPath);
-            $serverFuture = Async\run(static function () use ($listener): void {
+            $serverFuture = Async\run::<void>(static function () use ($listener): void {
                 try {
                     $conn = $listener->accept();
                     // Read part of the request (enough to proceed)
@@ -97,7 +97,7 @@ final class UnixSocketTest extends TestCase
 
         try {
             $listener = Unix\listen($socketPath);
-            $serverFuture = Async\run(static function () use ($listener): void {
+            $serverFuture = Async\run::<void>(static function () use ($listener): void {
                 try {
                     $conn = $listener->accept();
                     // Read part of the request (enough to proceed)
@@ -182,11 +182,11 @@ final class UnixSocketTest extends TestCase
      *
      * @return Async\Awaitable<void>
      */
-    private static function startH2UnixServer(string $socketPath, Closure $handler): Async\Awaitable
+    private static function startH2UnixServer(string $socketPath, Closure $handler): Async\Awaitable<void>
     {
         $listener = Unix\listen($socketPath);
 
-        return Async\run(static function () use ($listener, $handler): void {
+        return Async\run::<void>(static function () use ($listener, $handler): void {
             try {
                 $conn = $listener->accept();
                 $server = new H2\ServerConnection($conn);

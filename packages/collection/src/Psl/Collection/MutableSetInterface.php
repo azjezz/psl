@@ -8,14 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template T of array-key
- *
- * @extends SetInterface<T>
- * @extends MutableAccessibleCollectionInterface<T, T>
- *
  * @api
  */
-interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetInterface
+interface MutableSetInterface<T: string|int> extends MutableAccessibleCollectionInterface<T, T>, SetInterface<T>
 {
     /**
      * Returns the provided value if it exists in the current `MutableSetInterface`.
@@ -24,16 +19,12 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * an {@see Exception\OutOfBoundsException} is thrown to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return T
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): int|string;
+    public function at(T $k): T;
 
     /**
      * Determines if the specified value is in the current set.
@@ -42,14 +33,12 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * If the value exists, it returns true to indicate presence in the set. If the value does not exist,
      * it returns false to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @return bool True if the value is in the set, false otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function contains(int|string $k): bool;
+    public function contains(T $k): bool;
 
     /**
      * Returns the provided value if it is part of the set, or null if it is not.
@@ -58,14 +47,10 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * null is returned to indicate the absence of the value.
      *
-     * @param T $k
-     *
-     * @return T|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): null|int|string;
+    public function get(T $k): T|null;
 
     /**
      * Get an array copy of the current set.
@@ -80,22 +65,18 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
     /**
      * Returns a `MutableVectorInterface` containing the values of the current `MutableSetInterface`.
      *
-     * @return MutableVectorInterface<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): MutableVectorInterface;
+    public function values(): MutableVectorInterface<T>;
 
     /**
      * As {@see MutableSetInterface} does not have keys, this method acts as an alias for {@see MutableSetInterface::values()}.
      *
-     * @return MutableVectorInterface<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): MutableVectorInterface;
+    public function keys(): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableSetInterface` containing the values of the current `MutableSetInterface`
@@ -106,12 +87,9 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `MutableSetInterface` values
-     *
-     * @return MutableSetInterface<T> A MutableSetInterface containing the values after
-     *                                a user-specified condition is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableSetInterface;
+    public function filter(Closure $fn): MutableSetInterface<T>;
 
     /**
      * Applies a user-defined condition to each value in the `MutableSetInterface`,
@@ -124,11 +102,9 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * It's particularly useful when the distinction between keys and values is relevant for the condition.
      *
      * @param (Closure(T, T): bool) $fn T
-     *
-     * @return MutableSetInterface<T>
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableSetInterface;
+    public function filterWithKey(Closure $fn): MutableSetInterface<T>;
 
     /**
      * Returns a `MutableSetInterface` after an operation has been applied to each value
@@ -137,16 +113,11 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * Every value in the current Map is affected by a call to `map()`, unlike
      * `filter()` where only values that meet a certain criteria are affected.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableSetInterface` values
-     *
-     * @return MutableSetInterface<Tu> A `MutableSetInterface` containing the values after a user-specified
-     *                                 operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableSetInterface;
+    public function map<Tu: string|int>(Closure $fn): MutableSetInterface<Tu>;
 
     /**
      * Transform the values of the current `MutableSetInterface` by applying the provided callback,
@@ -158,62 +129,46 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
-     *
-     * @return MutableSetInterface<Tu>
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableSetInterface;
+    public function mapWithKey<Tu: string|int>(Closure $fn): MutableSetInterface<Tu>;
 
     /**
      * Returns the first value in the current `MutableSetInterface`.
      *
-     * @return T|null The first value in the current `MutableSetInterface`, or `null` if the
-     *                current `MutableSetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): null|int|string;
+    public function first(): T|null;
 
     /**
      * Returns the first key in the current `MutableSetInterface`.
      *
      * As {@see MutableSetInterface} does not have keys, this method acts as an alias for {@see MutableSetInterface::first()}.
      *
-     * @return T|null The first value in the current `MutableSetInterface`, or `null` if the
-     *                current `MutableSetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): null|int|string;
+    public function firstKey(): T|null;
 
     /**
      * Returns the last value in the current `MutableSetInterface`.
      *
-     * @return T|null The last value in the current `MutableSetInterface`, or `null` if the
-     *                current `MutableSetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): null|int|string;
+    public function last(): T|null;
 
     /**
      * Returns the last key in the current `MutableSetInterface`.
      *
      * As {@see MutableSetInterface} does not have keys, this method acts as an alias for {@see MutableSetInterface::last()}.
      *
-     * @return T|null The last value in the current `MutableSetInterface`, or `null` if the
-     *                current `MutableSetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): null|int|string;
+    public function lastKey(): T|null;
 
     /**
      * Returns the key of the first element that matches the search value.
@@ -222,20 +177,13 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * As {@see MutableSetInterface} does not have keys, this method returns the value itself.
      *
-     * @param T $searchValue The value that will be search for in the current
-     *                        `MutableSetInterface`.
-     *
-     * @return T|null The value if its found, null otherwise.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int|string;
+    public function linearSearch(T $searchValue): T|null;
 
     /**
      * Always throws an exception since `Set` can only contain array-key values.
-     *
-     * @template Tu
      *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `SetInterface`.
      *
@@ -244,7 +192,7 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never;
+    public function zip<Tu>(array $elements): never;
 
     /**
      * Returns a `MutableSetInterface` containing the first `n` values of the current
@@ -258,13 +206,10 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `MutableSetInterface`.
      *
-     * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
-     *                                `MutableSetInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableSetInterface;
+    public function take(int $n): MutableSetInterface<T>;
 
     /**
      * Returns a `MutableSetInterface` containing the values of the current `MutableSetInterface`
@@ -276,12 +221,9 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
-     *                                `MutableSetInterface` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableSetInterface;
+    public function takeWhile(Closure $fn): MutableSetInterface<T>;
 
     /**
      * Returns a `MutableSetInterface` containing the values after the `n`-th element of
@@ -295,13 +237,10 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MutableSetInterface`.
      *
-     * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
-     *                                `MutableSetInterface` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableSetInterface;
+    public function drop(int $n): MutableSetInterface<T>;
 
     /**
      * Returns a `MutableSetInterface` containing the values of the current `MutableSetInterface`
@@ -313,12 +252,9 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `MutableSetInterface`.
-     *
-     * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
-     *                                `MutableSetInterface` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableSetInterface;
+    public function dropWhile(Closure $fn): MutableSetInterface<T>;
 
     /**
      * Returns a subset of the current `MutableSetInterface` starting from a given index up
@@ -335,14 +271,10 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *                           `MutableSetInterface`.
      * @param int<0, max> $length The length of the returned `MutableSetInterface`.
      *
-     * @return MutableSetInterface<T> A `MutableSetInterface` that is a proper subset of the current
-     *                                `MutableSetInterface` starting at `$start` up to but not including
-     *                                the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableSetInterface;
+    public function slice(int $start, null|int $length = null): MutableSetInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the original `MutableSetInterface` split into
@@ -359,36 +291,30 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableVectorInterface;
+    public function chunk(int $size): MutableVectorInterface<MutableSetInterface<T>>;
 
     /**
      * Removes the specified value from the current set.
      *
      * If the value is not in the current set, the current set is unchanged.
      *
-     * @param T $k The value to remove.
-     *
      * @return MutableSetInterface<T> Returns itself.
      */
     #[Override]
-    public function remove(int|string $k): MutableSetInterface;
+    public function remove(T $k): MutableSetInterface<T>;
 
     /**
      * Removes all elements from the set.
-     *
-     * @return MutableSetInterface<T>
      */
     #[Override]
-    public function clear(): MutableSetInterface;
+    public function clear(): MutableSetInterface<T>;
 
     /**
      * Add a value to the set and return the set itself.
      *
-     * @param T $v The value to add.
-     *
      * @return MutableSetInterface<T> Returns itself.
      */
-    public function add(mixed $v): MutableSetInterface;
+    public function add(T $v): MutableSetInterface<T>;
 
     /**
      * For every element in the provided elements iterable, add the value into the current set.
@@ -397,5 +323,5 @@ interface MutableSetInterface extends MutableAccessibleCollectionInterface, SetI
      *
      * @return MutableSetInterface<T> Returns itself.
      */
-    public function addAll(iterable $elements): MutableSetInterface;
+    public function addAll(iterable $elements): MutableSetInterface<T>;
 }

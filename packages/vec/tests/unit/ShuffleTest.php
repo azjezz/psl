@@ -18,13 +18,13 @@ final class ShuffleTest extends TestCase
             'baz' => 'qux',
         ];
 
-        $shuffled = Vec\shuffle($array);
+        $shuffled = Vec\shuffle::<string>($array);
 
         static::assertSameSize($shuffled, $array);
         static::assertNotSame($shuffled, $array);
 
         foreach ($shuffled as $value) {
-            static::assertTrue(Iter\contains($array, $value));
+            static::assertTrue(Iter\contains::<string>($array, $value));
         }
     }
 }

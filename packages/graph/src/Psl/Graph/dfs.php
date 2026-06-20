@@ -21,27 +21,23 @@ use function count;
  *      $graph = Graph\add_edge($graph, 'B', 'D');
  *      Graph\dfs($graph, 'A') // ['A', 'B', 'D', 'C']
  *
- * @template TNode
- * @template TWeight
- *
- * @param DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph
- * @param TNode $start
- *
  * @return list<TNode>
  *
  * @pure
  *
  * @api
  */
-function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
-{
+function dfs<TNode, TWeight>(
+    DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph,
+    TNode $start,
+): array {
     if (!$graph->hasNode($start)) {
         return [];
     }
 
     $visited = [];
     $result = [];
-    $stack = new Stack();
+    $stack = new Stack::<TNode>();
     $stack->push($start);
 
     while ($stack->count() !== 0) {
@@ -56,7 +52,7 @@ function dfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
         $result[] = $node;
 
         // Push neighbors in reverse order to maintain left-to-right traversal
-        $neighborsList = namespace\neighbors($graph, $node);
+        $neighborsList = namespace\neighbors::<TNode, TWeight>($graph, $node);
         for ($i = count($neighborsList) - 1; $i >= 0; $i--) {
             $neighborKey = Internal\get_node_key($neighborsList[$i]);
             if (!isset($visited[$neighborKey])) {

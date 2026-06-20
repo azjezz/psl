@@ -7,15 +7,11 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template T
- *
  * @param class-string<T> $classname
- *
- * @return TypeInterface<T>
  *
  * @api
  */
-function instance_of(string $classname): TypeInterface
+function instance_of<T>(string $classname): TypeInterface<T>
 {
-    return new Internal\InstanceOfType($classname);
+    return new Internal\InstanceOfType::<T>($classname);
 }

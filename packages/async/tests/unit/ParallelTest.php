@@ -14,9 +14,9 @@ final class ParallelTest extends TestCase
 {
     public function testParallel(): void
     {
-        $spy = new Psl\Ref('');
+        $spy = new Psl\Ref::<string>('');
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($spy): void {
                 Async\sleep(DateTime\Duration::milliseconds(30));
 
@@ -41,10 +41,10 @@ final class ParallelTest extends TestCase
     {
         Async\Scheduler::run();
 
-        $spy = new Psl\Ref('');
+        $spy = new Psl\Ref::<string>('');
 
         try {
-            Async\concurrently([
+            Async\concurrently::<int, void>([
                 static function (): void {
                     Async\sleep(DateTime\Duration::milliseconds(3));
 

@@ -16,18 +16,18 @@ use RuntimeException;
 /**
  * @extends TypeTestCase<array>
  */
-final class ShapeTypeTest extends TypeTestCase
+final class ShapeTypeTest extends TypeTestCase<array>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<array>
     {
-        return Type\shape([
+        return Type\shape::<string, string|array>([
             'name' => Type\string(),
-            'articles' => Type\vec(Type\shape([
+            'articles' => Type\vec::<array>(Type\shape::<string, string|int|array>([
                 'title' => Type\string(),
                 'content' => Type\string(),
                 'likes' => Type\int(),
-                'comments' => Type\optional(Type\vec(Type\shape([
+                'comments' => Type\optional::<array>(Type\vec::<array>(Type\shape::<string, string>([
                     'user' => Type\string(),
                     'comment' => Type\string(),
                 ]))),
@@ -42,7 +42,7 @@ final class ShapeTypeTest extends TypeTestCase
                 'defined_key' => 'value',
                 'additional_key' => 'value',
             ],
-            Type\shape(['defined_key' => Type\mixed()], true)->coerce(new ArrayIterator([
+            Type\shape::<string, mixed>(['defined_key' => Type\mixed()], true)->coerce(new ArrayIterator([
                 'defined_key' => 'value',
                 'additional_key' => 'value',
             ])),
@@ -67,14 +67,14 @@ final class ShapeTypeTest extends TypeTestCase
     private static function validCoercions(): iterable
     {
         yield [
-            ['name' => 'saif', 'articles' => new Collection\Vector([])],
+            ['name' => 'saif', 'articles' => new Collection\Vector::<array>([])],
             ['name' => 'saif', 'articles' => []],
         ];
 
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
+                'articles' => new Collection\Vector::<array>([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
             ],
             ['name' => 'saif', 'articles' => [['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]],
         ];
@@ -82,7 +82,7 @@ final class ShapeTypeTest extends TypeTestCase
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([
+                'articles' => new Collection\Vector::<array>([
                     ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
                     [
                         'title' => 'Bar',
@@ -117,7 +117,7 @@ final class ShapeTypeTest extends TypeTestCase
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([
+                'articles' => new Collection\Vector::<array>([
                     ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
                     ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
                 ]),
@@ -134,7 +134,7 @@ final class ShapeTypeTest extends TypeTestCase
         yield 'stdClass containing a valid shape' => [
             (object) [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([
+                'articles' => new Collection\Vector::<array>([
                     ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
                     ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
                 ]),
@@ -151,7 +151,7 @@ final class ShapeTypeTest extends TypeTestCase
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([
+                'articles' => new Collection\Vector::<array>([
                     ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0, 'dislikes' => 5],
                     ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13, 'dislikes' => 3],
                 ]),
@@ -212,7 +212,7 @@ final class ShapeTypeTest extends TypeTestCase
                 . '}>}',
         ];
         yield [
-            Type\shape([Type\int(), Type\string()]),
+            Type\shape::<int, int|string>([Type\int(), Type\string()]),
             'array{0: int, 1: string}',
         ];
     }
@@ -224,7 +224,7 @@ final class ShapeTypeTest extends TypeTestCase
     #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
-        $dict = Type\dict(Type\array_key(), Type\mixed());
+        $dict = Type\dict::<string|int, mixed>(Type\array_key(), Type\mixed());
         if (!$dict->matches($a) || !$dict->matches($b)) {
             return parent::equals($a, $b);
         }
@@ -233,7 +233,7 @@ final class ShapeTypeTest extends TypeTestCase
             return parent::equals($a, $b);
         }
 
-        $vector = Type\instance_of(Collection\VectorInterface::class);
+        $vector = Type\instance_of::<Collection\VectorInterface>(Collection\VectorInterface::class);
         if ($vector->matches($a['articles'])) {
             $a['articles'] = $a['articles']->toArray();
         }
@@ -248,7 +248,7 @@ final class ShapeTypeTest extends TypeTestCase
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'extra key' => [
-            Type\shape(['name' => Type\string()]),
+            Type\shape::<string, string>(['name' => Type\string()]),
             [
                 'name' => 'saif',
                 'extra' => 123,
@@ -256,17 +256,17 @@ final class ShapeTypeTest extends TypeTestCase
             'Expected "array{\'name\': string}", got "int" at path "extra".',
         ];
         yield 'missing key' => [
-            Type\shape(['name' => Type\string()]),
+            Type\shape::<string, string>(['name' => Type\string()]),
             [],
             'Expected "array{\'name\': string}", got "null" at path "name".',
         ];
         yield 'invalid key' => [
-            Type\shape(['name' => Type\string()]),
+            Type\shape::<string, string>(['name' => Type\string()]),
             ['name' => 123],
             'Expected "array{\'name\': string}", got "int" at path "name".',
         ];
         yield 'nested' => [
-            Type\shape(['item' => Type\shape(['name' => Type\string()])]),
+            Type\shape::<string, array>(['item' => Type\shape::<string, string>(['name' => Type\string()])]),
             ['item' => [
                 'name' => 123,
             ]],
@@ -277,24 +277,24 @@ final class ShapeTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'missing key' => [
-            Type\shape(['name' => Type\string()]),
+            Type\shape::<string, string>(['name' => Type\string()]),
             [],
             'Could not coerce "null" to type "array{\'name\': string}" at path "name".',
         ];
         yield 'invalid key' => [
-            Type\shape(['name' => Type\string()]),
+            Type\shape::<string, string>(['name' => Type\string()]),
             ['name' => new class() {}],
             'Could not coerce "class@anonymous" to type "array{\'name\': string}" at path "name".',
         ];
         yield 'invalid iterator first item' => [
-            Type\shape(['id' => Type\int()]),
+            Type\shape::<string, int>(['id' => Type\int()]),
             (static function (): iterable {
                 yield 'id' => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "array{\'id\': int}" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\shape(['id' => Type\int()]),
+            Type\shape::<string, int>(['id' => Type\int()]),
             (static function (): iterable {
                 yield 'id' => 1;
                 yield 'next' => Type\int()->coerce('nope');
@@ -302,7 +302,7 @@ final class ShapeTypeTest extends TypeTestCase
             'Could not coerce "string" to type "array{\'id\': int}" at path "id.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\shape(['id' => Type\int()]),
+            Type\shape::<string, int>(['id' => Type\int()]),
             (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
@@ -310,14 +310,14 @@ final class ShapeTypeTest extends TypeTestCase
             'Could not coerce "null" to type "array{\'id\': int}" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\shape(['id' => Type\int()]),
+            Type\shape::<string, int>(['id' => Type\int()]),
             (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "array{\'id\': int}" at path "id".',
         ];
         yield 'iterator yielding object key' => [
-            Type\shape(['id' => Type\int()]),
+            Type\shape::<string, int>(['id' => Type\int()]),
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
@@ -327,7 +327,7 @@ final class ShapeTypeTest extends TypeTestCase
 
     #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -341,7 +341,7 @@ final class ShapeTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -355,16 +355,16 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testMatchesReturnsFalseForUnknownFields(): void
     {
-        $type = Type\shape(['name' => Type\string()]);
+        $type = Type\shape::<string, string>(['name' => Type\string()]);
 
         static::assertFalse($type->matches(['name' => 'saif', 'extra' => 123]));
     }
 
     public function testNullishKeyAbsentDefaultsToNull(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'bio' => Type\nullish(Type\string()),
+            'bio' => Type\nullish::<string>(Type\string()),
         ]);
 
         $result = $type->coerce(['name' => 'saif']);
@@ -374,9 +374,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishKeyAbsentDefaultsToNullViaAssert(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'bio' => Type\nullish(Type\string()),
+            'bio' => Type\nullish::<string>(Type\string()),
         ]);
 
         $result = $type->assert(['name' => 'saif']);
@@ -386,9 +386,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishKeyPresentWithNull(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'bio' => Type\nullish(Type\string()),
+            'bio' => Type\nullish::<string>(Type\string()),
         ]);
 
         $result = $type->coerce(['name' => 'saif', 'bio' => null]);
@@ -398,9 +398,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishKeyPresentWithValue(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'bio' => Type\nullish(Type\string()),
+            'bio' => Type\nullish::<string>(Type\string()),
         ]);
 
         $result = $type->coerce(['name' => 'saif', 'bio' => 'hello']);
@@ -410,9 +410,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishKeyCoercesValue(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'count' => Type\nullish(Type\string()),
+            'count' => Type\nullish::<string>(Type\string()),
         ]);
 
         $result = $type->coerce(['name' => 'saif', 'count' => 123]);
@@ -422,9 +422,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishKeyAbsentDefaultsToNullViaIterable(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'bio' => Type\nullish(Type\string()),
+            'bio' => Type\nullish::<string>(Type\string()),
         ]);
 
         $result = $type->coerce(new ArrayIterator(['name' => 'saif']));
@@ -434,9 +434,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishCoercionFastPath(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, int|null>([
             'name' => Type\string(),
-            'age' => Type\nullish(Type\int()),
+            'age' => Type\nullish::<int>(Type\int()),
         ], true);
 
         $result = $type->coerce(['name' => 'test']);
@@ -446,9 +446,9 @@ final class ShapeTypeTest extends TypeTestCase
 
     public function testNullishToString(): void
     {
-        $type = Type\shape([
+        $type = Type\shape::<string, string|null>([
             'name' => Type\string(),
-            'bio' => Type\nullish(Type\string()),
+            'bio' => Type\nullish::<string>(Type\string()),
         ]);
 
         static::assertSame("array{'name': string, 'bio'?: ?string}", $type->toString());

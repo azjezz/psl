@@ -34,20 +34,15 @@ use function array_key_exists;
  * The returned {@see Iterator} is rewindable -- consuming it twice replays the
  * cached events without re-walking the inputs.
  *
- * @template T
- * @template I of array-key
- *
  * @param iterable<T> $left
  * @param iterable<T> $right
  * @param (Closure(T): I) $key_by
  *
- * @return Iterator<int, EitherOrBoth\EitherOrBoth<T, T>>
- *
  * @api
  */
-function merge_join_by_key(iterable $left, iterable $right, Closure $key_by): Iterator
+function merge_join_by_key<T, I: string|int>(iterable $left, iterable $right, Closure $key_by): Iterator<int, EitherOrBoth\EitherOrBoth<T, T>>
 {
-    return Iterator::from(
+    return Iterator::<int, EitherOrBoth\EitherOrBoth<T, T>>::from(
         /**
          * @return Generator<int, EitherOrBoth\EitherOrBoth<T, T>, mixed, void>
          */
@@ -60,16 +55,16 @@ function merge_join_by_key(iterable $left, iterable $right, Closure $key_by): It
             foreach ($left as $record) {
                 $id = $key_by($record);
                 if (array_key_exists($id, $lookup)) {
-                    yield new EitherOrBoth\Both($record, $lookup[$id]);
+                    yield new EitherOrBoth\Both::<T, T>($record, $lookup[$id]);
                     unset($lookup[$id]);
                     continue;
                 }
 
-                yield new EitherOrBoth\Left($record);
+                yield new EitherOrBoth\Left::<T>($record);
             }
 
             foreach ($lookup as $leftover) {
-                yield new EitherOrBoth\Right($leftover);
+                yield new EitherOrBoth\Right::<T>($leftover);
             }
         },
     );

@@ -9,9 +9,6 @@ use Throwable;
 /**
  * Awaits all awaitables to complete concurrently.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Awaitable<Tv>> $awaitables
  *
  * @throws Exception\CompositeException If multiple awaitables failed at once.
@@ -20,12 +17,12 @@ use Throwable;
  *
  * @api
  */
-function all(iterable $awaitables): array
+function all<Tk: string|int, Tv>(iterable $awaitables): array
 {
     $values = [];
 
     // Awaitable::iterate() to throw the first error based on completion order instead of argument order
-    foreach (Awaitable::iterate($awaitables) as $index => $awaitable) {
+    foreach (Awaitable::iterate::<Tk, Tv>($awaitables) as $index => $awaitable) {
         try {
             $values[$index] = $awaitable->await();
         } catch (Throwable $exception) {

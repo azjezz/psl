@@ -12,14 +12,13 @@ use Psl\Iter;
 final class ContainsTest extends TestCase
 {
     /**
-     * @template T
-     * @param iterable<T> $iterable
-     * @param T $value
+     * @param iterable<mixed> $iterable
+     * @param mixed $value
      */
     #[DataProvider('provideData')]
     public function testContainsKey(bool $expected, iterable $iterable, null|int|string $value): void
     {
-        static::assertSame($expected, Iter\contains($iterable, $value));
+        static::assertSame($expected, Iter\contains::<int|string|null>($iterable, $value));
     }
 
     public static function provideData(): iterable
@@ -36,9 +35,9 @@ final class ContainsTest extends TestCase
         yield [true, ['hello' => 'world'], 'world'];
         yield [false, ['hello' => 'world'], 'worlD'];
         yield [true, ['' => ''], ''];
-        yield [false, new Collection\Vector([1, 2]), 0];
-        yield [true, new Collection\Vector([1, 2]), 1];
-        yield [true, new Collection\Vector([1, 2]), 2];
+        yield [false, new Collection\Vector::<int>([1, 2]), 0];
+        yield [true, new Collection\Vector::<int>([1, 2]), 1];
+        yield [true, new Collection\Vector::<int>([1, 2]), 2];
         yield [false, (static fn(): iterable => yield 'foo' => 'bar')(), 'foo'];
         yield [true, (static fn(): iterable => yield 'foo' => 'bar')(), 'bar'];
     }

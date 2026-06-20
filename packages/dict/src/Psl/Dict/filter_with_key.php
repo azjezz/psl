@@ -28,9 +28,6 @@ use const ARRAY_FILTER_USE_BOTH;
  *      );
  *      => Dict(2 => 'baz')
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tk, Tv): bool)|null $predicate
  *
@@ -38,23 +35,14 @@ use const ARRAY_FILTER_USE_BOTH;
  *
  * @api
  */
-function filter_with_key(iterable $iterable, null|Closure $predicate = null): array
+function filter_with_key<Tk: string|int, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
-    $predicate ??=
-        /**
-         * @param Tk $_
-         * @param Tv $v
-         */
-        static fn(mixed $_, mixed $v): bool => (bool) $v;
+    $predicate ??= static fn(Tk $_, Tv $v): bool => (bool) $v;
 
     if (is_array($iterable)) {
         return array_filter(
             $iterable,
-            /**
-             * @param Tv $v
-             * @param Tk $k
-             */
-            static fn(mixed $v, string|int $k): bool => $predicate($k, $v),
+            static fn(Tv $v, Tk $k): bool => $predicate($k, $v),
             ARRAY_FILTER_USE_BOTH,
         );
     }

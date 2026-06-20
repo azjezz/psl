@@ -15,22 +15,18 @@ namespace Psl\Tree;
  *      ]))
  *      => 3
  *
- * @template T
- *
- * @param NodeInterface<T> $node
- *
  * @return int<1, max>
  *
  * @pure
  *
  * @api
  */
-function count(NodeInterface $node): int
+function count<T>(NodeInterface<T> $node): int
 {
     $total = 1;
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
-            $total += namespace\count($child);
+            $total += namespace\count::<T>($child);
         }
     }
 

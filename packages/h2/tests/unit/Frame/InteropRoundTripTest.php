@@ -87,13 +87,13 @@ final class InteropRoundTripTest extends TestCase
      *     description?: string,
      * }>
      */
-    private static function fixtureType(): Type\TypeInterface
+    private static function fixtureType(): Type\TypeInterface<array>
     {
-        return Type\shape([
-            'error' => Type\nullable(Type\vec(Type\int())),
+        return Type\shape::<string, mixed>([
+            'error' => Type\nullable::<array>(Type\vec::<int>(Type\int())),
             'wire' => Type\string(),
-            'frame' => Type\nullable(Type\dict(Type\string(), Type\mixed())),
-            'description' => Type\optional(Type\string()),
+            'frame' => Type\nullable::<array>(Type\dict::<string, mixed>(Type\string(), Type\mixed())),
+            'description' => Type\optional::<string>(Type\string()),
         ]);
     }
 }

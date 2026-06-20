@@ -11,12 +11,15 @@ use Psl\Collection;
 use Psl\Type;
 use Throwable;
 
-final class ClassStringTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<class-string<Collection\CollectionInterface>>
+ */
+final class ClassStringTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
-        return Type\class_string(Collection\CollectionInterface::class);
+        return Type\class_string::<Collection\CollectionInterface>(Collection\CollectionInterface::class);
     }
 
     #[Override]
@@ -43,11 +46,11 @@ final class ClassStringTypeTest extends TypeTestCase
     #[Override]
     public static function getToStringExamples(): iterable
     {
-        yield [Type\class_string(Collection\MapInterface::class), 'class-string<Psl\Collection\MapInterface>'];
-        yield [Type\class_string(Collection\VectorInterface::class), 'class-string<Psl\Collection\VectorInterface>'];
-        yield [Type\class_string(Collection\Vector::class), 'class-string<Psl\Collection\Vector>'];
-        yield [Type\class_string(Collection\Map::class), 'class-string<Psl\Collection\Map>'];
-        yield [Type\class_string(), 'class-string'];
+        yield [Type\class_string::<Collection\MapInterface>(Collection\MapInterface::class), 'class-string<Psl\Collection\MapInterface>'];
+        yield [Type\class_string::<Collection\VectorInterface>(Collection\VectorInterface::class), 'class-string<Psl\Collection\VectorInterface>'];
+        yield [Type\class_string::<Collection\Vector>(Collection\Vector::class), 'class-string<Psl\Collection\Vector>'];
+        yield [Type\class_string::<Collection\Map>(Collection\Map::class), 'class-string<Psl\Collection\Map>'];
+        yield [Type\class_string::<object>(), 'class-string'];
     }
 
     public static function validValuesForUnrestrictedType(): iterable
@@ -62,7 +65,7 @@ final class ClassStringTypeTest extends TypeTestCase
     #[DataProvider('validValuesForUnrestrictedType')]
     public function testUnspecifiedTypeAcceptsAnyClassString(string $value): void
     {
-        static::assertSame($value, Type\class_string()->assert($value));
+        static::assertSame($value, Type\class_string::<object>()->assert($value));
     }
 
     /** @return iterable<array{0: mixed}> */
@@ -78,6 +81,6 @@ final class ClassStringTypeTest extends TypeTestCase
     public function testInvalidValuesWhenTypeIsUnspecified(mixed $value): void
     {
         $this->expectException(Type\Exception\AssertException::class);
-        Type\class_string()->assert($value);
+        Type\class_string::<object>()->assert($value);
     }
 }

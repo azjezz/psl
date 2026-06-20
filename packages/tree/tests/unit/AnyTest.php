@@ -11,40 +11,40 @@ final class AnyTest extends TestCase
 {
     public function testAnyReturnsTrueWhenPredicateMatches(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\leaf(2),
-            Tree\leaf(3),
-            Tree\leaf(4),
+        $tree = Tree\tree::<int>(1, [
+            Tree\leaf::<int>(2),
+            Tree\leaf::<int>(3),
+            Tree\leaf::<int>(4),
         ]);
 
-        $result = Tree\any($tree, static fn(int $x): bool => $x > 3);
+        $result = Tree\any::<int>($tree, static fn(int $x): bool => $x > 3);
 
         static::assertTrue($result);
     }
 
     public function testAnyReturnsFalseWhenNoMatch(): void
     {
-        $tree = Tree\tree(1, [Tree\leaf(2), Tree\leaf(3)]);
+        $tree = Tree\tree::<int>(1, [Tree\leaf::<int>(2), Tree\leaf::<int>(3)]);
 
-        $result = Tree\any($tree, static fn(int $x): bool => $x > 10);
+        $result = Tree\any::<int>($tree, static fn(int $x): bool => $x > 10);
 
         static::assertFalse($result);
     }
 
     public function testAnyReturnsTrueForRootMatch(): void
     {
-        $tree = Tree\tree(10, [Tree\leaf(1)]);
+        $tree = Tree\tree::<int>(10, [Tree\leaf::<int>(1)]);
 
-        $result = Tree\any($tree, static fn(int $x): bool => $x === 10);
+        $result = Tree\any::<int>($tree, static fn(int $x): bool => $x === 10);
 
         static::assertTrue($result);
     }
 
     public function testAnyInSingleNode(): void
     {
-        $tree = Tree\leaf(42);
+        $tree = Tree\leaf::<int>(42);
 
-        static::assertTrue(Tree\any($tree, static fn(int $x): bool => $x === 42));
-        static::assertFalse(Tree\any($tree, static fn(int $x): bool => $x === 0));
+        static::assertTrue(Tree\any::<int>($tree, static fn(int $x): bool => $x === 42));
+        static::assertFalse(Tree\any::<int>($tree, static fn(int $x): bool => $x === 0));
     }
 }

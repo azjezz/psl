@@ -11,13 +11,13 @@ final class FromEntriesTest extends TestCase
 {
     public function testEmptyEntries(): void
     {
-        $actual = Dict\from_entries([]);
+        $actual = Dict\from_entries::<int, string>([]);
         static::assertCount(0, $actual);
     }
 
     public function testFromEntries(): void
     {
-        $array = Dict\from_entries([
+        $array = Dict\from_entries::<int, string>([
             [1, 'hello'],
             [2, 'world'],
         ]);

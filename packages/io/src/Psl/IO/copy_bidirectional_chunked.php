@@ -30,7 +30,7 @@ function copy_bidirectional_chunked(
     int $chunkSize,
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): array {
-    return Async\concurrently([
+    return Async\concurrently::<int, int>([
         static fn(): int => namespace\copy_chunked($a, $b, $chunkSize, $cancellation),
         static fn(): int => namespace\copy_chunked($b, $a, $chunkSize, $cancellation),
     ]);

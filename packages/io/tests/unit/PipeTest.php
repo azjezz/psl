@@ -36,9 +36,9 @@ final class PipeTest extends TestCase
     {
         [$read, $write] = IO\pipe();
 
-        $spy = new Psl\Ref('');
+        $spy = new Psl\Ref::<string>('');
 
-        $readAwaitable = Async\run(static function () use ($read, $spy): string {
+        $readAwaitable = Async\run::<string>(static function () use ($read, $spy): string {
             $spy->value .= '[read:sleep]';
             Async\sleep(DateTime\Duration::milliseconds(3));
             $spy->value .= '[read:start]';
@@ -49,7 +49,7 @@ final class PipeTest extends TestCase
             return $content;
         });
 
-        Async\run(static function () use ($write, $spy): void {
+        Async\run::<void>(static function () use ($write, $spy): void {
             $spy->value .= '[write:sleep]';
             Async\sleep(DateTime\Duration::milliseconds(5));
             $spy->value .= '[write:start]';
@@ -107,7 +107,7 @@ final class PipeTest extends TestCase
         [$read, $_write] = IO\pipe();
 
         Async\Scheduler::defer($read->close(...));
-        $b = Async\run($read->readAll(...));
+        $b = Async\run::<string>($read->readAll(...));
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');
@@ -127,7 +127,7 @@ final class PipeTest extends TestCase
 
         Async\Scheduler::defer($write->close(...));
 
-        $b = Async\run(static fn(): null => $write->writeAll('hello'));
+        $b = Async\run::<null>(static fn(): null => $write->writeAll('hello'));
 
         $this->expectException(IO\Exception\AlreadyClosedException::class);
         $this->expectExceptionMessage('Handle has already been closed.');

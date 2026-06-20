@@ -13,13 +13,13 @@ use const STDIN;
 /**
  * @extends TypeTestCase<non-empty-string>
  */
-final class UuidTypeTest extends TypeTestCase
+final class UuidTypeTest extends TypeTestCase<string>
 {
     /**
      * @return Type\Type<non-empty-string>
      */
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\uuid();
     }

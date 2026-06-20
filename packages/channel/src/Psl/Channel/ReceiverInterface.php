@@ -9,11 +9,9 @@ use Psl\Async\Exception\CancelledException;
 use Psl\Async\NullCancellationToken;
 
 /**
- * @template T
- *
  * @api
  */
-interface ReceiverInterface extends ChannelInterface
+interface ReceiverInterface<T> extends ChannelInterface
 {
     /**
      * Receives a message from the channel.
@@ -24,10 +22,8 @@ interface ReceiverInterface extends ChannelInterface
      *
      * @throws Exception\ClosedChannelException If the channel is closed, and there's no more messages to receive.
      * @throws CancelledException If the cancellation token is cancelled while waiting.
-     *
-     * @return T
      */
-    public function receive(CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed;
+    public function receive(CancellationTokenInterface $cancellation = new NullCancellationToken()): T;
 
     /**
      * Receives a message from the channel immediately.
@@ -38,8 +34,6 @@ interface ReceiverInterface extends ChannelInterface
      *
      * @throws Exception\ClosedChannelException If the channel is closed, and there's no more messages to receive.
      * @throws Exception\EmptyChannelException If the channel is empty.
-     *
-     * @return T
      */
-    public function tryReceive(): mixed;
+    public function tryReceive(): T;
 }

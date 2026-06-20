@@ -23,7 +23,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -43,7 +43,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24, title: 'Test App');
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, title: 'Test App');
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -66,7 +66,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24, title: '');
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, title: '');
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -86,7 +86,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop(42);
@@ -107,9 +107,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->keyReceived = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
+        $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
             $state->keyReceived = true;
             $app->stop();
         });
@@ -134,13 +134,13 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->callOrder = [];
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Key::class, static function (Event\Key $key, stdClass $state): void {
+        $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $key, stdClass $state): void {
             $state->callOrder[] = 'first';
         });
 
-        $app->on(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
+        $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
             $state->callOrder[] = 'second';
             $app->stop();
         });
@@ -165,9 +165,9 @@ final class ApplicationTest extends TestCase
         $state->resizeWidth = 0;
         $state->resizeHeight = 0;
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Resize::class, static function (Event\Resize $event, stdClass $state) use ($app): void {
+        $app->on::<Event\Resize>(Event\Resize::class, static function (Event\Resize $event, stdClass $state) use ($app): void {
             $state->resizeWidth = $event->width;
             $state->resizeHeight = $event->height;
             $app->stop();
@@ -193,9 +193,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->mouseReceived = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state) use ($app): void {
+        $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state) use ($app): void {
             $state->mouseReceived = true;
             $app->stop();
         });
@@ -219,9 +219,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->pasteText = '';
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Paste::class, static function (Event\Paste $event, stdClass $state) use ($app): void {
+        $app->on::<Event\Paste>(Event\Paste::class, static function (Event\Paste $event, stdClass $state) use ($app): void {
             $state->pasteText = $event->text;
             $app->stop();
         });
@@ -245,9 +245,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->focused = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Focus::class, static function (Event\Focus $event, stdClass $state) use ($app): void {
+        $app->on::<Event\Focus>(Event\Focus::class, static function (Event\Focus $event, stdClass $state) use ($app): void {
             $state->focused = $event->focused;
             $app->stop();
         });
@@ -270,7 +270,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->dispatch(Event\Key::char('a'));
@@ -292,13 +292,13 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->secondCalled = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
-        $app->on(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
+        $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
             $app->stop();
         });
 
-        $app->on(Event\Key::class, static function (Event\Key $key, stdClass $state): void {
+        $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $key, stdClass $state): void {
             $state->secondCalled = true;
         });
 
@@ -320,7 +320,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         $command = new class() implements Ansi\CommandInterface {
             public function toString(): string
@@ -356,7 +356,7 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $renderCalled = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -378,7 +378,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(50));
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(50));
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -399,9 +399,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->mouseReceived = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24, scrollSmoothing: false);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, scrollSmoothing: false);
 
-        $app->on(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state) use ($app): void {
+        $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state) use ($app): void {
             $state->mouseReceived = true;
             $app->stop();
         });
@@ -424,7 +424,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24, mouseMotion: true);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, mouseMotion: true);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -445,9 +445,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->scrollEvents = [];
 
-        $app = Application::custom($state, $reader, $output, 80, 24, scrollSmoothing: true);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, scrollSmoothing: true);
 
-        $app->on(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state): void {
+        $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state): void {
             $state->scrollEvents[] = $event->kind;
         });
 
@@ -473,9 +473,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->mouseReceived = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24, scrollSmoothing: true);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, scrollSmoothing: true);
 
-        $app->on(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state) use ($app): void {
+        $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, stdClass $state) use ($app): void {
             $state->mouseReceived = true;
             $app->stop();
         });
@@ -499,7 +499,7 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->value = 'test_state';
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -529,7 +529,7 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->intervalCalled = false;
 
-        $app = Application::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
 
         $app->interval(Duration::milliseconds(10), static function (stdClass $state) use ($app): void {
             $state->intervalCalled = true;
@@ -553,7 +553,7 @@ final class ApplicationTest extends TestCase
 
         $reader->close();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Input handle must provide an underlying stream resource.');
@@ -569,7 +569,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         $app->dispatch(new Event\Resize(100, 50));
 
@@ -591,7 +591,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         $command1 = new class() implements Ansi\CommandInterface {
             public function toString(): string
@@ -640,7 +640,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24);
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24);
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->stop();
@@ -660,7 +660,7 @@ final class ApplicationTest extends TestCase
         $output = new IO\MemoryHandle();
         $state = new stdClass();
 
-        $app = Application::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
 
         $renderCount = 0;
 
@@ -684,9 +684,9 @@ final class ApplicationTest extends TestCase
         $state = new stdClass();
         $state->keysReceived = [];
 
-        $app = Application::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
 
-        $app->on(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
+        $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $key, stdClass $state) use ($app): void {
             $state->keysReceived[] = $key->name;
             if ($key->is('ctrl+c')) {
                 $app->stop();
@@ -720,10 +720,10 @@ final class ApplicationTest extends TestCase
         $state->frameWidthAfterResize = 0;
         $state->frameHeightAfterResize = 0;
 
-        $app = Application::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
+        $app = Application::<stdClass>::custom($state, $reader, $output, 80, 24, tickInterval: Duration::milliseconds(10));
 
         $renderCount = 0;
-        $app->on(Event\Resize::class, static function (Event\Resize $event, stdClass $state) use ($app): void {});
+        $app->on::<Event\Resize>(Event\Resize::class, static function (Event\Resize $event, stdClass $state) use ($app): void {});
 
         Async\Scheduler::defer(static function () use ($app): void {
             $app->dispatch(new Event\Resize(120, 40));

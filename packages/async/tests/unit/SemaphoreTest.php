@@ -13,19 +13,19 @@ final class SemaphoreTest extends TestCase
 {
     public function testItCallsTheOperation(): void
     {
-        $sequence = new Async\Semaphore(1, static fn(int $input): int => $input * 2);
+        $sequence = new Async\Semaphore::<int, int>(1, static fn(int $input): int => $input * 2);
 
         static::assertSame(4, $sequence->waitFor(2));
     }
 
     public function testSequenceOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Semaphore<array{time: ?DateTime\Duration, value: string}, void>
          */
-        $semaphore = new Async\Semaphore(1, static function (array $data) use ($spy): void {
+        $semaphore = new Async\Semaphore::<array, void>(1, static function (array $data) use ($spy): void {
             if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
@@ -33,19 +33,19 @@ final class SemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn(): null => $semaphore->waitFor([
+        Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
         ]))->ignore();
-        Async\run(static fn(): null => $semaphore->waitFor([
+        Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
         ]))->ignore();
-        Async\run(static fn(): null => $semaphore->waitFor([
+        Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]))->ignore();
-        $last = Async\run(static fn(): null => $semaphore->waitFor([
+        $last = Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => null,
             'value' => 'd',
         ]));
@@ -56,12 +56,12 @@ final class SemaphoreTest extends TestCase
 
     public function testOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Semaphore<array{time: ?DateTime\Duration, value: string}, void>
          */
-        $semaphore = new Async\Semaphore(2, static function (array $data) use ($spy): void {
+        $semaphore = new Async\Semaphore::<array, void>(2, static function (array $data) use ($spy): void {
             if (null !== $data['time']) {
                 Async\sleep($data['time']);
             }
@@ -69,19 +69,19 @@ final class SemaphoreTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn(): null => $semaphore->waitFor([
+        Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(3),
             'value' => 'a',
         ]))->ignore();
-        Async\run(static fn(): null => $semaphore->waitFor([
+        Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(4),
             'value' => 'b',
         ]))->ignore();
-        $beforeLast = Async\run(static fn(): null => $semaphore->waitFor([
+        $beforeLast = Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => Datetime\Duration::milliseconds(5),
             'value' => 'c',
         ]));
-        Async\run(static fn(): null => $semaphore->waitFor([
+        Async\run::<null>(static fn(): null => $semaphore->waitFor([
             'time' => null,
             'value' => 'd',
         ]))->ignore();
@@ -93,18 +93,18 @@ final class SemaphoreTest extends TestCase
 
     public function testOperationIsStartedIfLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Semaphore<string, void>
          */
-        $semaphore = new Async\Semaphore(1, static function (string $input) use ($spy): void {
+        $semaphore = new Async\Semaphore::<string, void>(1, static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn(): null => $semaphore->waitFor('hello'));
+        $awaitable = Async\run::<null>(static fn(): null => $semaphore->waitFor('hello'));
 
         Async\sleep(Datetime\Duration::milliseconds(1));
 
@@ -115,19 +115,19 @@ final class SemaphoreTest extends TestCase
 
     public function testOperationIsNotStartedIfLimitIsReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\Semaphore<string, void>
          */
-        $semaphore = new Async\Semaphore(1, static function (string $input) use ($spy): void {
+        $semaphore = new Async\Semaphore::<string, void>(1, static function (string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(Datetime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn(): null => $semaphore->waitFor('hello'))->ignore();
-        $awaitable = Async\run(static fn(): null => $semaphore->waitFor('world'));
+        Async\run::<null>(static fn(): null => $semaphore->waitFor('hello'))->ignore();
+        $awaitable = Async\run::<null>(static fn(): null => $semaphore->waitFor('world'));
 
         Async\sleep(Datetime\Duration::milliseconds(1));
 
@@ -141,7 +141,7 @@ final class SemaphoreTest extends TestCase
         /**
          * @var Async\Semaphore<string, string>
          */
-        $semaphore = new Async\Semaphore(1, static fn(string $input): string => $input);
+        $semaphore = new Async\Semaphore::<string, string>(1, static fn(string $input): string => $input);
 
         $semaphore->cancel(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -153,7 +153,7 @@ final class SemaphoreTest extends TestCase
         /**
          * @var Async\Semaphore<string, string>
          */
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(Datetime\Duration::milliseconds(40));
 
             return $input;
@@ -161,8 +161,8 @@ final class SemaphoreTest extends TestCase
 
         static::assertSame(1, $semaphore->getConcurrencyLimit());
 
-        $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
-        $two = Async\run(static fn(): string => $semaphore->waitFor('two'));
+        $one = Async\run::<string>(static fn(): string => $semaphore->waitFor('one'));
+        $two = Async\run::<string>(static fn(): string => $semaphore->waitFor('two'));
 
         Async\sleep(Datetime\Duration::milliseconds(10));
 
@@ -181,14 +181,14 @@ final class SemaphoreTest extends TestCase
         /**
          * @var Async\Semaphore<string, string>
          */
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(Datetime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
-        $two = Async\run(static fn(): string => $semaphore->waitFor('two'));
+        $one = Async\run::<string>(static fn(): string => $semaphore->waitFor('one'));
+        $two = Async\run::<string>(static fn(): string => $semaphore->waitFor('two'));
         static::assertSame(0, $semaphore->getOngoingOperations());
         static::assertSame(0, $semaphore->getPendingOperations());
         static::assertFalse($semaphore->hasOngoingOperations());
@@ -215,13 +215,13 @@ final class SemaphoreTest extends TestCase
         /**
          * @var Async\Semaphore<string, string>
          */
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(Datetime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $semaphore->waitFor('one'));
+        $one = Async\run::<string>(static fn(): string => $semaphore->waitFor('one'));
         Async\later();
         static::assertFalse($one->isComplete());
         $semaphore->waitForPending();
@@ -231,7 +231,7 @@ final class SemaphoreTest extends TestCase
 
     public function testWaitForPendingReturnsImmediatelyWhenNotAtLimit(): void
     {
-        $semaphore = new Async\Semaphore(1, static fn(string $input): string => $input);
+        $semaphore = new Async\Semaphore::<string, string>(1, static fn(string $input): string => $input);
 
         $semaphore->waitForPending();
 
@@ -240,68 +240,68 @@ final class SemaphoreTest extends TestCase
 
     public function testWaitForCancelledWhileWaitingForSlot(): void
     {
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $semaphore->waitFor('first'))->ignore();
+        Async\run::<string>(static fn(): string => $semaphore->waitFor('first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $semaphore->waitFor('second', $token))->await();
+        Async\run::<string>(static fn(): string => $semaphore->waitFor('second', $token))->await();
     }
 
     public function testWaitForPendingCancelledWhileWaiting(): void
     {
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $semaphore->waitFor('first'))->ignore();
+        Async\run::<string>(static fn(): string => $semaphore->waitFor('first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): null => $semaphore->waitForPending($token))->await();
+        Async\run::<null>(static fn(): null => $semaphore->waitForPending($token))->await();
     }
 
     public function testWaitForWithAlreadyCancelledToken(): void
     {
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $semaphore->waitFor('first'))->ignore();
+        Async\run::<string>(static fn(): string => $semaphore->waitFor('first'))->ignore();
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $semaphore->waitFor('second', $token))->await();
+        Async\run::<string>(static fn(): string => $semaphore->waitFor('second', $token))->await();
     }
 
     public function testCancelledWaitForDoesNotAffectOtherOperations(): void
     {
-        $semaphore = new Async\Semaphore(1, static function (string $input): string {
+        $semaphore = new Async\Semaphore::<string, string>(1, static function (string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(30));
 
             return $input;
         });
 
-        $first = Async\run(static fn(): string => $semaphore->waitFor('first'));
+        $first = Async\run::<string>(static fn(): string => $semaphore->waitFor('first'));
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
-        $second = Async\run(static fn(): string => $semaphore->waitFor('second', $token));
+        $second = Async\run::<string>(static fn(): string => $semaphore->waitFor('second', $token));
 
         try {
             $second->await();

@@ -137,11 +137,11 @@ final readonly class FromRange implements LowerBoundRangeInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function getIterator(): Iter\Iterator
+    public function getIterator(): Iter\Iterator<int, int>
     {
         $bound = $this->lowerBound;
 
-        return Iter\Iterator::from(
+        return Iter\Iterator::<int, int>::from(
             /**
              * @return Generator<int, int>
              */

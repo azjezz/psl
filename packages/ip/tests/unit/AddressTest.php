@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Psl\IP\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Psl\Comparison\Exception\IncomparableException;
 use Psl\Comparison\Order;
 use Psl\IP\Address;
 use Psl\IP\Exception\InvalidArgumentException;
@@ -561,23 +560,6 @@ final class AddressTest extends TestCase
         // Different byte lengths produce a defined ordering via raw byte comparison.
         $result = $v4->compare($v6);
         static::assertNotSame(Order::Equal, $result);
-    }
-
-    public function testCompareNonAddressThrows(): void
-    {
-        $this->expectException(IncomparableException::class);
-
-        $address = Address::v4('10.0.0.1');
-        $address->compare('not an address');
-    }
-
-    public function testEqualsNonAddressReturnsFalse(): void
-    {
-        $address = Address::v4('10.0.0.1');
-
-        static::assertFalse($address->equals('not an address'));
-        static::assertFalse($address->equals(42));
-        static::assertFalse($address->equals(null));
     }
 
     public function testToStringV4(): void

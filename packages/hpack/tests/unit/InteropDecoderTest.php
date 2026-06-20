@@ -65,7 +65,7 @@ final class InteropDecoderTest extends TestCase
     #[DataProvider('provideStories')]
     public function testDecodeStory(string $impl, string $file): void
     {
-        $story = Json\typed(File\read($file), self::storyType());
+        $story = Json\typed::<array>(File\read($file), self::storyType());
 
         $decoder = new Decoder(4_096, 1_000_000);
 
@@ -98,14 +98,14 @@ final class InteropDecoderTest extends TestCase
      *     }>,
      * }>
      */
-    private static function storyType(): Type\TypeInterface
+    private static function storyType(): Type\TypeInterface<array>
     {
-        return Type\shape([
-            'cases' => Type\vec(Type\shape([
-                'seqno' => Type\optional(Type\int()),
-                'header_table_size' => Type\optional(Type\nullable(Type\uint())),
+        return Type\shape::<string, array>([
+            'cases' => Type\vec::<array>(Type\shape::<string, mixed>([
+                'seqno' => Type\optional::<int>(Type\int()),
+                'header_table_size' => Type\optional::<int|null>(Type\nullable::<int>(Type\uint())),
                 'wire' => Type\string(),
-                'headers' => Type\vec(Type\dict(Type\string(), Type\string())),
+                'headers' => Type\vec::<array>(Type\dict::<string, string>(Type\string(), Type\string())),
             ])),
         ]);
     }

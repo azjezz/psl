@@ -11,12 +11,12 @@ final class MapTest extends TestCase
 {
     public function testMapAppliesFunctionToAllNodes(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\leaf(2),
-            Tree\tree(3, [Tree\leaf(4)]),
+        $tree = Tree\tree::<int>(1, [
+            Tree\leaf::<int>(2),
+            Tree\tree::<int>(3, [Tree\leaf::<int>(4)]),
         ]);
 
-        $result = Tree\map($tree, static fn(int $x): int => $x * 2);
+        $result = Tree\map::<int, int>($tree, static fn(int $x): int => $x * 2);
 
         static::assertSame(2, $result->getValue());
         static::assertSame(4, $result->getChildren()[0]->getValue());
@@ -26,9 +26,9 @@ final class MapTest extends TestCase
 
     public function testMapChangesType(): void
     {
-        $tree = Tree\tree(1, [Tree\leaf(2), Tree\leaf(3)]);
+        $tree = Tree\tree::<int>(1, [Tree\leaf::<int>(2), Tree\leaf::<int>(3)]);
 
-        $result = Tree\map($tree, static fn(int $x): string => (string) $x);
+        $result = Tree\map::<int, string>($tree, static fn(int $x): string => (string) $x);
 
         static::assertSame('1', $result->getValue());
         static::assertSame('2', $result->getChildren()[0]->getValue());

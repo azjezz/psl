@@ -11,15 +11,12 @@ use function count;
  * Returns whether the two given dict have the same entries, using strict
  * equality. To guarantee equality of order as well as contents, use `===`.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param array<Tk, Tv> $first
  * @param array<Tk, Tv> $second
  *
  * @api
  */
-function equal(array $first, array $second): bool
+function equal<Tk: string|int, Tv>(array $first, array $second): bool
 {
     if ($first === $second) {
         return true;

@@ -12,9 +12,9 @@ use Psl\Terminal\Event;
 
 final class BufferState {}
 
-$app = Terminal\Application::create(new BufferState(), title: 'Buffer Demo');
+$app = Terminal\Application::create::<BufferState>(new BufferState(), title: 'Buffer Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, BufferState $_state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, BufferState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

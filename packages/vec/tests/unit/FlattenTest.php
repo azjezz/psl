@@ -13,7 +13,7 @@ final class FlattenTest extends TestCase
     #[DataProvider('provideData')]
     public function testFlatten(array $expected, array $iterables): void
     {
-        static::assertSame($expected, Vec\flatten($iterables));
+        static::assertSame($expected, Vec\flatten::<int>($iterables));
     }
 
     public static function provideData(): iterable
@@ -36,7 +36,7 @@ final class FlattenTest extends TestCase
             yield [3, 4];
         };
 
-        static::assertSame([1, 2, 3, 4], Vec\flatten($generator()));
+        static::assertSame([1, 2, 3, 4], Vec\flatten::<int>($generator()));
     }
 
     public function testFlattenWithInnerGenerators(): void
@@ -47,6 +47,6 @@ final class FlattenTest extends TestCase
             }
         };
 
-        static::assertSame([1, 2, 3, 4, 5, 6], Vec\flatten([$inner(1, 3), $inner(4, 6)]));
+        static::assertSame([1, 2, 3, 4, 5, 6], Vec\flatten::<int>([$inner(1, 3), $inner(4, 6)]));
     }
 }

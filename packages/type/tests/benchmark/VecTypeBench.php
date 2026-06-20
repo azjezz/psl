@@ -14,7 +14,7 @@ use Psl\Vec;
  * @extends GenericTypeBench<Type\TypeInterface<list<mixed>>>
  */
 #[Groups(['type'])]
-final class VecTypeBench extends GenericTypeBench
+final class VecTypeBench extends GenericTypeBench<Type\TypeInterface<array>>
 {
     /**
      * {@inheritDoc}
@@ -68,11 +68,11 @@ final class VecTypeBench extends GenericTypeBench
     {
         return [
             'mixed, empty' => [
-                'type' => Type\vec(Type\mixed()),
+                'type' => Type\vec::<mixed>(Type\mixed()),
                 'value' => [],
             ],
             'mixed, non-empty' => [
-                'type' => Type\vec(Type\mixed()),
+                'type' => Type\vec::<mixed>(Type\mixed()),
                 'value' => [
                     'foo',
                     'bar',
@@ -80,15 +80,15 @@ final class VecTypeBench extends GenericTypeBench
                 ],
             ],
             'mixed, large' => [
-                'type' => Type\vec(Type\mixed()),
-                'value' => Vec\range(0, 100),
+                'type' => Type\vec::<mixed>(Type\mixed()),
+                'value' => Vec\range::<int>(0, 100),
             ],
             'int, empty' => [
-                'type' => Type\vec(Type\int()),
+                'type' => Type\vec::<int>(Type\int()),
                 'value' => [],
             ],
             'int, non-empty' => [
-                'type' => Type\vec(Type\int()),
+                'type' => Type\vec::<int>(Type\int()),
                 'value' => [
                     4,
                     25,

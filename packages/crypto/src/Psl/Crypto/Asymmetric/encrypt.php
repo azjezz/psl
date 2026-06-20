@@ -34,7 +34,7 @@ function encrypt(
     $keyPair = $senderSecretKey->bytes . $recipientPublicKey->bytes;
 
     try {
-        $ciphertext = Internal\call_sodium(fn() => sodium_crypto_box($plaintext, $nonce, $keyPair));
+        $ciphertext = Internal\call_sodium::<string>(fn() => sodium_crypto_box($plaintext, $nonce, $keyPair));
 
         return $nonce . $ciphertext;
     } finally {

@@ -40,20 +40,20 @@ function decrypt(
 
             // @codeCoverageIgnoreEnd
 
-            return Internal\call_sodium(fn() => sodium_crypto_aead_aes256gcm_decrypt(
+            return Internal\call_sodium::<string|false>(fn() => sodium_crypto_aead_aes256gcm_decrypt(
                 $ciphertext,
                 $additionalData,
                 $nonce,
                 $key->bytes,
             ));
         })(),
-        Algorithm::XChaCha20Poly1305 => Internal\call_sodium(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
+        Algorithm::XChaCha20Poly1305 => Internal\call_sodium::<string|false>(fn() => sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(
             $ciphertext,
             $additionalData,
             $nonce,
             $key->bytes,
         )),
-        Algorithm::ChaCha20Poly1305 => Internal\call_sodium(fn() => sodium_crypto_aead_chacha20poly1305_ietf_decrypt(
+        Algorithm::ChaCha20Poly1305 => Internal\call_sodium::<string|false>(fn() => sodium_crypto_aead_chacha20poly1305_ietf_decrypt(
             $ciphertext,
             $additionalData,
             $nonce,

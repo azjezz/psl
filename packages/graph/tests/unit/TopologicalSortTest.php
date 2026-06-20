@@ -13,28 +13,28 @@ final class TopologicalSortTest extends TestCase
 {
     public function testTopologicalSortOnEmptyGraph(): void
     {
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
 
-        static::assertSame([], Graph\topological_sort($graph));
+        static::assertSame([], Graph\topological_sort::<string, int>($graph));
     }
 
     public function testTopologicalSortOnSingleNode(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
 
-        static::assertSame(['A'], Graph\topological_sort($graph));
+        static::assertSame(['A'], Graph\topological_sort::<string, int>($graph));
     }
 
     public function testTopologicalSortOnDAG(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'A', 'C');
-        $graph = Graph\add_edge($graph, 'B', 'D');
-        $graph = Graph\add_edge($graph, 'C', 'D');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'C');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'D');
+        $graph = Graph\add_edge::<string, int>($graph, 'C', 'D');
 
-        $result = Graph\topological_sort($graph);
+        $result = Graph\topological_sort::<string, int>($graph);
         static::assertNotNull($result);
         static::assertCount(4, $result);
 
@@ -52,31 +52,31 @@ final class TopologicalSortTest extends TestCase
 
     public function testTopologicalSortOnGraphWithCycle(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'B', 'C');
-        $graph = Graph\add_edge($graph, 'C', 'A');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'C');
+        $graph = Graph\add_edge::<string, int>($graph, 'C', 'A');
 
-        static::assertNull(Graph\topological_sort($graph));
+        static::assertNull(Graph\topological_sort::<string, int>($graph));
     }
 
     public function testTopologicalSortOnLinearChain(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'B', 'C');
-        $graph = Graph\add_edge($graph, 'C', 'D');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'B', 'C');
+        $graph = Graph\add_edge::<string, int>($graph, 'C', 'D');
 
-        static::assertSame(['A', 'B', 'C', 'D'], Graph\topological_sort($graph));
+        static::assertSame(['A', 'B', 'C', 'D'], Graph\topological_sort::<string, int>($graph));
     }
 
     public function testTopologicalSortWithDisconnectedComponents(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_edge($graph, 'A', 'B');
-        $graph = Graph\add_edge($graph, 'C', 'D');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
+        $graph = Graph\add_edge::<string, int>($graph, 'C', 'D');
 
-        $result = Graph\topological_sort($graph);
+        $result = Graph\topological_sort::<string, int>($graph);
         static::assertNotNull($result);
         static::assertCount(4, $result);
 

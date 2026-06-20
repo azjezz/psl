@@ -14,7 +14,7 @@ final class DropWhileTest extends TestCase
     #[DataProvider('provideData')]
     public function testDropWhile(array $expected, array $array, Closure $callable): void
     {
-        $result = Dict\drop_while($array, $callable);
+        $result = Dict\drop_while::<int, int>($array, $callable);
 
         static::assertSame($expected, $result);
     }

@@ -11,7 +11,7 @@ final class ConstructorTest extends TestCase
 {
     public function testDirectedConstructor(): void
     {
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
 
         static::assertInstanceOf(Graph\DirectedGraph::class, $graph);
         static::assertSame([], $graph->getNodes());
@@ -19,7 +19,7 @@ final class ConstructorTest extends TestCase
 
     public function testUndirectedConstructor(): void
     {
-        $graph = Graph\undirected();
+        $graph = Graph\undirected::<string, int>();
 
         static::assertInstanceOf(Graph\UndirectedGraph::class, $graph);
         static::assertSame([], $graph->getNodes());

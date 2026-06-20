@@ -14,20 +14,20 @@ function takes_valid_state(string $_): void {}
 function test(): void
 {
     /** @psalm-suppress MissingThrowsDocblock */
-    $oldSchoolCodec = Type\union(
-        Type\literal_scalar('PENDING'),
-        Type\union(
-            Type\literal_scalar('PROCESSING'),
-            Type\union(Type\literal_scalar('COMPLETED'), Type\literal_scalar('ERROR')),
+    $oldSchoolCodec = Type\union::<string>(
+        Type\literal_scalar::<string>('PENDING'),
+        Type\union::<string>(
+            Type\literal_scalar::<string>('PROCESSING'),
+            Type\union::<string>(Type\literal_scalar::<string>('COMPLETED'), Type\literal_scalar::<string>('ERROR')),
         ),
     );
 
     /** @psalm-suppress MissingThrowsDocblock */
-    $newCodec = Type\union(
-        Type\literal_scalar('PENDING'),
-        Type\literal_scalar('PROCESSING'),
-        Type\literal_scalar('COMPLETED'),
-        Type\literal_scalar('ERROR'),
+    $newCodec = Type\union::<string>(
+        Type\literal_scalar::<string>('PENDING'),
+        Type\literal_scalar::<string>('PROCESSING'),
+        Type\literal_scalar::<string>('COMPLETED'),
+        Type\literal_scalar::<string>('ERROR'),
     );
 
     /** @psalm-suppress MissingThrowsDocblock */

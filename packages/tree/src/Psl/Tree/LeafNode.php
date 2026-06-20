@@ -9,28 +9,19 @@ use Override;
 /**
  * Immutable leaf node implementation (node with no children).
  *
- * @template-covariant T
- *
- * @implements NodeInterface<T>
- *
  * @api
  */
-final readonly class LeafNode implements NodeInterface
+final readonly class LeafNode<out T> implements NodeInterface<T>
 {
-    /**
-     * @param T $value
-     */
     public function __construct(
-        private mixed $value,
+        private T $value,
     ) {}
 
     /**
-     * @return T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function getValue(): mixed
+    public function getValue(): T
     {
         return $this->value;
     }
@@ -41,6 +32,6 @@ final readonly class LeafNode implements NodeInterface
     #[Override]
     public function jsonSerialize(): array
     {
-        return namespace\to_array($this);
+        return namespace\to_array::<T>($this);
     }
 }

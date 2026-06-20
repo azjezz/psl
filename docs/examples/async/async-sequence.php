@@ -8,13 +8,13 @@ use Psl\Async;
 use Psl\DateTime\Duration;
 use Psl\IO;
 
-$sequence = new Async\Sequence(static function (int $input): void {
+$sequence = new Async\Sequence::<int, void>(static function (int $input): void {
     IO\write_error_line('> started : %d', $input);
     Async\sleep(Duration::seconds(1));
     IO\write_error_line('> finished: %d', $input);
 });
 
-Async\concurrently([
+Async\concurrently::<int, void>([
     fn() => $sequence->waitFor(1),
     fn() => $sequence->waitFor(2),
     fn() => $sequence->waitFor(3),

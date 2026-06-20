@@ -25,11 +25,9 @@ use const SIGWINCH;
 /**
  * Terminal application managing the event loop, raw mode, and rendering lifecycle.
  *
- * @template S of object
- *
  * @api
  */
-final class Application
+final class Application<S: object>
 {
     /**
      * @var array<class-string, list<Closure>>
@@ -52,17 +50,15 @@ final class Application
     private null|Buffer $buffer = null;
     private null|Frame $frame = null;
 
-    private null|Async\Deferred $stopDeferred = null;
+    private null|Async\Deferred<null> $stopDeferred = null;
 
     /**
-     * @param S $state
-     *
      * @mago-expect lint:excessive-parameter-list
      */
     private function __construct(
         private readonly string $title,
         private readonly DateTime\Duration $tickInterval,
-        private readonly object $state,
+        private readonly S $state,
         private readonly IO\ReadHandleInterface&IO\StreamHandleInterface $input,
         private readonly IO\WriteHandleInterface $output,
         private readonly null|Internal\ScrollSmoothing $scrollSmoothing,
@@ -75,21 +71,17 @@ final class Application
     /**
      * Create a local terminal application using STDIN/STDOUT.
      *
-     * @template T of object
-     *
-     * @param T $state Application state object, passed to all callbacks.
+     * @param $state Application state object, passed to all callbacks.
      * @param null|DateTime\Duration $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
-     *
-     * @return self<T>
      */
     public static function create(
-        object $state,
+        S $state,
         string $title = '',
         null|DateTime\Duration $tickInterval = null,
         bool $scrollSmoothing = true,
         bool $mouseMotion = false,
-    ): self {
-        return new self(
+    ): self<S> {
+        return new self::<S>(
             $title,
             $tickInterval ?? DateTime\Duration::milliseconds(16),
             $state,
@@ -117,19 +109,13 @@ final class Application
      * Use {@see dispatch()} to inject {@see Event\Resize} events whenever
      * the remote client reports a window size change.
      *
-     * @template T of object
-     *
-     * @param T $state Application state object, passed to all callbacks.
-     * @param ReadHandleInterface&StreamHandleInterface $input
-     * @param WriteHandleInterface $output
+     * @param $state Application state object, passed to all callbacks.
      * @param positive-int $width Initial terminal width (columns).
      * @param positive-int $height Initial terminal height (rows).
      * @param Duration|null $tickInterval How often the render tick fires (e.g. Duration::milliseconds(16) for ~60 ticks/s).
-     *
-     * @return self<T>
      */
     public static function custom(
-        object $state,
+        S $state,
         IO\ReadHandleInterface&IO\StreamHandleInterface $input,
         IO\WriteHandleInterface $output,
         int $width,
@@ -138,8 +124,8 @@ final class Application
         null|DateTime\Duration $tickInterval = null,
         bool $scrollSmoothing = true,
         bool $mouseMotion = false,
-    ): self {
-        return new self(
+    ): self<S> {
+        return new self::<S>(
             $title,
             $tickInterval ?? DateTime\Duration::milliseconds(16),
             $state,
@@ -156,12 +142,10 @@ final class Application
     /**
      * Register an event handler for a specific event type.
      *
-     * @template T of Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus
-     *
      * @param class-string<T> $eventClass
      * @param Closure(T, S): void $handler
      */
-    public function on(string $eventClass, Closure $handler): void
+    public function on<T: Event\Key|Event\Mouse|Event\Paste|Event\Resize|Event\Focus>(string $eventClass, Closure $handler): void
     {
         $this->eventHandlers[$eventClass] ??= [];
         $this->eventHandlers[$eventClass][] = $handler;
@@ -309,7 +293,7 @@ final class Application
 
             $this->render($callback, $frame, $buffer);
 
-            $deferred = new Async\Deferred();
+            $deferred = new Async\Deferred::<null>();
             $this->stopDeferred = $deferred;
             $deferred->getAwaitable()->await();
 

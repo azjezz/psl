@@ -12,7 +12,7 @@ final class IdentityTest extends TestCase
     public function testIdentity(): void
     {
         $expected = 'x';
-        $identity = Fun\identity();
+        $identity = Fun\identity::<string>();
 
         static::assertSame($expected, $identity($expected));
     }

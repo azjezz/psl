@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function resource(null|string $kind = null): TypeInterface
+function resource(null|string $kind = null): TypeInterface<mixed>
 {
     return new Internal\ResourceType($kind);
 }

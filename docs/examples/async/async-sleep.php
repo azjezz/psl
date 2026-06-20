@@ -9,7 +9,7 @@ use Psl\DateTime\Duration;
 
 $time = time();
 
-Async\concurrently([
+Async\concurrently::<int, void>([
     static fn() => Async\sleep(Duration::seconds(2)),
     static fn() => Async\sleep(Duration::seconds(2)),
     static fn() => Async\sleep(Duration::seconds(2)),

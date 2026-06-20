@@ -7,16 +7,12 @@ namespace Psl\Comparison;
 use Psl\Comparison\Exception\IncomparableException;
 
 /**
- * @template T
- *
  * @api
  */
-interface Comparable
+interface Comparable<T>
 {
     /**
-     * @param T $other
-     *
      * @optionallyThrows IncomparableException - In case you want to bail out on specific comparisons.
      */
-    public function compare(mixed $other): Order;
+    public function compare(T $other): Order;
 }

@@ -15,7 +15,7 @@ final class FirstKeyTest extends TestCase
     #[DataProvider('provideData')]
     public function testFirstKey(null|int|string $expected, iterable $iterable): void
     {
-        $result = Iter\first_key($iterable);
+        $result = Iter\first_key::<string|int|null, string|null>($iterable);
 
         static::assertSame($expected, $result);
     }
@@ -26,9 +26,9 @@ final class FirstKeyTest extends TestCase
         yield [null, new SplDoublyLinkedList()];
         yield ['a', ['a' => 'b']];
         yield [0, ['a', 'b']];
-        yield [0, new Collection\Vector(['a', 'b'])];
-        yield [0, new Collection\Vector(['a' => 'b'])];
-        yield ['a', new Collection\Map(['a' => 'b'])];
+        yield [0, new Collection\Vector::<string>(['a', 'b'])];
+        yield [0, new Collection\Vector::<string>(['a' => 'b'])];
+        yield ['a', new Collection\Map::<string, string>(['a' => 'b'])];
         yield [
             null,
             (static function (): iterable {

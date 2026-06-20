@@ -14,13 +14,13 @@ final class ReflectTest extends TestCase
 {
     public function testReflectParallel(): void
     {
-        [$one, $two] = Async\concurrently([
-            Result\reflect(static function (): void {
+        [$one, $two] = Async\concurrently::<int, object>([
+            Result\reflect::<void>(static function (): void {
                 Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new Exception('failure');
             }),
-            Result\reflect(static fn(): string => 'success'),
+            Result\reflect::<string>(static fn(): string => 'success'),
         ]);
 
         static::assertInstanceOf(Result\Failure::class, $one);

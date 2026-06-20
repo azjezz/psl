@@ -15,7 +15,7 @@ final class CountValuesTest extends TestCase
     #[DataProvider('provideData')]
     public function testCountValues(array $expected, iterable $iterable): void
     {
-        static::assertSame($expected, Dict\count_values($iterable));
+        static::assertSame($expected, Dict\count_values::<string>($iterable));
     }
 
     public static function provideData(): array
@@ -31,11 +31,11 @@ final class CountValuesTest extends TestCase
             ],
             [
                 ['foo' => 2, 'bar' => 1, 'baz' => 5],
-                Collection\Vector::fromArray(['foo', 'bar', 'baz', 'foo', 'baz', 'baz', 'baz', 'baz']),
+                Collection\Vector::<string>::fromArray(['foo', 'bar', 'baz', 'foo', 'baz', 'baz', 'baz', 'baz']),
             ],
             [
                 ['foo' => 2, 'bar' => 1, 'baz' => 4],
-                Vec\concat(['foo', 'bar', 'baz'], ['foo'], ['baz'], ['baz', 'baz']),
+                Vec\concat::<string>(['foo', 'bar', 'baz'], ['foo'], ['baz'], ['baz', 'baz']),
             ],
         ];
     }

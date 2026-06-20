@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function bool(): TypeInterface
+function bool(): TypeInterface<bool>
 {
     static $instance = new Internal\BoolType();
 

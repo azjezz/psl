@@ -8,7 +8,7 @@ use Psl\Type;
 use Psl\Type\Exception\CoercionException;
 
 $integer = Type\int();
-$strictInteger = Type\always_assert(Type\int());
+$strictInteger = Type\always_assert::<int>(Type\int());
 
 $integer->coerce('1'); // 1 (coerced from string)
 

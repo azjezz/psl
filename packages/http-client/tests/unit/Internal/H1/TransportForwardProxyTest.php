@@ -133,7 +133,7 @@ final class TransportForwardProxyTest extends TestCase
         $stream = new FakeStream("HTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
         $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        $deferred = new Async\Deferred();
+        $deferred = new Async\Deferred::<FieldMap>();
         $deferred->complete(FieldMap::from([['x-checksum', 'abc']]));
 
         $url = URL\parse('http://127.0.0.1:8080/');
@@ -158,7 +158,7 @@ final class TransportForwardProxyTest extends TestCase
         $stream = new FakeStream("HTTP/1.1 200 OK\r\ncontent-length: 2\r\n\r\nok");
         $connection = new H1Connection($stream, new ConnectionMetadata(Network\Address::tcp(), Network\Address::tcp()));
 
-        $deferred = new Async\Deferred();
+        $deferred = new Async\Deferred::<FieldMap>();
         $deferred->complete(FieldMap::default());
 
         $url = URL\parse('http://127.0.0.1:8080/');

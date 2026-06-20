@@ -24,7 +24,7 @@ final class CommunicationBench
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(10);
+        [$receiver, $sender] = Channel\bounded::<string>(10);
 
         Async\Scheduler::defer(static function () use ($receiver): void {
             try {
@@ -62,7 +62,7 @@ final class CommunicationBench
          * @var Channel\ReceiverInterface<string> $receiver
          * @var Channel\SenderInterface<string> $sender
          */
-        [$receiver, $sender] = Channel\bounded(10);
+        [$receiver, $sender] = Channel\bounded::<string>(10);
 
         Async\Scheduler::defer(static function () use ($receiver): void {
             try {

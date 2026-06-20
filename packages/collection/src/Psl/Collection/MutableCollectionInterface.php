@@ -15,14 +15,9 @@ use Override;
  *
  * If your collection to be immutable, implement Collection only instead.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends CollectionInterface<Tk, Tv>
- *
  * @api
  */
-interface MutableCollectionInterface extends CollectionInterface
+interface MutableCollectionInterface<Tk: string|int, Tv> extends CollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `MutableCollectionInterface` containing the values of the current `MutableCollectionInterface`
@@ -36,12 +31,9 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                `MutableCollectionInterface` values.
-     *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values
-     *                                            after a user-specified condition is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableCollectionInterface;
+    public function filter(Closure $fn): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableCollectionInterface` containing the values of the current `MutableCollectionInterface`
@@ -55,13 +47,9 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                    `MutableCollectionInterface` keys and values.
-     *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` containing the values after
-     *                                            a user-specified condition is applied to the keys and values of
-     *                                            the current `MutableCollectionInterface`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableCollectionInterface;
+    public function filterWithKey(Closure $fn): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -71,8 +59,6 @@ interface MutableCollectionInterface extends CollectionInterface
      * number of elements in `$elements`, then only the combined elements
      * up to and including the final element of the one with the least number of
      * elements is included.
-     *
-     * @template Tu
      *
      * @param array<array-key, Tu> $elements The elements to use to combine with the
      *                                       elements of this `MutableCollectionInterface`.
@@ -85,7 +71,7 @@ interface MutableCollectionInterface extends CollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableCollectionInterface;
+    public function zip<Tu>(array $elements): MutableCollectionInterface<Tk, array>;
 
     /**
      * Returns a `MutableCollectionInterface` containing the first `n` values of the current
@@ -98,13 +84,10 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @param int<0, max> $n The last element that will be included in the returned `MutableCollectionInterface`.
      *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                            subset of the current `MutableCollectionInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableCollectionInterface;
+    public function take(int $n): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableCollectionInterface` containing the values of the current `MutableCollectionInterface`
@@ -116,13 +99,9 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                condition.
-     *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                            subset of the current `MutableCollectionInterface` up until
-     *                                            the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableCollectionInterface;
+    public function takeWhile(Closure $fn): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableCollectionInterface` containing the values after the `n`-th element of
@@ -136,14 +115,10 @@ interface MutableCollectionInterface extends CollectionInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MutableCollectionInterface`.
      *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                            subset of the current `MutableCollectionInterface` containing values
-     *                                            after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableCollectionInterface;
+    public function drop(int $n): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableCollectionInterface` containing the values of the current `MutableCollectionInterface`
@@ -155,13 +130,9 @@ interface MutableCollectionInterface extends CollectionInterface
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `MutableCollectionInterface`.
-     *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper subset of the current
-     *                                            `MutableCollectionInterface` starting after the callback
-     *                                            returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableCollectionInterface;
+    public function dropWhile(Closure $fn): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a subset of the current `MutableCollectionInterface` starting from a given key up
@@ -178,14 +149,10 @@ interface MutableCollectionInterface extends CollectionInterface
      *                           `MutableCollectionInterface`.
      * @param null|int<0, max> $length The length of the returned `MutableCollectionInterface`.
      *
-     * @return MutableCollectionInterface<Tk, Tv> A `MutableCollectionInterface` that is a proper
-     *                                            subset of the current `MutableCollectionInterface` starting
-     *                                            at `$start` up to but not including the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableCollectionInterface;
+    public function slice(int $start, null|int $length = null): MutableCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `MutableCollectionInterface` containing the original `MutableCollectionInterface` split into
@@ -202,12 +169,10 @@ interface MutableCollectionInterface extends CollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableCollectionInterface;
+    public function chunk(int $size): MutableCollectionInterface<int, MutableCollectionInterface<Tk, Tv>>;
 
     /**
      * Removes all elements from the collection.
-     *
-     * @return MutableCollectionInterface<Tk, Tv>
      */
-    public function clear(): MutableCollectionInterface;
+    public function clear(): MutableCollectionInterface<Tk, Tv>;
 }

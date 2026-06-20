@@ -57,7 +57,7 @@ final class MisbehavingServerTest extends TestCase
             $request = $request->withRequestTarget('/');
         }
 
-        $serverFuture = Async\run(static function () use ($listener, $serverHandler): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener, $serverHandler): void {
             try {
                 $conn = $listener->accept();
                 $serverHandler($conn);

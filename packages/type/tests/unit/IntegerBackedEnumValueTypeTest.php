@@ -14,12 +14,12 @@ use const STDIN;
 /**
  * @extends TypeTestCase<value-of<IntegerEnum>>
  */
-final class IntegerBackedEnumValueTypeTest extends TypeTestCase
+final class IntegerBackedEnumValueTypeTest extends TypeTestCase<string|int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string|int>
     {
-        return Type\backed_enum_value(IntegerEnum::class);
+        return Type\backed_enum_value::<IntegerEnum>(IntegerEnum::class);
     }
 
     #[Override]
@@ -52,6 +52,6 @@ final class IntegerBackedEnumValueTypeTest extends TypeTestCase
     #[Override]
     public static function getToStringExamples(): iterable
     {
-        yield [Type\backed_enum_value(IntegerEnum::class), Str\format('value-of<%s>', IntegerEnum::class)];
+        yield [Type\backed_enum_value::<IntegerEnum>(IntegerEnum::class), Str\format('value-of<%s>', IntegerEnum::class)];
     }
 }

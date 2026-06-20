@@ -14,14 +14,14 @@ final class Inventory implements Observer\SubjectInterface
     private array $observers = [];
     private int $stock = 0;
 
-    public function subscribe(Observer\ObserverInterface $observer): void
+    public function subscribe(Observer\ObserverInterface<Inventory> $observer): void
     {
         $this->observers[] = $observer;
     }
 
-    public function unsubscribe(Observer\ObserverInterface $observer): void
+    public function unsubscribe(Observer\ObserverInterface<Inventory> $observer): void
     {
-        $this->observers = Vec\filter($this->observers, static fn($o) => $o !== $observer);
+        $this->observers = Vec\filter::<Observer\ObserverInterface<Inventory>>($this->observers, static fn($o) => $o !== $observer);
     }
 
     public function notify(): void

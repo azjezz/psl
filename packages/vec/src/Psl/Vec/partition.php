@@ -10,8 +10,6 @@ use Closure;
  * Returns a pair containing lists for which the given predicate returned
  * `true` and `false`, respectively.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  * @param (Closure(T): bool) $predicate
  *
@@ -19,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function partition(iterable $iterable, Closure $predicate): array
+function partition<T>(iterable $iterable, Closure $predicate): array
 {
     $success = [];
     $failure = [];

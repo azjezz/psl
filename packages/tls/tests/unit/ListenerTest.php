@@ -55,13 +55,13 @@ final class ListenerTest extends TestCase
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        Async\run(static function () use ($tcpListener): void {
+        Async\run::<void>(static function () use ($tcpListener): void {
             Async\sleep(Duration::seconds(5));
             $tcpListener->close();
         })->ignore();
 
         try {
-            Async\run(static function () use ($listener, $token): void {
+            Async\run::<void>(static function () use ($listener, $token): void {
                 $listener->accept($token);
             })->await();
 
@@ -82,7 +82,7 @@ final class ListenerTest extends TestCase
 
         $this->expectException(Network\Exception\AlreadyStoppedException::class);
 
-        Async\run(static function () use ($listener): void {
+        Async\run::<void>(static function () use ($listener): void {
             $listener->accept();
         })->await();
     }
@@ -93,7 +93,7 @@ final class ListenerTest extends TestCase
         $listener = new TLS\Listener($tcpListener, $this->createServerConfig());
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $tls = $listener->accept();
                 static::assertInstanceOf(TLS\StreamInterface::class, $tls);

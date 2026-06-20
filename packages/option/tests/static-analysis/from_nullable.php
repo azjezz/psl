@@ -9,45 +9,43 @@ use Psl\Option\Option;
 /**
  * @return Option<string>
  */
-function test_some(): Option
+function test_some(): Option<string>
 {
-    return Option\from_nullable('hello');
+    return Option\from_nullable::<string>('hello');
 }
 
 /**
  * @return Option<null>
  */
-function test_none(): Option
+function test_none(): Option<null>
 {
-    return Option\from_nullable(null);
+    return Option\from_nullable::<null>(null);
 }
 
 /**
- * @template T
- *
- * @param T|null $param
+ * @param null|T $param
  *
  * @return Option<T>
  */
-function test_generic(mixed $param): Option
+function test_generic<T>(null|T $param): Option<T>
 {
-    return Option\from_nullable($param);
+    return Option\from_nullable::<T>($param);
 }
 
 /**
  * @return Option<string>
  */
-function test_some_generic(): Option
+function test_some_generic(): Option<string>
 {
-    return namespace\test_generic('some');
+    return namespace\test_generic::<string>('some');
 }
 
 /**
  * @return Option<null>
  */
-function test_none_generic(): Option
+function test_none_generic(): Option<null>
 {
-    return namespace\test_generic(null);
+    return namespace\test_generic::<null>(null);
 }
 
 /**
@@ -55,7 +53,7 @@ function test_none_generic(): Option
  *
  * @return Option<string>
  */
-function test_all_posibilities_generic(string|null $x): Option
+function test_all_posibilities_generic(string|null $x): Option<string>
 {
-    return namespace\test_generic($x);
+    return namespace\test_generic::<string>($x);
 }

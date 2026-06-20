@@ -278,7 +278,7 @@ final class ResponseReader
 
         if ($transferEncoding !== null && strtolower(trim($transferEncoding)) === 'chunked') {
             /** @var Async\Deferred<FieldMap> $deferred */
-            $deferred = new Async\Deferred();
+            $deferred = new Async\Deferred::<FieldMap>();
             $handle = new ChunkedBodyHandle($reader, $deferred);
             $trailers = $deferred->getAwaitable();
         } elseif ($contentLength !== null && $contentLength !== '' && ctype_digit($contentLength)) {

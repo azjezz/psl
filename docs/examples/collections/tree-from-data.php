@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Tree;
 
 // From a nested array
-$tree = Tree\from_array([
+$tree = Tree\from_array::<string>([
     'value' => 'root',
     'children' => [
         ['value' => 'child1', 'children' => []],
@@ -23,7 +23,7 @@ $records = [
     ['id' => 4, 'name' => 'Grandchild', 'parent_id' => 2],
 ];
 
-$tree = Tree\from_list(
+$tree = Tree\from_list::<array, int, string>(
     $records,
     fn($record) => $record['id'],
     fn($record) => $record['parent_id'],

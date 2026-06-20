@@ -22,9 +22,6 @@ use function is_array;
  *      Vec\filter_nonnull_by(['hello', '', 'world'], fn($v) => $v !== '' ? $v : null);
  *      => Vec('hello', 'world')
  *
- * @template Tk
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): mixed) $function
  *
@@ -32,7 +29,7 @@ use function is_array;
  *
  * @api
  */
-function filter_nonnull_by(iterable $iterable, Closure $function): array
+function filter_nonnull_by<Tk, Tv>(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
         return array_values(array_filter($iterable, static fn($v) => null !== $function($v)));

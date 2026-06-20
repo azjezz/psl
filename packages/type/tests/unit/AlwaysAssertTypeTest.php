@@ -8,12 +8,12 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class AlwaysAssertTypeTest extends TypeTestCase
+final class AlwaysAssertTypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
-        return Type\always_assert(Type\int());
+        return Type\always_assert::<int>(Type\int());
     }
 
     #[Override]
@@ -63,8 +63,8 @@ final class AlwaysAssertTypeTest extends TypeTestCase
     #[Override]
     public static function getToStringExamples(): iterable
     {
-        yield [Type\always_assert(Type\int()), 'int'];
-        yield [Type\always_assert(Type\string()), 'string'];
-        yield [Type\always_assert(Type\bool()), 'bool'];
+        yield [Type\always_assert::<int>(Type\int()), 'int'];
+        yield [Type\always_assert::<string>(Type\string()), 'string'];
+        yield [Type\always_assert::<bool>(Type\bool()), 'bool'];
     }
 }

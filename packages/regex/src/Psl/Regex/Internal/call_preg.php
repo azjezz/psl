@@ -11,21 +11,17 @@ use function error_clear_last;
 use function error_reporting;
 
 /**
- * @template T
- *
  * @param non-empty-string $function
  * @param Closure(): T $closure
  *
  * @throws Exception\InvalidPatternException
  * @throws Exception\RuntimeException
  *
- * @return T
- *
  * @pure
  *
  * @internal
  */
-function call_preg(string $function, Closure $closure): mixed
+function call_preg<T>(string $function, Closure $closure): T
 {
     error_clear_last();
     $previousLevel = error_reporting(0);

@@ -6,6 +6,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Regex;
 
-$match = Regex\first_match('Order #12345', '/Order #(\d+)/');
+$match = Regex\first_match::<array>('Order #12345', '/Order #(\d+)/');
 
 // ['Order #12345', '12345']

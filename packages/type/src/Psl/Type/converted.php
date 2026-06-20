@@ -9,18 +9,11 @@ use Closure;
 /**
  * @pure
  *
- * @template I
- * @template O
- *
- * @param TypeInterface<I> $from
- * @param TypeInterface<O> $into
  * @param (Closure(I): O) $converter
- *
- * @return TypeInterface<O>
  *
  * @api
  */
-function converted(TypeInterface $from, TypeInterface $into, Closure $converter): TypeInterface
+function converted<I, O>(TypeInterface<I> $from, TypeInterface<O> $into, Closure $converter): TypeInterface<O>
 {
-    return new Internal\ConvertedType($from, $into, $converter);
+    return new Internal\ConvertedType::<I, O>($from, $into, $converter);
 }

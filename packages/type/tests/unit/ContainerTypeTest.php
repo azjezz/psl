@@ -16,12 +16,12 @@ use RuntimeException;
 /**
  * @extends TypeTestCase<iterable<int, int>>
  */
-final class ContainerTypeTest extends TypeTestCase
+final class ContainerTypeTest extends TypeTestCase<iterable>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<iterable>
     {
-        return Type\container(Type\int(), Type\int());
+        return Type\container::<int, int>(Type\int(), Type\int());
     }
 
     #[Override]
@@ -31,21 +31,21 @@ final class ContainerTypeTest extends TypeTestCase
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
-        yield [Vec\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
-        yield [Vec\range(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
+        yield [Vec\range::<int>(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
+        yield [Vec\range::<int>(1, 10), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => (string) $value),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => (string) $value),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            Dict\map_keys::<int, string, int>(Vec\range::<int>(1, 10), static fn(int $key): string => (string) $key),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
     }
@@ -66,10 +66,10 @@ final class ContainerTypeTest extends TypeTestCase
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'container<int, int>'];
-        yield [Type\container(Type\array_key(), Type\int()), 'container<array-key, int>'];
-        yield [Type\container(Type\array_key(), Type\string()), 'container<array-key, string>'];
+        yield [Type\container::<string|int, int>(Type\array_key(), Type\int()), 'container<array-key, int>'];
+        yield [Type\container::<string|int, string>(Type\array_key(), Type\string()), 'container<array-key, string>'];
         yield [
-            Type\container(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
+            Type\container::<string|int, Iter\Iterator>(Type\array_key(), Type\instance_of::<Iter\Iterator>(Iter\Iterator::class)),
             'container<array-key, Psl\Iter\Iterator>',
         ];
     }
@@ -87,17 +87,17 @@ final class ContainerTypeTest extends TypeTestCase
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'invalid assertion key' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             ['nope' => 1],
             'Expected "container<int, int>", got "string" at path "key(nope)".',
         ];
         yield 'invalid assertion value' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             [0 => 'nope'],
             'Expected "container<int, int>", got "string" at path "0".',
         ];
         yield 'nested' => [
-            Type\container(Type\int(), Type\container(Type\int(), Type\int())),
+            Type\container::<int, iterable>(Type\int(), Type\container::<int, int>(Type\int(), Type\int())),
             [0 => ['nope' => 'nope']],
             'Expected "container<int, container<int, int>>", got "string" at path "0.key(nope)".',
         ];
@@ -106,24 +106,24 @@ final class ContainerTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'invalid coercion key' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             ['nope' => 1],
             'Could not coerce "string" to type "container<int, int>" at path "key(nope)".',
         ];
         yield 'invalid coercion value' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             [0 => 'nope'],
             'Could not coerce "string" to type "container<int, int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "container<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
@@ -131,7 +131,7 @@ final class ContainerTypeTest extends TypeTestCase
             'Could not coerce "string" to type "container<int, int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
@@ -139,14 +139,14 @@ final class ContainerTypeTest extends TypeTestCase
             'Could not coerce "null" to type "container<int, int>" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "container<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
-            Type\container(Type\int(), Type\int()),
+            Type\container::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
@@ -156,7 +156,7 @@ final class ContainerTypeTest extends TypeTestCase
 
     #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -170,7 +170,7 @@ final class ContainerTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {

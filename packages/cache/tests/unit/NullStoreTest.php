@@ -24,12 +24,12 @@ final class NullStoreTest extends TestCase
         $store = new NullStore();
         $calls = 0;
 
-        $result1 = $store->compute('key', static function () use (&$calls): string {
+        $result1 = $store->compute::<string>('key', static function () use (&$calls): string {
             $calls++;
             return 'value';
         });
 
-        $result2 = $store->compute('key', static function () use (&$calls): string {
+        $result2 = $store->compute::<string>('key', static function () use (&$calls): string {
             $calls++;
             return 'value';
         });
@@ -43,7 +43,7 @@ final class NullStoreTest extends TestCase
     {
         $store = new NullStore();
 
-        $result = $store->compute('key', static fn(): string => 'value', Duration::hours(1));
+        $result = $store->compute::<string>('key', static fn(): string => 'value', Duration::hours(1));
 
         static::assertSame('value', $result);
     }
@@ -52,7 +52,7 @@ final class NullStoreTest extends TestCase
     {
         $store = new NullStore();
 
-        $result = $store->update('key', static fn(null|int $old): int => ($old ?? 0) + 1);
+        $result = $store->update::<int>('key', static fn(null|int $old): int => ($old ?? 0) + 1);
 
         static::assertSame(1, $result);
     }

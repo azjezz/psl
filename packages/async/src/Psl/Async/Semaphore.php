@@ -22,12 +22,9 @@ use function count;
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @api
  */
-final class Semaphore
+final class Semaphore<in Tin, out Tout>
 {
     /**
      * @var int<0, max>
@@ -58,15 +55,11 @@ final class Semaphore
      *
      * If the concurrency limit has been reached, this method will wait until one of the ongoing operations has completed.
      *
-     * @param Tin $input
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
-     *
-     * @return Tout
      *
      * @see Semaphore::cancel()
      */
-    public function waitFor(mixed $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
+    public function waitFor(Tin $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): Tout
     {
         if ($this->ongoing === $this->concurrencyLimit) {
             if ($cancellation->cancellable) {

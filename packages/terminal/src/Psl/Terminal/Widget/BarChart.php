@@ -109,7 +109,7 @@ final class BarChart implements WidgetInterface
 
         foreach ($this->data as $i => $entry) {
             [$label, $value] = $entry;
-            $value = Math\clamp($value, 0.0, 1.0);
+            $value = Math\clamp::<float>($value, 0.0, 1.0);
 
             $barX = $area->x + ($i * ($this->barWidth + $this->barGap));
             if ($barX >= $area->right()) {

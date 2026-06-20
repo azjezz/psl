@@ -30,7 +30,7 @@ function read_symbolic_link(string $symbolicLink): string
         throw Exception\NotSymbolicLinkException::for($symbolicLink);
     }
 
-    [$result, $message] = Internal\box(static fn(): false|string => readlink($symbolicLink));
+    [$result, $message] = Internal\box::<false|string>(static fn(): false|string => readlink($symbolicLink));
 
     // @codeCoverageIgnoreStart
     if (false === $result) {

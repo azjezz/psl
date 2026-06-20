@@ -10,23 +10,13 @@ use Psl\Async\NullCancellationToken;
 use Psl\Channel\SenderInterface;
 
 /**
- * @template T
- *
- * @implements SenderInterface<T>
- *
  * @internal
  */
-final class UnboundedSender implements SenderInterface
+final class UnboundedSender<T> implements SenderInterface<T>
 {
-    /**
-     * @use ChannelSideTrait<UnboundedChannelState<T>>
-     */
-    use ChannelSideTrait;
+    use ChannelSideTrait<UnboundedChannelState<T>>;
 
-    /**
-     * @param UnboundedChannelState<T> $state
-     */
-    public function __construct(UnboundedChannelState $state)
+    public function __construct(UnboundedChannelState<T> $state)
     {
         $this->state = $state;
     }

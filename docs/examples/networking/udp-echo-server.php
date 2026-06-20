@@ -12,7 +12,7 @@ $socket = UDP\Socket::bind('127.0.0.1', 0);
 $serverAddress = $socket->getLocalAddress();
 echo "Listening on {$serverAddress->toString()}\n";
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($socket): void {
         // Echo one datagram then shut down
         [$data, $sender] = $socket->receiveFrom(65_507);

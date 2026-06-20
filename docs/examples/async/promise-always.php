@@ -9,9 +9,9 @@ use Psl\IO;
 use Psl\Str;
 
 /** @var Async\Awaitable<string> $promise */
-$promise = Async\run(static fn() => 'hello');
+$promise = Async\run::<string>(static fn() => 'hello');
 
 $promise
-    ->map(fn(string $content) => Str\uppercase($content))
+    ->map::<string>(fn(string $content) => Str\uppercase($content))
     ->always(fn() => IO\write_error_line('cleanup complete'))
     ->await();

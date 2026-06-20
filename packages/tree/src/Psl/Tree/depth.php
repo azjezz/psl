@@ -20,17 +20,13 @@ use function max;
  *      Tree\depth(Tree\tree('root', [Tree\leaf('child')]))
  *      => 1
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
- *
  * @return int<0, max>
  *
  * @pure
  *
  * @api
  */
-function depth(NodeInterface $tree): int
+function depth<T>(NodeInterface<T> $tree): int
 {
     if (!$tree instanceof TreeNode) {
         return 0;
@@ -43,7 +39,7 @@ function depth(NodeInterface $tree): int
 
     $childDepths = [];
     foreach ($children as $child) {
-        $childDepths[] = namespace\depth($child);
+        $childDepths[] = namespace\depth::<T>($child);
     }
 
     return 1 + max($childDepths);

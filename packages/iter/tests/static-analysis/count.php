@@ -17,8 +17,8 @@ function take_zero(int $_): void {}
 function return_non_empty_list(): array
 {
     return [
-        Math\maxva(1, 2, 3),
-        Math\maxva(3, 4, 4),
+        Math\maxva::<int>(1, 2, 3),
+        Math\maxva::<int>(3, 4, 4),
     ];
 }
 
@@ -26,8 +26,8 @@ function return_non_empty_list(): array
 function return_non_empty_array(): array
 {
     return [
-        Math\maxva(1, 2, 3) => 'hello',
-        Math\maxva(3, 4, 4) => 'hello',
+        Math\maxva::<int>(1, 2, 3) => 'hello',
+        Math\maxva::<int>(3, 4, 4) => 'hello',
     ];
 }
 
@@ -45,11 +45,11 @@ function return_array(): array
 
 function test(): void
 {
-    namespace\take_positive_integer(Iter\count(namespace\return_non_empty_array()));
+    namespace\take_positive_integer(Iter\count::<string>(namespace\return_non_empty_array()));
 
-    namespace\take_positive_integer(Iter\count(namespace\return_non_empty_list()));
+    namespace\take_positive_integer(Iter\count::<int>(namespace\return_non_empty_list()));
 
-    namespace\take_positive_integer(Iter\count(namespace\return_non_empty_keyed_array()));
+    namespace\take_positive_integer(Iter\count::<string>(namespace\return_non_empty_keyed_array()));
 
-    namespace\take_zero(Iter\count(namespace\return_array()));
+    namespace\take_zero(Iter\count::<mixed>(namespace\return_array()));
 }

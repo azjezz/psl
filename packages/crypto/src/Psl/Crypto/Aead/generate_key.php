@@ -18,9 +18,9 @@ use function sodium_crypto_aead_xchacha20poly1305_ietf_keygen;
 function generate_key(Algorithm $algorithm): Key
 {
     $raw = match ($algorithm) {
-        Algorithm::Aes256Gcm => Internal\call_sodium(sodium_crypto_aead_aes256gcm_keygen(...)),
-        Algorithm::XChaCha20Poly1305 => Internal\call_sodium(sodium_crypto_aead_xchacha20poly1305_ietf_keygen(...)),
-        Algorithm::ChaCha20Poly1305 => Internal\call_sodium(sodium_crypto_aead_chacha20poly1305_ietf_keygen(...)),
+        Algorithm::Aes256Gcm => Internal\call_sodium::<string>(sodium_crypto_aead_aes256gcm_keygen(...)),
+        Algorithm::XChaCha20Poly1305 => Internal\call_sodium::<string>(sodium_crypto_aead_xchacha20poly1305_ietf_keygen(...)),
+        Algorithm::ChaCha20Poly1305 => Internal\call_sodium::<string>(sodium_crypto_aead_chacha20poly1305_ietf_keygen(...)),
     };
 
     return new Key($raw);

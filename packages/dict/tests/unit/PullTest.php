@@ -13,8 +13,8 @@ final class PullTest extends TestCase
 {
     public function testPull(): void
     {
-        $result = Dict\pull(
-            Vec\range(0, 10),
+        $result = Dict\pull::<int, int, int, string>(
+            Vec\range::<int>(0, 10),
             static fn(int $i): string => Str\chr($i + 65),
             static fn(int $i): int => 2 ** $i,
         );

@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function uuid(): TypeInterface
+function uuid(): TypeInterface<string>
 {
     static $instance = new Internal\UuidType();
 

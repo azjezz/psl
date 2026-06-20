@@ -13,13 +13,13 @@ $path = Filesystem\create_temporary_file(Env\temp_dir(), 'psl-unix-server-');
 
 $listener = Unix\listen($path);
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener, $path): void {
         echo "Listening on {$path}\n";
 
         // Accept one connection then shut down
         $connection = $listener->accept();
-        Async\run(static function () use ($connection): void {
+        Async\run::<void>(static function () use ($connection): void {
             $data = $connection->readAll();
             $connection->writeAll($data);
             $connection->close();

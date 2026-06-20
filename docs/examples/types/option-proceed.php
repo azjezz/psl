@@ -8,7 +8,7 @@ use Psl\Option;
 
 $username = 'Alice';
 
-$greeting = Option\from_nullable($username)->proceed(
+$greeting = Option\from_nullable::<string>($username)->proceed::<string>(
     fn(string $name) => "Welcome back, {$name}!",
     fn() => 'Welcome, guest!',
 );

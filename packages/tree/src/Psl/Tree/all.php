@@ -17,16 +17,13 @@ use Closure;
  *      )
  *      => true
  *
- * @template T
- *
- * @param NodeInterface<T>   $node
  * @param (Closure(T): bool) $predicate
  *
  * @return bool
  *
  * @api
  */
-function all(NodeInterface $node, Closure $predicate): bool
+function all<T>(NodeInterface<T> $node, Closure $predicate): bool
 {
     if (!$predicate($node->getValue())) {
         return false;
@@ -34,7 +31,7 @@ function all(NodeInterface $node, Closure $predicate): bool
 
     if ($node instanceof TreeNode) {
         foreach ($node->getChildren() as $child) {
-            if (namespace\all($child, $predicate)) {
+            if (namespace\all::<T>($child, $predicate)) {
                 continue;
             }
 

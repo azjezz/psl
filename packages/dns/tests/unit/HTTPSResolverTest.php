@@ -203,7 +203,7 @@ final class HTTPSResolverTest extends TestCase
         try {
             $resolver = new HTTPSResolver("http://127.0.0.1:{$port}/dns-query");
 
-            $results = Async\concurrently([
+            $results = Async\concurrently::<int, \Psl\DNS\Response>([
                 static fn() => $resolver->query('example.com', RecordType::A),
                 static fn() => $resolver->query('example.com', RecordType::A),
                 static fn() => $resolver->query('example.com', RecordType::A),
@@ -365,7 +365,7 @@ final class HTTPSResolverTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use ($listener, $handler, &$contentTypeCapture): void {
+        $future = Async\run::<void>(static function () use ($listener, $handler, &$contentTypeCapture): void {
             try {
                 $conn = $listener->accept(new Async\TimeoutCancellationToken(Duration::seconds(5)));
                 $reader = new IO\Reader($conn);
@@ -421,7 +421,7 @@ final class HTTPSResolverTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use (
+        $future = Async\run::<void>(static function () use (
             $listener,
             $handler,
             $statusCode,
@@ -483,7 +483,7 @@ final class HTTPSResolverTest extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use ($listener): void {
+        $future = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept(new Async\TimeoutCancellationToken(Duration::seconds(5)));
                 $reader = new IO\Reader($conn);

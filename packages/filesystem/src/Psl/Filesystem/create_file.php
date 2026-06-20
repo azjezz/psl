@@ -35,7 +35,7 @@ function create_file(string $filename, null|int $time = null, null|int $accessTi
 
     namespace\create_directory_for_file($filename);
 
-    [$result, $error_message] = Internal\box($fun);
+    [$result, $error_message] = Internal\box::<bool>($fun);
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(sprintf(

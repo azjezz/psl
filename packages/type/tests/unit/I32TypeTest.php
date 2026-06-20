@@ -8,10 +8,13 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class I32TypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<int<-2147483648, 2147483647>>
+ */
+final class I32TypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
         return Type\i32();
     }

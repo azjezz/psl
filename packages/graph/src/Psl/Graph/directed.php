@@ -13,16 +13,11 @@ namespace Psl\Graph;
  *      $graph = Graph\add_node($graph, 'A');
  *      $graph = Graph\add_edge($graph, 'A', 'B');
  *
- * @template TNode
- * @template TWeight
- *
- * @return DirectedGraph<TNode, TWeight>
- *
  * @pure
  *
  * @api
  */
-function directed(): DirectedGraph
+function directed<TNode, TWeight>(): DirectedGraph<TNode, TWeight>
 {
-    return new DirectedGraph([]);
+    return new DirectedGraph::<TNode, TWeight>([]);
 }

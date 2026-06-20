@@ -7,16 +7,13 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param array<Tk, TypeInterface<Tv>> $elements
  *
  * @return TypeInterface<array<Tk, Tv>>
  *
  * @api
  */
-function shape(array $elements, bool $allowUnknownFields = false): TypeInterface
+function shape<Tk: string|int, Tv>(array $elements, bool $allowUnknownFields = false): TypeInterface<array>
 {
-    return new Internal\ShapeType($elements, $allowUnknownFields);
+    return new Internal\ShapeType::<Tk, Tv>($elements, $allowUnknownFields);
 }

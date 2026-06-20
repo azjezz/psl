@@ -39,7 +39,7 @@ final readonly class RacingResolver implements ResolverInterface
         array $ednsOptions = [],
     ): Response {
         $awaitables = array_map(
-            static fn(ResolverInterface $resolver): Async\Awaitable => Async\run(static function () use (
+            static fn(ResolverInterface $resolver): Async\Awaitable<Response> => Async\run::<Response>(static function () use (
                 $resolver,
                 $name,
                 $type,
@@ -61,7 +61,7 @@ final readonly class RacingResolver implements ResolverInterface
         );
 
         try {
-            return Async\any($awaitables);
+            return Async\any::<Response>($awaitables);
         } catch (Async\Exception\CompositeException $e) {
             $reasons = $e->getReasons();
 

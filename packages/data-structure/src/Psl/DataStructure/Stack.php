@@ -12,13 +12,9 @@ use function count;
 /**
  * A basic implementation of a stack data structure ( LIFO ).
  *
- * @template T
- *
- * @implements StackInterface<T>
- *
  * @api
  */
-final class Stack implements StackInterface
+final class Stack<T> implements StackInterface<T>
 {
     /**
      * @var list<T> $items
@@ -34,18 +30,16 @@ final class Stack implements StackInterface
      */
     public static function default(): static
     {
-        return new self();
+        return new self::<T>();
     }
 
     /**
      * Adds an item to the stack.
      *
-     * @param T $item
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function push(mixed $item): void
+    public function push(T $item): void
     {
         $this->items[] = $item;
     }
@@ -54,12 +48,10 @@ final class Stack implements StackInterface
      * Retrieves, but does remove, the most recently added item that was not yet removed,
      * or returns null if this queue is empty.
      *
-     * @return null|T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function peek(): mixed
+    public function peek(): null|T
     {
         $items = $this->items;
 
@@ -70,12 +62,10 @@ final class Stack implements StackInterface
      * Retrieves and removes the most recently added item that was not yet removed,
      * or returns null if this queue is empty.
      *
-     * @return null|T
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function pull(): mixed
+    public function pull(): null|T
     {
         return array_pop($this->items);
     }
@@ -85,12 +75,10 @@ final class Stack implements StackInterface
      *
      * @throws Exception\UnderflowException If the stack is empty.
      *
-     * @return T
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function pop(): mixed
+    public function pop(): T
     {
         if ([] === $this->items) {
             throw new Exception\UnderflowException('Cannot pop an item from an empty stack.');

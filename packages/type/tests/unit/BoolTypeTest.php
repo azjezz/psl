@@ -7,10 +7,10 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class BoolTypeTest extends TypeTestCase
+final class BoolTypeTest extends TypeTestCase<bool>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<bool>
     {
         return Type\bool();
     }

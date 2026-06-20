@@ -16,7 +16,6 @@ use const PREG_SET_ORDER;
  * @template T of array|null
  *
  * @param non-empty-string $pattern The pattern to match against.
- * @param ?Type\TypeInterface<T> $captureGroups What shape does a single set of matching items have?
  *
  * @throws Exception\RuntimeException If an internal error accord.
  * @throws Exception\InvalidPatternException If $pattern is invalid.
@@ -25,13 +24,13 @@ use const PREG_SET_ORDER;
  *
  * @api
  */
-function every_match(
+function every_match<T>(
     string $subject,
     string $pattern,
-    null|Type\TypeInterface $captureGroups = null,
+    null|Type\TypeInterface<T> $captureGroups = null,
     int $offset = 0,
 ): null|array {
-    $matching = Internal\call_preg('preg_match_all', static function () use ($subject, $pattern, $offset): null|array {
+    $matching = Internal\call_preg::<null|array>('preg_match_all', static function () use ($subject, $pattern, $offset): null|array {
         $matching = [];
         $matches = preg_match_all($pattern, $subject, $matching, PREG_SET_ORDER, $offset);
 
@@ -42,10 +41,10 @@ function every_match(
         return null;
     }
 
-    $captureGroups ??= Type\dict(Type\array_key(), Type\string());
+    $captureGroups ??= Type\dict::<string|int, string>(Type\array_key(), Type\string());
 
     try {
-        return Type\vec($captureGroups)->coerce($matching);
+        return Type\vec::<array|null>($captureGroups)->coerce($matching);
     } catch (Type\Exception\CoercionException $e) {
         throw new Exception\RuntimeException('Invalid capture groups', 0, $e);
     }

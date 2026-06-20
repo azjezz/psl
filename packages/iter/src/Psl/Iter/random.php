@@ -13,17 +13,13 @@ use function mt_rand;
 /**
  * Retrieve a random value from a non-empty iterable.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @throws Exception\InvalidArgumentException If $iterable is empty.
  *
- * @return T
- *
  * @api
  */
-function random(iterable $iterable): mixed
+function random<T>(iterable $iterable): T
 {
     // We convert the iterable to an array before checking if it is empty,
     // this helps us avoids an issue when the iterable is a generator where

@@ -12,13 +12,13 @@ $items = ['apple', 'banana', 'cherry'];
 Psl\invariant($items !== [], 'Item list must not be empty.');
 
 // Mutable reference wrapper: pass by reference without PHP's & syntax
-$counter = new Ref(0);
+$counter = new Ref::<int>(0);
 
 $increment =
     /**
      * @param Ref<int> $counter
      */
-    static function (Ref $counter, int $amount): void {
+    static function (Ref<int> $counter, int $amount): void {
         $counter->value += $amount;
     };
 

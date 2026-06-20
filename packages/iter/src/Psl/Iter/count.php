@@ -15,15 +15,13 @@ use function is_countable;
  *
  * If the iterable implements Countable its count() method will be used.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  *
  * @return ($iterable is non-empty-array|non-empty-list ? int<1, max> : int<0, max>)
  *
  * @api
  */
-function count(iterable $iterable): int
+function count<T>(iterable $iterable): int
 {
     if (is_countable($iterable)) {
         return php_count($iterable);

@@ -14,7 +14,7 @@ final class SliceTest extends TestCase
     #[DataProvider('provideData')]
     public function testSlice(array $expected, array $array, int $n, null|int $l = null): void
     {
-        $result = Dict\slice($array, $n, $l);
+        $result = Dict\slice::<string, int>($array, $n, $l);
 
         static::assertSame($expected, $result);
     }
@@ -27,22 +27,22 @@ final class SliceTest extends TestCase
 
     public function testSliceWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
+        $iterator = Iter\Iterator::<string, int>::create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
 
-        static::assertSame(['c' => 3, 'd' => 4], Dict\slice($iterator, 2));
+        static::assertSame(['c' => 3, 'd' => 4], Dict\slice::<string, int>($iterator, 2));
     }
 
     public function testSliceWithNonArrayIterableAndLength(): void
     {
-        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
+        $iterator = Iter\Iterator::<string, int>::create(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4]);
 
-        static::assertSame(['b' => 2, 'c' => 3], Dict\slice($iterator, 1, 2));
+        static::assertSame(['b' => 2, 'c' => 3], Dict\slice::<string, int>($iterator, 1, 2));
     }
 
     public function testSliceWithNonArrayIterableZeroLength(): void
     {
-        $iterator = Iter\Iterator::create(['a' => 1, 'b' => 2]);
+        $iterator = Iter\Iterator::<string, int>::create(['a' => 1, 'b' => 2]);
 
-        static::assertSame([], Dict\slice($iterator, 0, 0));
+        static::assertSame([], Dict\slice::<string, int>($iterator, 0, 0));
     }
 }

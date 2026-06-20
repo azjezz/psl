@@ -92,7 +92,7 @@ final readonly class Transaction
      * @link https://datatracker.ietf.org/doc/html/rfc9113#section-8.4 HTTP/2 Server Push
      * @link https://datatracker.ietf.org/doc/html/rfc9114#section-4.6 HTTP/3 Server Push
      */
-    public null|Async\Awaitable $pushed;
+    public null|Async\Awaitable<array> $pushed;
 
     /**
      * The final (non-1xx) HTTP response.
@@ -119,7 +119,7 @@ final readonly class Transaction
      *  request/response pairs, or {@see null} if no push promises were received.
      * @param Response $response The final (2xx-5xx) response.
      */
-    public function __construct(array $informational, null|Async\Awaitable $pushed, Response $response)
+    public function __construct(array $informational, null|Async\Awaitable<array> $pushed, Response $response)
     {
         $this->informational = $informational;
         $this->pushed = $pushed;

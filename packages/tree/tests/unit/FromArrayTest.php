@@ -13,7 +13,7 @@ final class FromArrayTest extends TestCase
     {
         $array = ['value' => 'leaf', 'children' => []];
 
-        $tree = Tree\from_array($array);
+        $tree = Tree\from_array::<string>($array);
 
         static::assertSame('leaf', $tree->getValue());
         static::assertSame([], $tree->getChildren());
@@ -29,7 +29,7 @@ final class FromArrayTest extends TestCase
             ],
         ];
 
-        $tree = Tree\from_array($array);
+        $tree = Tree\from_array::<string>($array);
 
         static::assertSame('root', $tree->getValue());
         static::assertCount(2, $tree->getChildren());
@@ -51,7 +51,7 @@ final class FromArrayTest extends TestCase
             ],
         ];
 
-        $tree = Tree\from_array($array);
+        $tree = Tree\from_array::<string>($array);
 
         static::assertSame('root', $tree->getValue());
         static::assertCount(1, $tree->getChildren());
@@ -64,7 +64,7 @@ final class FromArrayTest extends TestCase
     {
         $array = ['value' => 'root'];
 
-        $tree = Tree\from_array($array);
+        $tree = Tree\from_array::<string>($array);
 
         static::assertSame('root', $tree->getValue());
         static::assertSame([], $tree->getChildren());

@@ -13,7 +13,7 @@ final class SearchWithKeysOptTest extends TestCase
     #[DataProvider('provideDataSome')]
     public function testSearchSome(string $expected, iterable $iterable, callable $predicate): void
     {
-        static::assertSame($expected, Iter\search_with_keys_opt($iterable, $predicate)->unwrap());
+        static::assertSame($expected, Iter\search_with_keys_opt::<int, string>($iterable, $predicate)->unwrap());
     }
 
     public static function provideDataSome(): iterable
@@ -22,7 +22,7 @@ final class SearchWithKeysOptTest extends TestCase
 
         yield [
             'baz',
-            Iter\to_iterator(['foo', 'bar', 'baz']),
+            Iter\to_iterator::<int, string>(['foo', 'bar', 'baz']),
             static fn(int $k, string $v): bool => 2 === $k && 'baz' === $v,
         ];
     }
@@ -30,13 +30,13 @@ final class SearchWithKeysOptTest extends TestCase
     #[DataProvider('provideDataNone')]
     public function testSearchNone(iterable $iterable, callable $predicate): void
     {
-        static::assertTrue(Iter\search_with_keys_opt($iterable, $predicate)->isNone());
+        static::assertTrue(Iter\search_with_keys_opt::<int, string>($iterable, $predicate)->isNone());
     }
 
     public static function provideDataNone(): iterable
     {
         yield [[], static fn(int $_, string $v): bool => 'qux' === $v];
-        yield [Iter\to_iterator([]), static fn(int $_, string $v): bool => 'qux' === $v];
-        yield [Iter\to_iterator(['foo', 'bar', 'baz']), static fn(int $_, string $v): bool => 'qux' === $v];
+        yield [Iter\to_iterator::<int, string>([]), static fn(int $_, string $v): bool => 'qux' === $v];
+        yield [Iter\to_iterator::<int, string>(['foo', 'bar', 'baz']), static fn(int $_, string $v): bool => 'qux' === $v];
     }
 }

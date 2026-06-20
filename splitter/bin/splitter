@@ -51,9 +51,9 @@ function check_command(string $root): never
 
     IO\write_error_line('');
     if ($ok) {
-        Log\success('All good! %d packages, no issues.', Iter\count($monorepo->packages));
+        Log\success('All good! %d packages, no issues.', Iter\count::<Package>($monorepo->packages));
     } else {
-        Log\error('Issues found in %d packages.', Iter\count($monorepo->packages));
+        Log\error('Issues found in %d packages.', Iter\count::<Package>($monorepo->packages));
     }
     IO\write_error_line('');
 
@@ -68,7 +68,7 @@ function check_command(string $root): never
 function split_command(string $root, array $args): never
 {
     $branch = null;
-    for ($i = 1; $i < Iter\count($args); $i++) {
+    for ($i = 1; $i < Iter\count::<string>($args); $i++) {
         if ($args[$i] === '--branch' && isset($args[$i + 1])) {
             $branch = $args[$i + 1];
             break;
@@ -93,7 +93,7 @@ function split_command(string $root, array $args): never
     split($monorepo, new Git($root), $branch);
 
     IO\write_error_line('');
-    Log\success('Split %d packages to %s.', Iter\count($monorepo->packages), $branch);
+    Log\success('Split %d packages to %s.', Iter\count::<Package>($monorepo->packages), $branch);
     IO\write_error_line('');
 
     exit(0);
@@ -218,7 +218,7 @@ function fix_command(string $root): never
 
 function main(): never
 {
-    $arguments = Vec\slice(Env\args(), 1);
+    $arguments = Vec\slice::<string>(Env\args(), 1);
     $command = $arguments[0] ?? 'help';
     $root = Filesystem\get_directory(__DIR__, 2);
 

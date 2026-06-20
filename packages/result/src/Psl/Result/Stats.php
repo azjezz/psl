@@ -28,7 +28,7 @@ final readonly class Stats
     /**
      * @psalm-mutation-free
      */
-    public function apply(ResultInterface $result): self
+    public function apply(ResultInterface<mixed> $result): self
     {
         return new self(
             $this->total + 1,

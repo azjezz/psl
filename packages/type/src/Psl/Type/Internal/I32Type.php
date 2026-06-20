@@ -17,7 +17,7 @@ use function Psl\Type;
  *
  * @internal
  */
-final readonly class I32Type extends Type\Type
+final readonly class I32Type extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int<-2147483648, 2147483647> $value

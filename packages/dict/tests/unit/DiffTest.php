@@ -14,7 +14,7 @@ final class DiffTest extends TestCase
     #[DataProvider('provideData')]
     public function testDiff(array $expected, iterable $first, iterable $second, iterable ...$rest): void
     {
-        static::assertSame($expected, Dict\diff($first, $second, ...$rest));
+        static::assertSame($expected, Dict\diff::<int, int>($first, $second, ...$rest));
     }
 
     public static function provideData(): iterable
@@ -29,7 +29,7 @@ final class DiffTest extends TestCase
         yield [[1 => 2], [1, 2], [], ['baz' => 1]];
         yield [[], [1, 2], ['foo' => 2], ['baz' => 1]];
         yield [[], [1, 2], ['foo' => 2], ['baz' => 1]];
-        yield [[6 => 7, 7 => 8], Vec\range(1, 8), Vec\range(1, 6), []];
-        yield [[7 => 8], Vec\range(1, 8), Vec\range(1, 6), [6 => 7]];
+        yield [[6 => 7, 7 => 8], Vec\range::<int>(1, 8), Vec\range::<int>(1, 6), []];
+        yield [[7 => 8], Vec\range::<int>(1, 8), Vec\range::<int>(1, 6), [6 => 7]];
     }
 }

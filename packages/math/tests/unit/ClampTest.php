@@ -13,7 +13,7 @@ final class ClampTest extends TestCase
     #[DataProvider('provideData')]
     public function testClamp(int|float $expected, int|float $number, int|float $min, int|float $max): void
     {
-        static::assertSame($expected, Math\clamp($number, $min, $max));
+        static::assertSame($expected, Math\clamp::<int|float>($number, $min, $max));
     }
 
     public function testInvalidMinMax(): void
@@ -21,7 +21,7 @@ final class ClampTest extends TestCase
         $this->expectException(Math\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Expected $min to be lower or equal to $max.');
 
-        Math\clamp(10, 20, 10);
+        Math\clamp::<int>(10, 20, 10);
     }
 
     public static function provideData(): array

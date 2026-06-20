@@ -10,9 +10,6 @@ use Closure;
  * Returns a 2-tuple containing dict for which the given predicate returned
  * `true` and `false`, respectively.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tk, Tv): bool) $predicate
  *
@@ -20,7 +17,7 @@ use Closure;
  *
  * @api
  */
-function partition_with_key(iterable $iterable, Closure $predicate): array
+function partition_with_key<Tk: string|int, Tv>(iterable $iterable, Closure $predicate): array
 {
     $success = [];
     $failure = [];

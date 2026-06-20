@@ -8,10 +8,13 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class I8TypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<int<-128, 127>>
+ */
+final class I8TypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
         return Type\i8();
     }

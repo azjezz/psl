@@ -28,7 +28,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('XOAUTH2');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -54,7 +54,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('XOAUTH2');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -99,7 +99,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -110,7 +110,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -139,7 +139,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('XOAUTH2');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -164,7 +164,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('PLAIN LOGIN XOAUTH2');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -195,7 +195,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -206,7 +206,7 @@ final class XOAuth2AuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream, $authMechanisms): void {
+        Async\run::<void>(static function () use ($serverStream, $authMechanisms): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();

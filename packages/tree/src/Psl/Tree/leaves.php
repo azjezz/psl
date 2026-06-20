@@ -17,17 +17,13 @@ namespace Psl\Tree;
  *      ]))
  *      => ['a', 'b', 'c']
  *
- * @template T
- *
- * @param NodeInterface<T> $node
- *
  * @return list<T>
  *
  * @pure
  *
  * @api
  */
-function leaves(NodeInterface $node): array
+function leaves<T>(NodeInterface<T> $node): array
 {
     if (!$node instanceof TreeNode) {
         return [$node->getValue()];
@@ -41,7 +37,7 @@ function leaves(NodeInterface $node): array
     $result = [];
     foreach ($children as $child) {
         /** @var T $leaf */
-        foreach (namespace\leaves($child) as $leaf) {
+        foreach (namespace\leaves::<T>($child) as $leaf) {
             $result[] = $leaf;
         }
     }

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\DataStructure;
 
-$queue = new DataStructure\Queue();
+$queue = new DataStructure\Queue::<string>();
 
 $queue->enqueue('first');
 $queue->enqueue('second');

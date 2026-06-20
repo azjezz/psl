@@ -20,7 +20,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchMap(array $params): void
     {
-        Vec\map($params['data'], static fn(int $v): int => $v * 2);
+        Vec\map::<int, int, int>($params['data'], static fn(int $v): int => $v * 2);
     }
 
     /**
@@ -29,7 +29,7 @@ final class VecBench
     #[ParamProviders('provideIterableData')]
     public function benchMapIterable(array $params): void
     {
-        Vec\map($params['data'], static fn(int $v): int => $v * 2);
+        Vec\map::<int, int, int>($params['data'], static fn(int $v): int => $v * 2);
     }
 
     /**
@@ -38,7 +38,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchFilter(array $params): void
     {
-        Vec\filter($params['data'], static fn(int $v): bool => ($v % 2) === 0);
+        Vec\filter::<int>($params['data'], static fn(int $v): bool => ($v % 2) === 0);
     }
 
     /**
@@ -47,7 +47,7 @@ final class VecBench
     #[ParamProviders('provideIterableData')]
     public function benchFilterIterable(array $params): void
     {
-        Vec\filter($params['data'], static fn(int $v): bool => ($v % 2) === 0);
+        Vec\filter::<int>($params['data'], static fn(int $v): bool => ($v % 2) === 0);
     }
 
     /**
@@ -56,7 +56,7 @@ final class VecBench
     #[ParamProviders('provideUniqueByData')]
     public function benchUniqueBy(array $params): void
     {
-        Vec\unique_by($params['data'], static fn(int $v): int => $v % 50);
+        Vec\unique_by::<int, int>($params['data'], static fn(int $v): int => $v % 50);
     }
 
     /**
@@ -65,7 +65,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchSort(array $params): void
     {
-        Vec\sort($params['data']);
+        Vec\sort::<int>($params['data']);
     }
 
     /**
@@ -74,7 +74,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchSortBy(array $params): void
     {
-        Vec\sort_by($params['data'], static fn(int $v): int => -$v);
+        Vec\sort_by::<int, int>($params['data'], static fn(int $v): int => -$v);
     }
 
     /**
@@ -83,7 +83,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchFlatMap(array $params): void
     {
-        Vec\flat_map($params['data'], static fn(int $v): array => [$v, $v * 2]);
+        Vec\flat_map::<int, int>($params['data'], static fn(int $v): array => [$v, $v * 2]);
     }
 
     /**
@@ -92,7 +92,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchChunk(array $params): void
     {
-        $_ = Vec\chunk($params['data'], 10);
+        $_ = Vec\chunk::<int>($params['data'], 10);
     }
 
     /**
@@ -101,7 +101,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchReverse(array $params): void
     {
-        Vec\reverse($params['data']);
+        Vec\reverse::<int>($params['data']);
     }
 
     /**
@@ -110,7 +110,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchFill(array $params): void
     {
-        $_ = Vec\fill(count($params['data']), 42);
+        $_ = Vec\fill::<int>(count($params['data']), 42);
     }
 
     /**
@@ -119,7 +119,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchZip(array $params): void
     {
-        Vec\zip($params['data'], $params['data']);
+        Vec\zip::<int, int>($params['data'], $params['data']);
     }
 
     /**
@@ -128,7 +128,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchConcat(array $params): void
     {
-        Vec\concat($params['data'], $params['data'], $params['data']);
+        Vec\concat::<int>($params['data'], $params['data'], $params['data']);
     }
 
     /**
@@ -142,7 +142,7 @@ final class VecBench
         $start = (int) ($size / 4);
         /** @var non-negative-int $length */
         $length = (int) ($size / 2);
-        $_ = Vec\slice($params['data'], $start, $length);
+        $_ = Vec\slice::<int>($params['data'], $start, $length);
     }
 
     /**
@@ -151,7 +151,7 @@ final class VecBench
     #[ParamProviders('provideArrayData')]
     public function benchFlatten(array $params): void
     {
-        $_ = Vec\flatten([$params['data'], $params['data'], $params['data']]);
+        $_ = Vec\flatten::<int>([$params['data'], $params['data'], $params['data']]);
     }
 
     /**
@@ -160,7 +160,7 @@ final class VecBench
     #[ParamProviders('provideNullableData')]
     public function benchFilterNulls(array $params): void
     {
-        Vec\filter_nulls($params['data']);
+        Vec\filter_nulls::<int>($params['data']);
     }
 
     /**
@@ -168,9 +168,9 @@ final class VecBench
      */
     public function provideArrayData(): iterable
     {
-        yield 'small (10)' => ['data' => Vec\range(1, 10)];
-        yield 'medium (100)' => ['data' => Vec\range(1, 100)];
-        yield 'large (1000)' => ['data' => Vec\range(1, 1000)];
+        yield 'small (10)' => ['data' => Vec\range::<int>(1, 10)];
+        yield 'medium (100)' => ['data' => Vec\range::<int>(1, 100)];
+        yield 'large (1000)' => ['data' => Vec\range::<int>(1, 1000)];
     }
 
     /**
@@ -178,9 +178,9 @@ final class VecBench
      */
     public function provideIterableData(): iterable
     {
-        yield 'small (10)' => ['data' => new ArrayIterator(Vec\range(1, 10))];
-        yield 'medium (100)' => ['data' => new ArrayIterator(Vec\range(1, 100))];
-        yield 'large (1000)' => ['data' => new ArrayIterator(Vec\range(1, 1000))];
+        yield 'small (10)' => ['data' => new ArrayIterator(Vec\range::<int>(1, 10))];
+        yield 'medium (100)' => ['data' => new ArrayIterator(Vec\range::<int>(1, 100))];
+        yield 'large (1000)' => ['data' => new ArrayIterator(Vec\range::<int>(1, 1000))];
     }
 
     /**
@@ -188,9 +188,9 @@ final class VecBench
      */
     public function provideUniqueByData(): iterable
     {
-        yield 'small (10)' => ['data' => Vec\range(1, 10)];
-        yield 'medium (100)' => ['data' => Vec\range(1, 100)];
-        yield 'large (1000)' => ['data' => Vec\range(1, 1000)];
+        yield 'small (10)' => ['data' => Vec\range::<int>(1, 10)];
+        yield 'medium (100)' => ['data' => Vec\range::<int>(1, 100)];
+        yield 'large (1000)' => ['data' => Vec\range::<int>(1, 1000)];
     }
 
     /**

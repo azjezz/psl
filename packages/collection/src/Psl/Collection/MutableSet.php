@@ -25,13 +25,9 @@ use function iterator_to_array;
 use const ARRAY_FILTER_USE_KEY;
 
 /**
- * @template T of array-key
- *
- * @implements MutableSetInterface<T>
- *
  * @api
  */
-final class MutableSet implements MutableSetInterface
+final class MutableSet<T: string|int> implements MutableSetInterface<T>
 {
     /**
      * @var array<T, T>
@@ -65,73 +61,58 @@ final class MutableSet implements MutableSetInterface
     #[Override]
     public static function default(): static
     {
-        return new self([]);
+        return new self::<T>([]);
     }
 
     /**
      * Create a set from the given array, using the values of the array as the set values.
      *
-     * @template Ts of array-key
-     *
-     * @param array<array-key, Ts> $elements
-     *
-     * @return MutableSet<Ts>
+     * @param array<array-key, T> $elements
      *
      * @pure
      */
-    public static function fromArray(array $elements): MutableSet
+    public static function fromArray(array $elements): MutableSet<T>
     {
-        return new self($elements);
+        return new self::<T>($elements);
     }
 
     /**
      * Create a set from the given iterable, using the values of the iterable as the set values.
      *
-     * @template Ts of array-key
-     *
-     * @param iterable<Ts, Ts> $items
-     *
-     * @return MutableSet<Ts>
+     * @param iterable<T, T> $items
      */
-    public static function fromItems(iterable $items): MutableSet
+    public static function fromItems(iterable $items): MutableSet<T>
     {
         $array = iterator_to_array($items);
 
-        return self::fromArray($array);
+        return self::<T>::fromArray($array);
     }
 
     /**
      * Create a set from the given $elements array, using the keys of the array as the set values.
      *
-     * @template Ts of array-key
-     *
-     * @param array<Ts, mixed> $elements
-     *
-     * @return MutableSet<Ts>
+     * @param array<T, mixed> $elements
      *
      * @pure
      */
-    public static function fromArrayKeys(array $elements): MutableSet
+    public static function fromArrayKeys(array $elements): MutableSet<T>
     {
-        /** @var array<Ts, Ts> $set */
+        /** @var array<T, T> $set */
         $set = [];
         foreach ($elements as $element => $_) {
             $set[$element] = $element;
         }
 
-        return new self($set);
+        return new self::<T>($set);
     }
 
     /**
      * Returns the first value in the current `MutableSet`.
      *
-     * @return T|null The first value in the current `MutableSet`, or `null` if the
-     *                current `MutableSet` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): null|int|string
+    public function first(): T|null
     {
         return array_key_first($this->elements);
     }
@@ -139,13 +120,10 @@ final class MutableSet implements MutableSetInterface
     /**
      * Returns the last value in the current `MutableSet`.
      *
-     * @return T|null The last value in the current `MutableSet`, or `null` if the
-     *                current `MutableSet` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): null|int|string
+    public function last(): T|null
     {
         return array_key_last($this->elements);
     }
@@ -218,16 +196,12 @@ final class MutableSet implements MutableSetInterface
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * an {@see Exception\OutOfBoundsException} is thrown to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return T
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): int|string
+    public function at(T $k): T
     {
         if (!array_key_exists($k, $this->elements)) {
             throw Exception\OutOfBoundsException::for($k);
@@ -244,14 +218,12 @@ final class MutableSet implements MutableSetInterface
      * If the value exists, it returns true to indicate presence in the set. If the value does not exist,
      * it returns false to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @return bool True if the value is in the set, false otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function contains(int|string $k): bool
+    public function contains(T $k): bool
     {
         return array_key_exists($k, $this->elements);
     }
@@ -259,14 +231,12 @@ final class MutableSet implements MutableSetInterface
     /**
      * Alias of `contains`.
      *
-     * @param T $k
-     *
      * @return bool True if the value is in the set, false otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function containsKey(int|string $k): bool
+    public function containsKey(T $k): bool
     {
         return $this->contains($k);
     }
@@ -278,14 +248,10 @@ final class MutableSet implements MutableSetInterface
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * null is returned to indicate the absence of the value.
      *
-     * @param T $k
-     *
-     * @return T|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): null|int|string
+    public function get(T $k): T|null
     {
         return $this->elements[$k] ?? null;
     }
@@ -295,13 +261,10 @@ final class MutableSet implements MutableSetInterface
      *
      * As {@see MutableSet} does not have keys, this method acts as an alias for {@see MutableSet::first()}.
      *
-     * @return T|null The first value in the current `MutableSet`, or `null` if the
-     *                current `MutableSet` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): null|int|string
+    public function firstKey(): T|null
     {
         return $this->first();
     }
@@ -311,13 +274,10 @@ final class MutableSet implements MutableSetInterface
      *
      * As {@see MutableSet} does not have keys, this method acts as an alias for {@see MutableSet::last()}.
      *
-     * @return T|null The last value in the current `MutableSet`, or `null` if the
-     *                current `MutableSet` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): null|int|string
+    public function lastKey(): T|null
     {
         return $this->last();
     }
@@ -329,15 +289,10 @@ final class MutableSet implements MutableSetInterface
      *
      * As {@see MutableSet} does not have keys, this method returns the value itself.
      *
-     * @param T $searchValue The value that will be search for in the current
-     *                        `MutableSet`.
-     *
-     * @return T|null The value if its found, null otherwise.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int|string
+    public function linearSearch(T $searchValue): T|null
     {
         foreach ($this->elements as $element) {
             if ($searchValue !== $element) {
@@ -354,13 +309,9 @@ final class MutableSet implements MutableSetInterface
      * Removes the specified value from the current set.
      *
      * If the value is not in the current set, the current set is unchanged.
-     *
-     * @param T $k The value to remove.
-     *
-     * @return MutableSet<T> Returns itself.
      */
     #[Override]
-    public function remove(int|string $k): MutableSet
+    public function remove(T $k): MutableSet<T>
     {
         unset($this->elements[$k]);
 
@@ -370,12 +321,10 @@ final class MutableSet implements MutableSetInterface
     /**
      * Removes all elements from the set.
      *
-     * @return MutableSet<T> Returns itself
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function clear(): MutableSet
+    public function clear(): MutableSet<T>
     {
         $this->elements = [];
 
@@ -385,14 +334,10 @@ final class MutableSet implements MutableSetInterface
     /**
      * Add a value to the set and return the set itself.
      *
-     * @param T $v The value to add.
-     *
-     * @return MutableSet<T> Returns itself.
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function add(mixed $v): MutableSet
+    public function add(T $v): MutableSet<T>
     {
         $this->elements[$v] = $v;
 
@@ -404,12 +349,10 @@ final class MutableSet implements MutableSetInterface
      *
      * @param iterable<T> $elements The elements with the new values to add
      *
-     * @return MutableSet<T> returns itself.
-     *
      * @psalm-external-mutation-free
      */
     #[Override]
-    public function addAll(iterable $elements): MutableSet
+    public function addAll(iterable $elements): MutableSet<T>
     {
         foreach ($elements as $item) {
             $this->add($item);
@@ -421,27 +364,23 @@ final class MutableSet implements MutableSetInterface
     /**
      * Returns a `MutableVector` containing the values of the current `MutableSet`.
      *
-     * @return MutableVector<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): MutableVector
+    public function values(): MutableVector<T>
     {
-        return MutableVector::fromArray($this->elements);
+        return MutableVector::<T>::fromArray($this->elements);
     }
 
     /**
      * As {@see MutableSet} does not have keys, this method acts as an alias for {@see MutableSet::values()}.
      *
-     * @return MutableVector<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): MutableVector
+    public function keys(): MutableVector<T>
     {
-        return MutableVector::fromArray($this->elements);
+        return MutableVector::<T>::fromArray($this->elements);
     }
 
     /**
@@ -456,14 +395,11 @@ final class MutableSet implements MutableSetInterface
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `MutableSet` values.
-     *
-     * @return MutableSet<T> A `MutableSet` containing the values after a user-specified condition
-     *                       is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableSet
+    public function filter(Closure $fn): MutableSet<T>
     {
-        return new MutableSet(array_filter($this->elements, $fn, ARRAY_FILTER_USE_KEY));
+        return new MutableSet::<T>(array_filter($this->elements, $fn, ARRAY_FILTER_USE_KEY));
     }
 
     /**
@@ -477,11 +413,9 @@ final class MutableSet implements MutableSetInterface
      * It's particularly useful when the distinction between keys and values is relevant for the condition.
      *
      * @param (Closure(T, T): bool) $fn T
-     *
-     * @return MutableSet<T>
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableSet
+    public function filterWithKey(Closure $fn): MutableSet<T>
     {
         return $this->filter(
             /**
@@ -501,18 +435,13 @@ final class MutableSet implements MutableSetInterface
      * The keys will remain unchanged from the current `MutableSet` to the
      * returned `MutableSet`.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableSet` values.
-     *
-     * @return MutableSet<Tu> A `MutableSet` containing the values after a user-specified
-     *                        operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableSet
+    public function map<Tu: string|int>(Closure $fn): MutableSet<Tu>
     {
-        return new MutableSet(array_map($fn, $this->elements));
+        return new MutableSet::<Tu>(array_map($fn, $this->elements));
     }
 
     /**
@@ -525,16 +454,12 @@ final class MutableSet implements MutableSetInterface
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
-     *
-     * @return MutableSet<Tu>
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableSet
+    public function mapWithKey<Tu: string|int>(Closure $fn): MutableSet<Tu>
     {
-        return $this->map(
+        return $this->map::<Tu>(
             /**
              * @param T $k
              */
@@ -545,8 +470,6 @@ final class MutableSet implements MutableSetInterface
     /**
      * Always throws an exception since `MutableSet` can only contain array-key values.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableSet`.
      *
      * @psalm-mutation-free
@@ -554,7 +477,7 @@ final class MutableSet implements MutableSetInterface
      * @throws Exception\RuntimeException Always throws an exception since `MutableSet` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never
+    public function zip<Tu>(array $elements): never
     {
         throw new Exception\RuntimeException('Cannot zip a MutableSet.');
     }
@@ -571,13 +494,10 @@ final class MutableSet implements MutableSetInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `MutableSet`.
      *
-     * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
-     *                       `MutableSet` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableSet
+    public function take(int $n): MutableSet<T>
     {
         return $this->slice(0, $n);
     }
@@ -592,12 +512,9 @@ final class MutableSet implements MutableSetInterface
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
-     *                       `MutableSet` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableSet
+    public function takeWhile(Closure $fn): MutableSet<T>
     {
         $result = [];
         foreach ($this->elements as $k => $v) {
@@ -608,7 +525,7 @@ final class MutableSet implements MutableSetInterface
             $result[$k] = $v;
         }
 
-        return new MutableSet($result);
+        return new MutableSet::<T>($result);
     }
 
     /**
@@ -623,13 +540,10 @@ final class MutableSet implements MutableSetInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MutableSet`.
      *
-     * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
-     *                       `MutableSet` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableSet
+    public function drop(int $n): MutableSet<T>
     {
         return $this->slice($n);
     }
@@ -644,12 +558,9 @@ final class MutableSet implements MutableSetInterface
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `MutableSet`.
-     *
-     * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
-     *                       `MutableSet` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableSet
+    public function dropWhile(Closure $fn): MutableSet<T>
     {
         $result = [];
         $dropping = true;
@@ -662,7 +573,7 @@ final class MutableSet implements MutableSetInterface
             $result[$k] = $v;
         }
 
-        return new MutableSet($result);
+        return new MutableSet::<T>($result);
     }
 
     /**
@@ -680,16 +591,12 @@ final class MutableSet implements MutableSetInterface
      *                           `MutableSet`.
      * @param int<0, max> $length The length of the returned `MutableSet`.
      *
-     * @return MutableSet<T> A `MutableSet` that is a proper subset of the current
-     *                       `MutableSet` starting at `$start` up to but not including
-     *                       the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableSet
+    public function slice(int $start, null|int $length = null): MutableSet<T>
     {
-        return MutableSet::fromArray(array_slice($this->elements, $start, $length, true));
+        return MutableSet::<T>::fromArray(array_slice($this->elements, $start, $length, true));
     }
 
     /**
@@ -701,15 +608,12 @@ final class MutableSet implements MutableSetInterface
      *
      * @param positive-int $size The size of each chunk.
      *
-     * @return MutableVector<MutableSet<T>> A `MutableVector` containing the original
-     *                                      `MutableSet` split into chunks of the given size.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableVector
+    public function chunk(int $size): MutableVector<MutableSet<T>>
     {
-        return MutableVector::fromArray(array_map(MutableSet::fromArray(...), array_chunk($this->toArray(), $size)));
+        return MutableVector::<MutableSet<T>>::fromArray(array_map(MutableSet::<T>::fromArray(...), array_chunk($this->toArray(), $size)));
     }
 
     /**
@@ -746,14 +650,12 @@ final class MutableSet implements MutableSetInterface
      * @throws Exception\InvalidOffsetException If the offset type is not array-key.
      * @throws Exception\OutOfBoundsException If the offset does not exist.
      *
-     * @return T The value at the specified offset.
-     *
      * @psalm-mutation-free
      *
      * @psalm-assert array-key $offset
      */
     #[Override]
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(mixed $offset): T
     {
         if (!is_int($offset) && !is_string($offset)) {
             throw new Exception\InvalidOffsetException(
@@ -769,7 +671,6 @@ final class MutableSet implements MutableSetInterface
      * Sets the value at the specified offset.
      *
      * @param mixed $offset The offset to assign the value to.
-     * @param T $value The value to set.
      *
      * @psalm-external-mutation-free
      *
@@ -778,7 +679,7 @@ final class MutableSet implements MutableSetInterface
      * @throws Exception\InvalidOffsetException If the offset is not null or the value is not the same as the offset.
      */
     #[Override]
-    public function offsetSet(mixed $offset, mixed $value): void
+    public function offsetSet(mixed $offset, T $value): void
     {
         if (null === $offset || $offset === $value) {
             $this->add($value);

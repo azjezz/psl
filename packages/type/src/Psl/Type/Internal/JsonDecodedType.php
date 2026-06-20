@@ -17,30 +17,22 @@ use function json_decode;
 use const JSON_THROW_ON_ERROR;
 
 /**
- * @template T
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class JsonDecodedType extends Type\Type
+final readonly class JsonDecodedType<T> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $inner
      */
     public function __construct(
-        private Type\TypeInterface $inner,
+        private Type\TypeInterface<T> $inner,
     ) {}
 
     /**
      * @throws CoercionException
-     *
-     * @return T
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): T
     {
         if ($this->inner->matches($value)) {
             return $value;
@@ -77,12 +69,10 @@ final readonly class JsonDecodedType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return T
-     *
      * @psalm-assert T $value
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): T
     {
         return $this->inner->assert($value);
     }

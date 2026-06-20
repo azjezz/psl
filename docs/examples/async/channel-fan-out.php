@@ -12,11 +12,11 @@ use Psl\IO;
  * @var Channel\ReceiverInterface<string> $receiver
  * @var Channel\SenderInterface<string> $sender
  */
-[$receiver, $sender] = Channel\bounded(100);
+[$receiver, $sender] = Channel\bounded::<string>(100);
 
 // Spawn 3 worker consumers
 for ($i = 0; $i < 3; $i++) {
-    Async\run(function () use ($receiver, $i): void {
+    Async\run::<void>(function () use ($receiver, $i): void {
         while (!$receiver->isClosed() || !$receiver->isEmpty()) {
             $task = $receiver->receive();
             IO\write_error_line('Worker %d processing: %s', $i, $task);

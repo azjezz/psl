@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Type;
 
-$dict = Type\dict(Type\string(), Type\shape([
+$dict = Type\dict::<string, array>(Type\string(), Type\shape::<string, string>([
     'title' => Type\string(),
     'content' => Type\string(),
 ]));

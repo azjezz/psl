@@ -10,13 +10,13 @@ use Psl\Type;
 /**
  * @extends TypeTestCase<non-empty-string>
  */
-final class NonEmptyStringTypeTest extends TypeTestCase
+final class NonEmptyStringTypeTest extends TypeTestCase<string>
 {
     /**
      * @return Type\Type<non-empty-string>
      */
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\non_empty_string();
     }

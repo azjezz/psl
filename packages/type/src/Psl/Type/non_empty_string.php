@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function non_empty_string(): TypeInterface
+function non_empty_string(): TypeInterface<string>
 {
     static $instance = new Internal\NonEmptyStringType();
 

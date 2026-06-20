@@ -6,8 +6,8 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Math;
 
-Math\clamp(15, 0, 10); // 10
-Math\clamp(-5, 0, 10); // 0
+Math\clamp::<int>(15, 0, 10); // 10
+Math\clamp::<int>(-5, 0, 10); // 0
 
 Math\sum([1, 2, 3, 4]); // 10 (int)
 Math\sum_floats([1.5, 2.5]); // 4.0 (float)

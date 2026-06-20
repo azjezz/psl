@@ -20,7 +20,7 @@ use function ltrim;
  *
  * @internal
  */
-final readonly class PositiveIntType extends Type\Type
+final readonly class PositiveIntType extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true positive-int $value

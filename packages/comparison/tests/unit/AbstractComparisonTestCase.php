@@ -42,9 +42,9 @@ abstract class AbstractComparisonTestCase extends TestCase
         ];
     }
 
-    protected static function createComparableIntWrapper(int $i): Comparable
+    protected static function createComparableIntWrapper(int $i): Comparable<mixed>
     {
-        return new class($i) implements Comparable {
+        return new class($i) implements Comparable<self> {
             public function __construct(
                 public readonly int $int,
             ) {}
@@ -57,9 +57,9 @@ abstract class AbstractComparisonTestCase extends TestCase
         };
     }
 
-    protected static function createIncomparableWrapper(int $i, string $additionalInfo = ''): Comparable
+    protected static function createIncomparableWrapper(int $i, string $additionalInfo = ''): Comparable<mixed>
     {
-        return new class($i, $additionalInfo) implements Comparable {
+        return new class($i, $additionalInfo) implements Comparable<self> {
             public function __construct(
                 public readonly int $int,
                 public readonly string $additionalInfo,

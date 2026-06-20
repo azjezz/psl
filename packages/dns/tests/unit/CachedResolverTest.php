@@ -1397,12 +1397,12 @@ final class CachedResolverTest extends TestCase
                 throw new UnavailableItemException($key);
             }
 
-            public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
+            public function compute<T>(string $key, Closure $computer, null|Duration $ttl = null): T
             {
                 return $computer();
             }
 
-            public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
+            public function update<T>(string $key, Closure $computer, null|Duration $ttl = null): T
             {
                 $this->calls[] = ['key' => $key, 'ttl' => $ttl];
                 return $computer(null);
@@ -1432,13 +1432,13 @@ final class CachedResolverTest extends TestCase
                 throw new UnavailableItemException($key);
             }
 
-            public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
+            public function compute<T>(string $key, Closure $computer, null|Duration $ttl = null): T
             {
                 $this->ttls[] = $ttl;
                 return $computer();
             }
 
-            public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
+            public function update<T>(string $key, Closure $computer, null|Duration $ttl = null): T
             {
                 return $computer(null);
             }

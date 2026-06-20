@@ -16,14 +16,11 @@ use Psl\Default\DefaultInterface;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @extends IteratorAggregate<Tk, Tv>
  *
  * @api
  */
-interface CollectionInterface extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
+interface CollectionInterface<Tk: string|int, Tv> extends Countable, DefaultInterface, IteratorAggregate, JsonSerializable
 {
     /**
      * Is the CollectionInterface empty?
@@ -89,11 +86,8 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                `CollectionInterface` values.
-     *
-     * @return CollectionInterface<Tk, Tv> A CollectionInterface containing the values after a user-specified
-     *                                     condition is applied.
      */
-    public function filter(Closure $fn): CollectionInterface;
+    public function filter(Closure $fn): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `CollectionInterface` containing the values of the current `CollectionInterface`
@@ -107,12 +101,8 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                    `CollectionInterface` keys and values.
-     *
-     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` containing the values after a user-specified
-     *                                     condition is applied to the keys and values of the
-     *                                     current `CollectionInterface`.
      */
-    public function filterWithKey(Closure $fn): CollectionInterface;
+    public function filterWithKey(Closure $fn): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `CollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -123,8 +113,6 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `CollectionInterface`.
      *
      * @return CollectionInterface<Tk, array{0: Tv, 1: Tu}> The `CollectionInterface` that combines the values of
@@ -132,7 +120,7 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @psalm-mutation-free
      */
-    public function zip(array $elements): CollectionInterface;
+    public function zip<Tu>(array $elements): CollectionInterface<Tk, array>;
 
     /**
      * Returns a `CollectionInterface` containing the first `n` values of the current
@@ -146,12 +134,9 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `CollectionInterface`.
      *
-     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                     `CollectionInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
-    public function take(int $n): CollectionInterface;
+    public function take(int $n): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `CollectionInterface` containing the values of the current `CollectionInterface`
@@ -163,11 +148,8 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                condition.
-     *
-     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                     `CollectionInterface` up until the callback returns `false`.
      */
-    public function takeWhile(Closure $fn): CollectionInterface;
+    public function takeWhile(Closure $fn): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `CollectionInterface` containing the values after the `n`-th element of
@@ -181,12 +163,9 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `CollectionInterface`.
      *
-     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                     `CollectionInterface` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
-    public function drop(int $n): CollectionInterface;
+    public function drop(int $n): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `CollectionInterface` containing the values of the current `CollectionInterface`
@@ -198,11 +177,8 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `CollectionInterface`.
-     *
-     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                     `CollectionInterface` starting after the callback returns `true`.
      */
-    public function dropWhile(Closure $fn): CollectionInterface;
+    public function dropWhile(Closure $fn): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a subset of the current `CollectionInterface` starting from a given key up
@@ -219,13 +195,9 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *                           `CollectionInterface`.
      * @param int<0, max> $length The length of the returned `CollectionInterface`.
      *
-     * @return CollectionInterface<Tk, Tv> A `CollectionInterface` that is a proper subset of the current
-     *                                     `CollectionInterface` starting at `$start` up to but not including
-     *                                     the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
-    public function slice(int $start, null|int $length = null): CollectionInterface;
+    public function slice(int $start, null|int $length = null): CollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `CollectionInterface` containing the original `CollectionInterface` split into
@@ -241,5 +213,5 @@ interface CollectionInterface extends Countable, DefaultInterface, IteratorAggre
      *
      * @psalm-mutation-free
      */
-    public function chunk(int $size): CollectionInterface;
+    public function chunk(int $size): CollectionInterface<int, CollectionInterface<Tk, Tv>>;
 }

@@ -19,7 +19,7 @@ use function is_iterable;
  *
  * @internal
  */
-final readonly class MixedVecType extends Type\Type
+final readonly class MixedVecType extends Type\Type<array>
 {
     /**
      * @psalm-assert-if-true list<Tv> $value
@@ -36,7 +36,7 @@ final readonly class MixedVecType extends Type\Type
      * @return list<mixed>
      */
     #[Override]
-    public function coerce(mixed $value): iterable
+    public function coerce(mixed $value): array
     {
         if (!is_iterable($value)) {
             throw CoercionException::withValue($value, $this->toString());

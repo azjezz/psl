@@ -12,7 +12,7 @@ use Psl\Collection\MutableMap;
  *
  * @var Map<string, int> $scores
  */
-$scores = Map::fromArray(['alice' => 95, 'bob' => 82, 'charlie' => 91]);
+$scores = Map::fromArray::<string, int>(['alice' => 95, 'bob' => 82, 'charlie' => 91]);
 $scores->at('alice'); // 95
 $scores->get('unknown'); // null (no exception)
 $scores->contains('bob'); // true
@@ -28,7 +28,7 @@ $passing->toArray(); // ['alice' => 95, 'charlie' => 91]
  *
  * @var MutableMap<string, string> $config
  */
-$config = MutableMap::fromArray(['debug' => 'false']);
+$config = MutableMap::fromArray::<string, string>(['debug' => 'false']);
 $config->add('version', '2.0'); // adds or overwrites
 $config->set('debug', 'true'); // overwrites existing key (throws if missing)
 $config->remove('debug');

@@ -16,30 +16,22 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template T of array-key
- *
- * @extends Type\Type<Collection\SetInterface<T>>
- *
  * @internal
  */
-final readonly class SetType extends Type\Type
+final readonly class SetType<T: string|int> extends Type\Type<Collection\SetInterface<T>>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $type
      */
     public function __construct(
-        private Type\TypeInterface $type,
+        private Type\TypeInterface<T> $type,
     ) {}
 
     /**
      * @throws CoercionException
-     *
-     * @return Collection\SetInterface<T>
      */
     #[Override]
-    public function coerce(mixed $value): Collection\SetInterface
+    public function coerce(mixed $value): Collection\SetInterface<T>
     {
         if (is_iterable($value)) {
             /** @var Type\Type<T> $type */
@@ -69,7 +61,7 @@ final readonly class SetType extends Type\Type
                 throw CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e);
             }
 
-            return new Collection\Set($set);
+            return new Collection\Set::<T>($set);
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -78,12 +70,10 @@ final readonly class SetType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return Collection\SetInterface<T>
-     *
      * @psalm-assert Collection\SetInterface<T> $value
      */
     #[Override]
-    public function assert(mixed $value): Collection\SetInterface
+    public function assert(mixed $value): Collection\SetInterface<T>
     {
         if (is_object($value) && $value instanceof Collection\SetInterface) {
             /** @var Type\Type<T> $type */
@@ -111,7 +101,7 @@ final readonly class SetType extends Type\Type
                 // @codeCoverageIgnoreEnd
             }
 
-            return new Collection\Set($set);
+            return new Collection\Set::<T>($set);
         }
 
         throw AssertException::withValue($value, $this->toString());

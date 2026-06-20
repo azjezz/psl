@@ -14,25 +14,15 @@ use Revolt\EventLoop;
 use Revolt\EventLoop\Suspension;
 
 /**
- * @template T
- *
- * @implements SenderInterface<T>
- *
  * @internal
  */
-final class BoundedSender implements SenderInterface
+final class BoundedSender<T> implements SenderInterface<T>
 {
-    /**
-     * @use ChannelSideTrait<BoundedChannelState<T>>
-     */
-    use ChannelSideTrait;
+    use ChannelSideTrait<BoundedChannelState<T>>;
 
     private null|Suspension $suspension = null;
 
-    /**
-     * @param BoundedChannelState<T> $state
-     */
-    public function __construct(BoundedChannelState $state)
+    public function __construct(BoundedChannelState<T> $state)
     {
         $this->state = $state;
     }

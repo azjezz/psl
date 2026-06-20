@@ -9,17 +9,9 @@ use Psl\Collection;
 /**
  * @pure
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @param TypeInterface<Tk> $keyType
- * @param TypeInterface<Tv> $valueType
- *
- * @return TypeInterface<Collection\MapInterface<Tk, Tv>>
- *
  * @api
  */
-function map(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
+function map<Tk: string|int, Tv>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface<Collection\MapInterface<Tk, Tv>>
 {
-    return new Internal\MapType($keyType, $valueType);
+    return new Internal\MapType::<Tk, Tv>($keyType, $valueType);
 }

@@ -12,10 +12,10 @@ use Psl\Type;
 use const PHP_INT_MAX;
 use const PHP_INT_MIN;
 
-final class IntRangeTypeTest extends TypeTestCase
+final class IntRangeTypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
         return Type\int_range(Math\INT64_MIN, Math\INT64_MAX);
     }

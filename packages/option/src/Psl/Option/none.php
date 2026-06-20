@@ -13,7 +13,7 @@ namespace Psl\Option;
  *
  * @api
  */
-function none(): Option
+function none(): Option<never>
 {
     return Option::none();
 }

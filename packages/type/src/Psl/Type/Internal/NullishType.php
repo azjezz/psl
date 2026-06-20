@@ -10,21 +10,15 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @template T
- *
- * @extends Type\Type<T|null>
- *
  * @internal
  */
-final readonly class NullishType extends Type\Type
+final readonly class NullishType<T> extends Type\Type<T|null>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $inner
      */
     public function __construct(
-        private Type\TypeInterface $inner,
+        private Type\TypeInterface<T> $inner,
     ) {}
 
     /**
@@ -38,11 +32,9 @@ final readonly class NullishType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return T|null
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): T|null
     {
         if (null === $value) {
             return null;
@@ -54,12 +46,10 @@ final readonly class NullishType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return T|null
-     *
      * @psalm-assert T|null $value
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): T|null
     {
         if (null === $value) {
             return null;

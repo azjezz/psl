@@ -19,7 +19,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testClear(): void
     {
-        $set = $this->createFromList(['foo', 'bar']);
+        $set = $this->createFromList::<string>(['foo', 'bar']);
         $cleared = $set->clear();
 
         static::assertSame($cleared, $set);
@@ -28,7 +28,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testAdd(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz', 'qux']);
 
         $modified = $set->add('foo')->add('bar')->add('baz')->add('qux');
 
@@ -48,7 +48,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testAddAll(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz', 'qux']);
 
         $modified = $set->addAll(['foo', 'bar', 'baz', 'qux']);
 
@@ -69,7 +69,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testRemove(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         $modified = $set->remove('foo')->remove('bar');
 
@@ -80,7 +80,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testArrayAccess(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         static::assertTrue(isset($set['foo']));
         static::assertSame('foo', $set['foo']);
@@ -98,7 +98,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testOffsetSetThrowsForInvalidOffsetType(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         $this->expectException(Exception\InvalidOffsetException::class);
         $this->expectExceptionMessage('Invalid set write offset type, expected null or the same as the value.');
@@ -108,7 +108,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testOffsetSetThrowsForInvalidOffsetValue(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         $this->expectException(Exception\InvalidOffsetException::class);
         $this->expectExceptionMessage('Invalid set write offset type, expected null or the same as the value.');
@@ -118,7 +118,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testOffsetIssetThrowsForInvalidOffsetType(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         $this->expectException(Exception\InvalidOffsetException::class);
         $this->expectExceptionMessage('Invalid set read offset type, expected a string or an integer.');
@@ -128,7 +128,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testOffsetUnsetThrowsForInvalidOffsetType(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         $this->expectException(Exception\InvalidOffsetException::class);
         $this->expectExceptionMessage('Invalid set read offset type, expected a string or an integer.');
@@ -138,7 +138,7 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testOffsetGetThrowsForInvalidOffsetType(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz']);
 
         $this->expectException(Exception\InvalidOffsetException::class);
         $this->expectExceptionMessage('Invalid set read offset type, expected a string or an integer.');
@@ -148,13 +148,13 @@ final class MutableSetTest extends AbstractSetTestCase
 
     public function testFromItems(): void
     {
-        $set = MutableSet::fromItems(['a', 'b', 'b', 'c']);
+        $set = MutableSet::<string>::fromItems(['a', 'b', 'b', 'c']);
         static::assertSame(['a' => 'a', 'b' => 'b', 'c' => 'c'], $set->toArray());
     }
 
     public function testFromArrayKeysConstructor(): void
     {
-        $set = MutableSet::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
+        $set = MutableSet::<string>::fromArrayKeys(['foo' => 1, 'bar' => 1, 'baz' => 1]);
 
         static::assertCount(3, $set);
         static::assertTrue($set->contains('foo'));
@@ -165,21 +165,17 @@ final class MutableSetTest extends AbstractSetTestCase
     #[Override]
     public function testJsonSerialize(): void
     {
-        $set = $this->createFromList(['foo', 'bar', 'baz', 'qux']);
+        $set = $this->createFromList::<string>(['foo', 'bar', 'baz', 'qux']);
 
         static::assertSame(['foo', 'bar', 'baz', 'qux'], $set->jsonSerialize());
     }
 
     /**
-     * @template T of array-key
-     *
      * @param array<T, mixed> $items
-     *
-     * @return MutableSet<T>
      */
     #[Override]
-    protected function createFromList(array $items): MutableSet
+    protected function createFromList<T: string|int>(array $items): MutableSet<T>
     {
-        return MutableSet::fromArray($items);
+        return MutableSet::<string|int>::fromArray($items);
     }
 }

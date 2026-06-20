@@ -55,7 +55,7 @@ function delete_directory(string $directory, bool $recursive = false): void
         }
     }
 
-    [$result, $error_message] = Internal\box(static fn(): bool => rmdir($directory));
+    [$result, $error_message] = Internal\box::<bool>(static fn(): bool => rmdir($directory));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(sprintf(

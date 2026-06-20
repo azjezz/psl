@@ -7,10 +7,10 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class StringTypeTest extends TypeTestCase
+final class StringTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\string();
     }

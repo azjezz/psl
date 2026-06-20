@@ -7,26 +7,19 @@ namespace Psl\Dict;
 /**
  * Returns a new dict in which each value appears exactly once.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tk, Tv>
  *
  * @api
  */
-function unique(iterable $iterable): array
+function unique<Tk: string|int, Tv>(iterable $iterable): array
 {
-    return namespace\unique_by(
+    return namespace\unique_by::<Tk, Tv, Tv>(
         $iterable,
         /**
-         * @param Tv $v
-         *
-         * @return Tv
-         *
          * @pure
          */
-        static fn(mixed $v): mixed => $v,
+        static fn(Tv $v): Tv => $v,
     );
 }

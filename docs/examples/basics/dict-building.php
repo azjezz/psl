@@ -8,15 +8,15 @@ use Psl\Dict;
 use Psl\Str;
 
 // Associate: zip keys and values into a dict
-Dict\associate(['x', 'y', 'z'], [10, 20, 30]);
+Dict\associate::<string, int>(['x', 'y', 'z'], [10, 20, 30]);
 // ['x' => 10, 'y' => 20, 'z' => 30]
 
 // From entries: build from [key, value] tuples
-Dict\from_entries([['name', 'Alice'], ['role', 'admin']]);
+Dict\from_entries::<string, string>([['name', 'Alice'], ['role', 'admin']]);
 // ['name' => 'Alice', 'role' => 'admin']
 
 // From keys: generate values from keys using a function
-Dict\from_keys(
+Dict\from_keys::<string, int>(
     ['sm', 'md', 'lg'],
     /**
      * @param 'sm'|'md'|'lg' $size
@@ -33,11 +33,11 @@ Dict\from_keys(
 
 // Reindex: re-key an iterable using a function applied to each value
 $users = [['id' => 42, 'name' => 'Alice'], ['id' => 7, 'name' => 'Bob']];
-Dict\reindex($users, fn($user) => $user['id']);
+Dict\reindex::<int, int, array>($users, fn($user) => $user['id']);
 // [42 => ['id' => 42, 'name' => 'Alice'], 7 => ['id' => 7, 'name' => 'Bob']]
 
 // Pull: build a dict by deriving both new keys and new values
-Dict\pull(
+Dict\pull::<int, string, string, int>(
     ['Alice', 'Bob'],
     fn(string $name) => Str\length($name), // value function
     fn(string $name) => Str\lowercase($name), // key function

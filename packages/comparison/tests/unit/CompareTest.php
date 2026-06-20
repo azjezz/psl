@@ -13,7 +13,7 @@ class CompareTest extends AbstractComparisonTestCase
     #[DataProvider('provideComparisonCases')]
     public function testItCanCompare(mixed $a, mixed $b, Order $expected): void
     {
-        static::assertSame($expected, Comparison\compare($a, $b));
+        static::assertSame($expected, Comparison\compare::<mixed>($a, $b));
     }
 
     public function testItCanFailComparing(): void
@@ -24,7 +24,7 @@ class CompareTest extends AbstractComparisonTestCase
         $this->expectException(Comparison\Exception\IncomparableException::class);
         $this->expectExceptionMessage('Unable to compare "int" with "int".');
 
-        Comparison\compare($a, $b);
+        Comparison\compare::<Comparison\Comparable<mixed>>($a, $b);
     }
 
     public function testOrderDefault(): void
@@ -40,6 +40,6 @@ class CompareTest extends AbstractComparisonTestCase
         $this->expectException(Comparison\Exception\IncomparableException::class);
         $this->expectExceptionMessage('Unable to compare "int" with "int": Can only compare even numbers');
 
-        Comparison\compare($a, $b);
+        Comparison\compare::<Comparison\Comparable<mixed>>($a, $b);
     }
 }

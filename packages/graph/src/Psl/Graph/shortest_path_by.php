@@ -33,12 +33,6 @@ use const PHP_INT_MAX;
  *      // Convert float weights to int by multiplying by 1000
  *      Graph\shortest_path_by($graph, 'A', 'C', fn($w) => (int)($w * 1000)) // ['A', 'B', 'C']
  *
- * @template TNode
- * @template TWeight
- *
- * @param DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph
- * @param TNode $from
- * @param TNode $to
  * @param (Closure(TWeight): int) $weightConverter Function to convert edge weight to int priority
  *
  * @return list<TNode>|null
@@ -47,10 +41,10 @@ use const PHP_INT_MAX;
  *
  * @api
  */
-function shortest_path_by(
-    DirectedGraph|UndirectedGraph $graph,
-    mixed $from,
-    mixed $to,
+function shortest_path_by<TNode, TWeight>(
+    DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph,
+    TNode $from,
+    TNode $to,
     Closure $weightConverter,
 ): null|array {
     if (!$graph->hasNode($from) || !$graph->hasNode($to)) {
@@ -63,7 +57,7 @@ function shortest_path_by(
 
     // Check if graph is weighted
     $isWeighted = false;
-    foreach (namespace\nodes($graph) as $node) {
+    foreach (namespace\nodes::<TNode, TWeight>($graph) as $node) {
         foreach ($graph->getEdgesFrom($node) as $edge) {
             if (null === $edge->weight) {
                 continue;
@@ -78,7 +72,7 @@ function shortest_path_by(
         // BFS for unweighted graphs
         $parent = [];
         $visited = [];
-        $queue = new Queue();
+        $queue = new Queue::<TNode>();
         $queue->enqueue($from);
         $fromKey = Internal\get_node_key($from);
         $visited[$fromKey] = true;
@@ -100,7 +94,7 @@ function shortest_path_by(
                 return array_reverse($path);
             }
 
-            foreach (namespace\neighbors($graph, $node) as $neighbor) {
+            foreach (namespace\neighbors::<TNode, TWeight>($graph, $node) as $neighbor) {
                 $neighborKey = Internal\get_node_key($neighbor);
                 if (!isset($visited[$neighborKey])) {
                     $visited[$neighborKey] = true;
@@ -119,9 +113,9 @@ function shortest_path_by(
     $visited = [];
 
     /** @var PriorityQueue<array{0: int, 1: TNode}> $pq */
-    $pq = new PriorityQueue();
+    $pq = new PriorityQueue::<array>();
 
-    foreach (namespace\nodes($graph) as $node) {
+    foreach (namespace\nodes::<TNode, TWeight>($graph) as $node) {
         $key = Internal\get_node_key($node);
         $distances[$key] = PHP_INT_MAX;
         $parent[$key] = null;

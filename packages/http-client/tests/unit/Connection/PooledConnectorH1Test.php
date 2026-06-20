@@ -108,7 +108,7 @@ final class PooledConnectorH1Test extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use ($listener, $maxRequests, $response): int {
+        $future = Async\run::<int>(static function () use ($listener, $maxRequests, $response): int {
             $acceptCount = 0;
             $handled = 0;
 

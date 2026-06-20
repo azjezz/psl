@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Async;
 use Psl\DateTime\Duration;
 
-$results = Async\concurrently([
+$results = Async\concurrently::<int, string>([
     static function (): string {
         Async\sleep(Duration::milliseconds(100));
         return 'users created';

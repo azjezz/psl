@@ -26,9 +26,6 @@ use function array_slice;
  *      Tree\at_index($tree, [])
  *      => 'a' (root value)
  *
- * @template T
- *
- * @param NodeInterface<T>  $node
  * @param list<int<0, max>> $indexPath
  *
  * @return T|null null if the index path is invalid
@@ -37,7 +34,7 @@ use function array_slice;
  *
  * @api
  */
-function at_index(NodeInterface $node, array $indexPath): mixed
+function at_index<T>(NodeInterface<T> $node, array $indexPath): T|null
 {
     if ([] === $indexPath) {
         return $node->getValue();
@@ -55,5 +52,5 @@ function at_index(NodeInterface $node, array $indexPath): mixed
     }
 
     /** @var T */
-    return namespace\at_index($node, array_slice($indexPath, 1));
+    return namespace\at_index::<T>($node, array_slice($indexPath, 1));
 }

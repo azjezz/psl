@@ -14,11 +14,9 @@ use function array_shift;
 use function array_splice;
 
 /**
- * @template T
- *
  * @internal
  */
-final class BoundedChannelState implements ChannelInterface
+final class BoundedChannelState<T> implements ChannelInterface
 {
     /**
      * @var list<Suspension<mixed>>
@@ -169,12 +167,10 @@ final class BoundedChannelState implements ChannelInterface
     }
 
     /**
-     * @param T $message
-     *
      * @throws Exception\ClosedChannelException If the channel is closed.
      * @throws Exception\FullChannelException If the channel is full.
      */
-    public function send(mixed $message): void
+    public function send(T $message): void
     {
         if ($this->closed) {
             throw Exception\ClosedChannelException::forSending();
@@ -194,10 +190,8 @@ final class BoundedChannelState implements ChannelInterface
     /**
      * @throws Exception\ClosedChannelException If the channel is closed, and there's no more messages to receive.
      * @throws Exception\EmptyChannelException If the channel is empty.
-     *
-     * @return T
      */
-    public function receive(): mixed
+    public function receive(): T
     {
         if (!$this->messages) {
             if ($this->closed) {

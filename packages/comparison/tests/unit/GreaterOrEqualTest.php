@@ -13,7 +13,7 @@ class GreaterOrEqualTest extends AbstractComparisonTestCase
     #[DataProvider('provideComparisonCases')]
     public function testItCanCheckGreaterOrEqual(mixed $a, mixed $b, Order $expected): void
     {
-        static::assertSame($expected === Order::Greater || $expected === Order::Equal, Comparison\greater_or_equal(
+        static::assertSame($expected === Order::Greater || $expected === Order::Equal, Comparison\greater_or_equal::<mixed>(
             $a,
             $b,
         ));

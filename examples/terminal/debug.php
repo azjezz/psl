@@ -38,9 +38,9 @@ function format_event(int $index, string $label, Color\Color $color, string $det
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(new DebugState(), title: 'Event Debug', mouseMotion: true);
+    $app = Terminal\Application::create::<DebugState>(new DebugState(), title: 'Event Debug', mouseMotion: true);
 
-    $app->on(Event\Key::class, static function (Event\Key $event, DebugState $state) use ($app): void {
+    $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, DebugState $state) use ($app): void {
         if ($event->is('ctrl+c')) {
             $app->stop();
             return;
@@ -63,7 +63,7 @@ Async\main(static function (): int {
         $state->scroll_offset = PHP_INT_MAX;
     });
 
-    $app->on(Event\Mouse::class, static function (Event\Mouse $event, DebugState $state): void {
+    $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, DebugState $state): void {
         $state->event_count++;
 
         $mods = [];
@@ -99,7 +99,7 @@ Async\main(static function (): int {
         $state->scroll_offset = PHP_INT_MAX;
     });
 
-    $app->on(Event\Paste::class, static function (Event\Paste $event, DebugState $state): void {
+    $app->on::<Event\Paste>(Event\Paste::class, static function (Event\Paste $event, DebugState $state): void {
         $state->event_count++;
         $text = $event->text;
         $preview = Str\width($text) > 40 ? Str\width_slice($text, 0, 40) . '...' : $text;
@@ -113,7 +113,7 @@ Async\main(static function (): int {
         $state->scroll_offset = PHP_INT_MAX;
     });
 
-    $app->on(Event\Focus::class, static function (Event\Focus $event, DebugState $state): void {
+    $app->on::<Event\Focus>(Event\Focus::class, static function (Event\Focus $event, DebugState $state): void {
         $state->event_count++;
 
         $state->events[] = namespace\format_event(
@@ -125,7 +125,7 @@ Async\main(static function (): int {
         $state->scroll_offset = PHP_INT_MAX;
     });
 
-    $app->on(Event\Resize::class, static function (Event\Resize $event, DebugState $state): void {
+    $app->on::<Event\Resize>(Event\Resize::class, static function (Event\Resize $event, DebugState $state): void {
         $state->event_count++;
 
         $state->events[] = namespace\format_event(
@@ -152,10 +152,10 @@ Async\main(static function (): int {
             ->padding(right: 2, left: 1);
 
         $inner = $block->innerArea($main);
-        $totalLines = Iter\count($state->events);
-        $visibleLines = Math\maxva(1, $inner->height);
+        $totalLines = Iter\count::<Widget\Line>($state->events);
+        $visibleLines = Math\maxva::<int>(1, $inner->height);
 
-        $state->scroll_offset = Math\clamp($state->scroll_offset, 0, Math\maxva(0, $totalLines - 1));
+        $state->scroll_offset = Math\clamp::<int>($state->scroll_offset, 0, Math\maxva::<int>(0, $totalLines - 1));
 
         $block->render($main, Widget\Paragraph::new($state->events)->scroll($state->scroll_offset), $buffer);
 

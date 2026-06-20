@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\EitherOrBoth;
 
-$both = new EitherOrBoth\Both('l', 'r');
+$both = new EitherOrBoth\Both::<string, string>('l', 'r');
 
 // Exclusive predicates: true for exactly one variant
 $both->isLeft(); // false
@@ -17,7 +17,7 @@ $both->isBoth(); // true
 $both->hasLeft(); // true -- Both has a left side
 $both->hasRight(); // true -- Both has a right side
 
-$leftOnly = new EitherOrBoth\Left('l');
+$leftOnly = new EitherOrBoth\Left::<string>('l');
 $leftOnly->isLeft(); // true
 $leftOnly->hasLeft(); // true
 $leftOnly->hasRight(); // false

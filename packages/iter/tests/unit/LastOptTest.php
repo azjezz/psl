@@ -15,7 +15,7 @@ final class LastOptTest extends TestCase
     #[DataProvider('provideDataSome')]
     public function testLastSome(null|string $expected, iterable $iterable): void
     {
-        $result = Iter\last_opt($iterable);
+        $result = Iter\last_opt::<string|null>($iterable);
 
         static::assertSame($expected, $result->unwrap());
     }
@@ -24,9 +24,9 @@ final class LastOptTest extends TestCase
     {
         yield ['d', ['a' => 'b', 'c' => 'd']];
         yield ['b', ['a', 'b']];
-        yield ['b', new Collection\Vector(['a', 'b'])];
-        yield ['b', new Collection\Vector(['b'])];
-        yield ['d', new Collection\Map(['a' => 'b', 'c' => 'd'])];
+        yield ['b', new Collection\Vector::<string>(['a', 'b'])];
+        yield ['b', new Collection\Vector::<string>(['b'])];
+        yield ['d', new Collection\Map::<string, string>(['a' => 'b', 'c' => 'd'])];
         yield [
             null,
             (static function (): iterable {
@@ -38,7 +38,7 @@ final class LastOptTest extends TestCase
     #[DataProvider('provideDataNone')]
     public function testLastNone(iterable $iterable): void
     {
-        $result = Iter\last_opt($iterable);
+        $result = Iter\last_opt::<string|null>($iterable);
 
         static::assertTrue($result->isNone());
     }

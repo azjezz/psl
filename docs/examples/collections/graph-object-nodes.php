@@ -14,14 +14,14 @@ class Task
     ) {}
 }
 
-$graph = Graph\directed();
+$graph = Graph\directed::<Task, int>();
 $compile = new Task('compile', 5);
 $test = new Task('test', 3);
 $deploy = new Task('deploy', 2);
 
-$graph = Graph\add_edge($graph, $compile, $test);
-$graph = Graph\add_edge($graph, $test, $deploy);
+$graph = Graph\add_edge::<Task, int>($graph, $compile, $test);
+$graph = Graph\add_edge::<Task, int>($graph, $test, $deploy);
 
-$executionOrder = Graph\topological_sort($graph);
+$executionOrder = Graph\topological_sort::<Task, int>($graph);
 
 // [$compile, $test, $deploy]

@@ -22,8 +22,8 @@ final class AwaitableTest extends TestCase
 {
     public function testCompleteAwait(): void
     {
-        $state = new State();
-        $awaitable = new Awaitable($state);
+        $state = new State::<string>();
+        $awaitable = new Awaitable::<string>($state);
 
         static::assertFalse($awaitable->isComplete());
         $state->complete('hello');
@@ -36,8 +36,8 @@ final class AwaitableTest extends TestCase
 
     public function testErroredAwait(): void
     {
-        $state = new State();
-        $awaitable = new Awaitable($state);
+        $state = new State::<mixed>();
+        $awaitable = new Awaitable::<mixed>($state);
 
         static::assertFalse($awaitable->isComplete());
         $state->error(new InvariantViolationException('foo'));
@@ -51,8 +51,8 @@ final class AwaitableTest extends TestCase
 
     public function testDiscardedAwaitableError(): void
     {
-        $state = new State();
-        $awaitable = new Awaitable($state);
+        $state = new State::<mixed>();
+        $awaitable = new Awaitable::<mixed>($state);
 
         static::assertFalse($awaitable->isComplete());
         $state->error(new InvariantViolationException('foo'));
@@ -76,8 +76,8 @@ final class AwaitableTest extends TestCase
 
     public function testDiscardedIgnoredAwaitableError(): void
     {
-        $state = new State();
-        $awaitable = new Awaitable($state);
+        $state = new State::<mixed>();
+        $awaitable = new Awaitable::<mixed>($state);
 
         static::assertFalse($awaitable->isComplete());
         $state->error(new InvariantViolationException('foo'));
@@ -92,15 +92,15 @@ final class AwaitableTest extends TestCase
 
     public function testIterate(): void
     {
-        $iterator = Awaitable::iterate([
-            'foo' => Awaitable::complete('foo'),
+        $iterator = Awaitable::iterate::<string, string>([
+            'foo' => Awaitable::<string>::complete('foo'),
             'bar' => Awaitable::error(new InvariantViolationException('bar')),
-            'baz' => Async\run(static function (): never {
+            'baz' => Async\run::<never>(static function (): never {
                 Async\sleep(DateTime\Duration::milliseconds(1));
 
                 throw new InvariantViolationException('baz');
             }),
-            'qux' => Async\run(static function (): string {
+            'qux' => Async\run::<string>(static function (): string {
                 Async\sleep(DateTime\Duration::milliseconds(30));
 
                 return 'qux';
@@ -140,7 +140,7 @@ final class AwaitableTest extends TestCase
 
     public function testIterateGenerator(): void
     {
-        $generator1 = Async\run(static function (): iterable {
+        $generator1 = Async\run::<iterable>(static function (): iterable {
             yield 'foo' => 'foo';
 
             Async\sleep(DateTime\Duration::milliseconds(3));
@@ -148,7 +148,7 @@ final class AwaitableTest extends TestCase
             yield 'bar' => 'bar';
         });
 
-        $generator2 = Async\run(static function (): iterable {
+        $generator2 = Async\run::<iterable>(static function (): iterable {
             yield 'baz' => 'baz';
 
             Async\sleep(DateTime\Duration::milliseconds(1));
@@ -156,7 +156,7 @@ final class AwaitableTest extends TestCase
             yield 'qux' => 'qux';
         });
 
-        $generator3 = Async\run(static function () use ($generator1, $generator2): iterable {
+        $generator3 = Async\run::<iterable>(static function () use ($generator1, $generator2): iterable {
             yield 'gen1' => $generator1;
 
             Async\sleep(DateTime\Duration::milliseconds(2));
@@ -166,15 +166,15 @@ final class AwaitableTest extends TestCase
 
         $values = [];
         // Awaitable::iterate() to throw the first error based on completion order instead of argument order
-        foreach (Awaitable::iterate($generator3) as $index => $awaitable) {
+        foreach (Awaitable::iterate::<string, iterable>($generator3) as $index => $awaitable) {
             $values[$index] = $awaitable->await();
         }
 
         static::assertArrayHasKey('gen1', $values);
         static::assertArrayHasKey('gen2', $values);
 
-        $values['gen1'] = Dict\from_iterable($values['gen1']);
-        $values['gen2'] = Dict\from_iterable($values['gen2']);
+        $values['gen1'] = Dict\from_iterable::<string, string>($values['gen1']);
+        $values['gen2'] = Dict\from_iterable::<string, string>($values['gen2']);
 
         static::assertSame(['foo' => 'foo', 'bar' => 'bar'], $values['gen1']);
         static::assertSame(['baz' => 'baz', 'qux' => 'qux'], $values['gen2']);
@@ -182,16 +182,16 @@ final class AwaitableTest extends TestCase
 
     public function testThenOnSuccess(): void
     {
-        $awaitable = Async\run(static fn(): string => 'hello');
+        $awaitable = Async\run::<string>(static fn(): string => 'hello');
 
         $awaitable = $awaitable
-            ->then(Str\reverse(...), static fn(Throwable $_): never => exit(0))
-            ->then(
+            ->then::<string>(Str\reverse(...), static fn(Throwable $_): never => exit(0))
+            ->then::<never>(
                 static fn(string $result): never => throw new InvariantViolationException($result),
                 static fn(Throwable $_): never => exit(0),
             )
-            ->then(static fn(mixed $_): never => exit(0), static fn(Throwable $exception): never => throw $exception)
-            ->then(
+            ->then::<never>(static fn(mixed $_): never => exit(0), static fn(Throwable $exception): never => throw $exception)
+            ->then::<string>(
                 static fn(mixed $_): never => exit(0),
                 static fn(Throwable $exception): string => $exception->getMessage(),
             );
@@ -201,13 +201,13 @@ final class AwaitableTest extends TestCase
 
     public function testMap(): void
     {
-        $awaitable = Async\run(static fn(): string => 'hello');
+        $awaitable = Async\run::<string>(static fn(): string => 'hello');
 
-        $ref = new Psl\Ref('');
+        $ref = new Psl\Ref::<string>('');
         $awaitable = $awaitable
-            ->map(Str\reverse(...))
-            ->map(static fn(string $result): never => throw new InvariantViolationException($result))
-            ->catch(static fn(InvariantViolationException $exception): string => $exception->getMessage())
+            ->map::<string>(Str\reverse(...))
+            ->map::<never>(static fn(string $result): never => throw new InvariantViolationException($result))
+            ->catch::<string>(static fn(InvariantViolationException $exception): string => $exception->getMessage())
             ->always(static fn(): string => $ref->value = 'hello');
 
         static::assertSame('olleh', $awaitable->await());
@@ -216,7 +216,7 @@ final class AwaitableTest extends TestCase
 
     public function testAwaitWithCancellationTokenCompletes(): void
     {
-        $awaitable = Async\run(static fn(): string => 'hello');
+        $awaitable = Async\run::<string>(static fn(): string => 'hello');
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::seconds(5));
 
         static::assertSame('hello', $awaitable->await($token));
@@ -226,12 +226,12 @@ final class AwaitableTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
-            $deferred = new Async\Deferred();
+        Async\run::<void>(static function (): void {
+            $deferred = new Async\Deferred::<null>();
             $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
             // Keep the loop alive long enough for the timeout to fire
-            Async\run(static function () use ($deferred): void {
+            Async\run::<void>(static function () use ($deferred): void {
                 Async\sleep(DateTime\Duration::seconds(5));
                 $deferred->complete(null);
             })->ignore();
@@ -244,8 +244,8 @@ final class AwaitableTest extends TestCase
     {
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function (): void {
-            $deferred = new Async\Deferred();
+        Async\run::<void>(static function (): void {
+            $deferred = new Async\Deferred::<null>();
             $token = new Async\SignalCancellationToken();
 
             Async\Scheduler::delay(DateTime\Duration::milliseconds(10), static fn(string $_) => $token->cancel());
@@ -259,7 +259,7 @@ final class AwaitableTest extends TestCase
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
-        $awaitable = Awaitable::complete('hello');
+        $awaitable = Awaitable::<string>::complete('hello');
 
         $this->expectException(Async\Exception\CancelledException::class);
 
@@ -286,9 +286,9 @@ final class AwaitableTest extends TestCase
 
     public function testAwaitUnsubscribesOnCompletion(): void
     {
-        $result = Async\run(static function (): string {
+        $result = Async\run::<string>(static function (): string {
             $token = new Async\SignalCancellationToken();
-            $awaitable = Async\run(static fn(): string => 'done');
+            $awaitable = Async\run::<string>(static fn(): string => 'done');
 
             $value = $awaitable->await($token);
 

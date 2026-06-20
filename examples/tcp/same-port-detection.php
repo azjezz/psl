@@ -18,7 +18,7 @@ $keyFile = __DIR__ . '/certs/server.key';
 
 $tlsConfig = TLS\ServerConfiguration::create(TLS\Certificate::create($certFile, $keyFile));
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($tlsConfig): void {
         $lazyAcceptor = new TLS\LazyAcceptor();
         $listener = TCP\listen('localhost', 8443);

@@ -23,20 +23,15 @@ use function count;
  *      $graph = Graph\add_edge($graph, 'C', 'D');
  *      Graph\topological_sort($graph) // ['A', 'B', 'C', 'D'] or ['A', 'C', 'B', 'D']
  *
- * @template TNode
- * @template TWeight
- *
- * @param DirectedGraph<TNode, TWeight> $graph
- *
  * @return list<TNode>|null null if graph contains a cycle
  *
  * @pure
  *
  * @api
  */
-function topological_sort(DirectedGraph $graph): null|array
+function topological_sort<TNode, TWeight>(DirectedGraph<TNode, TWeight> $graph): null|array
 {
-    $allNodes = namespace\nodes($graph);
+    $allNodes = namespace\nodes::<TNode, TWeight>($graph);
     $inDegree = [];
 
     // Initialize in-degree for all nodes
@@ -47,14 +42,14 @@ function topological_sort(DirectedGraph $graph): null|array
 
     // Calculate in-degree for each node
     foreach ($allNodes as $node) {
-        foreach (namespace\neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors::<TNode, TWeight>($graph, $node) as $neighbor) {
             $key = Internal\get_node_key($neighbor);
             $inDegree[$key]++;
         }
     }
 
     // Start with nodes that have no incoming edges
-    $queue = new Queue();
+    $queue = new Queue::<TNode>();
     foreach ($allNodes as $node) {
         $key = Internal\get_node_key($node);
         if ($inDegree[$key] === 0) {
@@ -68,7 +63,7 @@ function topological_sort(DirectedGraph $graph): null|array
         $result[] = $node;
 
         // Reduce in-degree for all neighbors
-        foreach (namespace\neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors::<TNode, TWeight>($graph, $node) as $neighbor) {
             $key = Internal\get_node_key($neighbor);
             $inDegree[$key]--;
             if ($inDegree[$key] === 0) {

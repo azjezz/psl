@@ -10,15 +10,9 @@ namespace Psl\Type;
  *
  * @pure
  *
- * @template T
- *
- * @param TypeInterface<T> $type
- *
- * @return TypeInterface<T>
- *
  * @api
  */
-function always_assert(TypeInterface $type): TypeInterface
+function always_assert<T>(TypeInterface<T> $type): TypeInterface<T>
 {
-    return new Internal\AlwaysAssertType($type);
+    return new Internal\AlwaysAssertType::<T>($type);
 }

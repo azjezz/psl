@@ -26,7 +26,7 @@ use const STREAM_SERVER_LISTEN;
  */
 function server_listen(string $uri, array $context = []): mixed
 {
-    return namespace\suppress(
+    return namespace\suppress::<mixed>(
         /**
          * @return resource
          */

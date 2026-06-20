@@ -14,7 +14,7 @@ final class EqualTest extends TestCase
     #[DataProvider('provideData')]
     public function testEqualReturnsTheExpectedValue(bool $expected, array $array, array $other): void
     {
-        static::assertSame($expected, Dict\equal($array, $other));
+        static::assertSame($expected, Dict\equal::<string|int, mixed>($array, $other));
     }
 
     public static function provideData(): array
@@ -42,8 +42,8 @@ final class EqualTest extends TestCase
             ],
             [
                 false,
-                [new Collection\Vector([])],
-                [new Collection\Vector([])],
+                [new Collection\Vector::<mixed>([])],
+                [new Collection\Vector::<mixed>([])],
             ],
         ];
     }

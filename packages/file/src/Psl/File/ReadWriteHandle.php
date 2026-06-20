@@ -65,7 +65,7 @@ final readonly class ReadWriteHandle extends Internal\AbstractHandleWrapper impl
         if (!$isFile) {
             $directory = dirname($file);
             if (!is_dir($directory)) {
-                $mkdir = Internal\suppress(static fn() => mkdir($directory, 0o777, true));
+                $mkdir = Internal\suppress::<bool>(static fn() => mkdir($directory, 0o777, true));
                 if (!$mkdir && !is_dir($directory)) {
                     throw new Exception\RuntimeException(sprintf(
                         'Failed to create the directory for file "%s".',

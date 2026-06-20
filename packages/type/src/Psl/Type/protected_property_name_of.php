@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function protected_property_name_of(string $classname): TypeInterface
+function protected_property_name_of(string $classname): TypeInterface<string>
 {
     return new Internal\ProtectedPropertyNameOfType($classname);
 }

@@ -9,17 +9,9 @@ use Psl\Collection;
 /**
  * @pure
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @param TypeInterface<Tk> $keyType
- * @param TypeInterface<Tv> $valueType
- *
- * @return TypeInterface<Collection\MutableMapInterface<Tk, Tv>>
- *
  * @api
  */
-function mutable_map(TypeInterface $keyType, TypeInterface $valueType): TypeInterface
+function mutable_map<Tk: string|int, Tv>(TypeInterface<Tk> $keyType, TypeInterface<Tv> $valueType): TypeInterface<Collection\MutableMapInterface<Tk, Tv>>
 {
-    return new Internal\MutableMapType($keyType, $valueType);
+    return new Internal\MutableMapType::<Tk, Tv>($keyType, $valueType);
 }

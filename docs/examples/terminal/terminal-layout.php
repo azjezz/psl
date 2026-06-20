@@ -11,9 +11,9 @@ use Psl\Terminal\Widget;
 
 final class LayoutState {}
 
-$app = Terminal\Application::create(new LayoutState(), title: 'Layout Demo');
+$app = Terminal\Application::create::<LayoutState>(new LayoutState(), title: 'Layout Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, LayoutState $_state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, LayoutState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

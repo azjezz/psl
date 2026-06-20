@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function numeric_string(): TypeInterface
+function numeric_string(): TypeInterface<string>
 {
     static $instance = new Internal\NumericStringType();
 

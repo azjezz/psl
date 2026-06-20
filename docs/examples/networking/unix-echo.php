@@ -13,7 +13,7 @@ $path = Filesystem\create_temporary_file(Env\temp_dir(), 'psl-unix-echo-sock-');
 
 $listener = Unix\listen($path);
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         $connection = $listener->accept();
         $data = $connection->readAll();

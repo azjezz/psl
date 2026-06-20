@@ -18,14 +18,14 @@ final class LazyTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
 
-        Fun\lazy(static function (): void {
+        Fun\lazy::<void>(static function (): void {
             throw new RuntimeException('nonono');
         });
     }
 
     public function testItCanBeUsedAsALazyProxy(): void
     {
-        $proxy = Fun\lazy(static fn(): int => 132);
+        $proxy = Fun\lazy::<int>(static fn(): int => 132);
 
         static::assertSame(132, $proxy());
     }
@@ -38,7 +38,7 @@ final class LazyTest extends TestCase
                 return 132;
             }
         };
-        $proxy = Fun\lazy(static fn(): object => $x);
+        $proxy = Fun\lazy::<object>(static fn(): object => $x);
 
         static::assertSame($x, $proxy());
         static::assertSame($x, $proxy());
@@ -49,8 +49,8 @@ final class LazyTest extends TestCase
 
     public function testItCanDealWithNullValues(): void
     {
-        $counter = new Psl\Ref(0);
-        $proxy = Fun\lazy(static function () use ($counter): null {
+        $counter = new Psl\Ref::<int>(0);
+        $proxy = Fun\lazy::<null>(static function () use ($counter): null {
             $counter->value++;
             if ($counter->value > 1) {
                 throw new RuntimeException('The initializer should only be called once');
@@ -66,10 +66,10 @@ final class LazyTest extends TestCase
 
     public function testItCanBeUsedAsALazyEvaluator(): void
     {
-        $a = Fun\lazy(static fn(): int => 1);
+        $a = Fun\lazy::<int>(static fn(): int => 1);
         for ($i = 1; $i <= 10; $i++) {
             $b = $a;
-            $a = Fun\lazy(static fn(): int => $b() + $b());
+            $a = Fun\lazy::<int>(static fn(): int => $b() + $b());
         }
 
         static::assertSame($a(), pow(2, 10));
@@ -77,7 +77,7 @@ final class LazyTest extends TestCase
 
     public function testItCanBeUsedAsALazyStream(): void
     {
-        $incrementalNumbersStream = Fun\lazy(static function (): iterable {
+        $incrementalNumbersStream = Fun\lazy::<iterable>(static function (): iterable {
             $i = 0;
             while (true) {
                 yield ++$i;

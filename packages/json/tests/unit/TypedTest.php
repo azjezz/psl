@@ -15,7 +15,7 @@ final class TypedTest extends TestCase
     public function testTyped(): void
     {
         /** @var MapInterface $actual */
-        $actual = Json\typed(
+        $actual = Json\typed::<MapInterface>(
             '{
             "name": "php-standard-library/php-standard-library",
             "type": "library",
@@ -23,7 +23,7 @@ final class TypedTest extends TestCase
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
             "license": "MIT"
         }',
-            Type\map(Type\string(), Type\union(Type\string(), Type\vector(Type\string()))),
+            Type\map::<string, string|VectorInterface>(Type\string(), Type\union::<string|VectorInterface>(Type\string(), Type\vector::<string>(Type\string()))),
         );
 
         static::assertInstanceOf(MapInterface::class, $actual);
@@ -38,7 +38,7 @@ final class TypedTest extends TestCase
 
     public function testTypedVector(): void
     {
-        $actual = Json\typed('["php", "std", "stdlib", "utility", "psl"]', Type\vector(Type\string()));
+        $actual = Json\typed::<VectorInterface>('["php", "std", "stdlib", "utility", "psl"]', Type\vector::<string>(Type\string()));
 
         static::assertInstanceOf(VectorInterface::class, $actual);
         static::assertSame(['php', 'std', 'stdlib', 'utility', 'psl'], $actual->toArray());
@@ -51,25 +51,25 @@ final class TypedTest extends TestCase
             'Could not coerce "string" to type "' . MapInterface::class . '<string, int>" at path "name".',
         );
 
-        Json\typed('{
+        Json\typed::<MapInterface>('{
             "name": "php-standard-library/php-standard-library",
             "type": "library",
             "description": "PHP Standard Library.",
             "keywords": ["php", "std", "stdlib", "utility", "psl"],
             "license": "MIT"
-        }', Type\map(Type\string(), Type\int()));
+        }', Type\map::<string, int>(Type\string(), Type\int()));
     }
 
     public function testsTypedAsserts(): void
     {
-        $actual = Json\typed('{"foo": "bar"}', Type\map(Type\string(), Type\string()));
+        $actual = Json\typed::<MapInterface>('{"foo": "bar"}', Type\map::<string, string>(Type\string(), Type\string()));
 
         static::assertSame(['foo' => 'bar'], $actual->toArray());
     }
 
     public function testTypedCoerce(): void
     {
-        $actual = Json\typed('{"foo": 123}', Type\map(Type\string(), Type\string()));
+        $actual = Json\typed::<MapInterface>('{"foo": 123}', Type\map::<string, string>(Type\string(), Type\string()));
 
         static::assertSame(['foo' => '123'], $actual->toArray());
     }

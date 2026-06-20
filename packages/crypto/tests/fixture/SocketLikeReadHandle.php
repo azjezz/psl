@@ -82,7 +82,7 @@ final class SocketLikeReadHandle implements IO\ReadHandleInterface
         }
 
         /** @var non-negative-int $toRead */
-        $toRead = $maxBytes !== null ? Math\minva($maxBytes, $available) : $available;
+        $toRead = $maxBytes !== null ? Math\minva::<int>($maxBytes, $available) : $available;
         $chunk = Byte\slice($this->buffer, $this->offset, $toRead);
         $this->offset += $toRead;
 

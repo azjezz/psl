@@ -44,7 +44,7 @@ final class Scrollbar implements WidgetInterface
      */
     public function contentLength(int $length): self
     {
-        $this->contentLength = Math\maxva(0, $length);
+        $this->contentLength = Math\maxva::<int>(0, $length);
         return $this;
     }
 
@@ -53,7 +53,7 @@ final class Scrollbar implements WidgetInterface
      */
     public function viewportLength(int $length): self
     {
-        $this->viewportLength = Math\maxva(0, $length);
+        $this->viewportLength = Math\maxva::<int>(0, $length);
         return $this;
     }
 
@@ -62,7 +62,7 @@ final class Scrollbar implements WidgetInterface
      */
     public function position(int $position): self
     {
-        $this->position = Math\maxva(0, $position);
+        $this->position = Math\maxva::<int>(0, $position);
         return $this;
     }
 
@@ -103,16 +103,16 @@ final class Scrollbar implements WidgetInterface
             return;
         }
 
-        $thumbSize = Math\maxva(
+        $thumbSize = Math\maxva::<int>(
             1,
             (int) Math\round(((float) $this->viewportLength / (float) $this->contentLength) * (float) $trackHeight),
         );
         $maxPosition = $this->contentLength - $this->viewportLength;
-        $clampedPosition = Math\clamp($this->position, 0, $maxPosition);
+        $clampedPosition = Math\clamp::<int>($this->position, 0, $maxPosition);
         $thumbOffset = $maxPosition > 0
             ? (int) Math\round(((float) $clampedPosition / (float) $maxPosition) * (float) ($trackHeight - $thumbSize))
             : 0;
-        $thumbOffset = Math\clamp($thumbOffset, 0, $trackHeight - $thumbSize);
+        $thumbOffset = Math\clamp::<int>($thumbOffset, 0, $trackHeight - $thumbSize);
 
         for ($i = 0; $i < $trackHeight; $i++) {
             $isThumb = $i >= $thumbOffset && $i < ($thumbOffset + $thumbSize);

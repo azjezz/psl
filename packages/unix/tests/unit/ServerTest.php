@@ -55,9 +55,9 @@ final class ServerTest extends TestCase
         $sock = Filesystem\create_temporary_file(prefix: 'psl-examples') . '.sock';
         $listener = Unix\listen($sock);
 
-        $first = Async\run($listener->accept(...));
+        $first = Async\run::<Unix\StreamInterface>($listener->accept(...));
 
-        [$second_connection, $client_one, $client_two] = Async\concurrently([
+        [$second_connection, $client_one, $client_two] = Async\concurrently::<int, Network\StreamInterface>([
             $listener->accept(...),
             static fn(): Network\StreamInterface => Unix\connect($sock),
             static fn(): Network\StreamInterface => Unix\connect($sock),

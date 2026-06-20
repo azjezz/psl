@@ -8,35 +8,26 @@ use Closure;
 use Override;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends AccessibleCollectionInterface<Tk, Tv>
- *
  * @api
  */
-interface MapInterface extends AccessibleCollectionInterface
+interface MapInterface<Tk: string|int, Tv> extends AccessibleCollectionInterface<Tk, Tv>
 {
     /**
      * Returns a `VectorInterface` containing the values of the current
      * `MapInterface`.
      *
-     * @return VectorInterface<Tv>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): VectorInterface;
+    public function values(): VectorInterface<Tv>;
 
     /**
      * Returns a `VectorInterface` containing the keys of the current `MapInterface`.
      *
-     * @return VectorInterface<Tk>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): VectorInterface;
+    public function keys(): VectorInterface<Tk>;
 
     /**
      * Returns a `MapInterface` containing the values of the current `MapInterface`
@@ -50,12 +41,9 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                `MapInterface` values.
-     *
-     * @return MapInterface<Tk, Tv> A MapInterface containing the values after a user-specified condition
-     *                              is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MapInterface;
+    public function filter(Closure $fn): MapInterface<Tk, Tv>;
 
     /**
      * Returns a `MapInterface` containing the values of the current `MapInterface`
@@ -70,12 +58,9 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                    `MapInterface` keys and values.
-     *
-     * @return MapInterface<Tk, Tv> A `MapInterface` containing the values after a user-specified
-     *                              condition is applied to the keys and values of the current `MapInterface`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MapInterface;
+    public function filterWithKey(Closure $fn): MapInterface<Tk, Tv>;
 
     /**
      * Returns a `MapInterface` after an operation has been applied to each value
@@ -87,15 +72,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from the current `MapInterface` to the
      * returned `MapInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(Tv): Tu) $fn The callback containing the operation to apply to the current
      *                              `MapInterface` values.
-     *
-     * @return MapInterface<Tk, Tu> A `MapInterface` containing key/value pairs after a user-specified
-     *                              operation is applied.
      */
-    public function map(Closure $fn): MapInterface;
+    public function map<Tu>(Closure $fn): MapInterface<Tk, Tu>;
 
     /**
      * Returns a `MapInterface` after an operation has been applied to each key and
@@ -108,74 +88,52 @@ interface MapInterface extends AccessibleCollectionInterface
      * The keys will remain unchanged from this `MapInterface` to the returned
      * `MapInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(Tk, Tv): Tu) $fn The callback containing the operation to apply to the current
      *                                  `MapInterface` keys and values.
-     *
-     * @return MapInterface<Tk, Tu> A `MapInterface` containing the values after a user-specified
-     *                              operation on the current `MapInterface`'s keys and values is applied.
      */
-    public function mapWithKey(Closure $fn): MapInterface;
+    public function mapWithKey<Tu>(Closure $fn): MapInterface<Tk, Tu>;
 
     /**
      * Returns the first value in the current `MapInterface`.
      *
-     * @return Tv|null The first value in the current `MapInterface`, or `null` if the
-     *                 current `MapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): mixed;
+    public function first(): Tv|null;
 
     /**
      * Returns the first key in the current `MapInterface`.
      *
-     * @return Tk|null The first key in the current `MapInterface`, or `null` if the
-     *                 current `MapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): int|string|null;
+    public function firstKey(): Tk|null;
 
     /**
      * Returns the last value in the current `MapInterface`.
      *
-     * @return Tv|null The last value in the current `MapInterface`, or `null` if the
-     *                 current `MapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): mixed;
+    public function last(): Tv|null;
 
     /**
      * Returns the last key in the current `MapInterface`.
      *
-     * @return Tk|null The last key in the current `MapInterface`, or `null` if the
-     *                 current `MapInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): int|string|null;
+    public function lastKey(): Tk|null;
 
     /**
      * Returns the index of the first element that matches the search value.
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param Tv $searchValue The value that will be search for in the current
-     *                         `MapInterface`.
-     *
-     * @return Tk|null The key (index) where that value is found; null if it is not found
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): int|string|null;
+    public function linearSearch(Tv $searchValue): Tk|null;
 
     /**
      * Returns a `MapInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -186,8 +144,6 @@ interface MapInterface extends AccessibleCollectionInterface
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MapInterface`.
      *
      * @return MapInterface<Tk, array{0: Tv, 1: Tu}> The `MapInterface` that combines the values of the current
@@ -196,7 +152,7 @@ interface MapInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MapInterface;
+    public function zip<Tu>(array $elements): MapInterface<Tk, array>;
 
     /**
      * Returns a `MapInterface` containing the first `n` values of the current
@@ -210,13 +166,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `MapInterface`.
      *
-     * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *                              `MapInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MapInterface;
+    public function take(int $n): MapInterface<Tk, Tv>;
 
     /**
      * Returns a `MapInterface` containing the values of the current `MapInterface`
@@ -228,12 +181,9 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                condition.
-     *
-     * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *                              `MapInterface` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MapInterface;
+    public function takeWhile(Closure $fn): MapInterface<Tk, Tv>;
 
     /**
      * Returns a `MapInterface` containing the values after the `n`-th element of
@@ -247,13 +197,10 @@ interface MapInterface extends AccessibleCollectionInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MapInterface`.
      *
-     * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *                              `MapInterface` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MapInterface;
+    public function drop(int $n): MapInterface<Tk, Tv>;
 
     /**
      * Returns a `MapInterface` containing the values of the current `MapInterface`
@@ -265,12 +212,9 @@ interface MapInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `MapInterface`.
-     *
-     * @return MapInterface<Tk, Tv> A `MapInterface` that is a proper subset of the current
-     *                              `MapInterface` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MapInterface;
+    public function dropWhile(Closure $fn): MapInterface<Tk, Tv>;
 
     /**
      * Returns a subset of the current `MapInterface` starting from a given key up
@@ -287,14 +231,10 @@ interface MapInterface extends AccessibleCollectionInterface
      *                           `MapInterface`
      * @param null|int<0, max> $length The length of the returned `MapInterface`
      *
-     * @return MapInterface<Tk, Tv> - A `MapInterface` that is a proper subset of the current
-     *                              `MapInterface` starting at `$start` up to but not including
-     *                              the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MapInterface;
+    public function slice(int $start, null|int $length = null): MapInterface<Tk, Tv>;
 
     /**
      * Returns a `VectorInterface` containing the original `MapInterface` split into
@@ -311,5 +251,5 @@ interface MapInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): VectorInterface;
+    public function chunk(int $size): VectorInterface<MapInterface<Tk, Tv>>;
 }

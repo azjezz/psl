@@ -14,13 +14,11 @@ use function is_a;
 use function is_string;
 
 /**
- * @template T as object
- *
  * @extends Type<class-string<T>>
  *
  * @internal
  */
-final readonly class ClassStringType extends Type
+final readonly class ClassStringType<T: object> extends Type<string>
 {
     /**
      * @var class-string<T>|null $classname

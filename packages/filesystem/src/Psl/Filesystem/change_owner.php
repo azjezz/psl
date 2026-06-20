@@ -30,7 +30,7 @@ function change_owner(string $node, int $user): void
         $fun = static fn(): bool => chown($node, $user);
     }
 
-    [$success, $error] = Internal\box($fun);
+    [$success, $error] = Internal\box::<bool>($fun);
     if (!$success) {
         throw new Exception\RuntimeException(sprintf(
             'Failed to change owner for node "%s": %s',

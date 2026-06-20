@@ -12,16 +12,15 @@ use Psl\Vec;
 final class ConcatTest extends TestCase
 {
     /**
-     * @template T
-     * @param list<T> $expected
-     * @param list<T> $first
-     * @param iterable<T> ...$rest
-     * @return list<T>
+     * @param list<mixed> $expected
+     * @param list<mixed> $first
+     * @param iterable<mixed> ...$rest
+     * @return list<mixed>
      */
     #[DataProvider('provideData')]
     public function testConcat(array $expected, array $first, iterable ...$rest): void
     {
-        static::assertSame($expected, Vec\concat($first, ...$rest));
+        static::assertSame($expected, Vec\concat::<string|int>($first, ...$rest));
     }
 
     public static function provideData(): array
@@ -48,8 +47,8 @@ final class ConcatTest extends TestCase
 
     public function testConcatWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create(['x' => 'a', 'y' => 'b']);
+        $iterator = Iter\Iterator::<string, string>::create(['x' => 'a', 'y' => 'b']);
 
-        static::assertSame(['c', 'a', 'b'], Vec\concat(['c'], $iterator));
+        static::assertSame(['c', 'a', 'b'], Vec\concat::<string>(['c'], $iterator));
     }
 }

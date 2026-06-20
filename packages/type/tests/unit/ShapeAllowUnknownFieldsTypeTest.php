@@ -12,18 +12,18 @@ use Psl\Type;
 /**
  * @extends TypeTestCase<array>
  */
-final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
+final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase<array>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<array>
     {
-        return Type\shape([
+        return Type\shape::<string, string|array>([
             'name' => Type\string(),
-            'articles' => Type\vec(Type\shape([
+            'articles' => Type\vec::<array>(Type\shape::<string, string|int|array>([
                 'title' => Type\string(),
                 'content' => Type\string(),
                 'likes' => Type\int(),
-                'comments' => Type\optional(Type\vec(Type\shape([
+                'comments' => Type\optional::<array>(Type\vec::<array>(Type\shape::<string, string>([
                     'user' => Type\string(),
                     'comment' => Type\string(),
                 ]))),
@@ -35,7 +35,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
     public static function getValidCoercions(): iterable
     {
         yield [
-            ['name' => 'saif', 'articles' => new Collection\Vector([])],
+            ['name' => 'saif', 'articles' => new Collection\Vector::<array>([])],
             ['name' => 'saif', 'articles' => []],
         ];
 
@@ -43,7 +43,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
             [
                 'name' => 'saif',
                 'email' => 'azjezz@example.com',
-                'articles' => new Collection\Vector([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
+                'articles' => new Collection\Vector::<array>([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
             ],
             // unknown fields are always last.
             [
@@ -56,7 +56,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
+                'articles' => new Collection\Vector::<array>([['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]),
             ],
             ['name' => 'saif', 'articles' => [['title' => 'Foo', 'content' => 'Baz', 'likes' => 0]]],
         ];
@@ -64,7 +64,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([
+                'articles' => new Collection\Vector::<array>([
                     ['title' => 'Foo', 'content' => 'Baz', 'likes' => 0],
                     [
                         'title' => 'Bar',
@@ -99,7 +99,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
         yield [
             [
                 'name' => 'saif',
-                'articles' => new Collection\Vector([
+                'articles' => new Collection\Vector::<array>([
                     ['title' => 'Foo', 'content' => 'Bar', 'likes' => 0],
                     ['title' => 'Baz', 'content' => 'Qux', 'likes' => 13],
                 ]),
@@ -154,7 +154,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
                 . '}>}',
         ];
         yield [
-            Type\shape([Type\int(), Type\string()]),
+            Type\shape::<int, int|string>([Type\int(), Type\string()]),
             'array{0: int, 1: string}',
         ];
     }
@@ -166,7 +166,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
     #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
-        $dict = Type\dict(Type\array_key(), Type\mixed());
+        $dict = Type\dict::<string|int, mixed>(Type\array_key(), Type\mixed());
         if (!$dict->matches($a) || !$dict->matches($b)) {
             return parent::equals($a, $b);
         }
@@ -175,7 +175,7 @@ final class ShapeAllowUnknownFieldsTypeTest extends TypeTestCase
             return parent::equals($a, $b);
         }
 
-        $vector = Type\instance_of(Collection\VectorInterface::class);
+        $vector = Type\instance_of::<Collection\VectorInterface>(Collection\VectorInterface::class);
         if ($vector->matches($a['articles'])) {
             $a['articles'] = $a['articles']->toArray();
         }

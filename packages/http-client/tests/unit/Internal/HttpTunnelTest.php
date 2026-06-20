@@ -25,7 +25,7 @@ final class HttpTunnelTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $reader = new Reader($conn);
@@ -93,7 +93,7 @@ final class HttpTunnelTest extends TestCase
 
         $foundAuthHeader = false;
 
-        $serverFuture = Async\run(static function () use ($listener, &$foundAuthHeader): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener, &$foundAuthHeader): void {
             try {
                 $conn = $listener->accept();
                 $reader = new Reader($conn);
@@ -151,7 +151,7 @@ final class HttpTunnelTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $reader = new Reader($conn);
@@ -204,7 +204,7 @@ final class HttpTunnelTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $reader = new Reader($conn);
@@ -256,7 +256,7 @@ final class HttpTunnelTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(noDelay: true));
         $address = $listener->getLocalAddress();
 
-        $serverFuture = Async\run(static function () use ($listener): void {
+        $serverFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept();
                 $reader = new Reader($conn);

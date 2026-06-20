@@ -18,9 +18,6 @@ use function is_array;
  *      Dict\slice(['a' => 1, 'b' => 2, 'c' => 3, 'd' => 4], 1, 2)
  *      => Dict('b' => 2, 'c' => 3)
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable Iterable to take the slice from
  * @param int<0, max> $start Start offset
  * @param null|int<0, max> $length Length (if not specified all remaining values from the array are used)
@@ -29,7 +26,7 @@ use function is_array;
  *
  * @api
  */
-function slice(iterable $iterable, int $start, null|int $length = null): array
+function slice<Tk: string|int, Tv>(iterable $iterable, int $start, null|int $length = null): array
 {
     if (is_array($iterable)) {
         return array_slice($iterable, $start, $length, true);

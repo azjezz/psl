@@ -40,7 +40,7 @@ Async\Scheduler::unreference($watcher);
 // hue (0–360) → RGB color via simple HSV with S=V=1
 $rainbow = static function (int $hue): Color\Color {
     $h = (($hue % 360) + 360) % 360;
-    $x = 1.0 - Math\abs((($h % 120) / 60.0) - 1.0);
+    $x = 1.0 - Math\abs::<float>((($h % 120) / 60.0) - 1.0);
     [$r, $g, $b] = match (true) {
         $h < 60 => [255, (int) (255 * $x), 0],
         $h < 120 => [(int) (255 * $x), 255, 0],
@@ -92,7 +92,7 @@ $renderBanner =
         return $out;
     };
 
-$frames = Iter\rewindable(
+$frames = Iter\rewindable::<int, string>(
     (
         /**
          * @return Generator<int, string>

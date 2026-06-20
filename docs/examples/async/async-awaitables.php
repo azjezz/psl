@@ -7,9 +7,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Async;
 use Psl\Str;
 
-$awaitable = Async\run(static fn() => 'hello');
+$awaitable = Async\run::<string>(static fn() => 'hello');
 
 // Chain transformations
-$awaitable = $awaitable->map(static fn($result) => Str\format('%s world', $result));
+$awaitable = $awaitable->map::<string>(static fn($result) => Str\format('%s world', $result));
 
 $result = $awaitable->await(); // 'hello world'

@@ -34,13 +34,13 @@ class HtmlRenderer implements Renderable
 
 // Validate class instances
 $value = new DateTimeImmutable();
-Type\instance_of(DateTimeImmutable::class)->assert($value);
+Type\instance_of::<DateTimeImmutable>(DateTimeImmutable::class)->assert($value);
 
 // Backed enums -- coerce from the backing value
-Type\backed_enum(Status::class)->coerce('active');
+Type\backed_enum::<Status>(Status::class)->coerce('active');
 
 // Unit enums -- only accept enum instances directly
-Type\unit_enum(Color::class)->assert(Color::Red);
+Type\unit_enum::<Color>(Color::class)->assert(Color::Red);
 
 // Class strings
-Type\class_string(Renderable::class)->assert(HtmlRenderer::class);
+Type\class_string::<Renderable>(Renderable::class)->assert(HtmlRenderer::class);

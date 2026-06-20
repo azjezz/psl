@@ -95,19 +95,19 @@ final class InteropDecodeTest extends TestCase
      *     description?: string,
      * }>
      */
-    private static function fixtureType(): Type\TypeInterface
+    private static function fixtureType(): Type\TypeInterface<array>
     {
-        return Type\shape([
-            'error' => Type\nullable(Type\vec(Type\int())),
+        return Type\shape::<string, mixed>([
+            'error' => Type\nullable::<array>(Type\vec::<int>(Type\int())),
             'wire' => Type\string(),
-            'frame' => Type\nullable(Type\shape([
+            'frame' => Type\nullable::<array>(Type\shape::<string, mixed>([
                 'length' => Type\int(),
                 'type' => Type\int(),
                 'flags' => Type\int(),
                 'stream_identifier' => Type\int(),
-                'frame_payload' => Type\dict(Type\string(), Type\mixed()),
+                'frame_payload' => Type\dict::<string, mixed>(Type\string(), Type\mixed()),
             ])),
-            'description' => Type\optional(Type\string()),
+            'description' => Type\optional::<string>(Type\string()),
         ]);
     }
 }

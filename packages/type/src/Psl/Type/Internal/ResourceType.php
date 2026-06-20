@@ -18,7 +18,7 @@ use function sprintf;
  *
  * @internal
  */
-final readonly class ResourceType extends Type\Type
+final readonly class ResourceType extends Type\Type<mixed>
 {
     /**
      * @psalm-mutation-free

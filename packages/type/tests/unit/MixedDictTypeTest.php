@@ -16,10 +16,13 @@ use RuntimeException;
 use SplObjectStorage;
 use stdClass;
 
-final class MixedDictTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<array<array-key, mixed>>
+ */
+final class MixedDictTypeTest extends TypeTestCase<array>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<array>
     {
         return Type\mixed_dict();
     }
@@ -49,17 +52,17 @@ final class MixedDictTypeTest extends TypeTestCase
         ];
 
         yield [
-            new Collection\Vector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Vector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            new Collection\Map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Map::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
             ['001', '002', '003', '004', '005', '006', '007', '008', '009', '0010'],
         ];
 
@@ -134,7 +137,7 @@ final class MixedDictTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {

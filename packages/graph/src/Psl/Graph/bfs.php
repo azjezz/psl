@@ -19,27 +19,23 @@ use Psl\DataStructure\Queue;
  *      $graph = Graph\add_edge($graph, 'B', 'D');
  *      Graph\bfs($graph, 'A') // ['A', 'B', 'C', 'D']
  *
- * @template TNode
- * @template TWeight
- *
- * @param DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph
- * @param TNode $start
- *
  * @return list<TNode>
  *
  * @pure
  *
  * @api
  */
-function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
-{
+function bfs<TNode, TWeight>(
+    DirectedGraph<TNode, TWeight>|UndirectedGraph<TNode, TWeight> $graph,
+    TNode $start,
+): array {
     if (!$graph->hasNode($start)) {
         return [];
     }
 
     $visited = [];
     $result = [];
-    $queue = new Queue();
+    $queue = new Queue::<TNode>();
     $queue->enqueue($start);
     $visited[Internal\get_node_key($start)] = true;
 
@@ -47,7 +43,7 @@ function bfs(DirectedGraph|UndirectedGraph $graph, mixed $start): array
         $node = $queue->dequeue();
         $result[] = $node;
 
-        foreach (namespace\neighbors($graph, $node) as $neighbor) {
+        foreach (namespace\neighbors::<TNode, TWeight>($graph, $node) as $neighbor) {
             $key = Internal\get_node_key($neighbor);
             if (!isset($visited[$key])) {
                 $visited[$key] = true;

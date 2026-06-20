@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Psl\Observer;
 
 /**
- * @template T of SubjectInterface
- *
  * @api
  */
-interface ObserverInterface
+interface ObserverInterface<T: SubjectInterface>
 {
     /**
      * Receive an update from a subject.
-     *
-     * @param T $subject
      */
-    public function update(SubjectInterface $subject): void;
+    public function update(T $subject): void;
 }

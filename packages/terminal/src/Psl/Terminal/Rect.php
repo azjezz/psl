@@ -72,10 +72,10 @@ final readonly class Rect
      */
     public function inner(int $top = 0, int $right = 0, int $bottom = 0, int $left = 0): self
     {
-        $newX = Math\minva($this->x + $left, $this->right());
-        $newY = Math\minva($this->y + $top, $this->bottom());
-        $newWidth = Math\maxva(0, $this->width - $left - $right);
-        $newHeight = Math\maxva(0, $this->height - $top - $bottom);
+        $newX = Math\minva::<int>($this->x + $left, $this->right());
+        $newY = Math\minva::<int>($this->y + $top, $this->bottom());
+        $newWidth = Math\maxva::<int>(0, $this->width - $left - $right);
+        $newHeight = Math\maxva::<int>(0, $this->height - $top - $bottom);
 
         return new self($newX, $newY, $newWidth, $newHeight);
     }

@@ -15,7 +15,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $start = DateTime\Timestamp::monotonic();
 
-Async\concurrently([
+Async\concurrently::<int, string>([
     static fn(): string => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
     static fn(): string => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),
     static fn(): string => Shell\execute(PHP_BINARY, ['-r', '$t = time(); while(time() < ($t+1)) { echo "."; }']),

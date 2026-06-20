@@ -25,22 +25,16 @@ use function is_array;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template-covariant T
- *
- * @implements PromiseInterface<T>
- *
  * @api
  */
-final readonly class Awaitable implements PromiseInterface
+final readonly class Awaitable<out T> implements PromiseInterface<T>
 {
-    private State $state;
+    private State<T> $state;
 
     /**
-     * @param State<T> $state
-     *
      * @internal Use {@see Deferred} to create and resolve an awaitable.
      */
-    public function __construct(State $state)
+    public function __construct(State<T> $state)
     {
         $this->state = $state;
     }
@@ -48,16 +42,13 @@ final readonly class Awaitable implements PromiseInterface
     /**
      * Iterate over the given `Awaitable`s in completion order.
      *
-     * @template Tk
-     * @template Tv
-     *
      * @param iterable<Tk, Awaitable<Tv>> $awaitables
      *
      * @return Generator<Tk, Awaitable<Tv>, null, void>
      */
-    public static function iterate(iterable $awaitables): Generator
+    public static function iterate<Tk, Tv>(iterable $awaitables): Generator
     {
-        $iterator = new AwaitableIterator();
+        $iterator = new AwaitableIterator::<Tk, Tv>();
 
         if (is_array($awaitables)) {
             foreach ($awaitables as $key => $awaitable) {
@@ -91,31 +82,21 @@ final readonly class Awaitable implements PromiseInterface
         } while (true);
     }
 
-    /**
-     * @template Tv
-     *
-     * @param Tv $result
-     *
-     * @return Awaitable<Tv>
-     */
-    public static function complete(mixed $result): self
+    public static function complete(T $result): self<T>
     {
-        $state = new State();
+        $state = new State::<T>();
         $state->complete($result);
 
-        return new self($state);
+        return new self::<T>($state);
     }
 
-    /**
-     * @return Awaitable<never>
-     */
-    public static function error(Throwable $throwable): self
+    public static function error(Throwable $throwable): self<never>
     {
         /** @var State<never> $state */
-        $state = new State();
+        $state = new State::<never>();
         $state->error($throwable);
 
-        return new self($state);
+        return new self::<never>($state);
     }
 
     /**
@@ -131,17 +112,13 @@ final readonly class Awaitable implements PromiseInterface
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(T): Ts $success
      * @param Closure(Throwable): Ts $failure
-     *
-     * @return Awaitable<Ts>
      */
     #[Override]
-    public function then(Closure $success, Closure $failure): Awaitable
+    public function then<Ts>(Closure $success, Closure $failure): Awaitable<Ts>
     {
-        $state = new State();
+        $state = new State::<Ts>();
 
         $this->state->subscribe(
             /**
@@ -170,43 +147,30 @@ final readonly class Awaitable implements PromiseInterface
             },
         );
 
-        return new self($state);
+        return new self::<Ts>($state);
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @template Ts
      *
      * @param Closure(T): Ts $success
-     *
-     * @return Awaitable<Ts>
      */
     #[Override]
-    public function map(Closure $success): Awaitable
+    public function map<Ts>(Closure $success): Awaitable<Ts>
     {
-        return $this->then($success, static fn(Throwable $throwable): never => throw $throwable);
+        return $this->then::<Ts>($success, static fn(Throwable $throwable): never => throw $throwable);
     }
 
     /**
      * {@inheritDoc}
      *
-     * @template Ts
-     *
      * @param Closure(Throwable): Ts $failure
-     *
-     * @return Awaitable<T|Ts>
      */
     #[Override]
-    public function catch(Closure $failure): Awaitable
+    public function catch<Ts>(Closure $failure): Awaitable<T|Ts>
     {
-        return $this->then(
-            /**
-             * @param T $value
-             *
-             * @return T
-             */
-            static fn(mixed $value): mixed => $value,
+        return $this->then::<T|Ts>(
+            static fn(T $value): T => $value,
             $failure,
         );
     }
@@ -215,13 +179,11 @@ final readonly class Awaitable implements PromiseInterface
      * {@inheritDoc}
      *
      * @param Closure(): void $always
-     *
-     * @return Awaitable<T>
      */
     #[Override]
-    public function always(Closure $always): Awaitable
+    public function always(Closure $always): Awaitable<T>
     {
-        $state = new State();
+        $state = new State::<T>();
 
         $this->state->subscribe(static function (null|Throwable $error, mixed $value) use ($state, $always): void {
             try {
@@ -242,7 +204,7 @@ final readonly class Awaitable implements PromiseInterface
             }
         });
 
-        return new self($state);
+        return new self::<T>($state);
     }
 
     /**
@@ -251,10 +213,8 @@ final readonly class Awaitable implements PromiseInterface
      * Throws a `Throwable` if the operation fails.
      *
      * @throws Exception\CancelledException If the cancellation token is cancelled before the operation completes.
-     *
-     * @return T
      */
-    public function await(CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
+    public function await(CancellationTokenInterface $cancellation = new NullCancellationToken()): T
     {
         if ($this->state->isComplete()) {
             if ($cancellation->cancellable) {

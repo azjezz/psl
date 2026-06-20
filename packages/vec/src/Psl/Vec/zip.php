@@ -26,9 +26,6 @@ use function min;
  *         Arr(3, 6)
  *     )
  *
- * @template Tv
- * @template Tu
- *
  * @param iterable<Tv> $first
  * @param iterable<Tu> $second
  *
@@ -36,10 +33,10 @@ use function min;
  *
  * @api
  */
-function zip(iterable $first, iterable $second): array
+function zip<Tv, Tu>(iterable $first, iterable $second): array
 {
-    $one = namespace\values($first);
-    $two = namespace\values($second);
+    $one = namespace\values::<mixed>($first);
+    $two = namespace\values::<mixed>($second);
 
     $result = [];
     $lesserCount = min(count($one), count($two));

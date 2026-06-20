@@ -14,7 +14,7 @@ final class MinTest extends TestCase
     #[DataProvider('provideData')]
     public function testMin(null|int $expected, array $numbers): void
     {
-        static::assertSame($expected, Math\min($numbers));
+        static::assertSame($expected, Math\min::<int>($numbers));
     }
 
     public static function provideData(): array

@@ -6,5 +6,5 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Type;
 
-Type\literal_scalar('hello')->assert('hello');
-Type\literal_scalar(42)->assert(42);
+Type\literal_scalar::<string>('hello')->assert('hello');
+Type\literal_scalar::<int>(42)->assert(42);

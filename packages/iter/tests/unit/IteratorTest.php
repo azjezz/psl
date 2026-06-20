@@ -17,21 +17,21 @@ final class IteratorTest extends TestCase
 {
     public function testCreateFromGenerator(): void
     {
-        $iterator = Iter\Iterator::create((static fn(): iterable => yield from [1, 2, 3])());
+        $iterator = Iter\Iterator::<int, int>::create((static fn(): iterable => yield from [1, 2, 3])());
 
         static::assertCount(3, $iterator);
     }
 
     public function testCreateFromFactory(): void
     {
-        $iterator = Iter\Iterator::from(static fn(): iterable => yield from [1, 2, 3]);
+        $iterator = Iter\Iterator::<int, int>::from(static fn(): iterable => yield from [1, 2, 3]);
 
         static::assertCount(3, $iterator);
     }
 
     public function testKeyIteration(): void
     {
-        $iterator = Iter\Iterator::from(static fn(): iterable => yield from [1, 2, 3]);
+        $iterator = Iter\Iterator::<int, int>::from(static fn(): iterable => yield from [1, 2, 3]);
         $keys = [];
         while ($iterator->valid()) {
             $keys[] = $iterator->key();
@@ -44,7 +44,7 @@ final class IteratorTest extends TestCase
 
     public function testSeek(): void
     {
-        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator::<int, int>((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         static::assertSame(1, $iterator->current());
         $iterator->next();
@@ -70,7 +70,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekNegativeThrowsOutOfBounds(): void
     {
-        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3])());
+        $iterator = new Iter\Iterator::<int, int>((static fn(): iterable => yield from [1, 2, 3])());
 
         $this->expectException(Iter\Exception\OutOfBoundsException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
@@ -80,7 +80,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekThrowsForOutOfBoundIndex(): void
     {
-        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator::<int, int>((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         $this->expectException(Iter\Exception\OutOfBoundsException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
@@ -90,7 +90,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekThrowsForPlusOneOutOfBoundIndexWhenCached(): void
     {
-        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator::<int, int>((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         static::assertSame(5, $iterator->count());
 
@@ -102,7 +102,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekThrowsForPlusOneOutOfBoundIndex(): void
     {
-        $iterator = new Iter\Iterator((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
+        $iterator = new Iter\Iterator::<int, int>((static fn(): iterable => yield from [1, 2, 3, 4, 5])());
 
         $this->expectException(Iter\Exception\OutOfBoundsException::class);
         $this->expectExceptionMessage('Position is out-of-bounds.');
@@ -112,7 +112,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekZero(): void
     {
-        $iterator = new Iter\Iterator(
+        $iterator = new Iter\Iterator::<int, int>(
             (static function (): iterable {
                 yield 1;
 
@@ -133,7 +133,7 @@ final class IteratorTest extends TestCase
 
     public function testIterating(): void
     {
-        $spy = new MutableVector([]);
+        $spy = new MutableVector::<string>([]);
 
         $generator = (static function () use ($spy): iterable {
             for ($i = 0; $i < 3; $i++) {
@@ -143,7 +143,7 @@ final class IteratorTest extends TestCase
             }
         })();
 
-        $rewindable = Iter\rewindable($generator);
+        $rewindable = Iter\rewindable::<array, int>($generator);
         for ($i = 0; $i < 3; $i++) {
             foreach ($rewindable as $k => $v) {
                 $spy->add('foreach (' . $v . ')');
@@ -191,7 +191,7 @@ final class IteratorTest extends TestCase
 
     public function testCountWhileIterating(): void
     {
-        $spy = new MutableVector([]);
+        $spy = new MutableVector::<string>([]);
 
         $generator = (static function () use ($spy): iterable {
             for ($i = 0; $i < 3; $i++) {
@@ -201,7 +201,7 @@ final class IteratorTest extends TestCase
             }
         })();
 
-        $rewindable = Iter\rewindable($generator);
+        $rewindable = Iter\rewindable::<array, int>($generator);
         foreach ($rewindable as $key => $value) {
             $spy->add('count (' . $rewindable->count() . ')');
             $spy->add('received (' . $value . ')');
@@ -233,7 +233,7 @@ final class IteratorTest extends TestCase
             yield 'c' => 3;
         })();
 
-        $iterator = Iter\Iterator::create($generator);
+        $iterator = Iter\Iterator::<string, int>::create($generator);
 
         static::assertTrue($iterator->valid());
         static::assertSame('a', $iterator->key());
@@ -253,7 +253,7 @@ final class IteratorTest extends TestCase
 
     public function testSeekWithinGeneratorBackedIteratorReturnsEarly(): void
     {
-        $iterator = new Iter\Iterator((static fn(): iterable => yield from [10, 20, 30, 40, 50])());
+        $iterator = new Iter\Iterator::<int, int>((static fn(): iterable => yield from [10, 20, 30, 40, 50])());
 
         $iterator->seek(3);
         static::assertSame(40, $iterator->current());
@@ -270,7 +270,7 @@ final class IteratorTest extends TestCase
 
     public function testCountReturnsCachedValueAfterIteration(): void
     {
-        $iterator = Iter\Iterator::create([1, 2, 3, 4, 5]);
+        $iterator = Iter\Iterator::<int, int>::create([1, 2, 3, 4, 5]);
 
         $count1 = $iterator->count();
         static::assertSame(5, $count1);
@@ -285,7 +285,7 @@ final class IteratorTest extends TestCase
 
     public function testRewindingValidGenerator(): void
     {
-        $spy = new MutableVector([]);
+        $spy = new MutableVector::<string>([]);
 
         $generator = (static function () use ($spy): iterable {
             for ($i = 0; $i < 3; $i++) {
@@ -294,7 +294,7 @@ final class IteratorTest extends TestCase
             }
         })();
 
-        $rewindable = Iter\rewindable($generator);
+        $rewindable = Iter\rewindable::<int, int>($generator);
         foreach ($rewindable as $k => $v) {
             $spy->add('foreach (' . $v . ')');
             break;

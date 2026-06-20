@@ -12,7 +12,7 @@ final class PipeTest extends TestCase
 {
     public function testItCombinesMultipleFunctionToExecutesInOrder(): void
     {
-        $x = Fun\pipe(
+        $x = Fun\pipe::<string>(
             static fn(string $x): string => $x . ' world',
             static fn(string $y): string => $y . '?',
             static fn(string $z): string => $z . '!',
@@ -23,14 +23,14 @@ final class PipeTest extends TestCase
 
     public function testItCombinesMultipleFunctionsThatDealWithDifferentTypes(): void
     {
-        $x = Fun\pipe(Str\length(...), static fn(int $y): string => $y . '!');
+        $x = Fun\pipe::<string>(Str\length(...), static fn(int $y): string => $y . '!');
 
         static::assertSame('5!', $x('Hello'));
     }
 
     public function testItCanCreateAnEmptyCombination(): void
     {
-        $x = Fun\pipe();
+        $x = Fun\pipe::<string>();
 
         static::assertSame('Hello', $x('Hello'));
     }

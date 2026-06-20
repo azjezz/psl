@@ -15,24 +15,18 @@ use function is_iterable;
 use function sprintf;
 
 /**
- * @template Tk
- * @template Tv
- *
  * @extends Type\Type<iterable<Tk, Tv>>
  *
  * @internal
  */
-final readonly class IterableType extends Type\Type
+final readonly class IterableType<Tk, Tv> extends Type\Type<iterable>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tk> $keyType
-     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $keyType,
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<Tk> $keyType,
+        private Type\TypeInterface<Tv> $valueType,
     ) {}
 
     /**

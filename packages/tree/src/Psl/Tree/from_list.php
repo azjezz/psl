@@ -38,16 +38,10 @@ use function count;
  *          fn($r) => $r['name']  // Store just the name
  *      );
  *
- * @template TItem
- * @template TId of array-key
- * @template TValue
- *
  * @param non-empty-list<TItem> $items The flat list of items
  * @param Closure(TItem): TId $getId Function to extract the ID from an item
  * @param Closure(TItem): (TId|null) $getParentId Function to extract the parent ID (null for root)
  * @param Closure(TItem): TValue $getValue Function to extract/transform the value to store in the node
- *
- * @return NodeInterface<TValue>
  *
  * @throws Exception\NoRootNodeException if no root item found (item with null parent_id)
  * @throws Exception\MultipleRootNodesException if multiple root items found
@@ -57,7 +51,7 @@ use function count;
  *
  * @api
  */
-function from_list(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface
+function from_list<TItem, TId: string|int, TValue>(array $items, Closure $getId, Closure $getParentId, Closure $getValue): NodeInterface<TValue>
 {
     // Group items by parent ID (manual grouping to handle null keys)
     $byParent = [];
@@ -102,23 +96,18 @@ function from_list(array $items, Closure $getId, Closure $getParentId, Closure $
 
     // Build tree recursively
     $build =
-        /**
-         * @param TItem $item
-         *
-         * @returns NodeInterface<TValue>
-         */
-        static function (mixed $item) use ($byParent, $getId, $getValue, &$build): NodeInterface {
+        static function (TItem $item) use ($byParent, $getId, $getValue, &$build): NodeInterface<TValue> {
             $itemId = $getId($item);
             $value = $getValue($item);
             $childrenItems = $byParent[$itemId] ?? [];
 
             if ([] === $childrenItems) {
-                return namespace\leaf($value);
+                return namespace\leaf::<TValue>($value);
             }
 
             $children = array_map($build(...), $childrenItems);
 
-            return namespace\tree($value, $children);
+            return namespace\tree::<TValue>($value, $children);
         };
 
     return $build($rootItem);

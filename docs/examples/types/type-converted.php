@@ -7,9 +7,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Type;
 use Psl\Type\TypeInterface;
 
-$dateTimeType = Type\converted(
+$dateTimeType = Type\converted::<string, DateTimeImmutable>(
     Type\string(),
-    Type\instance_of(DateTimeImmutable::class),
+    Type\instance_of::<DateTimeImmutable>(DateTimeImmutable::class),
     static function (string $value): DateTimeImmutable {
         $date = DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $value);
         if (!$date) {
@@ -36,21 +36,21 @@ final class Person
     ) {}
 
     /** @return TypeInterface<self> */
-    public static function type(): TypeInterface
+    public static function type(): TypeInterface<self>
     {
-        return Type\converted(
-            Type\shape([
+        return Type\converted::<array, Person>(
+            Type\shape::<string, string>([
                 'firstName' => Type\string(),
                 'lastName' => Type\string(),
             ]),
-            Type\instance_of(Person::class),
+            Type\instance_of::<Person>(Person::class),
             static fn(array $data): Person => new Person($data['firstName'], $data['lastName']),
         );
     }
 }
 
 // Now composable with other types:
-$shape = Type\shape([
+$shape = Type\shape::<string, Person|string>([
     'person' => Person::type(),
     'role' => Type\string(),
 ]);

@@ -7,15 +7,9 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template T
- *
- * @param TypeInterface<T> $innerType
- *
- * @return TypeInterface<T|null>
- *
  * @api
  */
-function nullish(TypeInterface $innerType): TypeInterface
+function nullish<T>(TypeInterface<T> $innerType): TypeInterface<T|null>
 {
-    return new Internal\NullishType($innerType);
+    return new Internal\NullishType::<T>($innerType);
 }

@@ -7,11 +7,9 @@ namespace Psl\Type\Internal;
 use Override;
 
 /**
- * @extends UnionType<string|bool, int|float>
- *
  * @internal
  */
-final readonly class ScalarType extends UnionType
+final readonly class ScalarType extends UnionType<string|bool, int|float>
 {
     /**
      * @psalm-mutation-free
@@ -20,7 +18,7 @@ final readonly class ScalarType extends UnionType
      */
     public function __construct()
     {
-        parent::__construct(new UnionType(new StringType(), new BoolType()), new NumType());
+        parent::__construct(new UnionType::<string, bool>(new StringType(), new BoolType()), new NumType());
     }
 
     #[Override]

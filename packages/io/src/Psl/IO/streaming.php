@@ -29,8 +29,6 @@ use function sprintf;
  *    IO\write_line('received chunk "%s" from "%s" stream', $chunk, $type);
  *  }
  *
- * @template T of array-key
- *
  * @param iterable<T, ReadHandleInterface&StreamHandleInterface> $handles
  *
  * @throws Exception\AlreadyClosedException If one of the handles has been already closed.
@@ -41,16 +39,16 @@ use function sprintf;
  *
  * @api
  */
-function streaming(iterable $handles, CancellationTokenInterface $cancellation = new NullCancellationToken()): Generator
+function streaming<T: string|int>(iterable $handles, CancellationTokenInterface $cancellation = new NullCancellationToken()): Generator
 {
     /**
      * @var Channel\ReceiverInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $receiver
      * @var Channel\SenderInterface<array{0: T|null, 1: Result\ResultInterface<string>}> $sender
      */
-    [$receiver, $sender] = Channel\unbounded();
+    [$receiver, $sender] = Channel\unbounded::<array>();
 
     /** @var Psl\Ref<array<T, string>> $watchers */
-    $watchers = new Psl\Ref([]);
+    $watchers = new Psl\Ref::<array>([]);
     foreach ($handles as $index => $handle) {
         $stream = $handle->getStream();
         if (null === $stream) {
@@ -65,7 +63,7 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
             $watchers,
         ): void {
             try {
-                $result = Result\wrap($handle->tryRead(...));
+                $result = Result\wrap::<string>($handle->tryRead(...));
                 if ($result->isFailed() || $result->isSucceeded() && $result->getResult() === '') {
                     EventLoop::cancel($watcher);
                     unset($watchers->value[$index]);
@@ -86,7 +84,7 @@ function streaming(iterable $handles, CancellationTokenInterface $cancellation =
             $sender,
         ): void {
             /** @var Result\ResultInterface<string> $failure */
-            $failure = new Result\Failure($exception);
+            $failure = new Result\Failure::<string, CancelledException>($exception);
 
             $sender->send([null, $failure]);
         });

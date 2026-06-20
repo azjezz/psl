@@ -15,7 +15,7 @@ final class FilterTest extends TestCase
     #[DataProvider('provideData')]
     public function testFilter(array $expected, array $array, null|Closure $predicate = null): void
     {
-        $result = Vec\filter($array, $predicate);
+        $result = Vec\filter::<string>($array, $predicate);
 
         static::assertSame($expected, $result);
     }
@@ -31,15 +31,15 @@ final class FilterTest extends TestCase
 
     public function testFilterWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create([1, 0, 3]);
+        $iterator = Iter\Iterator::<int, int>::create([1, 0, 3]);
 
-        static::assertSame([1, 3], Vec\filter($iterator));
+        static::assertSame([1, 3], Vec\filter::<int>($iterator));
     }
 
     public function testFilterWithNonArrayIterableAndPredicate(): void
     {
-        $iterator = Iter\Iterator::create([1, 2, 3]);
+        $iterator = Iter\Iterator::<int, int>::create([1, 2, 3]);
 
-        static::assertSame([2, 3], Vec\filter($iterator, static fn(int $v): bool => $v > 1));
+        static::assertSame([2, 3], Vec\filter::<int>($iterator, static fn(int $v): bool => $v > 1));
     }
 }

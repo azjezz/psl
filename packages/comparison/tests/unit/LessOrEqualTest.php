@@ -13,6 +13,6 @@ class LessOrEqualTest extends AbstractComparisonTestCase
     #[DataProvider('provideComparisonCases')]
     public function testItCanCheckLessOrEqual(mixed $a, mixed $b, Order $expected): void
     {
-        static::assertSame($expected === Order::Less || $expected === Order::Equal, Comparison\less_or_equal($a, $b));
+        static::assertSame($expected === Order::Less || $expected === Order::Equal, Comparison\less_or_equal::<mixed>($a, $b));
     }
 }

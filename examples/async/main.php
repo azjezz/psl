@@ -21,7 +21,7 @@ Async\Scheduler::unreference($watcher);
 
 IO\write_error_line('Press Ctrl+C to stop');
 
-Async\concurrently([
+Async\concurrently::<int, string>([
     static fn(): string => Shell\execute('sleep', ['3']),
     static fn(): string => Shell\execute('echo', ['Hello World!']),
     static fn(): string => Shell\execute('echo', ['Hello World!']),

@@ -7,10 +7,13 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class ResourceTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<resource>
+ */
+final class ResourceTypeTest extends TypeTestCase<mixed>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<mixed>
     {
         return Type\resource('stream');
     }

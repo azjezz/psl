@@ -16,21 +16,15 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template T
- *
- * @extends Type\Type<Collection\VectorInterface<T>>
- *
  * @internal
  */
-final readonly class VectorType extends Type\Type
+final readonly class VectorType<T> extends Type\Type<Collection\VectorInterface<T>>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<T> $valueType,
     ) {}
 
     /**
@@ -55,11 +49,9 @@ final readonly class VectorType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return Collection\VectorInterface<T>
      */
     #[Override]
-    public function coerce(mixed $value): Collection\VectorInterface
+    public function coerce(mixed $value): Collection\VectorInterface<T>
     {
         if (is_iterable($value)) {
             /** @var Type\Type<T> $valueType */
@@ -96,23 +88,19 @@ final readonly class VectorType extends Type\Type
                 };
             }
 
-            return new Collection\Vector($values);
+            return new Collection\Vector::<T>($values);
         }
 
         throw CoercionException::withValue($value, $this->toString());
     }
 
     /**
-     * @param mixed $value
-     *
      * @throws AssertException
-     *
-     * @return Collection\VectorInterface<T>
      *
      * @psalm-assert Collection\VectorInterface<T> $value
      */
     #[Override]
-    public function assert(mixed $value): Collection\VectorInterface
+    public function assert(mixed $value): Collection\VectorInterface<T>
     {
         if (is_object($value) && $value instanceof Collection\VectorInterface) {
             /** @var Type\Type<T> $valueType */
@@ -137,7 +125,7 @@ final readonly class VectorType extends Type\Type
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
             }
 
-            return new Collection\Vector($values);
+            return new Collection\Vector::<T>($values);
         }
 
         throw AssertException::withValue($value, $this->toString());

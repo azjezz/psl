@@ -15,15 +15,12 @@ use Psl\Type;
 use Psl\Vec;
 use RuntimeException;
 
-/**
- * @extends TypeTestCase<MutableVectorInterface<mixed>>
- */
-final class MutableVectorTypeTest extends TypeTestCase
+final class MutableVectorTypeTest extends TypeTestCase<MutableVectorInterface<mixed>>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<MutableVectorInterface<mixed>>
     {
-        return Type\mutable_vector(Type\int());
+        return Type\mutable_vector::<int>(Type\int());
     }
 
     #[Override]
@@ -31,42 +28,42 @@ final class MutableVectorTypeTest extends TypeTestCase
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Vec\range(1, 10),
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Vec\range::<int>(1, 10),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Vec\range(1, 10),
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Vec\range::<int>(1, 10),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => (string) $value),
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => (string) $value),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map_keys::<int, string, int>(Vec\range::<int>(1, 10), static fn(int $key): string => (string) $key),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
     }
 
@@ -86,9 +83,9 @@ final class MutableVectorTypeTest extends TypeTestCase
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'Psl\Collection\MutableVectorInterface<int>'];
-        yield [Type\mutable_vector(Type\string()), 'Psl\Collection\MutableVectorInterface<string>'];
+        yield [Type\mutable_vector::<string>(Type\string()), 'Psl\Collection\MutableVectorInterface<string>'];
         yield [
-            Type\mutable_vector(Type\instance_of(Iter\Iterator::class)),
+            Type\mutable_vector::<Iter\Iterator>(Type\instance_of::<Iter\Iterator>(Iter\Iterator::class)),
             'Psl\Collection\MutableVectorInterface<Psl\Iter\Iterator>',
         ];
     }
@@ -100,11 +97,11 @@ final class MutableVectorTypeTest extends TypeTestCase
     #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
-        if (Type\instance_of(MutableVectorInterface::class)->matches($a)) {
+        if (Type\instance_of::<MutableVectorInterface>(MutableVectorInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\instance_of(MutableVectorInterface::class)->matches($b)) {
+        if (Type\instance_of::<MutableVectorInterface>(MutableVectorInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 
@@ -114,13 +111,13 @@ final class MutableVectorTypeTest extends TypeTestCase
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'invalid assertion value' => [
-            Type\mutable_vector(Type\int()),
-            new Collection\MutableVector(['nope']),
+            Type\mutable_vector::<int>(Type\int()),
+            new Collection\MutableVector::<string>(['nope']),
             'Expected "' . MutableVectorInterface::class . '<int>", got "string" at path "0".',
         ];
         yield 'nested' => [
-            Type\mutable_vector(Type\mutable_vector(Type\int())),
-            new Collection\MutableVector([new Collection\MutableVector(['nope'])]),
+            Type\mutable_vector::<MutableVectorInterface<int>>(Type\mutable_vector::<int>(Type\int())),
+            new Collection\MutableVector::<Collection\MutableVector>([new Collection\MutableVector::<string>(['nope'])]),
             'Expected "'
                 . MutableVectorInterface::class
                 . '<'
@@ -132,19 +129,19 @@ final class MutableVectorTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'invalid coercion value' => [
-            Type\mutable_vector(Type\int()),
+            Type\mutable_vector::<int>(Type\int()),
             ['nope'],
             'Could not coerce "string" to type "' . MutableVectorInterface::class . '<int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
-            Type\mutable_vector(Type\int()),
+            Type\mutable_vector::<int>(Type\int()),
             (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . MutableVectorInterface::class . '<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\mutable_vector(Type\int()),
+            Type\mutable_vector::<int>(Type\int()),
             (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
@@ -152,7 +149,7 @@ final class MutableVectorTypeTest extends TypeTestCase
             'Could not coerce "string" to type "' . MutableVectorInterface::class . '<int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\mutable_vector(Type\int()),
+            Type\mutable_vector::<int>(Type\int()),
             (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
@@ -160,14 +157,14 @@ final class MutableVectorTypeTest extends TypeTestCase
             'Could not coerce "null" to type "' . MutableVectorInterface::class . '<int>" at path "0.next()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\mutable_vector(Type\int()),
+            Type\mutable_vector::<int>(Type\int()),
             (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "' . MutableVectorInterface::class . '<int>" at path "null".',
         ];
         yield 'iterator yielding object key' => [
-            Type\mutable_vector(Type\int()),
+            Type\mutable_vector::<int>(Type\int()),
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
@@ -177,7 +174,7 @@ final class MutableVectorTypeTest extends TypeTestCase
 
     #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -191,7 +188,7 @@ final class MutableVectorTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -205,8 +202,8 @@ final class MutableVectorTypeTest extends TypeTestCase
 
     public function testMatchesReturnsFalseForInvalidElementType(): void
     {
-        $type = Type\mutable_vector(Type\int());
-        $vector = new Collection\MutableVector(['not an int']);
+        $type = Type\mutable_vector::<int>(Type\int());
+        $vector = new Collection\MutableVector::<string>(['not an int']);
 
         static::assertFalse($type->matches($vector));
     }

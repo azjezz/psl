@@ -8,13 +8,9 @@ use Closure;
 use Override;
 
 /**
- * @template T of array-key
- *
- * @extends AccessibleCollectionInterface<T, T>
- *
  * @api
  */
-interface SetInterface extends AccessibleCollectionInterface
+interface SetInterface<T: string|int> extends AccessibleCollectionInterface<T, T>
 {
     /**
      * Returns the provided value if it exists in the current `SetInterface`.
@@ -23,16 +19,12 @@ interface SetInterface extends AccessibleCollectionInterface
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * an {@see Exception\OutOfBoundsException} is thrown to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @throws Exception\OutOfBoundsException If $k is out-of-bounds.
-     *
-     * @return T
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function at(int|string $k): int|string;
+    public function at(T $k): T;
 
     /**
      * Determines if the specified value is in the current set.
@@ -41,14 +33,12 @@ interface SetInterface extends AccessibleCollectionInterface
      * If the value exists, it returns true to indicate presence in the set. If the value does not exist,
      * it returns false to indicate the absence of the value.
      *
-     * @param T $k
-     *
      * @return bool True if the value is in the set, false otherwise.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function contains(int|string $k): bool;
+    public function contains(T $k): bool;
 
     /**
      * Returns the provided value if it is part of the set, or null if it is not.
@@ -57,14 +47,10 @@ interface SetInterface extends AccessibleCollectionInterface
      * If the value exists, it is returned to indicate presence in the set. If the value does not exist,
      * null is returned to indicate the absence of the value.
      *
-     * @param T $k
-     *
-     * @return T|null
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function get(int|string $k): null|int|string;
+    public function get(T $k): T|null;
 
     /**
      * Get an array copy of the current set.
@@ -79,22 +65,18 @@ interface SetInterface extends AccessibleCollectionInterface
     /**
      * Returns a `VectorInterface` containing the values of the current `SetInterface`.
      *
-     * @return VectorInterface<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): VectorInterface;
+    public function values(): VectorInterface<T>;
 
     /**
      * As {@see SetInterface} does not have keys, this method acts as an alias for {@see SetInterface::values()}.
      *
-     * @return VectorInterface<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): VectorInterface;
+    public function keys(): VectorInterface<T>;
 
     /**
      * Returns a `SetInterface` containing the values of the current `SetInterface`
@@ -105,12 +87,9 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `SetInterface` values.
-     *
-     * @return SetInterface<T> A SetInterface containing the values after a user-specified condition
-     *                         is applied.
      */
     #[Override]
-    public function filter(Closure $fn): SetInterface;
+    public function filter(Closure $fn): SetInterface<T>;
 
     /**
      * Applies a user-defined condition to each value in the `SetInterface`,
@@ -123,11 +102,9 @@ interface SetInterface extends AccessibleCollectionInterface
      * It's particularly useful when the distinction between keys and values is relevant for the condition.
      *
      * @param (Closure(T, T): bool) $fn T
-     *
-     * @return SetInterface<T>
      */
     #[Override]
-    public function filterWithKey(Closure $fn): SetInterface;
+    public function filterWithKey(Closure $fn): SetInterface<T>;
 
     /**
      * Returns a `SetInterface` after an operation has been applied to each value
@@ -136,15 +113,10 @@ interface SetInterface extends AccessibleCollectionInterface
      * Every value in the current Map is affected by a call to `map()`, unlike
      * `filter()` where only values that meet a certain criteria are affected.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `SetInterface` values.
-     *
-     * @return SetInterface<Tu> A `SetInterface` containing key/value pairs after a user-specified
-     *                          operation is applied.
      */
-    public function map(Closure $fn): SetInterface;
+    public function map<Tu: string|int>(Closure $fn): SetInterface<Tu>;
 
     /**
      * Transform the values of the current `SetInterface` by applying the provided callback,
@@ -156,61 +128,45 @@ interface SetInterface extends AccessibleCollectionInterface
      * The allows for transformations that take into account the value's dual role. It's useful for operations where the distinction
      *  between keys and values is relevant.
      *
-     * @template Tu of array-key
-     *
      * @param (Closure(T, T): Tu) $fn
-     *
-     * @return SetInterface<Tu>
      */
-    public function mapWithKey(Closure $fn): SetInterface;
+    public function mapWithKey<Tu: string|int>(Closure $fn): SetInterface<Tu>;
 
     /**
      * Returns the first value in the current `SetInterface`.
      *
-     * @return T|null The first value in the current `SetInterface`, or `null` if the
-     *                current `SetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): null|int|string;
+    public function first(): T|null;
 
     /**
      * Returns the first key in the current `SetInterface`.
      *
      * As {@see SetInterface} does not have keys, this method acts as an alias for {@see SetInterface::first()}.
      *
-     * @return T|null The first value in the current `SetInterface`, or `null` if the
-     *                current `SetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function firstKey(): null|int|string;
+    public function firstKey(): T|null;
 
     /**
      * Returns the last value in the current `SetInterface`.
      *
-     * @return T|null The last value in the current `SetInterface`, or `null` if the
-     *                current `SetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): null|int|string;
+    public function last(): T|null;
 
     /**
      * Returns the last key in the current `SetInterface`.
      *
      * As {@see SetInterface} does not have keys, this method acts as an alias for {@see SetInterface::last()}.
      *
-     * @return T|null The last value in the current `SetInterface`, or `null` if the
-     *                current `SetInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function lastKey(): null|int|string;
+    public function lastKey(): T|null;
 
     /**
      * Returns the key of the first element that matches the search value.
@@ -219,20 +175,13 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * As {@see SetInterface} does not have keys, this method returns the value itself.
      *
-     * @param T $searchValue The value that will be search for in the current
-     *                        `SetInterface`.
-     *
-     * @return T|null The value if its found, null otherwise.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int|string;
+    public function linearSearch(T $searchValue): T|null;
 
     /**
      * Always throws an exception since `Set` can only contain array-key values.
-     *
-     * @template Tu
      *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `SetInterface`.
      *
@@ -241,7 +190,7 @@ interface SetInterface extends AccessibleCollectionInterface
      * @throws Exception\RuntimeException Always throws an exception since `Set` can only contain array-key values.
      */
     #[Override]
-    public function zip(array $elements): never;
+    public function zip<Tu>(array $elements): never;
 
     /**
      * Returns a `SetInterface` containing the first `n` values of the current
@@ -255,13 +204,10 @@ interface SetInterface extends AccessibleCollectionInterface
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `SetInterface`.
      *
-     * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
-     *                         `SetInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): SetInterface;
+    public function take(int $n): SetInterface<T>;
 
     /**
      * Returns a `SetInterface` containing the values of the current `SetInterface`
@@ -273,12 +219,9 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
-     *                         `SetInterface` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): SetInterface;
+    public function takeWhile(Closure $fn): SetInterface<T>;
 
     /**
      * Returns a `SetInterface` containing the values after the `n`-th element of
@@ -292,13 +235,10 @@ interface SetInterface extends AccessibleCollectionInterface
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `SetInterface`.
      *
-     * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
-     *                         `SetInterface` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): SetInterface;
+    public function drop(int $n): SetInterface<T>;
 
     /**
      * Returns a `SetInterface` containing the values of the current `SetInterface`
@@ -310,12 +250,9 @@ interface SetInterface extends AccessibleCollectionInterface
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `SetInterface`.
-     *
-     * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
-     *                         `SetInterface` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): SetInterface;
+    public function dropWhile(Closure $fn): SetInterface<T>;
 
     /**
      * Returns a subset of the current `SetInterface` starting from a given index up
@@ -332,14 +269,10 @@ interface SetInterface extends AccessibleCollectionInterface
      *                           `SetInterface`.
      * @param int<0, max> $length The length of the returned `SetInterface`.
      *
-     * @return SetInterface<T> A `SetInterface` that is a proper subset of the current
-     *                         `SetInterface` starting at `$start` up to but not including
-     *                         the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): SetInterface;
+    public function slice(int $start, null|int $length = null): SetInterface<T>;
 
     /**
      * Returns a `VectorInterface` containing the original `SetInterface` split into
@@ -356,5 +289,5 @@ interface SetInterface extends AccessibleCollectionInterface
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): VectorInterface;
+    public function chunk(int $size): VectorInterface<SetInterface<T>>;
 }

@@ -20,7 +20,7 @@ final class LeftTest extends TestCase
 {
     public function testIsLeft(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         static::assertTrue($either->isLeft());
         static::assertFalse($either->isRight());
@@ -28,14 +28,14 @@ final class LeftTest extends TestCase
 
     public function testGetLeft(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         static::assertSame('error', $either->getLeft());
     }
 
     public function testGetRight(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         $this->expectException(Either\Exception\LeftException::class);
         $this->expectExceptionMessage('Attempting to get a right value from a left either.');
@@ -45,35 +45,35 @@ final class LeftTest extends TestCase
 
     public function testGetLeftOr(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        static::assertSame('error', $either->getLeftOr('default'));
+        static::assertSame('error', $either->getLeftOr::<string>('default'));
     }
 
     public function testGetRightOr(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        static::assertSame('default', $either->getRightOr('default'));
+        static::assertSame('default', $either->getRightOr::<string>('default'));
     }
 
     public function testGetLeftOrElse(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         static::assertSame('error', $either->getLeftOrElse(static fn($v) => 'computed'));
     }
 
     public function testGetRightOrElse(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        static::assertSame('computed from error', $either->getRightOrElse(static fn($v) => 'computed from ' . $v));
+        static::assertSame('computed from error', $either->getRightOrElse::<string>(static fn($v) => 'computed from ' . $v));
     }
 
     public function testUnwrapLeft(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         $option = $either->unwrapLeft();
 
@@ -83,7 +83,7 @@ final class LeftTest extends TestCase
 
     public function testUnwrapRight(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         $option = $either->unwrapRight();
 
@@ -92,9 +92,9 @@ final class LeftTest extends TestCase
 
     public function testMap(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        $mapped = $either->map(Str\length(...));
+        $mapped = $either->map::<int>(Str\length(...));
 
         static::assertInstanceOf(Left::class, $mapped);
         static::assertSame(5, $mapped->getLeft());
@@ -102,9 +102,9 @@ final class LeftTest extends TestCase
 
     public function testMapLeft(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        $mapped = $either->mapLeft(Str\uppercase(...));
+        $mapped = $either->mapLeft::<string>(Str\uppercase(...));
 
         static::assertInstanceOf(Left::class, $mapped);
         static::assertSame('ERROR', $mapped->getLeft());
@@ -112,9 +112,9 @@ final class LeftTest extends TestCase
 
     public function testMapRight(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        $mapped = $either->mapRight(static fn($v) => $v * 2);
+        $mapped = $either->mapRight::<int>(static fn($v) => $v * 2);
 
         static::assertSame($either, $mapped);
         static::assertSame('error', $mapped->getLeft());
@@ -122,9 +122,9 @@ final class LeftTest extends TestCase
 
     public function testFlatMap(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        $result = $either->flatMap(static fn($v) => new Right('recovered'));
+        $result = $either->flatMap::<never, string>(static fn($v) => new Right::<string>('recovered'));
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame('recovered', $result->getRight());
@@ -132,9 +132,9 @@ final class LeftTest extends TestCase
 
     public function testFlatMapLeft(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        $result = $either->flatMapLeft(static fn($v) => new Right('recovered from ' . $v));
+        $result = $either->flatMapLeft::<never, string>(static fn($v) => new Right::<string>('recovered from ' . $v));
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame('recovered from error', $result->getRight());
@@ -142,9 +142,9 @@ final class LeftTest extends TestCase
 
     public function testFlatMapRight(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
-        $result = $either->flatMapRight(static fn($v) => new Left('should not happen'));
+        $result = $either->flatMapRight::<string, never>(static fn($v) => new Left::<string>('should not happen'));
 
         static::assertSame($either, $result);
         static::assertSame('error', $result->getLeft());
@@ -152,16 +152,16 @@ final class LeftTest extends TestCase
 
     public function testProceed(): void
     {
-        $result = new Left('error')->proceed(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
+        $result = new Left::<string>('error')->proceed::<string>(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
 
         static::assertSame('left: error', $result);
     }
 
     public function testApply(): void
     {
-        $spy = new Ref('');
+        $spy = new Ref::<string>('');
 
-        $either = new Left('error');
+        $either = new Left::<string>('error');
         $actual = $either->apply(static function (string $value) use ($spy) {
             $spy->value = $value;
         });
@@ -172,7 +172,7 @@ final class LeftTest extends TestCase
 
     public function testSwap(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
         $swapped = $either->swap();
 
         static::assertInstanceOf(Right::class, $swapped);
@@ -181,7 +181,7 @@ final class LeftTest extends TestCase
 
     public function testContainsLeft(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         static::assertTrue($either->containsLeft('error'));
         static::assertFalse($either->containsLeft('other'));
@@ -189,7 +189,7 @@ final class LeftTest extends TestCase
 
     public function testContainsRight(): void
     {
-        $either = new Left('error');
+        $either = new Left::<string>('error');
 
         static::assertFalse($either->containsRight('error'));
         static::assertFalse($either->containsRight('other'));
@@ -197,22 +197,22 @@ final class LeftTest extends TestCase
 
     public function testComparable(): void
     {
-        $a = new Left(2);
+        $a = new Left::<int>(2);
 
         static::assertInstanceOf(Comparable::class, $a);
-        static::assertSame(Order::Equal, $a->compare(new Left(2)));
-        static::assertSame(Order::Less, $a->compare(new Left(3)));
-        static::assertSame(Order::Greater, $a->compare(new Left(1)));
-        static::assertSame(Order::Less, $a->compare(new Right(1)));
+        static::assertSame(Order::Equal, $a->compare(new Left::<int>(2)));
+        static::assertSame(Order::Less, $a->compare(new Left::<int>(3)));
+        static::assertSame(Order::Greater, $a->compare(new Left::<int>(1)));
+        static::assertSame(Order::Less, $a->compare(new Right::<int>(1)));
     }
 
     public function testEquality(): void
     {
-        $a = new Left('a');
+        $a = new Left::<string>('a');
 
         static::assertInstanceOf(Equable::class, $a);
-        static::assertTrue($a->equals(new Left('a')));
-        static::assertFalse($a->equals(new Left('b')));
-        static::assertFalse($a->equals(new Right('a')));
+        static::assertTrue($a->equals(new Left::<string>('a')));
+        static::assertFalse($a->equals(new Left::<string>('b')));
+        static::assertFalse($a->equals(new Right::<string>('a')));
     }
 }

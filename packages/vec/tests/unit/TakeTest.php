@@ -13,7 +13,7 @@ final class TakeTest extends TestCase
     #[DataProvider('provideData')]
     public function testTake(array $expected, array $array, int $n): void
     {
-        $result = Vec\take($array, $n);
+        $result = Vec\take::<int>($array, $n);
 
         static::assertSame($expected, $result);
     }

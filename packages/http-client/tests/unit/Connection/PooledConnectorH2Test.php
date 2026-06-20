@@ -225,7 +225,7 @@ final class PooledConnectorH2Test extends TestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, string>($tasks);
 
         static::assertCount(3, $results);
         foreach ($results as $body) {
@@ -282,7 +282,7 @@ final class PooledConnectorH2Test extends TestCase
         /** @var int<0, 65535> $port */
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use ($listener, $handler, &$acceptCount, $handleCount): void {
+        $future = Async\run::<void>(static function () use ($listener, $handler, &$acceptCount, $handleCount): void {
             try {
                 $conn = $listener->accept();
                 $acceptCount++;

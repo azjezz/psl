@@ -71,7 +71,7 @@ while (true) {
     $connectionId = $id++;
     $active[$connectionId] = $connection;
 
-    Async\run(static function () use ($connection, $acceptor, $keepaliveTimeout, &$active, $connectionId): void {
+    Async\run::<void>(static function () use ($connection, $acceptor, $keepaliveTimeout, &$active, $connectionId): void {
         try {
             $tls = $acceptor->accept($connection);
             $reader = new IO\Reader($tls);
@@ -104,7 +104,7 @@ while (true) {
             $connection->close();
             unset($active[$connectionId]);
         }
-    })->catch(
+    })->catch::<null>(
         static fn(Throwable $_e): null => (
             // Suppress expected errors during shutdown
             null

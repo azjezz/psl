@@ -13,13 +13,9 @@ use Psl\Type\Exception\CoercionException;
 use function sprintf;
 
 /**
- * @template T of BackedEnum
- *
- * @extends Type\Type<T>
- *
  * @internal
  */
-final readonly class BackedEnumType extends Type\Type
+final readonly class BackedEnumType<T: BackedEnum> extends Type\Type<T>
 {
     /**
      * @psalm-mutation-free
@@ -38,11 +34,9 @@ final readonly class BackedEnumType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return T
      */
     #[Override]
-    public function coerce(mixed $value): BackedEnum
+    public function coerce(mixed $value): T
     {
         if ($value instanceof $this->enum) {
             return $value;
@@ -74,12 +68,10 @@ final readonly class BackedEnumType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return T
-     *
      * @psalm-assert T $value
      */
     #[Override]
-    public function assert(mixed $value): BackedEnum
+    public function assert(mixed $value): T
     {
         if ($value instanceof $this->enum) {
             return $value;

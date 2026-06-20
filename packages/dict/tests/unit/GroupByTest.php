@@ -16,7 +16,7 @@ final class GroupByTest extends TestCase
     #[DataProvider('provideData')]
     public function testGroupBy(array $expected, array $values, callable $callable): void
     {
-        static::assertSame($expected, Dict\group_by($values, $callable));
+        static::assertSame($expected, Dict\group_by::<string|int, int|string>($values, $callable));
     }
 
     public static function provideData(): array
@@ -45,6 +45,6 @@ final class GroupByTest extends TestCase
     {
         $this->expectException(TypeError::class);
 
-        Dict\group_by([0, 1, 2, 3, 4, 5], static fn(int $x): Collection\Vector => new Collection\Vector([$x, $x]));
+        Dict\group_by::<int, int>([0, 1, 2, 3, 4, 5], static fn(int $x): Collection\Vector => new Collection\Vector::<int>([$x, $x]));
     }
 }

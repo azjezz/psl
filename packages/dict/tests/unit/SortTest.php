@@ -15,7 +15,7 @@ final class SortTest extends TestCase
     #[DataProvider('provideData')]
     public function testSort(array $expected, array $array, null|Closure $comparator = null): void
     {
-        static::assertSame($expected, Dict\sort($array, $comparator));
+        static::assertSame($expected, Dict\sort::<string|int, string|int>($array, $comparator));
     }
 
     public static function provideData(): array
@@ -47,8 +47,8 @@ final class SortTest extends TestCase
 
     public function testSortWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create(['c' => 3, 'a' => 1, 'b' => 2]);
+        $iterator = Iter\Iterator::<string, int>::create(['c' => 3, 'a' => 1, 'b' => 2]);
 
-        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\sort($iterator));
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\sort::<string, int>($iterator));
     }
 }

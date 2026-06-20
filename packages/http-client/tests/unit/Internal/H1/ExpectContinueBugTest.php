@@ -34,7 +34,7 @@ final class ExpectContinueBugTest extends TestCase
                 ['expect', '100-continue'],
             ]),
             body: new IO\MemoryHandle($body),
-            trailers: Async\Awaitable::complete(FieldMap::from([
+            trailers: Async\Awaitable::<FieldMap>::complete(FieldMap::from([
                 ['x-checksum', 'abc123'],
             ])),
         );

@@ -14,16 +14,13 @@ use function is_array;
  *      Dict\filter_nulls([1, null, 5])
  *      => Dict(0 => 1, 2 => 5)
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv|null> $iterable
  *
  * @return array<Tk, Tv>
  *
  * @api
  */
-function filter_nulls(iterable $iterable): array
+function filter_nulls<Tk: string|int, Tv>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_filter($iterable, static fn(mixed $value): bool => null !== $value);

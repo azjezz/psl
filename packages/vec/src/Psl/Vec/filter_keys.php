@@ -26,9 +26,6 @@ use const ARRAY_FILTER_USE_KEY;
  *      Vec\filter_keys([0 => 'a', 1 => 'b', 2 => 'c'], fn(int $key): bool => $key <= 1);
  *      => Vec('a', 'b')
  *
- * @template Tk
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tk): bool)|null $predicate
  *
@@ -36,13 +33,9 @@ use const ARRAY_FILTER_USE_KEY;
  *
  * @api
  */
-function filter_keys(iterable $iterable, null|Closure $predicate = null): array
+function filter_keys<Tk, Tv>(iterable $iterable, null|Closure $predicate = null): array
 {
-    $predicate ??=
-        /**
-         * @param Tk $value
-         */
-        static fn(mixed $value): bool => (bool) $value;
+    $predicate ??= static fn(Tk $value): bool => (bool) $value;
 
     if (is_array($iterable)) {
         return array_values(array_filter($iterable, $predicate, ARRAY_FILTER_USE_KEY));

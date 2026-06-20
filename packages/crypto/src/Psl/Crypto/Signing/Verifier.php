@@ -26,7 +26,7 @@ final readonly class Verifier implements VerifierInterface
      */
     public function verify(Signature $signature, #[SensitiveParameter] string $message): bool
     {
-        return Internal\call_sodium(fn() => sodium_crypto_sign_verify_detached(
+        return Internal\call_sodium::<bool>(fn() => sodium_crypto_sign_verify_detached(
             $signature->bytes,
             $message,
             $this->publicKey->bytes,

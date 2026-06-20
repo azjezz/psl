@@ -16,7 +16,7 @@ final class ConnectorTest extends TestCase
 {
     public function testConnectNoAuth(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_100);
                 $client = $listener->accept();
@@ -61,7 +61,7 @@ final class ConnectorTest extends TestCase
 
     public function testConnectWithUsernamePasswordAuth(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_101);
                 $client = $listener->accept();
@@ -117,7 +117,7 @@ final class ConnectorTest extends TestCase
         $this->expectException(Socks\Exception\AuthenticationException::class);
         $this->expectExceptionMessage('invalid credentials');
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_102);
                 $client = $listener->accept();
@@ -150,7 +150,7 @@ final class ConnectorTest extends TestCase
         $this->expectException(Socks\Exception\SocksException::class);
         $this->expectExceptionMessage('connection refused');
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_103);
                 $client = $listener->accept();
@@ -176,7 +176,7 @@ final class ConnectorTest extends TestCase
 
     public function testConnectWithIPv6Target(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_104);
                 $client = $listener->accept();
@@ -211,7 +211,7 @@ final class ConnectorTest extends TestCase
 
     public function testConnectorUsesProvidedConnector(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_105);
                 $client = $listener->accept();
@@ -249,7 +249,7 @@ final class ConnectorTest extends TestCase
         $this->expectException(Socks\Exception\SocksException::class);
         $this->expectExceptionMessage('rejected all offered authentication methods');
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 18_106);
                 $client = $listener->accept();

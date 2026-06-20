@@ -489,7 +489,7 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([
+            foreach (IO\streaming::<int>([
                 1 => $child->getStdout(),
             ], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
@@ -522,7 +522,7 @@ final class ChildTest extends TestCase
         $stdout = '';
         $stderr = '';
         try {
-            foreach (IO\streaming([
+            foreach (IO\streaming::<int>([
                 1 => $child->getStdout(),
                 2 => $child->getStderr(),
             ], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $type => $chunk) {
@@ -562,7 +562,7 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([
+            foreach (IO\streaming::<int>([
                 1 => $child->getStdout(),
             ], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
@@ -620,7 +620,7 @@ final class ChildTest extends TestCase
 
         $stdout = '';
         try {
-            foreach (IO\streaming([
+            foreach (IO\streaming::<int>([
                 1 => $child->getStdout(),
             ], new Async\TimeoutCancellationToken(Duration::milliseconds(500))) as $chunk) {
                 if ('' === $chunk) {
@@ -664,7 +664,7 @@ final class ChildTest extends TestCase
         };
 
         $start = DateTime\Timestamp::monotonic();
-        Async\concurrently([$run, $run]);
+        Async\concurrently::<int, void>([$run, $run]);
         $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
         static::assertLessThan(0.5, $elapsed->getTotalSeconds());
@@ -677,7 +677,7 @@ final class ChildTest extends TestCase
         };
 
         $start = DateTime\Timestamp::monotonic();
-        Async\concurrently([$run, $run]);
+        Async\concurrently::<int, void>([$run, $run]);
         $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
         static::assertLessThan(0.5, $elapsed->getTotalSeconds());
@@ -697,7 +697,7 @@ final class ChildTest extends TestCase
         };
 
         $start = DateTime\Timestamp::monotonic();
-        Async\concurrently([$run, $run]);
+        Async\concurrently::<int, void>([$run, $run]);
         $elapsed = DateTime\Timestamp::monotonic()->since($start);
 
         static::assertLessThan(0.5, $elapsed->getTotalSeconds());

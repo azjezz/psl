@@ -8,7 +8,7 @@ use Psl\Type;
 use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
-$type = Type\dict(Type\string(), Type\shape([
+$type = Type\dict::<string, array>(Type\string(), Type\shape::<string, string>([
     'title' => Type\string(),
     'content' => Type\string(),
 ]));

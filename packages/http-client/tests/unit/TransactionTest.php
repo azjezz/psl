@@ -29,7 +29,7 @@ final class TransactionTest extends TestCase
             new Response(status: 200, headers: FieldMap::default()),
         );
 
-        $awaitable = Async\Awaitable::complete([$exchange]);
+        $awaitable = Async\Awaitable::<array>::complete([$exchange]);
         $transaction = new Transaction([], $awaitable, new Response(status: 200, headers: FieldMap::default()));
 
         $exchanges = $transaction->pushed->await();

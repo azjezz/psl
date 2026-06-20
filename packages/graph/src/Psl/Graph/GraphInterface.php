@@ -7,14 +7,11 @@ namespace Psl\Graph;
 /**
  * Common interface for graph implementations.
  *
- * @template TNode
- * @template TWeight
- *
  * @inheritors DirectedGraph|UndirectedGraph
  *
  * @api
  */
-interface GraphInterface
+interface GraphInterface<TNode, TWeight>
 {
     /**
      * Returns all nodes in the graph.
@@ -28,22 +25,18 @@ interface GraphInterface
     /**
      * Returns all edges from a given node.
      *
-     * @param TNode $from
-     *
      * @return list<Edge<TNode, TWeight>>
      *
      * @pure
      */
-    public function getEdgesFrom(mixed $from): array;
+    public function getEdgesFrom(TNode $from): array;
 
     /**
      * Checks if a node exists in the graph.
      *
-     * @param TNode $node
-     *
      * @pure
      */
-    public function hasNode(mixed $node): bool;
+    public function hasNode(TNode $node): bool;
 
     /**
      * Checks if the graph contains a cycle.

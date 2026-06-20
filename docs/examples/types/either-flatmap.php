@@ -9,11 +9,11 @@ use Psl\Either;
 /**
  * @return Either\Either<string, int>
  */
-function parse_int(string $input): Either\Either
+function parse_int(string $input): Either\Either<string, int>
 {
-    return is_numeric($input) ? new Either\Right((int) $input) : new Either\Left("'{$input}' is not a number");
+    return is_numeric($input) ? new Either\Right::<int>((int) $input) : new Either\Left::<string>("'{$input}' is not a number");
 }
 
-$result = new Either\Right('42')->flatMapRight(static fn(string $v): Either\Either => parse_int($v));
+$result = new Either\Right::<string>('42')->flatMapRight::<string, int>(static fn(string $v): Either\Either<string, int> => parse_int($v));
 
 // Right(42)

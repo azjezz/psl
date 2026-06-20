@@ -9,10 +9,13 @@ use Psl\Type;
 use Psl\Type\Tests\Fixture\StringEnum;
 use Psl\Type\Tests\Fixture\UnitEnum;
 
-final class EnumCaseOfTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<non-empty-string>
+ */
+final class EnumCaseOfTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\enum_case_of(UnitEnum::class);
     }

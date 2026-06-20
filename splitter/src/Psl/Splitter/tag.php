@@ -33,7 +33,7 @@ function tag(Client\Client $httpClient, MonolithicRepository $monorepo, Git $git
         ['content-type', 'application/json'],
     ]);
 
-    $semaphore = new Async\Semaphore(20, static function (Package $package) use (
+    $semaphore = new Async\Semaphore::<Package, void>(20, static function (Package $package) use (
         $git,
         $tag,
         $branch,
@@ -69,7 +69,7 @@ function tag(Client\Client $httpClient, MonolithicRepository $monorepo, Git $git
 
             $content = $transaction->response->body?->readAll() ?? '';
             if ($transaction->response->status !== Message\STATUS_OK) {
-                $body = Json\typed($content, Type\shape([
+                $body = Json\typed::<array>($content, Type\shape::<string, string>([
                     'message' => Type\string(),
                 ], allowUnknownFields: true));
 
@@ -77,7 +77,7 @@ function tag(Client\Client $httpClient, MonolithicRepository $monorepo, Git $git
                 return;
             }
 
-            $tagSha = Json\typed($content, Type\shape([
+            $tagSha = Json\typed::<array>($content, Type\shape::<string, string>([
                 'sha' => Type\non_empty_string(),
             ], allowUnknownFields: true))['sha'];
 
@@ -93,7 +93,7 @@ function tag(Client\Client $httpClient, MonolithicRepository $monorepo, Git $git
 
             if ($transaction->response->status !== Message\STATUS_OK) {
                 $content = $transaction->response->body?->readAll() ?? '';
-                $body = Json\typed($content, Type\shape([
+                $body = Json\typed::<array>($content, Type\shape::<string, string>([
                     'message' => Type\string(),
                 ], allowUnknownFields: true));
 
@@ -110,8 +110,8 @@ function tag(Client\Client $httpClient, MonolithicRepository $monorepo, Git $git
 
     $awaitables = [];
     foreach ($monorepo->packages as $package) {
-        $awaitables[] = Async\run(static fn() => $semaphore->waitFor($package));
+        $awaitables[] = Async\run::<void>(static fn() => $semaphore->waitFor($package));
     }
 
-    Async\all($awaitables);
+    Async\all::<int, void>($awaitables);
 }

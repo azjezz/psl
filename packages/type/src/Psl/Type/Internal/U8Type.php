@@ -17,7 +17,7 @@ use function Psl\Type;
  *
  * @internal
  */
-final readonly class U8Type extends Type\Type
+final readonly class U8Type extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int<0, 255> $value

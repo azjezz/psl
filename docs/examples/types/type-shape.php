@@ -6,18 +6,18 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Type;
 
-$shape = Type\shape([
+$shape = Type\shape::<string, string|array>([
     'name' => Type\string(),
-    'articles' => Type\vec(Type\shape([
+    'articles' => Type\vec::<array>(Type\shape::<string, string|int|array>([
         'title' => Type\string(),
         'content' => Type\string(),
         'likes' => Type\int(),
-        'comments' => Type\optional(Type\vec(Type\shape([
+        'comments' => Type\optional::<array>(Type\vec::<array>(Type\shape::<string, string>([
             'user' => Type\string(),
             'comment' => Type\string(),
         ]))),
     ])),
-    'pagination' => Type\optional(Type\shape([
+    'pagination' => Type\optional::<array>(Type\shape::<string, int>([
         'currentPage' => Type\uint(),
         'totalPages' => Type\uint(),
         'perPage' => Type\uint(),

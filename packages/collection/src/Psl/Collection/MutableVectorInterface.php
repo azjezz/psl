@@ -8,14 +8,11 @@ use Closure;
 use Override;
 
 /**
- * @template T
- *
- * @extends VectorInterface<T>
  * @extends MutableAccessibleCollectionInterface<int<0, max>, T>
  *
  * @api
  */
-interface MutableVectorInterface extends MutableAccessibleCollectionInterface, VectorInterface
+interface MutableVectorInterface<T> extends VectorInterface<T>, MutableAccessibleCollectionInterface<int, T>
 {
     /**
      * Get an array copy of the current vector.
@@ -31,12 +28,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * Returns a `MutableVectorInterface` containing the values of the current
      * `MutableVectorInterface`.
      *
-     * @return MutableVectorInterface<T>
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function values(): MutableVectorInterface;
+    public function values(): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the keys of the current `MutableVectorInterface`.
@@ -46,7 +41,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @psalm-mutation-free
      */
     #[Override]
-    public function keys(): MutableVectorInterface;
+    public function keys(): MutableVectorInterface<int>;
 
     /**
      * Returns a `MutableVectorInterface` containing the values of the current `MutableVectorInterface`
@@ -60,12 +55,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @param (Closure(T): bool) $fn The callback containing the condition to apply to the current
      *                               `MutableVectorInterface` values
-     *
-     * @return MutableVectorInterface<T> A MutableVectorInterface containing the values after
-     *                                   a user-specified condition is applied.
      */
     #[Override]
-    public function filter(Closure $fn): MutableVectorInterface;
+    public function filter(Closure $fn): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the values of the current `MutableVectorInterface`
@@ -80,13 +72,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @param (Closure(int<0, max>, T): bool) $fn The callback containing the condition to apply to the current
      *                                            `MutableVectorInterface` keys and values.
-     *
-     * @return MutableVectorInterface<T> A `MutableVectorInterface` containing the values after a user-specified
-     *                                   condition is applied to the keys and values of the current
-     *                                   `MutableVectorInterface`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): MutableVectorInterface;
+    public function filterWithKey(Closure $fn): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` after an operation has been applied to each value
@@ -98,16 +86,11 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys will remain unchanged from the current `MutableVectorInterface` to the
      * returned `MutableVectorInterface`.
      *
-     * @template Tu
-     *
      * @param (Closure(T): Tu) $fn The callback containing the operation to apply to the current
      *                             `MutableVectorInterface` values
-     *
-     * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing key/value pairs after
-     *                                    a user-specified operation is applied.
      */
     #[Override]
-    public function map(Closure $fn): MutableVectorInterface;
+    public function map<Tu>(Closure $fn): MutableVectorInterface<Tu>;
 
     /**
      * Returns a `MutableVectorInterface` after an operation has been applied to each key and
@@ -120,28 +103,19 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * The keys will remain unchanged from this `MutableVectorInterface` to the returned
      * `MutableVectorInterface`. The keys are only used to help in the mapping operation.
      *
-     * @template Tu
-     *
      * @param (Closure(int<0, max>, T): Tu) $fn The callback containing the operation to apply to the current
      *                                          `MutableVectorInterface` keys and values
-     *
-     * @return MutableVectorInterface<Tu> A `MutableVectorInterface` containing the values after
-     *                                    a user-specified operation on the current `MutableVectorInterface`'s
-     *                                    keys and values is applied.
      */
     #[Override]
-    public function mapWithKey(Closure $fn): MutableVectorInterface;
+    public function mapWithKey<Tu>(Closure $fn): MutableVectorInterface<Tu>;
 
     /**
      * Returns the first value in the current `MutableVectorInterface`.
      *
-     * @return T|null The first value in the current `MutableVectorInterface`, or `null` if the
-     *                current `MutableVectorInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function first(): mixed;
+    public function first(): T|null;
 
     /**
      * Returns the first key in the current `MutableVectorInterface`.
@@ -157,13 +131,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
     /**
      * Returns the last value in the current `MutableVectorInterface`.
      *
-     * @return T|null The last value in the current `MutableVectorInterface`, or `null` if the
-     *                current `MutableVectorInterface` is empty.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function last(): mixed;
+    public function last(): T|null;
 
     /**
      * Returns the last key in the current `MutableVectorInterface`.
@@ -181,15 +152,12 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param T $searchValue The value that will be search for in the current
-     *                        `MutableVectorInterface`.
-     *
      * @return int<0, max>|null The key (index) where that value is found; null if it is not found.
      *
      * @psalm-mutation-free
      */
     #[Override]
-    public function linearSearch(mixed $searchValue): null|int;
+    public function linearSearch(T $searchValue): null|int;
 
     /**
      * Returns a `MutableVectorInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -200,8 +168,6 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `MutableVectorInterface`.
      *
      * @return MutableVectorInterface<array{0: T, 1: Tu}> The `MutableVectorInterface` that combines the values of
@@ -210,7 +176,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): MutableVectorInterface;
+    public function zip<Tu>(array $elements): MutableVectorInterface<array>;
 
     /**
      * Returns a `MutableVectorInterface` containing the first `n` values of the current
@@ -224,13 +190,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `MutableVectorInterface`.
      *
-     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
-     *                                   `MutableVectorInterface` up to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): MutableVectorInterface;
+    public function take(int $n): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the values of the current `MutableVectorInterface`
@@ -242,12 +205,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @param (Closure(T): bool) $fn The callback that is used to determine the stopping
      *                               condition.
-     *
-     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
-     *                                   `MutableVectorInterface` up until the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): MutableVectorInterface;
+    public function takeWhile(Closure $fn): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the values after the `n`-th element of
@@ -261,13 +221,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `MutableVectorInterface`.
      *
-     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
-     *                                   `MutableVectorInterface` containing values after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): MutableVectorInterface;
+    public function drop(int $n): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the values of the current `MutableVectorInterface`
@@ -279,12 +236,9 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @param (Closure(T): bool) $fn The callback used to determine the starting element for the
      *                               returned `MutableVectorInterface`.
-     *
-     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
-     *                                   `MutableVectorInterface` starting after the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): MutableVectorInterface;
+    public function dropWhile(Closure $fn): MutableVectorInterface<T>;
 
     /**
      * Returns a subset of the current `MutableVectorInterface` starting from a given key up
@@ -301,14 +255,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *                           `MutableVectorInterface`.
      * @param null|int<0, max> $length The length of the returned `MutableVectorInterface`.
      *
-     * @return MutableVectorInterface<T> A `MutableVectorInterface` that is a proper subset of the current
-     *                                   `MutableVectorInterface` starting at `$start` up to but not including
-     *                                   the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): MutableVectorInterface;
+    public function slice(int $start, null|int $length = null): MutableVectorInterface<T>;
 
     /**
      * Returns a `MutableVectorInterface` containing the original `MutableVectorInterface` split into
@@ -325,7 +275,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): MutableVectorInterface;
+    public function chunk(int $size): MutableVectorInterface<MutableVectorInterface<T>>;
 
     /**
      * Stores a value into the current vector with the specified key,
@@ -338,11 +288,10 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * vector will be reflected in the returned vector.
      *
      * @param int<0, max> $k The key to which we will set the value.
-     * @param T $v The value to set.
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function set(int|string $k, mixed $v): MutableVectorInterface;
+    public function set(int|string $k, T $v): MutableVectorInterface<T>;
 
     /**
      * For every element in the provided elements array, stores a value into the
@@ -359,7 +308,7 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function setAll(array $elements): MutableVectorInterface;
+    public function setAll(array $elements): MutableVectorInterface<T>;
 
     /**
      * Removes the specified key (and associated value) from the current
@@ -381,24 +330,20 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      * @return MutableVectorInterface<T> Returns itself.
      */
     #[Override]
-    public function remove(int|string $k): MutableVectorInterface;
+    public function remove(int|string $k): MutableVectorInterface<T>;
 
     /**
      * Removes all elements from the vector.
-     *
-     * @return MutableVectorInterface<T>
      */
     #[Override]
-    public function clear(): MutableVectorInterface;
+    public function clear(): MutableVectorInterface<T>;
 
     /**
      * Add a value to the vector and return the vector itself.
      *
-     * @param T $v The value to add.
-     *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function add(mixed $v): MutableVectorInterface;
+    public function add(T $v): MutableVectorInterface<T>;
 
     /**
      * For every element in the provided elements array, add the value into the current vector.
@@ -407,5 +352,5 @@ interface MutableVectorInterface extends MutableAccessibleCollectionInterface, V
      *
      * @return MutableVectorInterface<T> Returns itself.
      */
-    public function addAll(iterable $elements): MutableVectorInterface;
+    public function addAll(iterable $elements): MutableVectorInterface<T>;
 }

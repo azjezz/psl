@@ -54,7 +54,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -116,7 +116,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -188,7 +188,7 @@ final class TransportTest extends TestCase
 
         $ehloCount = 0;
 
-        $future = Async\run(static function () use ($server, &$ehloCount): void {
+        $future = Async\run::<void>(static function () use ($server, &$ehloCount): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -277,7 +277,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("554 Service unavailable\r\n");
             $client->close();
@@ -316,7 +316,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
 
@@ -360,7 +360,7 @@ final class TransportTest extends TestCase
 
         $connectCount = 0;
 
-        $future = Async\run(static function () use ($server, &$connectCount): void {
+        $future = Async\run::<void>(static function () use ($server, &$connectCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $connectCount++;
@@ -422,7 +422,7 @@ final class TransportTest extends TestCase
 
         $connectCount = 0;
 
-        $future = Async\run(static function () use ($server, &$connectCount): void {
+        $future = Async\run::<void>(static function () use ($server, &$connectCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $connectCount++;
@@ -481,7 +481,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("GARBAGE\r\n");
             $client->close();
@@ -520,7 +520,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->close();
         });
@@ -558,7 +558,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -570,7 +570,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             static::assertStringContainsString('MAIL FROM:<sender@example.com>', $pipelined);
@@ -624,7 +624,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -687,7 +687,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -760,7 +760,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -806,7 +806,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -855,7 +855,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -907,7 +907,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -966,7 +966,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -1031,7 +1031,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1092,7 +1092,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1156,7 +1156,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1215,7 +1215,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1227,7 +1227,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("550 Sender rejected\r\n");
@@ -1269,7 +1269,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1281,7 +1281,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("250 OK\r\n");
@@ -1323,7 +1323,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1385,7 +1385,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1397,7 +1397,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 4) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             static::assertStringContainsString('MAIL FROM:<sender@example.com>', $pipelined);
@@ -1465,7 +1465,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1529,7 +1529,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -1575,7 +1575,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1616,7 +1616,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1666,7 +1666,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1709,7 +1709,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1758,7 +1758,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1816,7 +1816,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -1869,7 +1869,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1930,7 +1930,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -1991,7 +1991,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2054,7 +2054,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2116,7 +2116,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2178,7 +2178,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2240,7 +2240,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2302,7 +2302,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2364,7 +2364,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2426,7 +2426,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2489,7 +2489,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2551,7 +2551,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2613,7 +2613,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2675,7 +2675,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2738,7 +2738,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2800,7 +2800,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -2862,7 +2862,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -3003,7 +3003,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -3050,7 +3050,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -3111,7 +3111,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
 
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
 
             $client->writeAll("220 mail.example.com SMTP\r\n");
@@ -3156,7 +3156,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3165,7 +3165,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("553 Sender not allowed\r\n");
@@ -3203,7 +3203,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3212,7 +3212,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("550 Sender rejected\r\n");
@@ -3250,7 +3250,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3259,7 +3259,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("550 Sender rejected\r\n");
@@ -3295,7 +3295,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3304,7 +3304,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 3) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("250 OK\r\n");
@@ -3342,7 +3342,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3397,7 +3397,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3448,7 +3448,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3487,7 +3487,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3524,7 +3524,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3577,7 +3577,7 @@ final class TransportTest extends TestCase
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
         $connectCount = 0;
-        $future = Async\run(static function () use ($server, &$connectCount): void {
+        $future = Async\run::<void>(static function () use ($server, &$connectCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $connectCount++;
@@ -3643,7 +3643,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3691,7 +3691,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3700,7 +3700,7 @@ final class TransportTest extends TestCase
             $commandCount = 0;
             while ($commandCount < 4) {
                 $pipelined .= $client->read();
-                $commandCount = Iter\count(Byte\split($pipelined, "\r\n")) - 1;
+                $commandCount = Iter\count::<string>(Byte\split($pipelined, "\r\n")) - 1;
             }
 
             $client->writeAll("250 OK\r\n");
@@ -3747,7 +3747,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3801,7 +3801,7 @@ final class TransportTest extends TestCase
 
         $connectCount = 0;
 
-        $future = Async\run(static function () use ($server, &$connectCount): void {
+        $future = Async\run::<void>(static function () use ($server, &$connectCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $connectCount++;
@@ -3865,7 +3865,7 @@ final class TransportTest extends TestCase
 
         $ehloCount = 0;
 
-        $future = Async\run(static function () use ($server, &$ehloCount): void {
+        $future = Async\run::<void>(static function () use ($server, &$ehloCount): void {
             for ($i = 0; $i < 2; $i++) {
                 $client = $server->accept();
                 $client->writeAll("220 mail.example.com ESMTP\r\n");
@@ -3929,7 +3929,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -3976,7 +3976,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4024,7 +4024,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4072,7 +4072,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4120,7 +4120,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4173,7 +4173,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4221,7 +4221,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4274,7 +4274,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4344,7 +4344,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);
@@ -4391,7 +4391,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             try {
                 $client = $server->accept();
                 $client->close();
@@ -4433,7 +4433,7 @@ final class TransportTest extends TestCase
     {
         $server = TCP\listen('127.0.0.1', 0);
         $address = $server->getLocalAddress();
-        $future = Async\run(static function () use ($server): void {
+        $future = Async\run::<void>(static function () use ($server): void {
             $client = $server->accept();
             $client->writeAll("220 mail.example.com ESMTP\r\n");
             self::readCommand($client);

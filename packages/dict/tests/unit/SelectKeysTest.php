@@ -13,7 +13,7 @@ final class SelectKeysTest extends TestCase
     #[DataProvider('provideData')]
     public function testSelectKeys(array $result, array $array, array $keys): void
     {
-        static::assertSame($result, Dict\select_keys($array, $keys));
+        static::assertSame($result, Dict\select_keys::<string, string>($array, $keys));
     }
 
     public static function provideData(): array

@@ -33,7 +33,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 $connection = $listener->accept();
                 $tls = $acceptor->accept($connection);
@@ -74,7 +74,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 $connection = $listener->accept();
                 $tls = $acceptor->accept($connection);
@@ -123,7 +123,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 $connection = $listener->accept();
                 $tls = $acceptor->accept($connection);
@@ -156,7 +156,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 $connection = $listener->accept();
                 $tls = $acceptor->accept($connection);
@@ -194,7 +194,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $serverConfig): void {
                 $connection = $listener->accept();
 
@@ -236,7 +236,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $serverConfig): void {
                 $connection = $listener->accept();
 
@@ -278,7 +278,7 @@ final class ConnectTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 $connection = $listener->accept();
                 $tls = $acceptor->accept($connection);

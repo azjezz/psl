@@ -51,19 +51,13 @@ use function array_map;
  *          ]
  *      )
  *
- * @template TValue
- * @template TResult
- *
- * @param NodeInterface<TValue> $tree
  * @param (Closure(TValue, (Closure(): list<TResult>)): TResult) $transform
- *
- * @return TResult
  *
  * @pure
  *
  * @api
  */
-function traverse(NodeInterface $tree, Closure $transform): mixed
+function traverse<TValue, TResult>(NodeInterface<TValue> $tree, Closure $transform): TResult
 {
     $value = $tree->getValue();
 
@@ -72,7 +66,7 @@ function traverse(NodeInterface $tree, Closure $transform): mixed
             return [];
         }
 
-        return array_map(static fn(NodeInterface $child): mixed => namespace\traverse(
+        return array_map(static fn(NodeInterface<TValue> $child): mixed => namespace\traverse::<TValue, TResult>(
             $child,
             $transform,
         ), $tree->getChildren());

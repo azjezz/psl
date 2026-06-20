@@ -36,7 +36,7 @@ class BackedEnumValueTypeTest extends TestCase
     #[DataProvider('enumDataProvider')]
     public function testTheCorrectBackingTypeIsDetected(string $enum, bool $expect): void
     {
-        $type = new BackedEnumValueType($enum);
+        $type = new BackedEnumValueType::<BackedEnum>($enum);
 
         $reflection = new ReflectionProperty($type, 'isStringBacked');
         static::assertSame($expect, $reflection->getValue($type));
@@ -47,6 +47,6 @@ class BackedEnumValueTypeTest extends TestCase
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('A BackedEnum enum-string is required');
 
-        new BackedEnumValueType(self::class);
+        new BackedEnumValueType::<BackedEnum>(self::class);
     }
 }

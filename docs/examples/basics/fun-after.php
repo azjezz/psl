@@ -7,6 +7,6 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Fun;
 use Psl\Str;
 
-$strlen = Fun\after(static fn(string $s): string => Str\trim($s), static fn(string $s): int => Str\length($s));
+$strlen = Fun\after::<string, string, int>(static fn(string $s): string => Str\trim($s), static fn(string $s): int => Str\length($s));
 
 $strlen('  hi  '); // 2

@@ -13,13 +13,13 @@ final class IsEmptyTest extends TestCase
     #[DataProvider('provideData')]
     public function testIsEmpty(bool $expected, iterable $iterable): void
     {
-        static::assertSame($expected, Iter\is_empty($iterable));
+        static::assertSame($expected, Iter\is_empty::<null|bool|string>($iterable));
     }
 
     public static function provideData(): iterable
     {
         yield [true, []];
-        yield [true, Iter\to_iterator([])];
+        yield [true, Iter\to_iterator::<int, mixed>([])];
         yield [true, (static fn(): iterable => yield from [])()];
 
         yield [false, [null]];

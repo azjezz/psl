@@ -19,13 +19,13 @@ final class EveryMatchTest extends TestCase
         null|TypeInterface $shape = null,
         int $offset = 0,
     ): void {
-        static::assertSame($expected, Regex\every_match($subject, $pattern, $shape, $offset));
+        static::assertSame($expected, Regex\every_match::<array>($subject, $pattern, $shape, $offset));
     }
 
     #[DataProvider('provideNonMatchingData')]
     public function testNotMatching(string $subject, string $pattern, int $offset = 0): void
     {
-        static::assertNull(Regex\every_match($subject, $pattern, null, $offset));
+        static::assertNull(Regex\every_match::<array>($subject, $pattern, null, $offset));
     }
 
     public function testMatchingWithInvalidPattern(): void
@@ -33,7 +33,7 @@ final class EveryMatchTest extends TestCase
         $this->expectException(Regex\Exception\InvalidPatternException::class);
         $this->expectExceptionMessage("No ending delimiter '/' found");
 
-        Regex\every_match('hello', '/hello');
+        Regex\every_match::<array>('hello', '/hello');
     }
 
     public function testInvalidCaptureGroup(): void
@@ -41,7 +41,7 @@ final class EveryMatchTest extends TestCase
         $this->expectException(Regex\Exception\RuntimeException::class);
         $this->expectExceptionMessage('Invalid capture groups');
 
-        Regex\every_match('hello', '/(hello)/', Regex\capture_groups(['doesnotexist']));
+        Regex\every_match::<array>('hello', '/(hello)/', Regex\capture_groups(['doesnotexist']));
     }
 
     public static function provideMatchingData(): iterable

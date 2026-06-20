@@ -7,19 +7,13 @@ namespace Psl\DataStructure;
 use Override;
 
 /**
- * @template T
- *
- * @extends QueueInterface<T>
- *
  * @api
  */
-interface PriorityQueueInterface extends QueueInterface
+interface PriorityQueueInterface<T> extends QueueInterface<T>
 {
     /**
      * Adds a node to the queue.
-     *
-     * @param T $node
      */
     #[Override]
-    public function enqueue(mixed $node, int $priority = 0): void;
+    public function enqueue(T $node, int $priority = 0): void;
 }

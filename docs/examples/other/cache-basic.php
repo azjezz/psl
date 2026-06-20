@@ -11,17 +11,17 @@ use Psl\IO;
 $store = new Cache\LocalStore(maxSize: 100);
 
 // compute() returns cached value or computes it
-$value = $store->compute('greeting', static fn(): string => 'Hello, World!');
+$value = $store->compute::<string>('greeting', static fn(): string => 'Hello, World!');
 
 IO\write_line('%s', $value);
 
 // Second call returns cached value - computer is not invoked
-$value = $store->compute('greeting', static fn(): string => 'This is never called');
+$value = $store->compute::<string>('greeting', static fn(): string => 'This is never called');
 
 IO\write_line('%s', $value); // Still "Hello, World!"
 
 // With TTL - entry expires after 5 minutes
-$store->compute(
+$store->compute::<array>(
     'user:42',
     /** @return array{name: string} */
     static fn(): array => ['name' => 'Alice'],
@@ -29,8 +29,8 @@ $store->compute(
 );
 
 // update() always invokes the computer with the old value
-$store->compute('counter', static fn(): int => 0);
-$store->update('counter', static fn(null|int $old): int => ($old ?? 0) + 1);
+$store->compute::<int>('counter', static fn(): int => 0);
+$store->update::<int>('counter', static fn(null|int $old): int => ($old ?? 0) + 1);
 
 /** @var int $counter */
 $counter = $store->get('counter');

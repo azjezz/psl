@@ -10,11 +10,9 @@ use function is_int;
 use function is_string;
 
 /**
- * @extends UnionType<string, int>
- *
  * @internal
  */
-final readonly class ArrayKeyType extends UnionType
+final readonly class ArrayKeyType extends UnionType<string, int>
 {
     /**
      * @psalm-mutation-free

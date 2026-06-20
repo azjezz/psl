@@ -34,7 +34,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -49,7 +49,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(50, $results);
         foreach ($results as $tx) {
@@ -65,7 +65,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet($path);
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(5, $results);
         foreach ($results as $tx) {
@@ -81,7 +81,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendRequest($method, '/any');
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(4, $results);
         foreach ($results as $i => $tx) {
@@ -99,7 +99,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/status/' . $code);
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(4, $results);
         foreach ($results as $i => $tx) {
@@ -120,7 +120,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -135,7 +135,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -181,7 +181,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $i => $tx) {
@@ -243,7 +243,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
         }
 
         $start = microtime(true);
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
         $elapsed = microtime(true) - $start;
 
         static::assertCount(5, $results);
@@ -315,7 +315,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(5, $results);
         foreach ($results as $tx) {
@@ -351,7 +351,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             return $this->client->send($request);
         };
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(4, $results);
         foreach ($results as $tx) {
@@ -418,7 +418,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/get');
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(10, $results);
         foreach ($results as $tx) {
@@ -475,7 +475,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             $tasks[$i] = fn(): Transaction => $this->sendGet('/ip');
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(100, $results);
         foreach ($results as $tx) {
@@ -496,7 +496,7 @@ final class ConcurrencyTest extends AbstractIntegrationTestCase
             };
         }
 
-        $results = Async\concurrently($tasks);
+        $results = Async\concurrently::<int, Transaction>($tasks);
 
         static::assertCount(20, $results);
         foreach ($results as $i => $tx) {

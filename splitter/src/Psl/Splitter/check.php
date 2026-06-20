@@ -23,19 +23,19 @@ use Psl\Vec;
 function check(array $packages): bool
 {
     /** @var Graph\DirectedGraph<string, null> $graph */
-    $graph = Graph\directed();
+    $graph = Graph\directed::<string, null>();
 
     foreach ($packages as $package) {
-        $graph = Graph\add_node($graph, $package->name);
+        $graph = Graph\add_node::<string, null>($graph, $package->name);
     }
 
     foreach ($packages as $package) {
         foreach ($package->dependencies as $dep) {
-            $graph = Graph\add_edge($graph, $package->name, $dep);
+            $graph = Graph\add_edge::<string, null>($graph, $package->name, $dep);
         }
     }
 
-    if (!Graph\has_cycle($graph)) {
+    if (!Graph\has_cycle::<string, null>($graph)) {
         Log\success('No circular dependencies');
 
         return true;
@@ -72,7 +72,7 @@ function check(array $packages): bool
                 $path[] = $neighbor;
 
                 $formatted = Str\join(
-                    Vec\map($path, static fn(string $p): string => Log\styled(
+                    Vec\map::<int, string, string>($path, static fn(string $p): string => Log\styled(
                         $p,
                         Ansi\foreground(Color\bright_yellow()),
                         Style\bold(),
@@ -93,7 +93,7 @@ function check(array $packages): bool
         unset($stack[$node]);
     };
 
-    foreach (Graph\nodes($graph) as $node) {
+    foreach (Graph\nodes::<string, null>($graph) as $node) {
         if (isset($visited[$node])) {
             continue;
         }

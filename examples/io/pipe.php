@@ -12,7 +12,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 [$read, $write] = IO\pipe();
 
-Async\concurrently([
+Async\concurrently::<int, void>([
     static function () use ($read): void {
         IO\write_error_line('< sleeping.');
 

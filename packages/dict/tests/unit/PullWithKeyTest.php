@@ -13,8 +13,8 @@ final class PullWithKeyTest extends TestCase
 {
     public function testPull(): void
     {
-        $result = Dict\pull_with_key(
-            Vec\range(0, 10),
+        $result = Dict\pull_with_key::<int, int, int, string>(
+            Vec\range::<int>(0, 10),
             static fn(int $k, int $v): string => Str\chr($v + $k + 65),
             static fn(int $k, int $v): int => 2 ** ($v + $k),
         );

@@ -19,7 +19,7 @@ final class FromListTest extends TestCase
             ['id' => 3, 'name' => 'Child B', 'parent_id' => 1],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -41,7 +41,7 @@ final class FromListTest extends TestCase
             ['id' => 4, 'name' => 'Great-grandchild', 'parent_id' => 3],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -64,7 +64,7 @@ final class FromListTest extends TestCase
             ['id' => 2, 'name' => 'Child', 'data' => 'child-data', 'parent_id' => 1],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, array>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -88,7 +88,7 @@ final class FromListTest extends TestCase
             ['id' => 2, 'name' => 'Leaf', 'parent_id' => 1],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -96,7 +96,7 @@ final class FromListTest extends TestCase
         );
 
         $leaf = $tree->getChildren()[0];
-        static::assertTrue(Tree\is_leaf($leaf));
+        static::assertTrue(Tree\is_leaf::<string>($leaf));
     }
 
     public function testFromListWithIntegerIds(): void
@@ -107,7 +107,7 @@ final class FromListTest extends TestCase
             ['id' => 300, 'value' => 'C', 'parent_id' => 100],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -125,7 +125,7 @@ final class FromListTest extends TestCase
             ['id' => 'child-uuid', 'label' => 'Child', 'parent_id' => 'root-uuid'],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, string, string>(
             $records,
             static fn(array $r): string => $r['id'],
             static fn(array $r): null|string => $r['parent_id'],
@@ -147,7 +147,7 @@ final class FromListTest extends TestCase
             ['id' => 6, 'val' => 'F', 'parent_id' => 2],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -171,7 +171,7 @@ final class FromListTest extends TestCase
             ['id' => 2, 'parent_id' => 3],
         ];
 
-        Tree\from_list(
+        Tree\from_list::<array, int, array>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): int => $r['parent_id'],
@@ -189,7 +189,7 @@ final class FromListTest extends TestCase
             ['id' => 2, 'parent_id' => null], // Two roots!
         ];
 
-        Tree\from_list(
+        Tree\from_list::<array, int, array>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null => $r['parent_id'],
@@ -207,7 +207,7 @@ final class FromListTest extends TestCase
             ['id' => 2, 'name' => 'Orphan', 'parent_id' => 999], // parent 999 doesn't exist
         ];
 
-        Tree\from_list(
+        Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -222,7 +222,7 @@ final class FromListTest extends TestCase
             ['id' => 2, 'title' => 'CHILD', 'parent_id' => 1],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],
@@ -238,7 +238,7 @@ final class FromListTest extends TestCase
         $obj1 = (object) ['id' => 'a', 'name' => 'Object A', 'parent_id' => null];
         $obj2 = (object) ['id' => 'b', 'name' => 'Object B', 'parent_id' => 'a'];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<object, string, string>(
             [$obj1, $obj2],
             static fn(object $o): string => $o->id,
             static fn(object $o): null|string => $o->parent_id,
@@ -259,7 +259,7 @@ final class FromListTest extends TestCase
             ['id' => 4, 'name' => 'Third', 'parent_id' => 1],
         ];
 
-        $tree = Tree\from_list(
+        $tree = Tree\from_list::<array, int, string>(
             $records,
             static fn(array $r): int => $r['id'],
             static fn(array $r): null|int => $r['parent_id'],

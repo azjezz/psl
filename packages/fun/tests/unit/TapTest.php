@@ -14,8 +14,8 @@ final class TapTest extends TestCase
 {
     public function testItWorksAsACurriedFunctionThatCanBeUsedForPerformingSideEffects(): void
     {
-        $log = new Ref('123');
-        $call = Fun\tap(static function (string $x) use ($log): void {
+        $log = new Ref::<string>('123');
+        $call = Fun\tap::<string>(static function (string $x) use ($log): void {
             $log->value .= $x;
         });
 
@@ -28,10 +28,10 @@ final class TapTest extends TestCase
 
     public function testItCanBeCombinedInOtherFlowsForDebugging(): void
     {
-        $log = new Ref('');
-        $result = Fun\pipe(
+        $log = new Ref::<string>('');
+        $result = Fun\pipe::<string>(
             static fn(string $x): string => Hash\hash($x, Hash\Algorithm::Md5),
-            Fun\tap(static function (string $x) use ($log): void {
+            Fun\tap::<string>(static function (string $x) use ($log): void {
                 $log->value = $x;
             }),
             static fn(string $x): string => Str\truncate($x, 0, 1),

@@ -15,33 +15,33 @@ final class SuccessTest extends TestCase
 {
     public function testIsSucceeded(): void
     {
-        $wrapper = new Success('hello');
+        $wrapper = new Success::<string>('hello');
         static::assertTrue($wrapper->isSucceeded());
     }
 
     public function testIsFailed(): void
     {
-        $wrapper = new Success('hello');
+        $wrapper = new Success::<string>('hello');
         static::assertFalse($wrapper->isFailed());
     }
 
     public function testGetResult(): void
     {
-        $wrapper = new Success('hello');
+        $wrapper = new Success::<string>('hello');
         static::assertSame('hello', $wrapper->getResult());
     }
 
     public function testUnwrap(): void
     {
-        $result = new Success('foo');
-        $value = $result->unwrapOr(null);
+        $result = new Success::<string>('foo');
+        $value = $result->unwrapOr::<null>(null);
 
         static::assertSame('foo', $value);
     }
 
     public function testGetException(): void
     {
-        $wrapper = new Success('hello');
+        $wrapper = new Success::<string>('hello');
 
         $this->expectException(InvariantViolationException::class);
         $this->expectExceptionMessage('No exception thrown');
@@ -51,16 +51,16 @@ final class SuccessTest extends TestCase
 
     public function testProceed(): void
     {
-        $wrapper = new Success('hello');
-        $actual = $wrapper->proceed(static fn(string $_): int => 200, static fn(Exception $_): int => 404);
+        $wrapper = new Success::<string>('hello');
+        $actual = $wrapper->proceed::<int>(static fn(string $_): int => 200, static fn(Exception $_): int => 404);
 
         static::assertSame(200, $actual);
     }
 
     public function testThenToSuccess(): void
     {
-        $wrapper = new Success('hello');
-        $actual = $wrapper->then(Fun\identity(), Fun\rethrow());
+        $wrapper = new Success::<string>('hello');
+        $actual = $wrapper->then::<string>(Fun\identity::<string>(), Fun\rethrow());
 
         static::assertNotSame($wrapper, $actual);
         static::assertTrue($actual->isSucceeded());
@@ -70,8 +70,8 @@ final class SuccessTest extends TestCase
     public function testThenToFailure(): void
     {
         $exception = new Exception('bar');
-        $wrapper = new Success('hello');
-        $actual = $wrapper->then(static function () use ($exception): never {
+        $wrapper = new Success::<string>('hello');
+        $actual = $wrapper->then::<never>(static function () use ($exception): never {
             throw $exception;
         }, Fun\rethrow());
 
@@ -81,8 +81,8 @@ final class SuccessTest extends TestCase
 
     public function testCatch(): void
     {
-        $wrapper = new Success('hello');
-        $actual = $wrapper->catch(static function (): never {
+        $wrapper = new Success::<string>('hello');
+        $actual = $wrapper->catch::<never>(static function (): never {
             throw new Exception('Dont call us, we\'ll call you!');
         });
 
@@ -93,15 +93,15 @@ final class SuccessTest extends TestCase
 
     public function testMap(): void
     {
-        $wrapper = new Success('hello');
-        $actual = $wrapper->map(Fun\identity());
+        $wrapper = new Success::<string>('hello');
+        $actual = $wrapper->map::<string>(Fun\identity::<string>());
 
         static::assertNotSame($wrapper, $actual);
         static::assertTrue($actual->isSucceeded());
         static::assertSame('hello', $actual->getResult());
 
-        $wrapper = new Success('hello');
-        $actual = $wrapper->map(static fn(): never => throw new Exception('bye'));
+        $wrapper = new Success::<string>('hello');
+        $actual = $wrapper->map::<never>(static fn(): never => throw new Exception('bye'));
 
         static::assertNotSame($wrapper, $actual);
         static::assertFalse($actual->isSucceeded());
@@ -111,8 +111,8 @@ final class SuccessTest extends TestCase
 
     public function testAlways(): void
     {
-        $ref = new Psl\Ref('');
-        $wrapper = new Success('hello');
+        $ref = new Psl\Ref::<string>('');
+        $wrapper = new Success::<string>('hello');
         $actual = $wrapper->always(static function () use ($ref): void {
             $ref->value .= 'hey';
         });

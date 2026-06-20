@@ -17,11 +17,11 @@ final class AsyncBench
     #[ParamProviders('provideSequenceData')]
     public function benchSequence(array $params): void
     {
-        $sequence = new Async\Sequence(static fn(int $v): int => $v * 2);
+        $sequence = new Async\Sequence::<int, int>(static fn(int $v): int => $v * 2);
 
         $awaitables = [];
         for ($i = 0; $i < $params['ops']; $i++) {
-            $awaitables[] = Async\run(static fn(): int => $sequence->waitFor($i));
+            $awaitables[] = Async\run::<int>(static fn(): int => $sequence->waitFor($i));
         }
 
         foreach ($awaitables as $awaitable) {
@@ -35,11 +35,11 @@ final class AsyncBench
     #[ParamProviders('provideSemaphoreData')]
     public function benchSemaphore(array $params): void
     {
-        $semaphore = new Async\Semaphore($params['concurrency'], static fn(int $v): int => $v * 2);
+        $semaphore = new Async\Semaphore::<int, int>($params['concurrency'], static fn(int $v): int => $v * 2);
 
         $awaitables = [];
         for ($i = 0; $i < $params['ops']; $i++) {
-            $awaitables[] = Async\run(static fn(): int => $semaphore->waitFor($i));
+            $awaitables[] = Async\run::<int>(static fn(): int => $semaphore->waitFor($i));
         }
 
         foreach ($awaitables as $awaitable) {

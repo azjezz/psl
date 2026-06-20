@@ -20,7 +20,7 @@ use function ltrim;
  *
  * @internal
  */
-final readonly class UIntType extends Type\Type
+final readonly class UIntType extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int<0, max> $value

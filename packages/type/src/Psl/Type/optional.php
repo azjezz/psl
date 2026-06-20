@@ -7,15 +7,9 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template T
- *
- * @param TypeInterface<T> $innerType
- *
- * @return TypeInterface<T>
- *
  * @api
  */
-function optional(TypeInterface $innerType): TypeInterface
+function optional<T>(TypeInterface<T> $innerType): TypeInterface<T>
 {
-    return new Internal\OptionalType($innerType);
+    return new Internal\OptionalType::<T>($innerType);
 }

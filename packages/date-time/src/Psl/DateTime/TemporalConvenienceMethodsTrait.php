@@ -21,12 +21,10 @@ trait TemporalConvenienceMethodsTrait
     /**
      * Compare this {@see TemporalInterface} object to the given one.
      *
-     * @param TemporalInterface $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function compare(mixed $other): Order
+    public function compare(TemporalInterface $other): Order
     {
         $a = $this->getTimestamp()->toParts();
         $b = $other->getTimestamp()->toParts();
@@ -39,12 +37,10 @@ trait TemporalConvenienceMethodsTrait
      *
      * Note: this method is an alias for {@see TemporalInterface::atTheSameTime()}.
      *
-     * @param TemporalInterface $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function equals(mixed $other): bool
+    public function equals(TemporalInterface $other): bool
     {
         return $this->atTheSameTime($other);
     }

@@ -265,7 +265,7 @@ final class HeadersTest extends TestCase
         $folded = $headers->toFoldedString();
         $lines = Byte\split($folded, "\r\n");
 
-        static::assertGreaterThan(1, Iter\count(Vec\filter($lines, static fn(string $l): bool => $l !== '')));
+        static::assertGreaterThan(1, Iter\count::<string>(Vec\filter::<string>($lines, static fn(string $l): bool => $l !== '')));
     }
 
     public function testToFoldedStringMultipleHeaders(): void
@@ -293,7 +293,7 @@ final class HeadersTest extends TestCase
         $folded = $headers->toFoldedString(40);
         $lines = Byte\split($folded, "\r\n");
 
-        static::assertGreaterThan(1, Iter\count(Vec\filter($lines, static fn(string $l): bool => $l !== '')));
+        static::assertGreaterThan(1, Iter\count::<string>(Vec\filter::<string>($lines, static fn(string $l): bool => $l !== '')));
     }
 
     public function testToFoldedStringSingleLongToken(): void
@@ -321,7 +321,7 @@ final class HeadersTest extends TestCase
         ]);
 
         $folded = $headers->toFoldedString();
-        $foldCount = Iter\count(Byte\split($folded, "\r\n ")) - 1;
+        $foldCount = Iter\count::<string>(Byte\split($folded, "\r\n ")) - 1;
 
         static::assertGreaterThanOrEqual(2, $foldCount);
     }

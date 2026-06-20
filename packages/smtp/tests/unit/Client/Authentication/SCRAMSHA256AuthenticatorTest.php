@@ -41,7 +41,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
         $salt = random_bytes(16);
         $iterations = 4096;
 
-        Async\run(static function () use ($serverStream, $password, $salt, $iterations): void {
+        Async\run::<void>(static function () use ($serverStream, $password, $salt, $iterations): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -98,7 +98,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -125,7 +125,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $salt = random_bytes(16);
 
-        Async\run(static function () use ($serverStream, $salt): void {
+        Async\run::<void>(static function () use ($serverStream, $salt): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -186,7 +186,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -197,7 +197,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -228,7 +228,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $salt = random_bytes(16);
 
-        Async\run(static function () use ($serverStream, $salt): void {
+        Async\run::<void>(static function () use ($serverStream, $salt): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -275,7 +275,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $salt = random_bytes(16);
 
-        Async\run(static function () use ($serverStream, $salt): void {
+        Async\run::<void>(static function () use ($serverStream, $salt): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -321,7 +321,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
 
-        $future = Async\run(static function () use ($serverStream): void {
+        $future = Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -350,7 +350,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $salt = random_bytes(16);
 
-        $future = Async\run(static function () use ($serverStream, $salt): void {
+        $future = Async\run::<void>(static function () use ($serverStream, $salt): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -378,7 +378,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
 
-        $future = Async\run(static function () use ($serverStream): void {
+        $future = Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -414,7 +414,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $salt = random_bytes(16);
 
-        $future = Async\run(static function () use ($serverStream, $salt): void {
+        $future = Async\run::<void>(static function () use ($serverStream, $salt): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -450,7 +450,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $salt = random_bytes(16);
 
-        $future = Async\run(static function () use ($serverStream, $salt): void {
+        $future = Async\run::<void>(static function () use ($serverStream, $salt): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -492,7 +492,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair('SCRAM-SHA-256');
 
-        $future = Async\run(static function () use ($serverStream): void {
+        $future = Async\run::<void>(static function () use ($serverStream): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();
@@ -528,7 +528,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },
@@ -539,7 +539,7 @@ final class SCRAMSHA256AuthenticatorTest extends TestCase
 
         $server->close();
 
-        Async\run(static function () use ($serverStream, $authMechanisms): void {
+        Async\run::<void>(static function () use ($serverStream, $authMechanisms): void {
             $command = '';
             while (!Byte\contains($command, "\r\n")) {
                 $command .= $serverStream->read();

@@ -9,10 +9,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use Psl\Math;
 use Psl\Type;
 
-final class MixedTypeTest extends TypeTestCase
+final class MixedTypeTest extends TypeTestCase<mixed>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<mixed>
     {
         return Type\mixed();
     }

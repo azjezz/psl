@@ -11,4 +11,4 @@ use Psl\Result;
 $temp = Filesystem\create_temporary_file();
 File\write($temp, 'temporary data');
 
-$result = Result\wrap(fn() => File\read($temp))->always(fn() => Filesystem\delete_file($temp));
+$result = Result\wrap::<string>(fn() => File\read($temp))->always(fn() => Filesystem\delete_file($temp));

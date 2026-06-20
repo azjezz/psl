@@ -9,12 +9,12 @@ use Psl\Collection\CollectionInterface;
 use Psl\Collection\IndexAccessInterface;
 use Psl\Type;
 
-final class UnionTypeTest extends TypeTestCase
+final class UnionTypeTest extends TypeTestCase<int|bool>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int|bool>
     {
-        return Type\union(Type\int(), Type\bool());
+        return Type\union::<int|bool>(Type\int(), Type\bool());
     }
 
     #[Override]
@@ -41,23 +41,23 @@ final class UnionTypeTest extends TypeTestCase
     #[Override]
     public static function getToStringExamples(): iterable
     {
-        yield [Type\union(Type\bool(), Type\string()), 'bool|string'];
-        yield [Type\union(Type\bool(), Type\float()), 'bool|float'];
-        yield [Type\union(Type\bool(), Type\float(), Type\int()), 'bool|float|int'];
-        yield [Type\union(Type\bool(), Type\num()), 'bool|num'];
-        yield [Type\union(Type\bool(), Type\array_key()), 'bool|array-key'];
+        yield [Type\union::<bool|string>(Type\bool(), Type\string()), 'bool|string'];
+        yield [Type\union::<bool|float>(Type\bool(), Type\float()), 'bool|float'];
+        yield [Type\union::<bool|float|int>(Type\bool(), Type\float(), Type\int()), 'bool|float|int'];
+        yield [Type\union::<bool|int|float>(Type\bool(), Type\num()), 'bool|num'];
+        yield [Type\union::<bool|string|int>(Type\bool(), Type\array_key()), 'bool|array-key'];
         yield [
-            Type\union(Type\bool(), Type\intersection(
-                Type\instance_of(IndexAccessInterface::class),
-                Type\instance_of(CollectionInterface::class),
+            Type\union::<bool|(IndexAccessInterface&CollectionInterface)>(Type\bool(), Type\intersection::<IndexAccessInterface, CollectionInterface>(
+                Type\instance_of::<IndexAccessInterface>(IndexAccessInterface::class),
+                Type\instance_of::<CollectionInterface>(CollectionInterface::class),
             )),
             'bool|(Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)',
         ];
         yield [
-            Type\union(
-                Type\intersection(
-                    Type\instance_of(IndexAccessInterface::class),
-                    Type\instance_of(CollectionInterface::class),
+            Type\union::<(IndexAccessInterface&CollectionInterface)|bool|string>(
+                Type\intersection::<IndexAccessInterface, CollectionInterface>(
+                    Type\instance_of::<IndexAccessInterface>(IndexAccessInterface::class),
+                    Type\instance_of::<CollectionInterface>(CollectionInterface::class),
                 ),
                 Type\bool(),
                 Type\non_empty_string(),
@@ -65,12 +65,12 @@ final class UnionTypeTest extends TypeTestCase
             '((Psl\Collection\IndexAccessInterface&Psl\Collection\CollectionInterface)|bool)|non-empty-string',
         ];
         yield [
-            Type\union(
+            Type\union::<null|array|string>(
                 Type\null(),
-                Type\vec(Type\positive_int()),
-                Type\literal_scalar('php'),
-                Type\literal_scalar('still'),
-                Type\literal_scalar('alive'),
+                Type\vec::<int>(Type\positive_int()),
+                Type\literal_scalar::<string>('php'),
+                Type\literal_scalar::<string>('still'),
+                Type\literal_scalar::<string>('alive'),
             ),
             'null|vec<positive-int>|"php"|"still"|"alive"',
         ];
@@ -78,11 +78,11 @@ final class UnionTypeTest extends TypeTestCase
 
     public function testLiteralUnions(): void
     {
-        $type = Type\union(
-            Type\literal_scalar('a'),
-            Type\literal_scalar('b'),
-            Type\literal_scalar('c'),
-            Type\literal_scalar('d'),
+        $type = Type\union::<string>(
+            Type\literal_scalar::<string>('a'),
+            Type\literal_scalar::<string>('b'),
+            Type\literal_scalar::<string>('c'),
+            Type\literal_scalar::<string>('d'),
         );
 
         foreach (['a', 'b', 'c', 'd'] as $item) {

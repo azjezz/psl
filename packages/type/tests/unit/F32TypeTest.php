@@ -8,10 +8,10 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class F32TypeTest extends TypeTestCase
+final class F32TypeTest extends TypeTestCase<float>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<float>
     {
         return Type\f32();
     }

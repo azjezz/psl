@@ -20,14 +20,11 @@ use function count;
  *
  * Just like {@see Semaphore}, all operations must have the same input type (Tin) and output type (Tout), and be processed by the same function;
  *
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @see Semaphore
  *
  * @api
  */
-final class Sequence
+final class Sequence<in Tin, out Tout>
 {
     private bool $ongoing = false;
 
@@ -51,15 +48,11 @@ final class Sequence
     /**
      * Run the operation using the given `$input`, after all previous operations have completed.
      *
-     * @param Tin $input
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
-     *
-     * @return Tout
      *
      * @see Sequence::cancel()
      */
-    public function waitFor(mixed $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): mixed
+    public function waitFor(Tin $input, CancellationTokenInterface $cancellation = new NullCancellationToken()): Tout
     {
         if ($this->ongoing) {
             if ($cancellation->cancellable) {

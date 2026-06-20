@@ -16,7 +16,7 @@ final class SortByKeyTest extends TestCase
     #[DataProvider('provideData')]
     public function testSortByKey(array $expected, array $array, null|Closure $comparator = null): void
     {
-        static::assertSame($expected, Dict\sort_by_key($array, $comparator));
+        static::assertSame($expected, Dict\sort_by_key::<string, string>($array, $comparator));
     }
 
     public static function provideData(): array
@@ -37,8 +37,8 @@ final class SortByKeyTest extends TestCase
 
     public function testSortByKeyWithNonArrayIterable(): void
     {
-        $iterator = Iter\Iterator::create(['c' => 3, 'a' => 1, 'b' => 2]);
+        $iterator = Iter\Iterator::<string, int>::create(['c' => 3, 'a' => 1, 'b' => 2]);
 
-        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\sort_by_key($iterator));
+        static::assertSame(['a' => 1, 'b' => 2, 'c' => 3], Dict\sort_by_key::<string, int>($iterator));
     }
 }

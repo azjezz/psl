@@ -36,7 +36,7 @@ final class CopyBidirectionalTest extends TestCase
         $side_b = new IO\CloseReadWriteStreamHandle($pair2[0]);
         $proxy_b = new IO\CloseReadWriteStreamHandle($pair2[1]);
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'proxy' => static function () use ($proxy_a, $proxy_b): void {
                 [$a_to_b, $b_to_a] = IO\copy_bidirectional($proxy_a, $proxy_b);
 

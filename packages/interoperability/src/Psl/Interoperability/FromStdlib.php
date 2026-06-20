@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Psl\Interoperability;
 
 /**
- * @template T
- *
  * @api
  */
-interface FromStdlib
+interface FromStdlib<T>
 {
-    /**
-     * @param T $value
-     */
-    public static function fromStdlib(mixed $value): static;
+    public static function fromStdlib(T $value): static;
 }

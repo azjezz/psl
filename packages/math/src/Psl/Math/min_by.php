@@ -14,16 +14,12 @@ use Closure;
  *
  * In the case of duplicate values, later values overwrite previous ones.
  *
- * @template T
- *
  * @param iterable<T> $numbers
  * @param (Closure(T): numeric) $numericFunction
  *
- * @return T|null
- *
  * @api
  */
-function min_by(iterable $numbers, Closure $numericFunction): mixed
+function min_by<T>(iterable $numbers, Closure $numericFunction): T|null
 {
     $min = null;
     $minNum = null;

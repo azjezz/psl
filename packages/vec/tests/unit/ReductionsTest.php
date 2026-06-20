@@ -12,17 +12,14 @@ use Psl\Vec;
 final class ReductionsTest extends TestCase
 {
     /**
-     * @template Tk
-     * @template Tv
-     * @template Ts
-     * @param iterable<Tk, Tv> $iterable
-     * @param (callable(Ts, Tk, Tv): Ts) $function
-     * @param Ts $initial
+     * @param iterable<mixed, mixed> $iterable
+     * @param (callable(mixed, mixed, mixed): mixed) $function
+     * @param mixed $initial
      */
     #[DataProvider('provideData')]
     public function testReductions(array $expected, iterable $iterable, callable $function, mixed $initial): void
     {
-        static::assertSame($expected, Vec\reductions($iterable, $function, $initial));
+        static::assertSame($expected, Vec\reductions::<int, int, int>($iterable, $function, $initial));
     }
 
     /**
@@ -46,7 +43,7 @@ final class ReductionsTest extends TestCase
 
         yield [
             [1, 3, 6],
-            Iter\to_iterator([1, 2, 3]),
+            Iter\to_iterator::<int, int>([1, 2, 3]),
             static fn(int $accumulator, int $_k, int $v): int => $accumulator + $v,
             0,
         ];

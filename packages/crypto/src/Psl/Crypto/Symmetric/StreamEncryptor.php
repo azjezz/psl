@@ -39,7 +39,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
         int $chunkSize = 8192,
     ): void {
         /** @var array{string, string} $init */
-        $init = Internal\call_sodium(fn() => sodium_crypto_secretstream_xchacha20poly1305_init_push($this->key->bytes));
+        $init = Internal\call_sodium::<array>(fn() => sodium_crypto_secretstream_xchacha20poly1305_init_push($this->key->bytes));
         [$state, $header] = $init;
 
         $destination->writeAll($header);
@@ -56,7 +56,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
                 ? SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_FINAL
                 : SODIUM_CRYPTO_SECRETSTREAM_XCHACHA20POLY1305_TAG_MESSAGE;
 
-            $encrypted = Internal\call_sodium(static function () use (&$state, $chunk, $tag): string {
+            $encrypted = Internal\call_sodium::<string>(static function () use (&$state, $chunk, $tag): string {
                 return sodium_crypto_secretstream_xchacha20poly1305_push($state, $chunk, '', $tag);
             });
             $destination->writeAll(pack('V', strlen($encrypted)));
@@ -67,7 +67,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
             }
         }
 
-        $encrypted = Internal\call_sodium(static function () use (&$state): string {
+        $encrypted = Internal\call_sodium::<string>(static function () use (&$state): string {
             return sodium_crypto_secretstream_xchacha20poly1305_push(
                 $state,
                 '',
@@ -93,7 +93,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
             throw new Exception\DecryptionException('Invalid chunk size in stream header.');
         }
 
-        $state = Internal\call_sodium(fn() => sodium_crypto_secretstream_xchacha20poly1305_init_pull(
+        $state = Internal\call_sodium::<string>(fn() => sodium_crypto_secretstream_xchacha20poly1305_init_pull(
             $header,
             $this->key->bytes,
         ));
@@ -131,7 +131,7 @@ final readonly class StreamEncryptor implements StreamEncryptorInterface
             }
 
             /** @var array{string, int}|false $result */
-            $result = Internal\call_sodium(static function () use (&$state, $chunk): array|false {
+            $result = Internal\call_sodium::<array|false>(static function () use (&$state, $chunk): array|false {
                 return sodium_crypto_secretstream_xchacha20poly1305_pull($state, $chunk);
             });
             if ($result === false) {

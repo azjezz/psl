@@ -45,7 +45,7 @@ function create_hard_link(string $source, string $destination): void
         namespace\create_directory_for_file($destination);
     }
 
-    [$result, $error_message] = Internal\box(static fn(): bool => link($source, $destination));
+    [$result, $error_message] = Internal\box::<bool>(static fn(): bool => link($source, $destination));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(sprintf(

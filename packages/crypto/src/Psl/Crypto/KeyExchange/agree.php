@@ -20,7 +20,7 @@ use function sodium_memzero;
 function agree(#[SensitiveParameter] SecretKey $secretKey, #[SensitiveParameter] PublicKey $publicKey): SharedSecret
 {
     /** @var non-empty-string $raw */
-    $raw = Internal\call_sodium(fn() => sodium_crypto_scalarmult($secretKey->bytes, $publicKey->bytes));
+    $raw = Internal\call_sodium::<string>(fn() => sodium_crypto_scalarmult($secretKey->bytes, $publicKey->bytes));
     $result = new SharedSecret($raw);
     sodium_memzero($raw);
 

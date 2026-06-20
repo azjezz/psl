@@ -16,11 +16,9 @@ use function is_string;
 use function ltrim;
 
 /**
- * @extends Type\Type<int>
- *
  * @internal
  */
-final readonly class IntType extends Type\Type
+final readonly class IntType extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int $value

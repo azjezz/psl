@@ -57,7 +57,7 @@ final class CollectionBench
     #[ParamProviders('provideConstructorData')]
     public function benchVectorConstructor(array $params): void
     {
-        $_ = new Vector($params['elements']);
+        $_ = new Vector::<int>($params['elements']);
     }
 
     /**
@@ -66,7 +66,7 @@ final class CollectionBench
     #[ParamProviders('provideConstructorData')]
     public function benchMutableVectorConstructor(array $params): void
     {
-        $_ = new MutableVector($params['elements']);
+        $_ = new MutableVector::<int>($params['elements']);
     }
 
     /**
@@ -75,7 +75,7 @@ final class CollectionBench
     #[ParamProviders('provideMapZipData')]
     public function benchMapZip(array $params): void
     {
-        $params['map']->zip($params['zip_with']);
+        $params['map']->zip::<int>($params['zip_with']);
     }
 
     /**
@@ -84,7 +84,7 @@ final class CollectionBench
     #[ParamProviders('provideMutableMapZipData')]
     public function benchMutableMapZip(array $params): void
     {
-        $params['map']->zip($params['zip_with']);
+        $params['map']->zip::<int>($params['zip_with']);
     }
 
     /**
@@ -110,28 +110,28 @@ final class CollectionBench
      */
     public function provideVectorData(): iterable
     {
-        $small = Vec\range(1, 10);
-        $medium = Vec\range(1, 100);
-        $large = Vec\range(1, 1000);
+        $small = Vec\range::<int>(1, 10);
+        $medium = Vec\range::<int>(1, 100);
+        $large = Vec\range::<int>(1, 1000);
 
         yield 'small (10), found' => [
-            'vector' => new Vector($small),
-            'mutable_vector' => new MutableVector($small),
+            'vector' => new Vector::<int>($small),
+            'mutable_vector' => new MutableVector::<int>($small),
             'search' => 5,
         ];
         yield 'medium (100), found' => [
-            'vector' => new Vector($medium),
-            'mutable_vector' => new MutableVector($medium),
+            'vector' => new Vector::<int>($medium),
+            'mutable_vector' => new MutableVector::<int>($medium),
             'search' => 50,
         ];
         yield 'large (1000), found' => [
-            'vector' => new Vector($large),
-            'mutable_vector' => new MutableVector($large),
+            'vector' => new Vector::<int>($large),
+            'mutable_vector' => new MutableVector::<int>($large),
             'search' => 500,
         ];
         yield 'large (1000), not found' => [
-            'vector' => new Vector($large),
-            'mutable_vector' => new MutableVector($large),
+            'vector' => new Vector::<int>($large),
+            'mutable_vector' => new MutableVector::<int>($large),
             'search' => 9999,
         ];
     }
@@ -155,18 +155,18 @@ final class CollectionBench
         $large = $make(1000);
 
         yield 'small (10), found' => [
-            'map' => new Map($small),
-            'mutable_map' => new MutableMap($small),
+            'map' => new Map::<string, int>($small),
+            'mutable_map' => new MutableMap::<string, int>($small),
             'search' => 5,
         ];
         yield 'medium (100), found' => [
-            'map' => new Map($medium),
-            'mutable_map' => new MutableMap($medium),
+            'map' => new Map::<string, int>($medium),
+            'mutable_map' => new MutableMap::<string, int>($medium),
             'search' => 50,
         ];
         yield 'large (1000), found' => [
-            'map' => new Map($large),
-            'mutable_map' => new MutableMap($large),
+            'map' => new Map::<string, int>($large),
+            'mutable_map' => new MutableMap::<string, int>($large),
             'search' => 500,
         ];
     }
@@ -176,9 +176,9 @@ final class CollectionBench
      */
     public function provideConstructorData(): iterable
     {
-        yield 'small (10)' => ['elements' => Vec\range(1, 10)];
-        yield 'medium (100)' => ['elements' => Vec\range(1, 100)];
-        yield 'large (1000)' => ['elements' => Vec\range(1, 1000)];
+        yield 'small (10)' => ['elements' => Vec\range::<int>(1, 10)];
+        yield 'medium (100)' => ['elements' => Vec\range::<int>(1, 100)];
+        yield 'large (1000)' => ['elements' => Vec\range::<int>(1, 1000)];
     }
 
     /**
@@ -195,9 +195,9 @@ final class CollectionBench
             return $data;
         };
 
-        yield 'small (10)' => ['map' => new Map($make(10)), 'zip_with' => Vec\range(1, 10)];
-        yield 'medium (100)' => ['map' => new Map($make(100)), 'zip_with' => Vec\range(1, 100)];
-        yield 'large (1000)' => ['map' => new Map($make(1000)), 'zip_with' => Vec\range(1, 1000)];
+        yield 'small (10)' => ['map' => new Map::<string, int>($make(10)), 'zip_with' => Vec\range::<int>(1, 10)];
+        yield 'medium (100)' => ['map' => new Map::<string, int>($make(100)), 'zip_with' => Vec\range::<int>(1, 100)];
+        yield 'large (1000)' => ['map' => new Map::<string, int>($make(1000)), 'zip_with' => Vec\range::<int>(1, 1000)];
     }
 
     /**
@@ -214,9 +214,9 @@ final class CollectionBench
             return $data;
         };
 
-        yield 'small (10)' => ['map' => new MutableMap($make(10)), 'zip_with' => Vec\range(1, 10)];
-        yield 'medium (100)' => ['map' => new MutableMap($make(100)), 'zip_with' => Vec\range(1, 100)];
-        yield 'large (1000)' => ['map' => new MutableMap($make(1000)), 'zip_with' => Vec\range(1, 1000)];
+        yield 'small (10)' => ['map' => new MutableMap::<string, int>($make(10)), 'zip_with' => Vec\range::<int>(1, 10)];
+        yield 'medium (100)' => ['map' => new MutableMap::<string, int>($make(100)), 'zip_with' => Vec\range::<int>(1, 100)];
+        yield 'large (1000)' => ['map' => new MutableMap::<string, int>($make(1000)), 'zip_with' => Vec\range::<int>(1, 1000)];
     }
 
     /**
@@ -233,9 +233,9 @@ final class CollectionBench
             return $data;
         };
 
-        yield 'small (10), chunk 3' => ['map' => new Map($make(10)), 'chunk_size' => 3];
-        yield 'medium (100), chunk 10' => ['map' => new Map($make(100)), 'chunk_size' => 10];
-        yield 'large (1000), chunk 50' => ['map' => new Map($make(1000)), 'chunk_size' => 50];
+        yield 'small (10), chunk 3' => ['map' => new Map::<string, int>($make(10)), 'chunk_size' => 3];
+        yield 'medium (100), chunk 10' => ['map' => new Map::<string, int>($make(100)), 'chunk_size' => 10];
+        yield 'large (1000), chunk 50' => ['map' => new Map::<string, int>($make(1000)), 'chunk_size' => 50];
     }
 
     /**
@@ -252,8 +252,8 @@ final class CollectionBench
             return $data;
         };
 
-        yield 'small (10), chunk 3' => ['map' => new MutableMap($make(10)), 'chunk_size' => 3];
-        yield 'medium (100), chunk 10' => ['map' => new MutableMap($make(100)), 'chunk_size' => 10];
-        yield 'large (1000), chunk 50' => ['map' => new MutableMap($make(1000)), 'chunk_size' => 50];
+        yield 'small (10), chunk 3' => ['map' => new MutableMap::<string, int>($make(10)), 'chunk_size' => 3];
+        yield 'medium (100), chunk 10' => ['map' => new MutableMap::<string, int>($make(100)), 'chunk_size' => 10];
+        yield 'large (1000), chunk 50' => ['map' => new MutableMap::<string, int>($make(1000)), 'chunk_size' => 50];
     }
 }

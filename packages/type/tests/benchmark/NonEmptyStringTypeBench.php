@@ -17,7 +17,7 @@ use function array_merge;
  * @extends GenericTypeBench<TypeInterface<non-empty-string>>
  */
 #[Groups(['type'])]
-final class NonEmptyStringTypeBench extends GenericTypeBench
+final class NonEmptyStringTypeBench extends GenericTypeBench<TypeInterface<string>>
 {
     /**
      * {@inheritDoc}

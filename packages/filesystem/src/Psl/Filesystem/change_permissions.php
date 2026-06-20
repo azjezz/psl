@@ -24,7 +24,7 @@ function change_permissions(string $node, int $permissions): void
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$success, $error] = Internal\box(static fn(): bool => chmod($node, $permissions));
+    [$success, $error] = Internal\box::<bool>(static fn(): bool => chmod($node, $permissions));
     // @codeCoverageIgnoreStart
     if (!$success) {
         throw new Exception\RuntimeException(sprintf(

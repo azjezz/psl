@@ -9,15 +9,11 @@ use Closure;
 use function error_reporting;
 
 /**
- * @template T
- *
  * @param (Closure(): T) $fun
- *
- * @return T
  *
  * @internal
  */
-function suppress(Closure $fun): mixed
+function suppress<T>(Closure $fun): T
 {
     $previousLevel = error_reporting(0);
 

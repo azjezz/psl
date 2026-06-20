@@ -54,7 +54,7 @@ final class SocketTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn = $listener->accept();
                 $data = $conn->read();
@@ -77,7 +77,7 @@ final class SocketTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn = $listener->accept();
                 $data = $conn->read();
@@ -105,7 +105,7 @@ final class SocketTest extends TestCase
         $listener = $socket->listen(new TCP\ListenConfiguration(reuseAddress: true));
         $address = $listener->getLocalAddress();
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn = $listener->accept();
                 $data = $conn->read();
@@ -143,7 +143,7 @@ final class SocketTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn = $listener->accept();
                 $data = $conn->read();
@@ -245,7 +245,7 @@ final class SocketTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $conn = $listener->accept();
                 $data = $conn->read();

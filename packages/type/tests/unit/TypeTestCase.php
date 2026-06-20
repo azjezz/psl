@@ -14,15 +14,9 @@ use Psl\Type\Type;
 use Psl\Type\TypeInterface;
 use Psl\Vec;
 
-/**
- * @template T
- */
-abstract class TypeTestCase extends TestCase
+abstract class TypeTestCase<T> extends TestCase
 {
-    /**
-     * @return TypeInterface<T>
-     */
-    abstract public static function getType(): TypeInterface;
+    abstract public static function getType(): TypeInterface<T>;
 
     /**
      * @return iterable<array{0: mixed, 1: T}>
@@ -45,7 +39,7 @@ abstract class TypeTestCase extends TestCase
     public static function getValidValues(): array
     {
         $nonUnique = static::getValidCoercions();
-        $nonUnique = Dict\map($nonUnique, static fn(array $tuple): mixed => $tuple[1]);
+        $nonUnique = Dict\map::<string|int, array, mixed>($nonUnique, static fn(array $tuple): mixed => $tuple[1]);
 
         $out = [];
         foreach ($nonUnique as $v) {
@@ -69,7 +63,7 @@ abstract class TypeTestCase extends TestCase
     public static function getInvalidValues(): array
     {
         $rows = static::getInvalidCoercions();
-        $rows = Vec\values($rows);
+        $rows = Vec\values::<array>($rows);
         foreach (static::getValidCoercions() as $arr) {
             [$value, $v] = $arr;
             if (static::equals($v, $value)) {
@@ -132,7 +126,7 @@ abstract class TypeTestCase extends TestCase
     }
 
     #[DataProvider('getToStringExamples')]
-    final public function testToString(Type $ts, string $expected): void
+    final public function testToString(Type<mixed> $ts, string $expected): void
     {
         static::assertSame($expected, $ts->toString());
     }

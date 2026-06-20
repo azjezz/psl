@@ -38,11 +38,11 @@ function verify(array $packages): bool
         }
 
         $composerPath = $package->path . '/composer.json';
-        $composer = Json\typed(
+        $composer = Json\typed::<array>(
             File\read($composerPath),
-            Type\shape([
-                'require' => Type\dict(Type\non_empty_string(), Type\non_empty_string()),
-                'require-dev' => Type\optional(Type\dict(Type\non_empty_string(), Type\non_empty_string())),
+            Type\shape::<string, array>([
+                'require' => Type\dict::<string, string>(Type\non_empty_string(), Type\non_empty_string()),
+                'require-dev' => Type\optional::<array>(Type\dict::<string, string>(Type\non_empty_string(), Type\non_empty_string())),
             ], allowUnknownFields: true),
         );
 
@@ -100,9 +100,9 @@ function verify(array $packages): bool
 
         $checkFiles($package, Filesystem\read_directory($srcDir));
 
-        $missingFromRequire = Dict\diff(Vec\keys($srcDeps), $declaredRequire);
+        $missingFromRequire = Dict\diff::<int, string>(Vec\keys::<string, bool>($srcDeps), $declaredRequire);
         foreach ($missingFromRequire as $dep) {
-            if (Iter\contains($declaredDev, $dep)) {
+            if (Iter\contains::<string>($declaredDev, $dep)) {
                 Log\error(
                     '%s uses %s in source, but it is in require-dev instead of require',
                     $package->name,
@@ -119,7 +119,7 @@ function verify(array $packages): bool
             $ok = false;
         }
 
-        $extraInRequire = Dict\diff($declaredRequire, Vec\keys($srcDeps));
+        $extraInRequire = Dict\diff::<int, string>($declaredRequire, Vec\keys::<string, bool>($srcDeps));
         foreach ($extraInRequire as $dep) {
             Log\warn(
                 '%s declares %s in require, but it is not used in source',
@@ -167,8 +167,8 @@ function verify(array $packages): bool
 
         $checkTestFiles($package, Filesystem\read_directory($testDir));
 
-        $allDeclared = Vec\concat($declaredRequire, $declaredDev);
-        $missingFromTestDeps = Dict\diff(Vec\keys($testDeps), $allDeclared);
+        $allDeclared = Vec\concat::<string>($declaredRequire, $declaredDev);
+        $missingFromTestDeps = Dict\diff::<int, string>(Vec\keys::<string, bool>($testDeps), $allDeclared);
         foreach ($missingFromTestDeps as $dep) {
             Log\error(
                 '%s uses %s in tests, but it is not declared in require or require-dev',

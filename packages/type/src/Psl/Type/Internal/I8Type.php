@@ -16,7 +16,7 @@ use function is_int;
  *
  * @internal
  */
-final readonly class I8Type extends Type\Type
+final readonly class I8Type extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int<-128, 127> $value

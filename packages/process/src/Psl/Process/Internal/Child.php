@@ -170,7 +170,7 @@ final class Child implements ChildInterface
 
         if ([] !== $handles) {
             try {
-                foreach (IO\streaming($handles, $cancellation) as $type => $chunk) {
+                foreach (IO\streaming::<int>($handles, $cancellation) as $type => $chunk) {
                     if ('' === $chunk) {
                         continue;
                     }

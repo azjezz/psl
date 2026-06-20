@@ -18,7 +18,7 @@ final class MinByTest extends TestCase
     #[DataProvider('provideData')]
     public function testMinBy(null|int|string|array $expected, array $values, Closure $fun): void
     {
-        static::assertSame($expected, Math\min_by($values, $fun));
+        static::assertSame($expected, Math\min_by::<string|int|array>($values, $fun));
     }
 
     public static function provideData(): Generator

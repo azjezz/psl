@@ -16,7 +16,7 @@ final class TypeCoercionExceptionTest extends TestCase
         $type = Type\resource('curl');
 
         try {
-            $type->coerce(new Collection\Map(['hello' => 'foo']));
+            $type->coerce(new Collection\Map::<string, string>(['hello' => 'foo']));
 
             static::fail(Str\format('Expected "%s" exception to be thrown.', Type\Exception\CoercionException::class));
         } catch (Type\Exception\CoercionException $e) {
@@ -33,7 +33,7 @@ final class TypeCoercionExceptionTest extends TestCase
 
     public function testIncorrectNestedType(): void
     {
-        $type = Type\shape(['child' => Type\shape(['name' => Type\string()])]);
+        $type = Type\shape::<string, array>(['child' => Type\shape::<string, string>(['name' => Type\string()])]);
 
         try {
             $type->coerce(['child' => ['name' => new class() {}]]);

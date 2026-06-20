@@ -8,9 +8,9 @@ use Psl\Json;
 use Psl\Result;
 use Psl\Type;
 
-$result = Result\wrap(
+$result = Result\wrap::<array>(
     /** @return array<string, string> */
-    fn(): array => Json\typed('{"name":"Alice"}', Type\dict(Type\string(), Type\string())),
+    fn(): array => Json\typed::<array>('{"name":"Alice"}', Type\dict::<string, string>(Type\string(), Type\string())),
 );
 
 if ($result->isSucceeded()) {
@@ -20,4 +20,4 @@ if ($result->isSucceeded()) {
 }
 
 // Get the value with a fallback
-$data = $result->unwrapOr([]);
+$data = $result->unwrapOr::<array>([]);

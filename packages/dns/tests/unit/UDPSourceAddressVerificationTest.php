@@ -22,7 +22,7 @@ final class UDPSourceAddressVerificationTest extends TestCase
 
         $spoofServer = UDP\Socket::bind('127.0.0.1', 0);
 
-        Async\run(static function () use ($targetServer, $spoofServer): void {
+        Async\run::<void>(static function () use ($targetServer, $spoofServer): void {
             [$query, $clientPeer] = $targetServer->receiveFrom(512);
             $reader = new Reader($query);
             $id = $reader->u16();

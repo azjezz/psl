@@ -7,10 +7,10 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class NonNullTypeTest extends TypeTestCase
+final class NonNullTypeTest extends TypeTestCase<mixed>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<mixed>
     {
         return Type\nonnull();
     }

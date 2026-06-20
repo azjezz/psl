@@ -8,10 +8,13 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class U16TypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<int<0, 65535>>
+ */
+final class U16TypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
         return Type\u16();
     }

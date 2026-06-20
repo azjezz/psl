@@ -130,7 +130,7 @@ abstract readonly class Message
      * @link https://datatracker.ietf.org/doc/html/rfc9112#section-7.1.2 Chunked Trailer Section
      * @link https://datatracker.ietf.org/doc/html/rfc9113#section-8.1 HTTP/2 Trailers
      */
-    public null|Async\Awaitable $trailers;
+    public null|Async\Awaitable<FieldMap> $trailers;
 
     /**
      * Construct a new HTTP message with the given components.
@@ -147,7 +147,7 @@ abstract readonly class Message
         ProtocolVersion $protocolVersion,
         FieldMap $headers,
         null|IO\ReadHandleInterface $body,
-        null|Async\Awaitable $trailers,
+        null|Async\Awaitable<FieldMap> $trailers,
     ) {
         $this->protocolVersion = $protocolVersion;
         $this->headers = $headers;

@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function mixed(): TypeInterface
+function mixed(): TypeInterface<mixed>
 {
     static $instance = new Internal\MixedType();
 

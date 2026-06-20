@@ -13,17 +13,12 @@ use Throwable;
  * In case of failure, it will try to recover with the $catch Closure.
  * The $catch Closure may still throw exceptions of which it will not recover.
  *
- * @template T
- * @template Ts
- *
  * @param (Closure(): T) $try
  * @param (Closure(Throwable): Ts) $catch
  *
- * @return T|Ts
- *
  * @api
  */
-function try_catch(Closure $try, Closure $catch): mixed
+function try_catch<T, Ts>(Closure $try, Closure $catch): T|Ts
 {
-    return namespace\wrap($try)->catch($catch)->getResult();
+    return namespace\wrap::<T>($try)->catch::<Ts>($catch)->getResult();
 }

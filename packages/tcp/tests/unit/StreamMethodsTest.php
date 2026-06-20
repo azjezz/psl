@@ -15,7 +15,7 @@ final class StreamMethodsTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $connection->writeAll('hello');
@@ -45,7 +45,7 @@ final class StreamMethodsTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 // Read until EOF (triggered by client shutdown)

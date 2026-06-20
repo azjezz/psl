@@ -56,7 +56,7 @@ final class ChunkedBodyHandle implements IO\ReadHandleInterface
      */
     public function __construct(
         private readonly IO\Reader $reader,
-        private readonly Async\Deferred $trailers,
+        private readonly Async\Deferred<FieldMap> $trailers,
     ) {}
 
     /**

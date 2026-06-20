@@ -12,15 +12,9 @@ use Override;
  *
  * Every concrete class indirectly implements this interface.
  *
- * @template Tk of array-key
- * @template Tv
- *
- * @extends CollectionInterface<Tk, Tv>
- * @extends IndexAccessInterface<Tk, Tv>
- *
  * @api
  */
-interface AccessibleCollectionInterface extends CollectionInterface, IndexAccessInterface
+interface AccessibleCollectionInterface<Tk: string|int, Tv> extends CollectionInterface<Tk, Tv>, IndexAccessInterface<Tk, Tv>
 {
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current
@@ -30,7 +24,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    public function values(): AccessibleCollectionInterface;
+    public function values(): AccessibleCollectionInterface<int, Tv>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the keys of the current `AccessibleCollectionInterface`.
@@ -39,7 +33,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @psalm-mutation-free
      */
-    public function keys(): AccessibleCollectionInterface;
+    public function keys(): AccessibleCollectionInterface<int, Tk>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current `AccessibleCollectionInterface`
@@ -53,12 +47,9 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @param (Closure(Tv): bool) $fn The callback containing the condition to apply to the current
      *                                `AccessibleCollectionInterface` values.
-     *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
-     *                                               after a user-specified condition is applied.
      */
     #[Override]
-    public function filter(Closure $fn): AccessibleCollectionInterface;
+    public function filter(Closure $fn): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current `AccessibleCollectionInterface`
@@ -72,67 +63,46 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @param (Closure(Tk, Tv): bool) $fn The callback containing the condition to apply to the current
      *                                    `AccessibleCollectionInterface` keys and values.
-     *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` containing the values
-     *                                               after a user-specified condition is applied to the keys and values
-     *                                               of the current `AccessibleCollectionInterface`.
      */
     #[Override]
-    public function filterWithKey(Closure $fn): AccessibleCollectionInterface;
+    public function filterWithKey(Closure $fn): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns the first value in the current `AccessibleCollectionInterface`.
      *
-     * @return Tv|null The first value in the current `AccessibleCollectionInterface`, or `null` if the
-     *                 current `AccessibleCollectionInterface` is empty.
-     *
      * @psalm-mutation-free
      */
-    public function first(): mixed;
+    public function first(): Tv|null;
 
     /**
      * Returns the first key in the current `AccessibleCollectionInterface`.
      *
-     * @return Tk|null The first key in the current `AccessibleCollectionInterface`, or `null` if the
-     *                 current `AccessibleCollectionInterface` is empty.
-     *
      * @psalm-mutation-free
      */
-    public function firstKey(): int|string|null;
+    public function firstKey(): Tk|null;
 
     /**
      * Returns the last value in the current `AccessibleCollectionInterface`.
      *
-     * @return Tv|null The last value in the current `AccessibleCollectionInterface`, or `null` if the
-     *                 current `AccessibleCollectionInterface` is empty.
-     *
      * @psalm-mutation-free
      */
-    public function last(): mixed;
+    public function last(): Tv|null;
 
     /**
      * Returns the last key in the current `AccessibleCollectionInterface`.
      *
-     * @return Tk|null The last key in the current `AccessibleCollectionInterface`, or `null` if the
-     *                 current `AccessibleCollectionInterface` is empty.
-     *
      * @psalm-mutation-free
      */
-    public function lastKey(): int|string|null;
+    public function lastKey(): Tk|null;
 
     /**
      * Returns the index of the first element that matches the search value.
      *
      * If no element matches the search value, this function returns null.
      *
-     * @param Tv $searchValue The value that will be search for in the current
-     *                         `AccessibleCollectionInterface`.
-     *
-     * @return Tk|null The key (index) where that value is found; null if it is not found.
-     *
      * @psalm-mutation-free
      */
-    public function linearSearch(mixed $searchValue): int|string|null;
+    public function linearSearch(Tv $searchValue): Tk|null;
 
     /**
      * Returns a `AccessibleCollectionInterface` where each element is a `array{0: Tv, 1: Tu}` that combines the
@@ -143,8 +113,6 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * up to and including the final element of the one with the least number of
      * elements is included.
      *
-     * @template Tu
-     *
      * @param array<array-key, Tu> $elements The elements to use to combine with the elements of this `AccessibleCollectionInterface`.
      *
      * @return AccessibleCollectionInterface<Tk, array{0: Tv, 1: Tu}> The `AccessibleCollectionInterface` that combines the values of the current
@@ -153,7 +121,7 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @psalm-mutation-free
      */
     #[Override]
-    public function zip(array $elements): AccessibleCollectionInterface;
+    public function zip<Tu>(array $elements): AccessibleCollectionInterface<Tk, array>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the first `n` values of the current
@@ -167,14 +135,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @param int<0, max> $n The last element that will be included in the returned
      *                       `AccessibleCollectionInterface`.
      *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper
-     *                                               subset of the current `AccessibleCollectionInterface` up
-     *                                               to `n` elements.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function take(int $n): AccessibleCollectionInterface;
+    public function take(int $n): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current `AccessibleCollectionInterface`
@@ -186,13 +150,9 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @param (Closure(Tv): bool) $fn The callback that is used to determine the stopping
      *                                condition.
-     *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *                                               of the current `AccessibleCollectionInterface` up until
-     *                                               the callback returns `false`.
      */
     #[Override]
-    public function takeWhile(Closure $fn): AccessibleCollectionInterface;
+    public function takeWhile(Closure $fn): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values after the `n`-th element of
@@ -206,14 +166,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @param int<0, max> $n The last element to be skipped; the $n+1 element will be the
      *                       first one in the returned `AccessibleCollectionInterface`.
      *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *                                               of the current `AccessibleCollectionInterface` containing values
-     *                                               after the specified `n`-th element.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function drop(int $n): AccessibleCollectionInterface;
+    public function drop(int $n): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the values of the current `AccessibleCollectionInterface`
@@ -225,13 +181,9 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *
      * @param (Closure(Tv): bool) $fn The callback used to determine the starting element for the
      *                                returned `AccessibleCollectionInterface`.
-     *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *                                               of the current `AccessibleCollectionInterface` starting after
-     *                                               the callback returns `true`.
      */
     #[Override]
-    public function dropWhile(Closure $fn): AccessibleCollectionInterface;
+    public function dropWhile(Closure $fn): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a subset of the current `AccessibleCollectionInterface` starting from a given key up
@@ -248,14 +200,10 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      *                           `AccessibleCollectionInterface`
      * @param null|int<0, max> $length The length of the returned `AccessibleCollectionInterface`
      *
-     * @return AccessibleCollectionInterface<Tk, Tv> A `AccessibleCollectionInterface` that is a proper subset
-     *                                               of the current `AccessibleCollectionInterface` starting at `$start`
-     *                                               up to but not including the element `$start + $length`.
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function slice(int $start, null|int $length = null): AccessibleCollectionInterface;
+    public function slice(int $start, null|int $length = null): AccessibleCollectionInterface<Tk, Tv>;
 
     /**
      * Returns a `AccessibleCollectionInterface` containing the original `AccessibleCollectionInterface` split into
@@ -272,5 +220,5 @@ interface AccessibleCollectionInterface extends CollectionInterface, IndexAccess
      * @psalm-mutation-free
      */
     #[Override]
-    public function chunk(int $size): AccessibleCollectionInterface;
+    public function chunk(int $size): AccessibleCollectionInterface<int, AccessibleCollectionInterface<Tk, Tv>>;
 }

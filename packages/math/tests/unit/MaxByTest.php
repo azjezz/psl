@@ -17,7 +17,7 @@ final class MaxByTest extends TestCase
     #[DataProvider('provideData')]
     public function testMaxBy(null|string|int|array $expected, array $values, Closure $fun): void
     {
-        static::assertSame($expected, Math\max_by($values, $fun));
+        static::assertSame($expected, Math\max_by::<string|int|array>($values, $fun));
     }
 
     public static function provideData(): Generator

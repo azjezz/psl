@@ -15,7 +15,7 @@ final class LastTest extends TestCase
     #[DataProvider('provideData')]
     public function testLast(null|string $expected, iterable $iterable): void
     {
-        $result = Iter\last($iterable);
+        $result = Iter\last::<string|null>($iterable);
 
         static::assertSame($expected, $result);
     }
@@ -26,9 +26,9 @@ final class LastTest extends TestCase
         yield [null, new SplDoublyLinkedList()];
         yield ['d', ['a' => 'b', 'c' => 'd']];
         yield ['b', ['a', 'b']];
-        yield ['b', new Collection\Vector(['a', 'b'])];
-        yield ['b', new Collection\Vector(['b'])];
-        yield ['d', new Collection\Map(['a' => 'b', 'c' => 'd'])];
+        yield ['b', new Collection\Vector::<string>(['a', 'b'])];
+        yield ['b', new Collection\Vector::<string>(['b'])];
+        yield ['d', new Collection\Map::<string, string>(['a' => 'b', 'c' => 'd'])];
         yield [
             null,
             (static function (): iterable {

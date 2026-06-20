@@ -11,10 +11,13 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Vec;
 
-final class MixedVecTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<list<mixed>>
+ */
+final class MixedVecTypeTest extends TypeTestCase<array>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<array>
     {
         return Type\mixed_vec();
     }
@@ -42,32 +45,32 @@ final class MixedVecTypeTest extends TypeTestCase
         ];
 
         yield [
-            new Collection\Vector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Vector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            new Collection\Map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Map::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            new Collection\Vector(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
+            new Collection\Vector::<string>(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']),
             ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
         ];
 
         yield [
-            new Collection\Map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Map::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
+            Dict\map_keys::<int, string, int>(Vec\range::<int>(1, 10), static fn(int $key): string => (string) $key),
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
             ['001', '002', '003', '004', '005', '006', '007', '008', '009', '0010'],
         ];
 

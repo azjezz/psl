@@ -11,57 +11,57 @@ final class PathToTest extends TestCase
 {
     public function testPathToFindsPathToLeaf(): void
     {
-        $tree = Tree\tree('a', [
-            Tree\tree('b', [Tree\leaf('c')]),
-            Tree\leaf('d'),
+        $tree = Tree\tree::<string>('a', [
+            Tree\tree::<string>('b', [Tree\leaf::<string>('c')]),
+            Tree\leaf::<string>('d'),
         ]);
 
-        $result = Tree\path_to($tree, static fn(string $x): bool => $x === 'c');
+        $result = Tree\path_to::<string>($tree, static fn(string $x): bool => $x === 'c');
 
         static::assertSame(['a', 'b', 'c'], $result);
     }
 
     public function testPathToReturnsNullWhenNotFound(): void
     {
-        $tree = Tree\tree(1, [Tree\leaf(2), Tree\leaf(3)]);
+        $tree = Tree\tree::<int>(1, [Tree\leaf::<int>(2), Tree\leaf::<int>(3)]);
 
-        $result = Tree\path_to($tree, static fn(int $x): bool => $x === 10);
+        $result = Tree\path_to::<int>($tree, static fn(int $x): bool => $x === 10);
 
         static::assertNull($result);
     }
 
     public function testPathToFindsRoot(): void
     {
-        $tree = Tree\tree(42, [Tree\leaf(1)]);
+        $tree = Tree\tree::<int>(42, [Tree\leaf::<int>(1)]);
 
-        $result = Tree\path_to($tree, static fn(int $x): bool => $x === 42);
+        $result = Tree\path_to::<int>($tree, static fn(int $x): bool => $x === 42);
 
         static::assertSame([42], $result);
     }
 
     public function testPathToFindsFirstMatch(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\leaf(5),
-            Tree\tree(2, [Tree\leaf(5)]),
+        $tree = Tree\tree::<int>(1, [
+            Tree\leaf::<int>(5),
+            Tree\tree::<int>(2, [Tree\leaf::<int>(5)]),
         ]);
 
-        $result = Tree\path_to($tree, static fn(int $x): bool => $x === 5);
+        $result = Tree\path_to::<int>($tree, static fn(int $x): bool => $x === 5);
 
         static::assertSame([1, 5], $result);
     }
 
     public function testPathToDeepPath(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\tree(2, [
-                Tree\tree(3, [
-                    Tree\leaf(4),
+        $tree = Tree\tree::<int>(1, [
+            Tree\tree::<int>(2, [
+                Tree\tree::<int>(3, [
+                    Tree\leaf::<int>(4),
                 ]),
             ]),
         ]);
 
-        $result = Tree\path_to($tree, static fn(int $x): bool => $x === 4);
+        $result = Tree\path_to::<int>($tree, static fn(int $x): bool => $x === 4);
 
         static::assertSame([1, 2, 3, 4], $result);
     }

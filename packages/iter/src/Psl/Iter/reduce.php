@@ -13,18 +13,12 @@ use Closure;
  * iterator value and returns a new accumulator. The accumulator is initialized
  * to $initial.
  *
- * @template T
- * @template Ts
- *
  * @param iterable<T> $iterable
  * @param (Closure(Ts, T): Ts) $function
- * @param Ts $initial
- *
- * @return Ts
  *
  * @api
  */
-function reduce(iterable $iterable, Closure $function, mixed $initial): mixed
+function reduce<T, Ts>(iterable $iterable, Closure $function, Ts $initial): Ts
 {
     $accumulator = $initial;
     foreach ($iterable as $v) {

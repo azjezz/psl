@@ -13,7 +13,7 @@ final class DropTest extends TestCase
     #[DataProvider('provideData')]
     public function testDrop(array $expected, array $array, int $n): void
     {
-        $result = Vec\drop($array, $n);
+        $result = Vec\drop::<int>($array, $n);
 
         static::assertSame($expected, $result);
     }

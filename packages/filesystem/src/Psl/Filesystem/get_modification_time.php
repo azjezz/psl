@@ -25,7 +25,7 @@ function get_modification_time(string $node): int
         throw Exception\NotFoundException::forNode($node);
     }
 
-    [$result, $message] = Internal\box(static fn(): false|int => filemtime($node));
+    [$result, $message] = Internal\box::<false|int>(static fn(): false|int => filemtime($node));
     // @codeCoverageIgnoreStart
     if (false === $result) {
         throw new Exception\RuntimeException(sprintf(

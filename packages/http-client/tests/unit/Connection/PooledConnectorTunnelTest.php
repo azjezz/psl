@@ -30,7 +30,7 @@ final class PooledConnectorTunnelTest extends TestCase
         /** @var int<0, 65535> $tunnelPort */
         $tunnelPort = $address->port;
 
-        $tunnelFuture = Async\run(static function () use ($listener): void {
+        $tunnelFuture = Async\run::<void>(static function () use ($listener): void {
             try {
                 $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->close();
@@ -77,7 +77,7 @@ final class PooledConnectorTunnelTest extends TestCase
 
         $tunnelWasContacted = false;
 
-        $tunnelFuture = Async\run(static function () use ($tunnelListener, &$tunnelWasContacted): void {
+        $tunnelFuture = Async\run::<void>(static function () use ($tunnelListener, &$tunnelWasContacted): void {
             try {
                 $tunnelListener->accept(new TimeoutCancellationToken(Duration::milliseconds(500)));
                 $tunnelWasContacted = true;
@@ -95,7 +95,7 @@ final class PooledConnectorTunnelTest extends TestCase
         /** @var int<0, 65535> $targetPort */
         $targetPort = $targetAddress->port;
 
-        $targetFuture = Async\run(static function () use ($targetListener): void {
+        $targetFuture = Async\run::<void>(static function () use ($targetListener): void {
             try {
                 $conn = $targetListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 // The connector only establishes the TCP connection — no request
@@ -162,7 +162,7 @@ final class PooledConnectorTunnelTest extends TestCase
         /** @var int<0, 65535> $proxyPort */
         $proxyPort = $proxyAddress->port;
 
-        $tunnelFuture = Async\run(static function () use ($proxyListener): void {
+        $tunnelFuture = Async\run::<void>(static function () use ($proxyListener): void {
             try {
                 $conn = $proxyListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
                 $conn->close();

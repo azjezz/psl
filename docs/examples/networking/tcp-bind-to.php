@@ -13,7 +13,7 @@ use Psl\TCP;
 $listener = TCP\listen('127.0.0.1');
 $port = $listener->getLocalAddress()->port ?? 0;
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         $connection = $listener->accept();
         $connection->writeAll('hello');

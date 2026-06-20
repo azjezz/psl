@@ -22,7 +22,7 @@ use Psl\TCP;
 // The new way: use bindTo on ConnectConfiguration or ListenConfiguration.
 $listener = TCP\listen('127.0.0.1', 0, new TCP\ListenConfiguration(reuseAddress: true, noDelay: true));
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         $connection = $listener->accept();
         $data = $connection->readAll();

@@ -19,7 +19,7 @@ use function fopen;
  */
 function spool(int $maxMemory = 2_097_152): CloseSeekReadWriteStreamHandle
 {
-    $stream = Internal\suppress(
+    $stream = Internal\suppress::<mixed>(
         /**
          * @return resource
          */

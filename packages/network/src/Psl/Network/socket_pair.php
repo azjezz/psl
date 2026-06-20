@@ -29,7 +29,7 @@ use const STREAM_SOCK_STREAM;
  */
 function socket_pair(): array
 {
-    $sockets = Internal\suppress(
+    $sockets = Internal\suppress::<array>(
         /**
          * @return array{0: resource, 1: resource}
          */

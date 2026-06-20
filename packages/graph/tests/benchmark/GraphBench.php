@@ -17,7 +17,7 @@ final class GraphBench
     #[ParamProviders('provideDfsData')]
     public function benchDfs(array $params): void
     {
-        $_ = Graph\dfs($params['graph'], $params['start']);
+        $_ = Graph\dfs::<string, int>($params['graph'], $params['start']);
     }
 
     /**
@@ -26,7 +26,7 @@ final class GraphBench
     #[ParamProviders('provideShortestPathData')]
     public function benchShortestPath(array $params): void
     {
-        $_ = Graph\shortest_path($params['graph'], $params['from'], $params['to']);
+        $_ = Graph\shortest_path::<string>($params['graph'], $params['from'], $params['to']);
     }
 
     /**
@@ -35,7 +35,7 @@ final class GraphBench
     #[ParamProviders('provideNeighborsData')]
     public function benchNeighbors(array $params): void
     {
-        $_ = Graph\neighbors($params['graph'], $params['node']);
+        $_ = Graph\neighbors::<string, int>($params['graph'], $params['node']);
     }
 
     /**
@@ -44,7 +44,7 @@ final class GraphBench
     #[ParamProviders('provideTopoSortData')]
     public function benchTopologicalSort(array $params): void
     {
-        $_ = Graph\topological_sort($params['graph']);
+        $_ = Graph\topological_sort::<string, int>($params['graph']);
     }
 
     /**
@@ -52,29 +52,29 @@ final class GraphBench
      */
     public function provideDfsData(): iterable
     {
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($i = 0; $i < 49; $i++) {
-            $graph = Graph\add_edge($graph, 'n' . $i, 'n' . ($i + 1));
+            $graph = Graph\add_edge::<string, int>($graph, 'n' . $i, 'n' . ($i + 1));
         }
 
         yield 'chain_50' => ['graph' => $graph, 'start' => 'n0'];
 
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($i = 0; $i < 50; $i++) {
-            $graph = Graph\add_edge($graph, 'center', 'leaf' . $i);
+            $graph = Graph\add_edge::<string, int>($graph, 'center', 'leaf' . $i);
         }
 
         yield 'star_50' => ['graph' => $graph, 'start' => 'center'];
 
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($r = 0; $r < 10; $r++) {
             for ($c = 0; $c < 9; $c++) {
-                $graph = Graph\add_edge($graph, $r . '_' . $c, $r . '_' . ($c + 1));
+                $graph = Graph\add_edge::<string, int>($graph, $r . '_' . $c, $r . '_' . ($c + 1));
             }
 
             if ($r < 9) {
                 for ($c = 0; $c < 10; $c++) {
-                    $graph = Graph\add_edge($graph, $r . '_' . $c, ($r + 1) . '_' . $c);
+                    $graph = Graph\add_edge::<string, int>($graph, $r . '_' . $c, ($r + 1) . '_' . $c);
                 }
             }
         }
@@ -88,23 +88,23 @@ final class GraphBench
     public function provideShortestPathData(): iterable
     {
         /** @var Graph\DirectedGraph<string, int> $graph */
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($i = 0; $i < 50; $i++) {
-            $graph = Graph\add_edge($graph, 'n' . $i, 'n' . ($i + 1), 1);
+            $graph = Graph\add_edge::<string, int>($graph, 'n' . $i, 'n' . ($i + 1), 1);
         }
 
         yield 'chain_50' => ['graph' => $graph, 'from' => 'n0', 'to' => 'n50'];
 
         /** @var Graph\DirectedGraph<string, int> $graph */
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($r = 0; $r < 10; $r++) {
             for ($c = 0; $c < 9; $c++) {
-                $graph = Graph\add_edge($graph, $r . '_' . $c, $r . '_' . ($c + 1), 1);
+                $graph = Graph\add_edge::<string, int>($graph, $r . '_' . $c, $r . '_' . ($c + 1), 1);
             }
 
             if ($r < 9) {
                 for ($c = 0; $c < 10; $c++) {
-                    $graph = Graph\add_edge($graph, $r . '_' . $c, ($r + 1) . '_' . $c, 1);
+                    $graph = Graph\add_edge::<string, int>($graph, $r . '_' . $c, ($r + 1) . '_' . $c, 1);
                 }
             }
         }
@@ -117,9 +117,9 @@ final class GraphBench
      */
     public function provideNeighborsData(): iterable
     {
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($i = 0; $i < 100; $i++) {
-            $graph = Graph\add_edge($graph, 'center', 'leaf' . $i);
+            $graph = Graph\add_edge::<string, int>($graph, 'center', 'leaf' . $i);
         }
 
         yield 'star_100' => ['graph' => $graph, 'node' => 'center'];
@@ -130,7 +130,7 @@ final class GraphBench
      */
     public function provideTopoSortData(): iterable
     {
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
         for ($layer = 0; $layer < 5; $layer++) {
             for ($n = 0; $n < 10; $n++) {
                 if ($layer >= 4) {
@@ -138,7 +138,7 @@ final class GraphBench
                 }
 
                 for ($next = 0; $next < 10; $next++) {
-                    $graph = Graph\add_edge($graph, $layer . '_' . $n, ($layer + 1) . '_' . $next);
+                    $graph = Graph\add_edge::<string, int>($graph, $layer . '_' . $n, ($layer + 1) . '_' . $next);
                 }
             }
         }

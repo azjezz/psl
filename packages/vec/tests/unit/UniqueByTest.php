@@ -14,7 +14,7 @@ final class UniqueByTest extends TestCase
     #[DataProvider('provideData')]
     public function testUniqueBy(array $expected, array $array, callable $scalarFun): void
     {
-        static::assertSame($expected, Vec\unique_by($array, $scalarFun));
+        static::assertSame($expected, Vec\unique_by::<string, int|string>($array, $scalarFun));
     }
 
     public static function provideData(): array

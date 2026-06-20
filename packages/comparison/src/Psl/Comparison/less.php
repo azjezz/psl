@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Psl\Comparison;
 
 /**
- * @template T
- *
- * @param T $a
- * @param T $b
- *
  * @api
  */
-function less(mixed $a, mixed $b): bool
+function less<T>(T $a, T $b): bool
 {
-    return namespace\compare($a, $b) === Order::Less;
+    return namespace\compare::<T>($a, $b) === Order::Less;
 }

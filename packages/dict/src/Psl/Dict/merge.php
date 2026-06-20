@@ -11,9 +11,6 @@ use function is_array;
  * Merges multiple iterables into a new dict.
  * In the case of duplicate keys, later values will overwrite the previous ones.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $first
  * @param iterable<Tk, Tv> ...$rest
  *
@@ -23,7 +20,7 @@ use function is_array;
  *
  * @api
  */
-function merge(iterable $first, iterable ...$rest): array
+function merge<Tk: string|int, Tv>(iterable $first, iterable ...$rest): array
 {
     if (is_array($first)) {
         foreach ($rest as $iterable) {
@@ -34,7 +31,7 @@ function merge(iterable $first, iterable ...$rest): array
             /** @var list<iterable<Tk, Tv>> $iterables */
             $iterables = [$first, ...$rest];
 
-            return namespace\flatten($iterables);
+            return namespace\flatten::<Tk, Tv>($iterables);
         }
 
         /** @var array<array<Tk, Tv>> $rest */
@@ -44,5 +41,5 @@ function merge(iterable $first, iterable ...$rest): array
     /** @var list<iterable<Tk, Tv>> $iterables */
     $iterables = [$first, ...$rest];
 
-    return namespace\flatten($iterables);
+    return namespace\flatten::<Tk, Tv>($iterables);
 }

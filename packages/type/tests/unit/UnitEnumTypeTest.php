@@ -9,15 +9,12 @@ use Psl\Str;
 use Psl\Type;
 use Psl\Type\Tests\Fixture\UnitEnum;
 
-/**
- * @extends TypeTestCase<UnitEnum>
- */
-final class UnitEnumTypeTest extends TypeTestCase
+final class UnitEnumTypeTest extends TypeTestCase<UnitEnum>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<UnitEnum>
     {
-        return Type\unit_enum(UnitEnum::class);
+        return Type\unit_enum::<UnitEnum>(UnitEnum::class);
     }
 
     /**
@@ -58,6 +55,6 @@ final class UnitEnumTypeTest extends TypeTestCase
     #[Override]
     public static function getToStringExamples(): iterable
     {
-        yield [Type\unit_enum(UnitEnum::class), Str\format('unit-enum(%s)', UnitEnum::class)];
+        yield [Type\unit_enum::<UnitEnum>(UnitEnum::class), Str\format('unit-enum(%s)', UnitEnum::class)];
     }
 }

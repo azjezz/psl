@@ -11,7 +11,7 @@ final class TreeTest extends TestCase
 {
     public function testTreeCreatesTreeNode(): void
     {
-        $tree = Tree\tree('root');
+        $tree = Tree\tree::<string>('root');
 
         static::assertInstanceOf(Tree\TreeNode::class, $tree);
         static::assertSame('root', $tree->getValue());
@@ -20,9 +20,9 @@ final class TreeTest extends TestCase
 
     public function testTreeWithChildren(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\leaf('child1'),
-            Tree\leaf('child2'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\leaf::<string>('child1'),
+            Tree\leaf::<string>('child2'),
         ]);
 
         static::assertSame('root', $tree->getValue());
@@ -31,8 +31,8 @@ final class TreeTest extends TestCase
 
     public function testTreeNodeJsonSerialize(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\leaf('child1'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\leaf::<string>('child1'),
         ]);
 
         $array = $tree->jsonSerialize();

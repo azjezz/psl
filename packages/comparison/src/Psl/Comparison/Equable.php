@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Psl\Comparison;
 
 /**
- * @template T
- *
  * @api
  */
-interface Equable
+interface Equable<T>
 {
-    /**
-     * @param T $other
-     */
-    public function equals(mixed $other): bool;
+    public function equals(T $other): bool;
 }

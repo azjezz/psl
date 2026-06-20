@@ -27,15 +27,11 @@ use function in_array;
  * `Tin` may be a callable invoked by the `$operation` for maximum flexibility,
  * however this pattern is best avoided in favor of creating semaphores with a more narrow process.
  *
- * @template-contravariant Tk of array-key
- * @template-contravariant Tin
- * @template-covariant Tout
- *
  * @mago-expect lint:excessive-nesting
  *
  * @api
  */
-final class KeyedSemaphore
+final class KeyedSemaphore<in Tk: string|int, in Tin, out Tout>
 {
     /**
      * @var array<Tk, int<0, max>>
@@ -74,22 +70,17 @@ final class KeyedSemaphore
      *
      * If the concurrency limit has been reached for the given `$key`, this method will wait until one of the ongoing operations has completed.
      *
-     * @param Tk $key
-     * @param Tin $input
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
-     *
-     * @return Tout
      *
      * @see Semaphore::cancel()
      *
      * @suspens-fiber
      */
     public function waitFor(
-        string|int $key,
-        mixed $input,
+        Tk $key,
+        Tin $input,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
-    ): mixed {
+    ): Tout {
         $this->ongoing[$key] ??= 0;
         if ($this->ongoing[$key] === $this->concurrencyLimit) {
             $currentContext = Fiber::getCurrent() ?? $this;
@@ -190,10 +181,8 @@ final class KeyedSemaphore
      * Pending operation will fail with the given exception.
      *
      * Future operations will continue execution as usual.
-     *
-     * @param Tk $key
      */
-    public function cancel(string|int $key, Exception $exception): void
+    public function cancel(Tk $key, Exception $exception): void
     {
         $suspensions = $this->pending[$key] ?? [];
         unset($this->pending[$key]);
@@ -233,11 +222,9 @@ final class KeyedSemaphore
     /**
      * Get the number of operations pending execution for the given key.
      *
-     * @param Tk $key
-     *
      * @return int<0, max>
      */
-    public function getPendingOperations(string|int $key): int
+    public function getPendingOperations(Tk $key): int
     {
         return count($this->pending[$key] ?? []);
     }
@@ -261,10 +248,8 @@ final class KeyedSemaphore
      * Check if there's any operations pending execution for the given key.
      *
      * If this method returns `true`, it means the semaphore has reached it's limits, future calls to `waitFor` will wait.
-     *
-     * @param Tk $key
      */
-    public function hasPendingOperations(string|int $key): bool
+    public function hasPendingOperations(Tk $key): bool
     {
         return array_key_exists($key, $this->pending);
     }
@@ -282,11 +267,9 @@ final class KeyedSemaphore
      *
      * The returned number will always be lower, or equal to the concurrency limit.
      *
-     * @param Tk $key
-     *
      * @return int<0, max>
      */
-    public function getOngoingOperations(string|int $key): int
+    public function getOngoingOperations(Tk $key): int
     {
         return $this->ongoing[$key] ?? 0;
     }
@@ -309,10 +292,8 @@ final class KeyedSemaphore
      *
      * If this method returns `true`, it does not mean future calls to `waitFor` will wait, since a semaphore can have multiple ongoing operations
      * at the same time for the same key.
-     *
-     * @param Tk $key
      */
-    public function hasOngoingOperations(string|int $key): bool
+    public function hasOngoingOperations(Tk $key): bool
     {
         return array_key_exists($key, $this->ongoing);
     }
@@ -330,12 +311,10 @@ final class KeyedSemaphore
      *
      * If the semaphore is has not reached the concurrency limit the given key, this method will return immediately.
      *
-     * @param Tk $key
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
      */
     public function waitForPending(
-        string|int $key,
+        Tk $key,
         CancellationTokenInterface $cancellation = new NullCancellationToken(),
     ): void {
         if (($this->ongoing[$key] ?? 0) !== $this->concurrencyLimit) {
@@ -374,16 +353,11 @@ final class KeyedSemaphore
     }
 
     /**
-     * @param Tk $key
-     * @param Tin $input
-     *
-     * @return Tout
-     *
      * @throws CancelledException If the cancellation token is cancelled while waiting.
      *
      * @suspens-fiber
      */
-    private function invoke(string|int $key, mixed $input): mixed
+    private function invoke(Tk $key, Tin $input): Tout
     {
         return ($this->operation)($key, $input);
     }

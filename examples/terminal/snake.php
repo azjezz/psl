@@ -125,7 +125,7 @@ function reset_game(SnakeState $state, Terminal\Rect $area): void
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(
+    $app = Terminal\Application::create::<SnakeState>(
         new SnakeState(),
         title: 'Snake',
         tickInterval: DateTime\Duration::milliseconds(8),
@@ -156,7 +156,7 @@ Async\main(static function (): int {
                 || $newHead[1] >= $area->bottom()
             ) {
                 $state->gameOver = true;
-                $state->highScore = Math\maxva($state->highScore, $state->score);
+                $state->highScore = Math\maxva::<int>($state->highScore, $state->score);
                 return;
             }
         }
@@ -167,7 +167,7 @@ Async\main(static function (): int {
             }
 
             $state->gameOver = true;
-            $state->highScore = Math\maxva($state->highScore, $state->score);
+            $state->highScore = Math\maxva::<int>($state->highScore, $state->score);
             return;
         }
 
@@ -190,7 +190,7 @@ Async\main(static function (): int {
         }
     });
 
-    $app->on(Event\Key::class, static function (Event\Key $event, SnakeState $state) use ($app, &$gameAreaRef): void {
+    $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, SnakeState $state) use ($app, &$gameAreaRef): void {
         if ($event->is('ctrl+c')) {
             $app->stop();
             return;

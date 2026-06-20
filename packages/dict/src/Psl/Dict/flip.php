@@ -17,16 +17,13 @@ use function is_array;
  *      Dict\flip(['a' => 1, 'b' => 2, 'c' => 3])
  *      => Dict(1 => 'a', 2 => 'b', 3 => 'c')
  *
- * @template Tk of array-key
- * @template Tv of array-key
- *
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tv, Tk>
  *
  * @api
  */
-function flip(iterable $iterable): array
+function flip<Tk: string|int, Tv: string|int>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return array_flip($iterable);

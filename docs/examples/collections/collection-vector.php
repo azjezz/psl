@@ -9,7 +9,7 @@ use Psl\Collection\Vector;
 use Psl\Str;
 
 // Immutable vector
-$names = Vector::fromArray(['Alice', 'Bob', 'Charlie']);
+$names = Vector::fromArray::<string>(['Alice', 'Bob', 'Charlie']);
 $names->count(); // 3
 $names->at(0); // 'Alice'
 $names->first(); // 'Alice'
@@ -18,14 +18,14 @@ $names->toArray(); // ['Alice', 'Bob', 'Charlie']
 
 // Filtering and mapping return new immutable vectors
 $short = $names->filter(fn(string $n): bool => Str\length($n) <= 3);
-$upper = $names->map(Str\uppercase(...));
+$upper = $names->map::<string>(Str\uppercase(...));
 
 /**
  * Mutable vector -- supports in-place modification
  *
  * @var MutableVector<string> $tasks
  */
-$tasks = MutableVector::fromArray(['eat', 'sleep']);
+$tasks = MutableVector::fromArray::<string>(['eat', 'sleep']);
 $tasks->add('code');
 $tasks->remove(0); // removes 'eat', re-indexes
 $tasks->toArray(); // ['sleep', 'code']

@@ -19,21 +19,17 @@ use Psl\DataStructure\Queue;
  *      ]))
  *      => ['a', 'b', 'd', 'c']
  *
- * @template T
- *
- * @param NodeInterface<T> $rootNode
- *
  * @return list<T>
  *
  * @pure
  *
  * @api
  */
-function level_order(NodeInterface $rootNode): array
+function level_order<T>(NodeInterface<T> $rootNode): array
 {
     $result = [];
     /** @var Queue<NodeInterface<T>> $queue */
-    $queue = new Queue();
+    $queue = new Queue::<NodeInterface<T>>();
     $queue->enqueue($rootNode);
 
     while ($queue->count() !== 0) {

@@ -11,21 +11,21 @@ final class ToArrayTest extends TestCase
 {
     public function testToArrayConvertsLeafNode(): void
     {
-        $tree = Tree\leaf('value');
+        $tree = Tree\leaf::<string>('value');
 
-        $result = Tree\to_array($tree);
+        $result = Tree\to_array::<string>($tree);
 
         static::assertSame(['value' => 'value', 'children' => []], $result);
     }
 
     public function testToArrayConvertsTreeWithChildren(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\leaf('child1'),
-            Tree\leaf('child2'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\leaf::<string>('child1'),
+            Tree\leaf::<string>('child2'),
         ]);
 
-        $result = Tree\to_array($tree);
+        $result = Tree\to_array::<string>($tree);
 
         static::assertSame(
             [
@@ -41,13 +41,13 @@ final class ToArrayTest extends TestCase
 
     public function testToArrayConvertsNestedTree(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\tree('branch', [
-                Tree\leaf('leaf'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\tree::<string>('branch', [
+                Tree\leaf::<string>('leaf'),
             ]),
         ]);
 
-        $result = Tree\to_array($tree);
+        $result = Tree\to_array::<string>($tree);
 
         static::assertSame(
             [
@@ -80,8 +80,8 @@ final class ToArrayTest extends TestCase
             ],
         ];
 
-        $tree = Tree\from_array($original);
-        $result = Tree\to_array($tree);
+        $tree = Tree\from_array::<string>($original);
+        $result = Tree\to_array::<string>($tree);
 
         static::assertSame($original, $result);
     }

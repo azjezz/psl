@@ -13,36 +13,26 @@ use Psl\Type\Exception\CoercionException;
  * This type is not marked as internal, cause the class is being leaked by the nonnull() function.
  * This is necessary to get coerce and assert narrow down the type without psalm having a TNonNull type.
  *
- * @extends Type\Type<mixed>
- *
  * @api
  */
-final readonly class NonNullType extends Type\Type
+final readonly class NonNullType extends Type\Type<mixed>
 {
     /**
-     * @template T of mixed
-     *
-     * @param T|null $value
-     *
      * @psalm-assert-if-true T $value
      *
      * @return ($value is null ? false : true)
      */
     #[Override]
-    public function matches(mixed $value): bool
+    public function matches<T>(T|null $value): bool
     {
         return null !== $value;
     }
 
     /**
-     * @template T of mixed
-     *
-     * @param T|null $value
-     *
      * @return ($value is null ? never : T)
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce<T>(T|null $value): mixed
     {
         if (null !== $value) {
             return $value;
@@ -52,16 +42,12 @@ final readonly class NonNullType extends Type\Type
     }
 
     /**
-     * @template T
-     *
-     * @param T|null $value
-     *
      * @psalm-assert T $value
      *
      * @return ($value is null ? never : T)
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert<T>(T|null $value): mixed
     {
         if (null !== $value) {
             return $value;

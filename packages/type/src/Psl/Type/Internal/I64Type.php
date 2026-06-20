@@ -12,11 +12,9 @@ use Psl\Type\Exception\CoercionException;
 use function is_int;
 
 /**
- * @extends Type\Type<int>
- *
  * @internal
  */
-final readonly class I64Type extends Type\Type
+final readonly class I64Type extends Type\Type<int>
 {
     /**
      * @psalm-assert-if-true int $value

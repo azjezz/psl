@@ -28,13 +28,11 @@ use const STR_PAD_LEFT;
  *
  * For example, Duration::hours(2, -183) normalizes to "-1 hour(s), -3 minute(s)".
  *
- * @implements Comparison\Comparable<Duration>
- *
  * @immutable
  *
  * @api
  */
-final readonly class Duration implements TemporalAmountInterface, Comparison\Comparable
+final readonly class Duration implements TemporalAmountInterface, Comparison\Comparable<Duration>
 {
     /**
      * Initializes a new instance of Duration with specified hours, minutes, seconds, and
@@ -426,12 +424,10 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     /**
      * Implements a comparison between this duration and another, based on their duration.
      *
-     * @param Duration $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function compare(mixed $other): Comparison\Order
+    public function compare(Duration $other): Comparison\Order
     {
         if ($this->hours !== $other->hours) {
             return Comparison\Order::from($this->hours <=> $other->hours);
@@ -451,12 +447,10 @@ final readonly class Duration implements TemporalAmountInterface, Comparison\Com
     /**
      * Evaluates whether this duration is equivalent to another, considering all time components.
      *
-     * @param TemporalAmountInterface $other
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function equals(mixed $other): bool
+    public function equals(TemporalAmountInterface $other): bool
     {
         if (!$other instanceof Duration) {
             return false;

@@ -7,9 +7,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use Psl\Async;
 
 /** @var Async\Awaitable<string> $promise */
-$promise = Async\run(static fn() => 'hello world');
+$promise = Async\run::<string>(static fn() => 'hello world');
 
-$result = $promise->map(fn(string $value) => ['value' => $value])->catch(fn(Throwable $e) => [
+$result = $promise->map::<array>(fn(string $value) => ['value' => $value])->catch::<array>(fn(Throwable $e) => [
     'error' => $e->getMessage(),
 ]);
 

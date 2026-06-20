@@ -19,7 +19,7 @@ function test(): void
     $pattern = '/(php)/i';
 
     $e = Regex\capture_groups([1]);
-    $firstMatch = Regex\first_match($subject, $pattern, $e);
+    $firstMatch = Regex\first_match::<array>($subject, $pattern, $e);
 
     Psl\invariant(null !== $firstMatch, 'It matches!');
 

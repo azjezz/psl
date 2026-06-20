@@ -13,24 +13,16 @@ use function sprintf;
 use function str_contains;
 
 /**
- * @template Tl
- * @template Tr
- *
- * @extends Type\Type<Tl|Tr>
- *
  * @internal
  */
-readonly class UnionType extends Type\Type
+readonly class UnionType<Tl, Tr> extends Type\Type<Tl|Tr>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tl> $left_type
-     * @param Type\TypeInterface<Tr> $right_type
      */
     public function __construct(
-        private Type\TypeInterface $left_type,
-        private Type\TypeInterface $right_type,
+        private Type\TypeInterface<Tl> $left_type,
+        private Type\TypeInterface<Tr> $right_type,
     ) {}
 
     /**
@@ -45,12 +37,10 @@ readonly class UnionType extends Type\Type
     /**
      * @throws CoercionException
      *
-     * @return Tl|Tr
-     *
      * @mago-expect lint:no-empty-catch-clause
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): Tl|Tr
     {
         try {
             return $this->assert($value);
@@ -76,14 +66,12 @@ readonly class UnionType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return Tl|Tr
-     *
      * @psalm-assert Tl|Tr $value
      *
      * @mago-expect lint:no-empty-catch-clause
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): Tl|Tr
     {
         try {
             return $this->left_type->assert($value);

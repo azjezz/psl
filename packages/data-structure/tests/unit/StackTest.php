@@ -59,7 +59,7 @@ final class StackTest extends TestCase
 
     public function testPullReturnsNullForEmptyStack(): void
     {
-        $stack = new DataStructure\Stack();
+        $stack = new DataStructure\Stack::<string>();
         $stack->push('hello');
 
         static::assertSame('hello', $stack->pull());
@@ -68,7 +68,7 @@ final class StackTest extends TestCase
 
     public function testCount(): void
     {
-        $stack = new DataStructure\Stack();
+        $stack = new DataStructure\Stack::<string>();
         static::assertSame(0, $stack->count());
 
         $stack->push('hello');

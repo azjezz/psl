@@ -7,22 +7,14 @@ namespace Psl\Type;
 /**
  * @pure
  *
- * @template T
- *
- * @param TypeInterface<T> $first
- * @param TypeInterface<T> $second
- * @param TypeInterface<T> ...$rest
- *
- * @return TypeInterface<T>
- *
  * @api
  */
-function union(TypeInterface $first, TypeInterface $second, TypeInterface ...$rest): TypeInterface
+function union<T>(TypeInterface<T> $first, TypeInterface<T> $second, TypeInterface<T> ...$rest): TypeInterface<T>
 {
-    $accumulatedType = new Internal\UnionType($first, $second);
+    $accumulatedType = new Internal\UnionType::<T, T>($first, $second);
 
     foreach ($rest as $type) {
-        $accumulatedType = new Internal\UnionType($accumulatedType, $type);
+        $accumulatedType = new Internal\UnionType::<T, T>($accumulatedType, $type);
     }
 
     return $accumulatedType;

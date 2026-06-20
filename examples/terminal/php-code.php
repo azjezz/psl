@@ -175,7 +175,7 @@ function filter_commands(string $input): array
 
     $prefix = Str\lowercase($input);
 
-    return Vec\filter(namespace\COMMANDS, static fn(array $cmd): bool => Str\starts_with($cmd[0], $prefix));
+    return Vec\filter::<array>(namespace\COMMANDS, static fn(array $cmd): bool => Str\starts_with($cmd[0], $prefix));
 }
 
 function handle_autocomplete(Event\Key $event, PhpCodeState $state): bool
@@ -183,18 +183,18 @@ function handle_autocomplete(Event\Key $event, PhpCodeState $state): bool
     $filtered = namespace\filter_commands($state->input);
 
     if ($event->is('up') && $filtered !== []) {
-        $state->ui->ac_selected = ($state->ui->ac_selected - 1 + Iter\count($filtered)) % Iter\count($filtered);
+        $state->ui->ac_selected = ($state->ui->ac_selected - 1 + Iter\count::<array>($filtered)) % Iter\count::<array>($filtered);
         return true;
     }
 
     if ($event->is('down') && $filtered !== []) {
-        $state->ui->ac_selected = ($state->ui->ac_selected + 1) % Iter\count($filtered);
+        $state->ui->ac_selected = ($state->ui->ac_selected + 1) % Iter\count::<array>($filtered);
         return true;
     }
 
     if (($event->is('tab') || $event->is('enter')) && $filtered !== []) {
         /** @var non-negative-int $selected */
-        $selected = Math\minva($state->ui->ac_selected, Iter\count($filtered) - 1);
+        $selected = Math\minva::<int>($state->ui->ac_selected, Iter\count::<array>($filtered) - 1);
         $state->input = $filtered[$selected][0];
         $state->ui->ac_selected = 0;
         if ($event->is('tab')) {
@@ -211,7 +211,7 @@ function handle_autocomplete(Event\Key $event, PhpCodeState $state): bool
     return false;
 }
 
-function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application $app): void
+function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application<PhpCodeState> $app): void
 {
     $state->input = '';
     $state->ui->ac_selected = 0;
@@ -245,7 +245,7 @@ function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application
         $state->status = 'Loading... 0%';
         $state->busy = true;
         $app->emit(Screen\progress(Screen\ProgressState::Normal, 0));
-        Async\run(static function () use ($state, $app): void {
+        Async\run::<void>(static function () use ($state, $app): void {
             for ($i = 1; $i <= 50; $i++) {
                 Async\sleep(DateTime\Duration::milliseconds(100));
                 /** @var int<0, 100> $pct */
@@ -266,7 +266,7 @@ function handle_submit(string $prompt, PhpCodeState $state, Terminal\Application
     $state->status = 'Thinking...';
     $state->busy = true;
     $app->emit(Screen\progress(Screen\ProgressState::Indeterminate));
-    Async\run(static function () use ($prompt, $state, $app): void {
+    Async\run::<void>(static function () use ($prompt, $state, $app): void {
         $responses = namespace\mock_llm_response($prompt);
 
         foreach ($responses as $response) {
@@ -348,8 +348,8 @@ function render_frame(Terminal\Frame $frame, PhpCodeState $state, array $spinner
         Layout\fill(),
     ]);
 
-    $inputLines = Str\contains($state->input, "\n") ? Iter\count(Str\split($state->input, "\n")) : 1;
-    $inputHeight = Math\minva($inputLines + 2, 10);
+    $inputLines = Str\contains($state->input, "\n") ? Iter\count::<string>(Str\split($state->input, "\n")) : 1;
+    $inputHeight = Math\minva::<int>($inputLines + 2, 10);
 
     [$chatArea, $inputArea] = Layout\vertical($chatColumn, [
         Layout\fill(),
@@ -390,7 +390,7 @@ function render_sidebar(Terminal\Rect $area, PhpCodeState $state, Terminal\Buffe
  */
 function render_chat(Terminal\Rect $chatArea, PhpCodeState $state, array $spinners, Terminal\Buffer $buffer): void
 {
-    $lines = Vec\flat_map($state->messages, static fn(Message $msg): array => [
+    $lines = Vec\flat_map::<Message, Widget\Line>($state->messages, static fn(Message $msg): array => [
         ...namespace\format_message($msg),
         Widget\Line::empty(),
     ]);
@@ -411,10 +411,10 @@ function render_chat(Terminal\Rect $chatArea, PhpCodeState $state, array $spinne
         ->padding(right: 2, left: 1);
 
     $chatInner = $chatBlock->innerArea($chatArea);
-    $totalLines = Iter\count($lines);
-    $visibleLines = Math\maxva(1, $chatInner->height);
+    $totalLines = Iter\count::<Widget\Line>($lines);
+    $visibleLines = Math\maxva::<int>(1, $chatInner->height);
 
-    $state->scroll_offset = Math\maxva(0, Math\minva($state->scroll_offset, Math\maxva(0, $totalLines - 1)));
+    $state->scroll_offset = Math\maxva::<int>(0, Math\minva::<int>($state->scroll_offset, Math\maxva::<int>(0, $totalLines - 1)));
 
     $chatBlock->render(
         $chatArea,
@@ -450,14 +450,14 @@ function render_input(
             ? [Widget\Span::styled('> ', Ansi\foreground(Color\bright_cyan()), Style\bold())]
             : [Widget\Span::styled('  ', Ansi\foreground(Color\bright_cyan()))];
 
-        $isLastLine = $i === (Iter\count($inputLines) - 1);
+        $isLastLine = $i === (Iter\count::<string>($inputLines) - 1);
         $suffix = $isLastLine ? [Widget\Span::styled($cursor, Ansi\foreground(Color\bright_cyan()))] : [];
 
         $inputWidgetLines[] = Widget\Line::new([...$prefix, Widget\Span::raw($line), ...$suffix]);
     }
 
     $inputVisibleHeight = $inputArea->height - 2;
-    $inputScroll = Math\maxva(0, Iter\count($inputWidgetLines) - $inputVisibleHeight);
+    $inputScroll = Math\maxva::<int>(0, Iter\count::<Widget\Line>($inputWidgetLines) - $inputVisibleHeight);
 
     Widget\Block::new()->border(Widget\Border::rounded(Ansi\foreground($borderColor)))->render(
         $inputArea,
@@ -475,7 +475,7 @@ function render_input(
     }
 
     $popupWidth = 40;
-    $popupHeight = Iter\count($filtered) + 2;
+    $popupHeight = Iter\count::<array>($filtered) + 2;
     $popupX = $inputArea->x + 3;
     $popupY = $inputArea->y - $popupHeight;
 
@@ -485,12 +485,12 @@ function render_input(
 
     $popupRect = new Terminal\Rect($popupX, $popupY, $popupWidth, $popupHeight);
 
-    $items = Vec\map($filtered, static fn(array $cmd): Widget\MenuItem => Widget\MenuItem::styled([
+    $items = Vec\map::<int, array, Widget\MenuItem>($filtered, static fn(array $cmd): Widget\MenuItem => Widget\MenuItem::styled([
         Widget\Span::styled($cmd[0], Ansi\foreground(Color\bright_cyan()), Style\bold()),
         Widget\Span::styled(' ' . $cmd[1], Ansi\foreground(Color\bright_black())),
     ]));
 
-    $selected = Math\minva($state->ui->ac_selected, Iter\count($filtered) - 1);
+    $selected = Math\minva::<int>($state->ui->ac_selected, Iter\count::<array>($filtered) - 1);
 
     Widget\Block::new()->border(Widget\Border::rounded(Ansi\foreground(Color\bright_black())))->render(
         $popupRect,
@@ -533,7 +533,7 @@ function render_php_code_status_bar(
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(new PhpCodeState(), title: 'php-code');
+    $app = Terminal\Application::create::<PhpCodeState>(new PhpCodeState(), title: 'php-code');
 
     $spinners = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
@@ -543,14 +543,14 @@ Async\main(static function (): int {
         }
     });
 
-    $app->on(Event\Key::class, static function (Event\Key $event, PhpCodeState $state) use ($app): void {
+    $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, PhpCodeState $state) use ($app): void {
         if ($event->is('ctrl+c')) {
             $app->stop();
             return;
         }
 
         if ($event->is('ctrl+up') || $event->is('page_up')) {
-            $state->scroll_offset = Math\maxva($state->scroll_offset - 3, 0);
+            $state->scroll_offset = Math\maxva::<int>($state->scroll_offset - 3, 0);
             return;
         }
 
@@ -594,14 +594,14 @@ Async\main(static function (): int {
         namespace\handle_text_editing($event, $state);
     });
 
-    $app->on(Event\Paste::class, static function (Event\Paste $event, PhpCodeState $state): void {
+    $app->on::<Event\Paste>(Event\Paste::class, static function (Event\Paste $event, PhpCodeState $state): void {
         $state->input .= $event->text;
         $state->ui->ac_selected = 0;
     });
 
-    $app->on(Event\Mouse::class, static function (Event\Mouse $event, PhpCodeState $state): void {
+    $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, PhpCodeState $state): void {
         if ($event->kind === Event\MouseKind::ScrollUp) {
-            $state->scroll_offset = Math\maxva($state->scroll_offset - 3, 0);
+            $state->scroll_offset = Math\maxva::<int>($state->scroll_offset - 3, 0);
         }
 
         if ($event->kind === Event\MouseKind::ScrollDown) {

@@ -14,18 +14,13 @@ namespace Psl\Tree;
  *          Tree\leaf('child2'),
  *      ])
  *
- * @template T
- *
- * @param T $value
  * @param list<NodeInterface<T>> $children
- *
- * @return TreeNode<T>
  *
  * @pure
  *
  * @api
  */
-function tree(mixed $value, array $children = []): TreeNode
+function tree<T>(T $value, array $children = []): TreeNode<T>
 {
-    return new TreeNode($value, $children);
+    return new TreeNode::<T>($value, $children);
 }

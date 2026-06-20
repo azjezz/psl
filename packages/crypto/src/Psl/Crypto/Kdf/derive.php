@@ -31,5 +31,5 @@ function derive(#[SensitiveParameter] Key $key, int $subKeyId, string $context, 
     }
 
     /** @var non-empty-string */
-    return Internal\call_sodium(fn() => sodium_crypto_kdf_derive_from_key($length, $subKeyId, $context, $key->bytes));
+    return Internal\call_sodium::<string>(fn() => sodium_crypto_kdf_derive_from_key($length, $subKeyId, $context, $key->bytes));
 }

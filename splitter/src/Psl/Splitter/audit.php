@@ -53,7 +53,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
         ['User-Agent', $org],
     ]);
 
-    $repos = Vec\map($monorepo->packages, static fn(Package $p): string => Str\after($p->name, $org . '/') ?? $p->name);
+    $repos = Vec\map::<int, Package, string>($monorepo->packages, static fn(Package $p): string => Str\after($p->name, $org . '/') ?? $p->name);
     $repos[] = $mainRepo;
 
     $packagesBySlug = [];
@@ -62,7 +62,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
         $packagesBySlug[$slug] = $package;
     }
 
-    Log\info('Auditing %d repositories...', Iter\count($repos));
+    Log\info('Auditing %d repositories...', Iter\count::<string>($repos));
 
     $orgRulesetsTx = $httpClient->send(new Message\Request(
         method: Message\METHOD_GET,
@@ -70,7 +70,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
         headers: $headers,
     ));
 
-    $awaitables = Dict\from_keys($repos, static fn(string $repo): Async\Awaitable => Async\run(static fn(): array => Async\concurrently([
+    $awaitables = Dict\from_keys::<string, Async\Awaitable<array>>($repos, static fn(string $repo): Async\Awaitable<array> => Async\run::<array>(static fn(): array => Async\concurrently::<int, Message\Transaction>([
         static fn() => $httpClient->send(new Message\Request(
             method: Message\METHOD_GET,
             url: URL\parse(Str\format('https://api.github.com/repos/%s/%s', $org, $repo)),
@@ -90,20 +90,20 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
 
     $ok = true;
 
-    $settingsType = Type\shape([
-        'description' => Type\nullable(Type\string()),
-        'homepage' => Type\nullable(Type\string()),
-        'topics' => Type\vec(Type\string()),
+    $settingsType = Type\shape::<string, string|null|array|bool>([
+        'description' => Type\nullable::<string>(Type\string()),
+        'homepage' => Type\nullable::<string>(Type\string()),
+        'topics' => Type\vec::<string>(Type\string()),
         'has_issues' => Type\bool(),
         'has_wiki' => Type\bool(),
         'has_discussions' => Type\bool(),
     ], allowUnknownFields: true);
 
-    $rulesetType = Type\vec(Type\shape([
+    $rulesetType = Type\vec::<array>(Type\shape::<string, string>([
         'name' => Type\non_empty_string(),
     ], allowUnknownFields: true));
 
-    $prType = Type\vec(Type\shape([
+    $prType = Type\vec::<array>(Type\shape::<string, int>([
         'number' => Type\int(),
     ], allowUnknownFields: true));
 
@@ -121,7 +121,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
             Log\step('auditing', $full);
         }
 
-        $settings = Json\typed($settingsTx->response->body?->readAll() ?? '', $settingsType);
+        $settings = Json\typed::<array>($settingsTx->response->body?->readAll() ?? '', $settingsType);
 
         $expectedDescription = $isMain ? $monorepo->rootDescription : $packagesBySlug[$repo]->description;
         if ($expectedDescription !== '' && ($settings['description'] ?? '') !== $expectedDescription) {
@@ -169,7 +169,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
             Log\error('%s has no topics', $full);
             $ok = false;
         } else {
-            Log\info('%s has %d topic(s)', $full, Iter\count($settings['topics']));
+            Log\info('%s has %d topic(s)', $full, Iter\count::<string>($settings['topics']));
         }
 
         if ($settings['has_wiki']) {
@@ -196,7 +196,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
 
             if ($prTx->response->status === Message\STATUS_OK) {
                 $ok = false;
-                $prs = Json\typed($prTx->response->body?->readAll() ?? '', $prType);
+                $prs = Json\typed::<array>($prTx->response->body?->readAll() ?? '', $prType);
                 if ($prs !== []) {
                     Log\error('%s has open pull request(s) (sub-package)', $full);
                 } else {
@@ -213,7 +213,7 @@ function audit(MonolithicRepository $monorepo, #[SensitiveParameter] string $tok
                 continue;
             }
 
-            $rulesets = Json\typed($rulesetsTx->response->body?->readAll() ?? '', $rulesetType);
+            $rulesets = Json\typed::<array>($rulesetsTx->response->body?->readAll() ?? '', $rulesetType);
             foreach ($rulesets as $ruleset) {
                 $name = Str\lowercase($ruleset['name']);
                 if (Str\contains($name, 'tag') || Str\contains($name, 'immutable')) {

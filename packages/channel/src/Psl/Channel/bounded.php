@@ -9,20 +9,18 @@ namespace Psl\Channel;
  *
  * The created channel has space to hold at most $capacity messages at a time.
  *
- * @template T
- *
  * @param positive-int $capacity
  *
  * @return array{ReceiverInterface<T>, SenderInterface<T>}
  *
  * @api
  */
-function bounded(int $capacity): array
+function bounded<T>(int $capacity): array
 {
-    $channel = new Internal\BoundedChannelState($capacity);
+    $channel = new Internal\BoundedChannelState::<T>($capacity);
 
     return [
-        new Internal\BoundedReceiver($channel),
-        new Internal\BoundedSender($channel),
+        new Internal\BoundedReceiver::<T>($channel),
+        new Internal\BoundedSender::<T>($channel),
     ];
 }

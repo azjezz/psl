@@ -17,17 +17,13 @@ namespace Psl\Tree;
  *      ]))
  *      => ['c', 'b', 'd', 'a']
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
- *
  * @return list<T>
  *
  * @pure
  *
  * @api
  */
-function post_order(NodeInterface $tree): array
+function post_order<T>(NodeInterface<T> $tree): array
 {
     if (!$tree instanceof TreeNode) {
         return [$tree->getValue()];
@@ -36,7 +32,7 @@ function post_order(NodeInterface $tree): array
     $result = [];
     foreach ($tree->getChildren() as $child) {
         /** @var T $value */
-        foreach (namespace\post_order($child) as $value) {
+        foreach (namespace\post_order::<T>($child) as $value) {
             $result[] = $value;
         }
     }

@@ -15,8 +15,6 @@ use function usort;
  * If the optional comparator function isn't provided, the values will be sorted in
  * ascending order.
  *
- * @template T
- *
  * @param iterable<T> $iterable
  * @param (Closure(T, T): int)|null $comparator
  *
@@ -24,9 +22,9 @@ use function usort;
  *
  * @api
  */
-function sort(iterable $iterable, null|Closure $comparator = null): array
+function sort<T>(iterable $iterable, null|Closure $comparator = null): array
 {
-    $array = namespace\values($iterable);
+    $array = namespace\values::<mixed>($iterable);
     if (null !== $comparator) {
         usort($array, $comparator);
 

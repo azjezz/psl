@@ -15,7 +15,7 @@ final class PartitionWithKeyTest extends TestCase
     #[DataProvider('provideData')]
     public function testPartition(array $expected, array $array, Closure $predicate): void
     {
-        static::assertSame($expected, Dict\partition_with_key($array, $predicate));
+        static::assertSame($expected, Dict\partition_with_key::<int, string>($array, $predicate));
     }
 
     public static function provideData(): array

@@ -22,7 +22,7 @@ final class MapTest extends AbstractMapTestCase
 
     public function testFromItems(): void
     {
-        $map = Map::fromItems([
+        $map = Map::<string, string>::fromItems([
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
@@ -34,16 +34,11 @@ final class MapTest extends AbstractMapTestCase
     }
 
     /**
-     * @template     Tk of array-key
-     * @template     Tv
-     *
      * @param iterable<Tk, Tv> $items
-     *
-     * @return Map<Tk, Tv>
      */
     #[Override]
-    protected function create(iterable $items): Map
+    protected function create<Tk: string|int, Tv>(iterable $items): Map<Tk, Tv>
     {
-        return Map::fromArray($items);
+        return Map::<string|int, mixed>::fromArray($items);
     }
 }

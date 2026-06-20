@@ -32,7 +32,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("220 mail.example.com ESMTP\r\n");
         });
 
@@ -50,7 +50,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("220-mail.example.com ESMTP\r\n220 Ready\r\n");
         });
 
@@ -68,7 +68,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("554 Go away\r\n");
         });
 
@@ -86,7 +86,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->close();
         });
 
@@ -105,7 +105,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertStringContainsString('EHLO client.example.com', $command);
 
@@ -141,7 +141,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 8BITMIME\r\n");
         });
@@ -160,7 +160,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250-PIPELINING\r\n250 SIZE 1000\r\n");
 
@@ -185,7 +185,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("502 Command not recognized\r\n");
         });
@@ -204,7 +204,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertSame("NOOP\r\n", $command);
             $serverStream->writeAll("250 OK\r\n");
@@ -255,7 +255,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("XYZ Invalid\r\n");
         });
 
@@ -273,7 +273,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("AB\r\n");
         });
 
@@ -291,7 +291,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("250|OK\r\n");
         });
 
@@ -309,7 +309,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("250-First\r\n251 Second\r\n");
         });
 
@@ -327,7 +327,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("250-First line\r\n250-Second line\r\n250 Third line\r\n");
         });
 
@@ -346,7 +346,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $serverStream->writeAll("250\r\n");
         });
 
@@ -363,7 +363,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertStringContainsString('STARTTLS', $command);
             $serverStream->writeAll("502 Command not implemented\r\n");
@@ -395,7 +395,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertStringContainsString('HELO client.example.com', $command);
 
@@ -415,7 +415,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             // First EHLO
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250-PIPELINING\r\n250 SIZE 5000\r\n");
@@ -441,7 +441,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             // EHLO
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
@@ -466,7 +466,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
         });
@@ -485,7 +485,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 8BITMIME\r\n");
         });
@@ -503,7 +503,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250-AUTH PLAIN LOGIN XOAUTH2\r\n250 SIZE 10485760\r\n");
         });
@@ -522,7 +522,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250 mail.example.com\r\n");
         });
@@ -540,7 +540,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 PIPELINING\r\n");
         });
@@ -558,7 +558,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertSame("MAIL FROM:<user@example.com>\r\n", $command);
             $serverStream->writeAll("250 OK\r\n");
@@ -577,7 +577,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertStringContainsString('NOOP', $command);
             $serverStream->writeAll("250 OK\r\n");
@@ -597,7 +597,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             $command = self::readCommand($serverStream);
             static::assertSame("QUIT\r\n", $command);
             $serverStream->writeAll("221 Bye\r\n");
@@ -648,7 +648,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 SIZE 52428800\r\n");
         });
@@ -665,7 +665,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 SIZE 1000\r\n");
 
@@ -687,7 +687,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 SIZE\r\n");
         });
@@ -705,7 +705,7 @@ final class ConnectionTest extends TestCase
     {
         [$connection, $serverStream] = $this->createPair();
 
-        Async\run(static function () use ($serverStream): void {
+        Async\run::<void>(static function () use ($serverStream): void {
             self::readCommand($serverStream);
             $serverStream->writeAll("250-mail.example.com\r\n250 pipelining\r\n");
         });
@@ -731,7 +731,7 @@ final class ConnectionTest extends TestCase
         $clientStream = null;
         $serverStream = null;
 
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($server, &$serverStream): void {
                 $serverStream = $server->accept();
             },

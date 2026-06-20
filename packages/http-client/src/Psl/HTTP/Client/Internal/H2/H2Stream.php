@@ -57,7 +57,7 @@ final class H2Stream
      *
      * @var Async\Deferred<array{int<100, 999>, FieldMap, bool}>
      */
-    private Async\Deferred $responseDeferred;
+    private Async\Deferred<array> $responseDeferred;
 
     /**
      * Collected 1xx informational responses received before the final response.
@@ -105,7 +105,7 @@ final class H2Stream
         private readonly null|Closure $onInformationalResponse = null,
     ) {
         /** @var Async\Deferred<array{int<100, 999>, FieldMap, bool}> */
-        $this->responseDeferred = new Async\Deferred();
+        $this->responseDeferred = new Async\Deferred::<array>();
     }
 
     /**

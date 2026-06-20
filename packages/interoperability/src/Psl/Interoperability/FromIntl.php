@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace Psl\Interoperability;
 
 /**
- * @template T
- *
  * @api
  */
-interface FromIntl
+interface FromIntl<T>
 {
-    /**
-     * @param T $value
-     */
-    public static function fromIntl(mixed $value): static;
+    public static function fromIntl(T $value): static;
 }

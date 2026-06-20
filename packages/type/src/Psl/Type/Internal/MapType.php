@@ -16,24 +16,16 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template Tk of array-key
- * @template Tv
- *
- * @extends Type\Type<Collection\MapInterface<Tk, Tv>>
- *
  * @internal
  */
-final readonly class MapType extends Type\Type
+final readonly class MapType<Tk: string|int, Tv> extends Type\Type<Collection\MapInterface<Tk, Tv>>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<Tk> $keyType
-     * @param Type\TypeInterface<Tv> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $keyType,
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<Tk> $keyType,
+        private Type\TypeInterface<Tv> $valueType,
     ) {}
 
     /**
@@ -58,11 +50,9 @@ final readonly class MapType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return Collection\MapInterface<Tk, Tv>
      */
     #[Override]
-    public function coerce(mixed $value): Collection\MapInterface
+    public function coerce(mixed $value): Collection\MapInterface<Tk, Tv>
     {
         if (is_iterable($value)) {
             /** @var Type\Type<Tk> $keyType */
@@ -119,7 +109,7 @@ final readonly class MapType extends Type\Type
                 $dict[$k] = $v;
             }
 
-            return new Collection\Map($dict);
+            return new Collection\Map::<Tk, Tv>($dict);
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -128,12 +118,10 @@ final readonly class MapType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return Collection\MapInterface<Tk, Tv>
-     *
      * @psalm-assert Collection\MapInterface<Tk, Tv> $value
      */
     #[Override]
-    public function assert(mixed $value): Collection\MapInterface
+    public function assert(mixed $value): Collection\MapInterface<Tk, Tv>
     {
         if (is_object($value) && $value instanceof Collection\MapInterface) {
             /** @var Type\Type<Tk> $keyType */
@@ -174,7 +162,7 @@ final readonly class MapType extends Type\Type
                 $dict[$k] = $v;
             }
 
-            return new Collection\Map($dict);
+            return new Collection\Map::<Tk, Tv>($dict);
         }
 
         throw AssertException::withValue($value, $this->toString());

@@ -61,7 +61,7 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [$a1, $ns, $a2], [], []);
 
-        $aRecords = $response->getAnswerRecords(ARecord::class);
+        $aRecords = $response->getAnswerRecords::<ARecord>(ARecord::class);
 
         static::assertCount(2, $aRecords);
         static::assertSame($a1, $aRecords[0]);
@@ -74,7 +74,7 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [$a], [], []);
 
-        static::assertSame([], $response->getAnswerRecords(MXRecord::class));
+        static::assertSame([], $response->getAnswerRecords::<MXRecord>(MXRecord::class));
     }
 
     public function testGetFirstAnswerRecord(): void
@@ -84,7 +84,7 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [$a1, $a2], [], []);
 
-        static::assertSame($a1, $response->getFirstAnswerRecord(ARecord::class));
+        static::assertSame($a1, $response->getFirstAnswerRecord::<ARecord>(ARecord::class));
     }
 
     public function testGetFirstAnswerRecordReturnsNullWhenNoMatch(): void
@@ -93,7 +93,7 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [$a], [], []);
 
-        static::assertNull($response->getFirstAnswerRecord(MXRecord::class));
+        static::assertNull($response->getFirstAnswerRecord::<MXRecord>(MXRecord::class));
     }
 
     public function testGetAuthorityRecords(): void
@@ -103,7 +103,7 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [], [$ns1, $ns2], []);
 
-        $nsRecords = $response->getAuthorityRecords(NSRecord::class);
+        $nsRecords = $response->getAuthorityRecords::<NSRecord>(NSRecord::class);
 
         static::assertCount(2, $nsRecords);
         static::assertSame($ns1, $nsRecords[0]);
@@ -117,11 +117,11 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [], [$ns, $a], []);
 
-        $nsRecords = $response->getAuthorityRecords(NSRecord::class);
+        $nsRecords = $response->getAuthorityRecords::<NSRecord>(NSRecord::class);
         static::assertCount(1, $nsRecords);
         static::assertSame($ns, $nsRecords[0]);
 
-        $aRecords = $response->getAuthorityRecords(ARecord::class);
+        $aRecords = $response->getAuthorityRecords::<ARecord>(ARecord::class);
         static::assertCount(1, $aRecords);
         static::assertSame($a, $aRecords[0]);
     }
@@ -133,7 +133,7 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [], [], [$a, $aaaa]);
 
-        $aRecords = $response->getAdditionalRecords(ARecord::class);
+        $aRecords = $response->getAdditionalRecords::<ARecord>(ARecord::class);
 
         static::assertCount(1, $aRecords);
         static::assertSame($a, $aRecords[0]);
@@ -147,11 +147,11 @@ final class ResponseTest extends TestCase
 
         $response = new Response(1, ResponseCode::NoError, [], [], [$a, $ns, $aaaa]);
 
-        $aRecords = $response->getAdditionalRecords(ARecord::class);
+        $aRecords = $response->getAdditionalRecords::<ARecord>(ARecord::class);
         static::assertCount(1, $aRecords);
         static::assertSame($a, $aRecords[0]);
 
-        $aaaaRecords = $response->getAdditionalRecords(AAAARecord::class);
+        $aaaaRecords = $response->getAdditionalRecords::<AAAARecord>(AAAARecord::class);
         static::assertCount(1, $aaaaRecords);
         static::assertSame($aaaa, $aaaaRecords[0]);
     }

@@ -16,21 +16,15 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template T
- *
- * @extends Type\Type<Collection\MutableVectorInterface<T>>
- *
  * @internal
  */
-final readonly class MutableVectorType extends Type\Type
+final readonly class MutableVectorType<T> extends Type\Type<Collection\MutableVectorInterface<T>>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $valueType
      */
     public function __construct(
-        private Type\TypeInterface $valueType,
+        private Type\TypeInterface<T> $valueType,
     ) {}
 
     /**
@@ -55,11 +49,9 @@ final readonly class MutableVectorType extends Type\Type
 
     /**
      * @throws CoercionException
-     *
-     * @return Collection\MutableVectorInterface<T>
      */
     #[Override]
-    public function coerce(mixed $value): Collection\MutableVectorInterface
+    public function coerce(mixed $value): Collection\MutableVectorInterface<T>
     {
         if (is_iterable($value)) {
             /** @var Type\Type<T> $valueType */
@@ -96,7 +88,7 @@ final readonly class MutableVectorType extends Type\Type
                 };
             }
 
-            return new Collection\MutableVector($values);
+            return new Collection\MutableVector::<T>($values);
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -105,12 +97,10 @@ final readonly class MutableVectorType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return Collection\MutableVectorInterface<T>
-     *
      * @psalm-assert Collection\MutableVectorInterface<T> $value
      */
     #[Override]
-    public function assert(mixed $value): Collection\MutableVectorInterface
+    public function assert(mixed $value): Collection\MutableVectorInterface<T>
     {
         if (is_object($value) && $value instanceof Collection\MutableVectorInterface) {
             /** @var Type\Type<T> $valueType */
@@ -135,7 +125,7 @@ final readonly class MutableVectorType extends Type\Type
                 throw AssertException::withValue($v, $this->toString(), PathExpression::path($i), $e);
             }
 
-            return new Collection\MutableVector($values);
+            return new Collection\MutableVector::<T>($values);
         }
 
         throw AssertException::withValue($value, $this->toString());

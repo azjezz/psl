@@ -11,7 +11,7 @@ use Psl\TCP;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function (): void {
         $listener = TCP\listen('localhost', 91_337);
 

@@ -19,7 +19,7 @@ final class RightTest extends TestCase
 {
     public function testIsRight(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         static::assertTrue($either->isRight());
         static::assertFalse($either->isLeft());
@@ -27,14 +27,14 @@ final class RightTest extends TestCase
 
     public function testGetRight(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         static::assertSame(42, $either->getRight());
     }
 
     public function testGetLeft(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         $this->expectException(Either\Exception\RightException::class);
         $this->expectExceptionMessage('Attempting to get a left value from a right either.');
@@ -44,35 +44,35 @@ final class RightTest extends TestCase
 
     public function testGetRightOr(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        static::assertSame(42, $either->getRightOr(0));
+        static::assertSame(42, $either->getRightOr::<int>(0));
     }
 
     public function testGetLeftOr(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        static::assertSame('default', $either->getLeftOr('default'));
+        static::assertSame('default', $either->getLeftOr::<string>('default'));
     }
 
     public function testGetRightOrElse(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         static::assertSame(42, $either->getRightOrElse(static fn($v) => 0));
     }
 
     public function testGetLeftOrElse(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        static::assertSame('computed from 42', $either->getLeftOrElse(static fn($v) => 'computed from ' . $v));
+        static::assertSame('computed from 42', $either->getLeftOrElse::<string>(static fn($v) => 'computed from ' . $v));
     }
 
     public function testUnwrapRight(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         $option = $either->unwrapRight();
 
@@ -82,7 +82,7 @@ final class RightTest extends TestCase
 
     public function testUnwrapLeft(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         $option = $either->unwrapLeft();
 
@@ -91,9 +91,9 @@ final class RightTest extends TestCase
 
     public function testMap(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        $mapped = $either->map(static fn($v) => $v * 2);
+        $mapped = $either->map::<int>(static fn($v) => $v * 2);
 
         static::assertInstanceOf(Right::class, $mapped);
         static::assertSame(84, $mapped->getRight());
@@ -101,9 +101,9 @@ final class RightTest extends TestCase
 
     public function testMapRight(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        $mapped = $either->mapRight(static fn($v) => $v * 2);
+        $mapped = $either->mapRight::<int>(static fn($v) => $v * 2);
 
         static::assertInstanceOf(Right::class, $mapped);
         static::assertSame(84, $mapped->getRight());
@@ -111,9 +111,9 @@ final class RightTest extends TestCase
 
     public function testMapLeft(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        $mapped = $either->mapLeft(static fn($v) => 'should not happen');
+        $mapped = $either->mapLeft::<string>(static fn($v) => 'should not happen');
 
         static::assertSame($either, $mapped);
         static::assertSame(42, $mapped->getRight());
@@ -121,9 +121,9 @@ final class RightTest extends TestCase
 
     public function testFlatMap(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        $result = $either->flatMap(static fn($v) => new Right($v * 2));
+        $result = $either->flatMap::<never, int>(static fn($v) => new Right::<int>($v * 2));
 
         static::assertInstanceOf(Right::class, $result);
         static::assertSame(84, $result->getRight());
@@ -131,9 +131,9 @@ final class RightTest extends TestCase
 
     public function testFlatMapRight(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        $result = $either->flatMapRight(static fn($v) => new Left('error'));
+        $result = $either->flatMapRight::<string, never>(static fn($v) => new Left::<string>('error'));
 
         static::assertInstanceOf(Left::class, $result);
         static::assertSame('error', $result->getLeft());
@@ -141,9 +141,9 @@ final class RightTest extends TestCase
 
     public function testFlatMapLeft(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
-        $result = $either->flatMapLeft(static fn($v) => new Right('should not happen'));
+        $result = $either->flatMapLeft::<never, string>(static fn($v) => new Right::<string>('should not happen'));
 
         static::assertSame($either, $result);
         static::assertSame(42, $result->getRight());
@@ -151,16 +151,16 @@ final class RightTest extends TestCase
 
     public function testProceed(): void
     {
-        $result = new Right(42)->proceed(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
+        $result = new Right::<int>(42)->proceed::<string>(static fn($v) => 'right: ' . $v, static fn($v) => 'left: ' . $v);
 
         static::assertSame('right: 42', $result);
     }
 
     public function testApply(): void
     {
-        $spy = new Ref(0);
+        $spy = new Ref::<int>(0);
 
-        $either = new Right(42);
+        $either = new Right::<int>(42);
         $actual = $either->apply(static function (int $value) use ($spy) {
             $spy->value = $value;
         });
@@ -171,7 +171,7 @@ final class RightTest extends TestCase
 
     public function testSwap(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
         $swapped = $either->swap();
 
         static::assertInstanceOf(Left::class, $swapped);
@@ -180,7 +180,7 @@ final class RightTest extends TestCase
 
     public function testContainsRight(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         static::assertTrue($either->containsRight(42));
         static::assertFalse($either->containsRight(0));
@@ -188,7 +188,7 @@ final class RightTest extends TestCase
 
     public function testContainsLeft(): void
     {
-        $either = new Right(42);
+        $either = new Right::<int>(42);
 
         static::assertFalse($either->containsLeft(42));
         static::assertFalse($either->containsLeft(0));
@@ -196,22 +196,22 @@ final class RightTest extends TestCase
 
     public function testComparable(): void
     {
-        $a = new Right(2);
+        $a = new Right::<int>(2);
 
         static::assertInstanceOf(Comparable::class, $a);
-        static::assertSame(Order::Equal, $a->compare(new Right(2)));
-        static::assertSame(Order::Less, $a->compare(new Right(3)));
-        static::assertSame(Order::Greater, $a->compare(new Right(1)));
-        static::assertSame(Order::Greater, $a->compare(new Left(1)));
+        static::assertSame(Order::Equal, $a->compare(new Right::<int>(2)));
+        static::assertSame(Order::Less, $a->compare(new Right::<int>(3)));
+        static::assertSame(Order::Greater, $a->compare(new Right::<int>(1)));
+        static::assertSame(Order::Greater, $a->compare(new Left::<int>(1)));
     }
 
     public function testEquality(): void
     {
-        $a = new Right('a');
+        $a = new Right::<string>('a');
 
         static::assertInstanceOf(Equable::class, $a);
-        static::assertTrue($a->equals(new Right('a')));
-        static::assertFalse($a->equals(new Right('b')));
-        static::assertFalse($a->equals(new Left('a')));
+        static::assertTrue($a->equals(new Right::<string>('a')));
+        static::assertFalse($a->equals(new Right::<string>('b')));
+        static::assertFalse($a->equals(new Left::<string>('a')));
     }
 }

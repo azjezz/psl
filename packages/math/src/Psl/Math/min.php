@@ -10,8 +10,6 @@ use function min as php_min;
  * Returns the smallest element of the given list, or null if the
  * list is empty.
  *
- * @template T of int|float
- *
  * @param list<T> $numbers
  *
  * @return ($numbers is non-empty-list<T> ? T : null)
@@ -20,7 +18,7 @@ use function min as php_min;
  *
  * @api
  */
-function min(array $numbers): null|float|int
+function min<T: int|float>(array $numbers): null|float|int
 {
     if ([] === $numbers) {
         return null;

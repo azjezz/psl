@@ -11,13 +11,13 @@ final class FilterTest extends TestCase
 {
     public function testFilterRemovesNodesNotMatchingPredicate(): void
     {
-        $tree = Tree\tree(2, [
-            Tree\leaf(1),
-            Tree\leaf(3),
-            Tree\tree(4, [Tree\leaf(5)]),
+        $tree = Tree\tree::<int>(2, [
+            Tree\leaf::<int>(1),
+            Tree\leaf::<int>(3),
+            Tree\tree::<int>(4, [Tree\leaf::<int>(5)]),
         ]);
 
-        $result = Tree\filter($tree, static fn(int $x): bool => $x >= 2);
+        $result = Tree\filter::<int>($tree, static fn(int $x): bool => $x >= 2);
 
         static::assertNotNull($result);
         static::assertSame(2, $result->getValue());
@@ -28,9 +28,9 @@ final class FilterTest extends TestCase
 
     public function testFilterReturnsNullWhenRootDoesNotMatch(): void
     {
-        $tree = Tree\tree(1, [Tree\leaf(2)]);
+        $tree = Tree\tree::<int>(1, [Tree\leaf::<int>(2)]);
 
-        $result = Tree\filter($tree, static fn(int $x): bool => $x > 1);
+        $result = Tree\filter::<int>($tree, static fn(int $x): bool => $x > 1);
 
         static::assertNull($result);
     }

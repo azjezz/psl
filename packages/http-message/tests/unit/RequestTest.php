@@ -204,7 +204,7 @@ final class RequestTest extends TestCase
     public function testWithTrailers(): void
     {
         $request = new Request(Message\METHOD_POST, null);
-        $trailers = Async\Awaitable::complete(FieldMap::from([['checksum', 'abc123']]));
+        $trailers = Async\Awaitable::<FieldMap>::complete(FieldMap::from([['checksum', 'abc123']]));
         $modified = $request->withTrailers($trailers);
 
         static::assertNull($request->trailers);
@@ -215,7 +215,7 @@ final class RequestTest extends TestCase
     {
         $url = URL\parse('https://example.com:8080/api?v=1');
         $body = new IO\MemoryHandle('{"key":"value"}');
-        $trailers = Async\Awaitable::complete(FieldMap::from([['checksum', 'sha256=abc']]));
+        $trailers = Async\Awaitable::<FieldMap>::complete(FieldMap::from([['checksum', 'sha256=abc']]));
         $request = new Request(
             Message\METHOD_POST,
             $url,

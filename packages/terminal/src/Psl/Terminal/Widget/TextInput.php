@@ -124,7 +124,7 @@ final class TextInput implements WidgetInterface
 
         $valueLen = mb_strlen($this->value);
         /** @var non-negative-int $cursor */
-        $cursor = Math\clamp($this->cursor, 0, $valueLen);
+        $cursor = Math\clamp::<int>($this->cursor, 0, $valueLen);
 
         $widthToCursor = Str\width(mb_substr($this->value, 0, $cursor));
         $scrollOffset = 0;

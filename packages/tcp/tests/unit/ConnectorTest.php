@@ -16,7 +16,7 @@ final class ConnectorTest extends TestCase
 {
     public function testConnectorConnectsSuccessfully(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 8190);
                 $connection = $listener->accept();
@@ -45,7 +45,7 @@ final class ConnectorTest extends TestCase
 
     public function testStaticConnectorIgnoresPassedHostPort(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 8191);
                 $connection = $listener->accept();
@@ -70,7 +70,7 @@ final class ConnectorTest extends TestCase
 
     public function testRetryConnectorSucceedsOnFirstAttempt(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 8192);
                 $connection = $listener->accept();
@@ -114,7 +114,7 @@ final class ConnectorTest extends TestCase
             }
         };
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $listener = TCP\listen('127.0.0.1', 8193);
                 $connection = $listener->accept();
@@ -178,7 +178,7 @@ final class ConnectorTest extends TestCase
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function () use ($alwaysFails, &$attempts): void {
+        Async\run::<void>(static function () use ($alwaysFails, &$attempts): void {
             $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 10, backoff: Duration::seconds(5));
 
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(50));
@@ -208,7 +208,7 @@ final class ConnectorTest extends TestCase
         };
 
         try {
-            Async\run(static function () use ($alwaysFails): void {
+            Async\run::<void>(static function () use ($alwaysFails): void {
                 $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 100, backoff: Duration::seconds(5));
 
                 $token = new Async\TimeoutCancellationToken(Duration::milliseconds(50));
@@ -240,7 +240,7 @@ final class ConnectorTest extends TestCase
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static function () use ($alwaysFails, $token): void {
+        Async\run::<void>(static function () use ($alwaysFails, $token): void {
             $connector = new TCP\RetryConnector($alwaysFails, maxAttempts: 10, backoff: Duration::seconds(5));
 
             $connector->connect('127.0.0.1', 9999, $token);

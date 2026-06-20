@@ -8,9 +8,9 @@ use Psl\Async;
 use Psl\Result;
 use Psl\Shell;
 
-[$version, $foo] = Async\concurrently([
-    Result\reflect(static fn() => Shell\execute('php', ['-v'])),
-    Result\reflect(static fn() => Shell\execute('php', ['-r', 'foo();'])),
+[$version, $foo] = Async\concurrently::<int, Result\ResultInterface<string>>([
+    Result\reflect::<string>(static fn() => Shell\execute('php', ['-v'])),
+    Result\reflect::<string>(static fn() => Shell\execute('php', ['-r', 'foo();'])),
 ]);
 
 // $version->isSucceeded() === true

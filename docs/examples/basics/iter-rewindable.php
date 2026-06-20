@@ -12,8 +12,8 @@ $gen = (function () {
     yield 'c';
 })();
 
-$iterator = Iter\rewindable($gen);
+$iterator = Iter\rewindable::<int, string>($gen);
 
-Iter\count($iterator); // 3
+Iter\count::<string>($iterator); // 3
 $iterator->rewind();
-Iter\first($iterator); // 'a' -- still accessible after counting
+Iter\first::<string>($iterator); // 'a' -- still accessible after counting

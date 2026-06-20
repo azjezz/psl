@@ -56,9 +56,9 @@ final readonly class CachedTrustChainResolver implements TrustChainResolverInter
         $cacheKey = 'dnssec:' . strtolower($zone);
 
         /** @var Ref<Duration|null> $ttl */
-        $ttl = new Ref(null);
+        $ttl = new Ref::<Duration|null>(null);
 
-        $result = $this->cache->compute(
+        $result = $this->cache->compute::<TrustChainResult>(
             $cacheKey,
             function () use ($zone, $cancellation, $ttl): TrustChainResult {
                 $result = $this->inner->resolve($zone, $cancellation);
@@ -75,7 +75,7 @@ final readonly class CachedTrustChainResolver implements TrustChainResolverInter
         );
 
         if ($ttl->value !== null) {
-            $this->cache->update($cacheKey, static fn(): TrustChainResult => $result, $ttl->value);
+            $this->cache->update::<TrustChainResult>($cacheKey, static fn(): TrustChainResult => $result, $ttl->value);
         }
 
         return $result;

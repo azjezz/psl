@@ -145,7 +145,7 @@ final readonly class Request extends Message
         ProtocolVersion $protocolVersion = ProtocolVersion::V11,
         FieldMap $headers = new FieldMap(),
         null|IO\ReadHandleInterface $body = null,
-        null|Async\Awaitable $trailers = null,
+        null|Async\Awaitable<FieldMap> $trailers = null,
     ) {
         $this->method = $method;
         $this->url = $url;
@@ -379,7 +379,7 @@ final readonly class Request extends Message
      *
      * @return self A new request instance with the specified trailers.
      */
-    public function withTrailers(null|Async\Awaitable $trailers): self
+    public function withTrailers(null|Async\Awaitable<FieldMap> $trailers): self
     {
         return new self(
             $this->method,

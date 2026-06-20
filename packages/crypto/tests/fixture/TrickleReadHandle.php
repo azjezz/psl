@@ -84,11 +84,11 @@ final class TrickleReadHandle implements IO\ReadHandleInterface
 
         $limit = $this->maxBytesPerRead;
         if ($maxBytes !== null) {
-            $limit = Math\minva($limit, $maxBytes);
+            $limit = Math\minva::<int>($limit, $maxBytes);
         }
 
         /** @var non-negative-int $toRead */
-        $toRead = Math\minva($limit, $available);
+        $toRead = Math\minva::<int>($limit, $available);
         $chunk = Byte\slice($this->buffer, $this->offset, $toRead);
         $this->offset += $toRead;
 

@@ -12,7 +12,7 @@ final class RemoteState {}
 $sshInputStream = IO\input_handle();
 $sshOutputStream = IO\output_handle();
 
-$app = Terminal\Application::custom(
+$app = Terminal\Application::custom::<RemoteState>(
     state: new RemoteState(),
     input: $sshInputStream,
     output: $sshOutputStream,

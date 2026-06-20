@@ -38,16 +38,12 @@ final class NullStore implements StoreInterface
      * Nothing is cached - every call recomputes. The $key and $ttl
      * parameters are ignored.
      *
-     * @template T
-     *
      * @param non-empty-string $key Ignored.
      * @param (Closure(): T) $computer Always invoked.
      * @param null|Duration $ttl Ignored.
-     *
-     * @return T
      */
     #[Override]
-    public function compute(string $key, Closure $computer, null|Duration $ttl = null): mixed
+    public function compute<T>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         return $computer();
     }
@@ -58,16 +54,12 @@ final class NullStore implements StoreInterface
      * Nothing is cached and no previous value exists, so $computer
      * always receives null as the old value.
      *
-     * @template T
-     *
      * @param non-empty-string $key Ignored.
      * @param (Closure(null|T): T) $computer Always invoked with null.
      * @param null|Duration $ttl Ignored.
-     *
-     * @return T
      */
     #[Override]
-    public function update(string $key, Closure $computer, null|Duration $ttl = null): mixed
+    public function update<T>(string $key, Closure $computer, null|Duration $ttl = null): T
     {
         return $computer(null);
     }

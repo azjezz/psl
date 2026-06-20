@@ -21,9 +21,6 @@ use function is_array;
  *      Dict\filter_nonnull_by(['a' => 'hello', 'b' => '', 'c' => 'world'], fn($v) => $v !== '' ? $v : null);
  *      => Dict('a' => 'hello', 'c' => 'world')
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): mixed) $function
  *
@@ -31,7 +28,7 @@ use function is_array;
  *
  * @api
  */
-function filter_nonnull_by(iterable $iterable, Closure $function): array
+function filter_nonnull_by<Tk: string|int, Tv>(iterable $iterable, Closure $function): array
 {
     if (is_array($iterable)) {
         return array_filter($iterable, static fn($v) => null !== $function($v));

@@ -8,10 +8,10 @@ use Psl\Fun;
 use Psl\IO;
 use Psl\Str;
 
-$process = Fun\pipe(
-    Fun\tap(static fn(string $v) => IO\write_error_line('input: %s', $v)),
+$process = Fun\pipe::<string>(
+    Fun\tap::<string>(static fn(string $v) => IO\write_error_line('input: %s', $v)),
     static fn(string $s): string => Str\uppercase($s),
-    Fun\tap(static fn(string $v) => IO\write_error_line('output: %s', $v)),
+    Fun\tap::<string>(static fn(string $v) => IO\write_error_line('output: %s', $v)),
 );
 
 $process('hello'); // 'HELLO' (logs are emitted as a side effect)

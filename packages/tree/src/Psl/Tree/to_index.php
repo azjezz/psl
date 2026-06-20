@@ -25,9 +25,6 @@ use Closure;
  *      Tree\to_index($tree, fn($x) => $x === 'd')
  *      => [1]
  *
- * @template T
- *
- * @param NodeInterface<T> $tree
  * @param (Closure(T): bool) $predicate
  *
  * @return list<int<0, max>>|null null if no node matches the predicate
@@ -36,7 +33,7 @@ use Closure;
  *
  * @api
  */
-function to_index(NodeInterface $tree, Closure $predicate): null|array
+function to_index<T>(NodeInterface<T> $tree, Closure $predicate): null|array
 {
     $value = $tree->getValue();
 
@@ -49,7 +46,7 @@ function to_index(NodeInterface $tree, Closure $predicate): null|array
     }
 
     foreach ($tree->getChildren() as $index => $child) {
-        $childPath = namespace\to_index($child, $predicate);
+        $childPath = namespace\to_index::<T>($child, $predicate);
         if (null !== $childPath) {
             return [$index, ...$childPath];
         }

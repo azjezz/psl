@@ -1167,7 +1167,7 @@ final class TrustChainResolverAdditionalTest extends TestCase
                 ->toString();
         }
 
-        $canonicalRrs = Vec\sort($canonicalRrs);
+        $canonicalRrs = Vec\sort::<string>($canonicalRrs);
 
         return $rrsigPrefix . Str\join($canonicalRrs, '');
     }
@@ -1222,7 +1222,7 @@ final class TrustChainResolverAdditionalTest extends TestCase
                 ->toString();
         }
 
-        $canonicalRrs = Vec\sort($canonicalRrs);
+        $canonicalRrs = Vec\sort::<string>($canonicalRrs);
 
         return $rrsigPrefix . Str\join($canonicalRrs, '');
     }

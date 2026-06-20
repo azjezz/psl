@@ -11,32 +11,18 @@ use Psl\Option;
 /**
  * The Both variant of {@see EitherOrBoth}: a left value and a right value are both present.
  *
- * @template-covariant TLeft
- * @template-covariant TRight
- *
- * @implements EitherOrBoth<TLeft, TRight>
- *
  * @api
  */
-final readonly class Both implements EitherOrBoth
+final readonly class Both<out TLeft, out TRight> implements EitherOrBoth<TLeft, TRight>
 {
-    /**
-     * @var TLeft
-     */
-    private mixed $left;
+    private TLeft $left;
+
+    private TRight $right;
 
     /**
-     * @var TRight
-     */
-    private mixed $right;
-
-    /**
-     * @param TLeft  $left
-     * @param TRight $right
-     *
      * @psalm-mutation-free
      */
-    public function __construct(mixed $left, mixed $right)
+    public function __construct(TLeft $left, TRight $right)
     {
         $this->left = $left;
         $this->right = $right;
@@ -93,128 +79,97 @@ final readonly class Both implements EitherOrBoth
     }
 
     /**
-     * @return TLeft
-     *
      * @psalm-mutation-free
      */
-    public function getLeft(): mixed
+    public function getLeft(): TLeft
     {
         return $this->left;
     }
 
     /**
-     * @return TRight
-     *
      * @psalm-mutation-free
      */
-    public function getRight(): mixed
+    public function getRight(): TRight
     {
         return $this->right;
     }
 
     /**
-     * @return Option\Option<TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function unwrapLeft(): Option\Option
+    public function unwrapLeft(): Option\Option<TLeft>
     {
-        return Option\some($this->left);
+        return Option\some::<TLeft>($this->left);
     }
 
     /**
-     * @return Option\Option<TRight>
-     *
      * @psalm-mutation-free
      */
-    public function unwrapRight(): Option\Option
+    public function unwrapRight(): Option\Option<TRight>
     {
-        return Option\some($this->right);
+        return Option\some::<TRight>($this->right);
     }
 
     /**
      * Applies the closure to both sides independently.
      *
-     * @template TResult
-     *
      * @param (Closure(TLeft|TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Both<TResult, TResult>
      */
-    public function map(Closure $closure): Both
+    public function map<TResult>(Closure $closure): Both<TResult, TResult>
     {
-        return new Both($closure($this->left), $closure($this->right));
+        return new Both::<TResult, TResult>($closure($this->left), $closure($this->right));
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Both<TResult, TRight>
      */
-    public function mapLeft(Closure $closure): Both
+    public function mapLeft<TResult>(Closure $closure): Both<TResult, TRight>
     {
-        return new Both($closure($this->left), $this->right);
+        return new Both::<TResult, TRight>($closure($this->left), $this->right);
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TRight): TResult) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Both<TLeft, TResult>
      */
-    public function mapRight(Closure $closure): Both
+    public function mapRight<TResult>(Closure $closure): Both<TLeft, TResult>
     {
-        return new Both($this->left, $closure($this->right));
+        return new Both::<TLeft, TResult>($this->left, $closure($this->right));
     }
 
     /**
-     * @template TResultLeft
-     * @template TResultRight
-     *
      * @param (Closure(TLeft): TResultLeft)   $left
      * @param (Closure(TRight): TResultRight) $right
      *
      * @param-immediately-invoked-callable $left
      * @param-immediately-invoked-callable $right
-     *
-     * @return Both<TResultLeft, TResultRight>
      */
-    public function mapAny(Closure $left, Closure $right): Both
+    public function mapAny<TResultLeft, TResultRight>(Closure $left, Closure $right): Both<TResultLeft, TResultRight>
     {
-        return new Both($left($this->left), $right($this->right));
+        return new Both::<TResultLeft, TResultRight>($left($this->left), $right($this->right));
     }
 
     /**
-     * @return Both<TRight, TLeft>
-     *
      * @psalm-mutation-free
      */
-    public function swap(): Both
+    public function swap(): Both<TRight, TLeft>
     {
-        return new Both($this->right, $this->left);
+        return new Both::<TRight, TLeft>($this->right, $this->left);
     }
 
     /**
-     * @template TResult
-     *
      * @param (Closure(TLeft): TResult)         $left
      * @param (Closure(TRight): TResult)        $right
      * @param (Closure(TLeft, TRight): TResult) $both
      *
      * @param-immediately-invoked-callable $both
-     *
-     * @return TResult
      */
-    public function proceed(Closure $left, Closure $right, Closure $both): mixed
+    public function proceed<TResult>(Closure $left, Closure $right, Closure $both): TResult
     {
         return $both($this->left, $this->right);
     }
@@ -226,10 +181,8 @@ final readonly class Both implements EitherOrBoth
      * @param (Closure(TLeft|TRight): mixed) $closure
      *
      * @param-immediately-invoked-callable $closure
-     *
-     * @return Both<TLeft, TRight>
      */
-    public function apply(Closure $closure): Both
+    public function apply(Closure $closure): Both<TLeft, TRight>
     {
         $closure($this->left);
         $closure($this->right);
@@ -253,11 +206,8 @@ final readonly class Both implements EitherOrBoth
         return $this->right === $value;
     }
 
-    /**
-     * @param EitherOrBoth<TLeft, TRight> $other
-     */
-    public function equals(mixed $other): bool
+    public function equals(EitherOrBoth<mixed, mixed> $other): bool
     {
-        return Comparison\equal($this, $other);
+        return Comparison\equal::<EitherOrBoth<mixed, mixed>>($this, $other);
     }
 }

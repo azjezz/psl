@@ -23,7 +23,7 @@ final class MergeJoinByTest extends TestCase
         $ordering = static fn(int $a, int $b): Order => Order::from($a <=> $b);
 
         $collected = [];
-        foreach (Iter\merge_join_by($left, $right, $ordering) as $event) {
+        foreach (Iter\merge_join_by::<int, int>($left, $right, $ordering) as $event) {
             $collected[] = match (true) {
                 $event instanceof EitherOrBoth\Both => ['both', $event->getLeft(), $event->getRight()],
                 $event instanceof EitherOrBoth\Left => ['left', $event->getLeft()],
@@ -145,9 +145,9 @@ final class MergeJoinByTest extends TestCase
             yield from $values;
         };
 
-        $result = Vec\map(
-            Iter\merge_join_by($gen([1, 2]), $gen([2, 3]), static fn(int $a, int $b): Order => Order::from($a <=> $b)),
-            static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $result = Vec\map::<int, EitherOrBoth\EitherOrBoth<int, int>, string>(
+            Iter\merge_join_by::<int, int>($gen([1, 2]), $gen([2, 3]), static fn(int $a, int $b): Order => Order::from($a <=> $b)),
+            static fn(EitherOrBoth\EitherOrBoth<int, int> $e): string => $e->proceed::<string>(
                 left: static fn(int $v): string => "L{$v}",
                 right: static fn(int $v): string => "R{$v}",
                 both: static fn(int $l, int $r): string => "B{$l}{$r}",
@@ -162,8 +162,8 @@ final class MergeJoinByTest extends TestCase
         $reverse = static fn(int $a, int $b): Order => Order::from($b <=> $a);
 
         $collected = [];
-        foreach (Iter\merge_join_by([3, 2, 1], [4, 2, 0], $reverse) as $event) {
-            $collected[] = $event->proceed(
+        foreach (Iter\merge_join_by::<int, int>([3, 2, 1], [4, 2, 0], $reverse) as $event) {
+            $collected[] = $event->proceed::<string>(
                 left: static fn(int $v): string => "L{$v}",
                 right: static fn(int $v): string => "R{$v}",
                 both: static fn(int $l, int $r): string => "B{$l}{$r}",
@@ -207,15 +207,15 @@ final class MergeJoinByTest extends TestCase
 
     public function testReturnedIteratorIsRewindable(): void
     {
-        $stream = Iter\merge_join_by([1, 2, 3], [2, 3, 4], static fn(int $a, int $b): Order => Order::from($a <=> $b));
+        $stream = Iter\merge_join_by::<int, int>([1, 2, 3], [2, 3, 4], static fn(int $a, int $b): Order => Order::from($a <=> $b));
 
-        $first = Vec\map($stream, static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $first = Vec\map::<int, EitherOrBoth\EitherOrBoth<int, int>, string>($stream, static fn(EitherOrBoth\EitherOrBoth<int, int> $e): string => $e->proceed::<string>(
             left: static fn(int $v): string => "L{$v}",
             right: static fn(int $v): string => "R{$v}",
             both: static fn(int $l, int $r): string => "B{$l}",
         ));
 
-        $second = Vec\map($stream, static fn(EitherOrBoth\EitherOrBoth $e): string => $e->proceed(
+        $second = Vec\map::<int, EitherOrBoth\EitherOrBoth<int, int>, string>($stream, static fn(EitherOrBoth\EitherOrBoth<int, int> $e): string => $e->proceed::<string>(
             left: static fn(int $v): string => "L{$v}",
             right: static fn(int $v): string => "R{$v}",
             both: static fn(int $l, int $r): string => "B{$l}",
@@ -235,7 +235,7 @@ final class MergeJoinByTest extends TestCase
             }
         })();
 
-        $first = Iter\first(Iter\merge_join_by([1], $right, static fn(int $a, int $b): Order => Order::from($a
+        $first = Iter\first::<EitherOrBoth\EitherOrBoth<int, int>>(Iter\merge_join_by::<int, int>([1], $right, static fn(int $a, int $b): Order => Order::from($a
         <=> $b)));
 
         static::assertInstanceOf(EitherOrBoth\Left::class, $first);

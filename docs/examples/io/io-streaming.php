@@ -16,7 +16,7 @@ $outWriter->close();
 $errWriter->writeAll('stderr output');
 $errWriter->close();
 
-foreach (IO\streaming(['out' => $outReader, 'err' => $errReader]) as $name => $chunk) {
+foreach (IO\streaming::<string>(['out' => $outReader, 'err' => $errReader]) as $name => $chunk) {
     IO\write_line('[%s] %s', $name, $chunk);
 }
 

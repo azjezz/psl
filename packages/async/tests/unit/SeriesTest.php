@@ -14,9 +14,9 @@ final class SeriesTest extends TestCase
 {
     public function testSeries(): void
     {
-        $spy = new Psl\Ref('');
+        $spy = new Psl\Ref::<string>('');
 
-        Async\series([
+        Async\series::<int, void>([
             static function () use ($spy): void {
                 Async\sleep(DateTime\Duration::milliseconds(3));
 
@@ -41,10 +41,10 @@ final class SeriesTest extends TestCase
     {
         Async\Scheduler::run();
 
-        $spy = new Psl\Ref('');
+        $spy = new Psl\Ref::<string>('');
 
         try {
-            Async\series([
+            Async\series::<int, void>([
                 static function (): void {
                     Async\sleep(DateTime\Duration::milliseconds(3));
 

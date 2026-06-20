@@ -52,7 +52,7 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     namespace\split($monorepo, $git, $branch);
 
     IO\write_error_line('');
-    Log\success('Synced %d packages to %s.', Iter\count($monorepo->packages), $branch);
+    Log\success('Synced %d packages to %s.', Iter\count::<Package>($monorepo->packages), $branch);
 
     IO\write_error_line('');
     Log\info(
@@ -67,7 +67,7 @@ function release(MonolithicRepository $monorepo, Git $git, string $releaseTag): 
     namespace\tag($client, $monorepo, $git, $releaseTag, $branch);
 
     IO\write_error_line('');
-    Log\success('Tagged %d packages with %s.', Iter\count($monorepo->packages), $releaseTag);
+    Log\success('Tagged %d packages with %s.', Iter\count::<Package>($monorepo->packages), $releaseTag);
 
     IO\write_error_line('');
     Log\info('Creating releases for %s...', Log\styled(

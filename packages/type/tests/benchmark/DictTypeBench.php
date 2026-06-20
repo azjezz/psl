@@ -11,11 +11,8 @@ use Psl\Dict;
 use Psl\Type;
 use Psl\Vec;
 
-/**
- * @extends GenericTypeBench<Type\TypeInterface<array>>
- */
 #[Groups(['type'])]
-final class DictTypeBench extends GenericTypeBench
+final class DictTypeBench extends GenericTypeBench<Type\TypeInterface<array>>
 {
     /**
      * {@inheritDoc}
@@ -69,23 +66,23 @@ final class DictTypeBench extends GenericTypeBench
     {
         return [
             'generic array, empty' => [
-                'type' => Type\dict(Type\array_key(), Type\mixed()),
+                'type' => Type\dict::<string|int, mixed>(Type\array_key(), Type\mixed()),
                 'value' => [],
             ],
             'generic array, non-empty' => [
-                'type' => Type\dict(Type\array_key(), Type\mixed()),
+                'type' => Type\dict::<string|int, mixed>(Type\array_key(), Type\mixed()),
                 'value' => ['foo' => 'bar'],
             ],
             'generic array, large' => [
-                'type' => Type\dict(Type\array_key(), Type\mixed()),
-                'value' => Vec\fill(100, null),
+                'type' => Type\dict::<string|int, mixed>(Type\array_key(), Type\mixed()),
+                'value' => Vec\fill::<null>(100, null),
             ],
             'int array, empty' => [
-                'type' => Type\dict(Type\int(), Type\mixed()),
+                'type' => Type\dict::<int, mixed>(Type\int(), Type\mixed()),
                 'value' => [],
             ],
             'int array, non-empty' => [
-                'type' => Type\dict(Type\int(), Type\mixed()),
+                'type' => Type\dict::<int, mixed>(Type\int(), Type\mixed()),
                 'value' => [
                     'foo',
                     'bar',
@@ -93,15 +90,15 @@ final class DictTypeBench extends GenericTypeBench
                 ],
             ],
             'int array, large' => [
-                'type' => Type\dict(Type\int(), Type\mixed()),
-                'value' => Vec\fill(100, null),
+                'type' => Type\dict::<int, mixed>(Type\int(), Type\mixed()),
+                'value' => Vec\fill::<null>(100, null),
             ],
             'map, empty' => [
-                'type' => Type\dict(Type\string(), Type\mixed()),
+                'type' => Type\dict::<string, mixed>(Type\string(), Type\mixed()),
                 'value' => [],
             ],
             'map, non-empty' => [
-                'type' => Type\dict(Type\string(), Type\mixed()),
+                'type' => Type\dict::<string, mixed>(Type\string(), Type\mixed()),
                 'value' => [
                     'foo' => 'bar',
                     'baz' => 'tab',
@@ -109,10 +106,10 @@ final class DictTypeBench extends GenericTypeBench
                 ],
             ],
             'map, large' => [
-                'type' => Type\dict(Type\string(), Type\mixed()),
-                'value' => Dict\associate(
-                    Vec\map(Vec\range(0, 99), static fn(int $key): string => 'key' . (string) $key),
-                    Vec\fill(100, null),
+                'type' => Type\dict::<string, mixed>(Type\string(), Type\mixed()),
+                'value' => Dict\associate::<string, null>(
+                    Vec\map::<int, int, string>(Vec\range::<int>(0, 99), static fn(int $key): string => 'key' . (string) $key),
+                    Vec\fill::<null>(100, null),
                 ),
             ],
         ];

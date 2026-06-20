@@ -16,36 +16,26 @@ use Throwable;
  *
  * Copyright (c) 2015-2021 Amphp ( https://amphp.org )
  *
- * @template T
- *
  * @api
  */
-final readonly class Deferred
+final readonly class Deferred<T>
 {
-    /**
-     * @var Internal\State<T>
-     */
-    private Internal\State $state;
+    private Internal\State<T> $state;
 
-    /**
-     * @var Awaitable<T>
-     */
-    private Awaitable $awaitable;
+    private Awaitable<T> $awaitable;
 
     public function __construct()
     {
-        $this->state = new Internal\State();
-        $this->awaitable = new Awaitable($this->state);
+        $this->state = new Internal\State::<T>();
+        $this->awaitable = new Awaitable::<T>($this->state);
     }
 
     /**
      * Completes the operation with a result value.
      *
-     * @param T $result Result of the operation.
-     *
      * @throws Psl\Exception\InvariantViolationException If the operation is no longer pending.
      */
-    public function complete(mixed $result): void
+    public function complete(T $result): void
     {
         $this->state->complete($result);
     }
@@ -77,7 +67,7 @@ final readonly class Deferred
      *
      * @psalm-mutation-free
      */
-    public function getAwaitable(): Awaitable
+    public function getAwaitable(): Awaitable<T>
     {
         return $this->awaitable;
     }

@@ -15,10 +15,6 @@ use function serialize;
  * value's uniqueness is determined by transforming it to a scalar via the
  * given function.
  *
- * @template Tk of array-key
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tk, Tv> $iterable
  * @param (Closure(Tv): Ts) $scalarFunc
  *
@@ -26,7 +22,7 @@ use function serialize;
  *
  * @api
  */
-function unique_by(iterable $iterable, Closure $scalarFunc): array
+function unique_by<Tk: string|int, Tv, Ts>(iterable $iterable, Closure $scalarFunc): array
 {
     /** @var array<array-key, true> $seen */
     $seen = [];

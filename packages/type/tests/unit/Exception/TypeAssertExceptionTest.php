@@ -29,7 +29,7 @@ final class TypeAssertExceptionTest extends TestCase
 
     public function testIncorrectNestedType(): void
     {
-        $type = Type\shape(['child' => Type\shape(['name' => Type\string()])]);
+        $type = Type\shape::<string, array>(['child' => Type\shape::<string, string>(['name' => Type\string()])]);
 
         try {
             $type->assert(['child' => ['name' => 123]]);

@@ -92,7 +92,7 @@ final class Sparkline implements WidgetInterface
             }
 
             /** @var non-negative-int $index */
-            $index = Math\clamp((int) Math\round($value * 7.0), 0, 7);
+            $index = Math\clamp::<int>((int) Math\round($value * 7.0), 0, 7);
             $char = self::BLOCKS[$index];
 
             $buffer->set($x, $y, new Cell($char, $this->style));

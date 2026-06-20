@@ -13,7 +13,7 @@ final class MapKeysTest extends TestCase
     #[DataProvider('provideData')]
     public function testMapKeys(array $expected, array $array, callable $function): void
     {
-        $result = Dict\map_keys($array, $function);
+        $result = Dict\map_keys::<int, int|string, int>($array, $function);
 
         static::assertSame($expected, $result);
     }

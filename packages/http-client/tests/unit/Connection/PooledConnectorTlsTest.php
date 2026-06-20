@@ -60,7 +60,7 @@ final class PooledConnectorTlsTest extends TestCase
         /** @var null|string $connectionClass */
         $connectionClass = null;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 try {
                     $conn = $listener->accept();
@@ -150,7 +150,7 @@ final class PooledConnectorTlsTest extends TestCase
         /** @var null|string $connectionClass */
         $connectionClass = null;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 try {
                     $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
@@ -218,7 +218,7 @@ final class PooledConnectorTlsTest extends TestCase
 
         $acceptCount = 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor, &$acceptCount): void {
                 try {
                     $conn = $listener->accept();
@@ -297,7 +297,7 @@ final class PooledConnectorTlsTest extends TestCase
 
         $acceptCount = 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor, &$acceptCount): void {
                 try {
                     $conn = $listener->accept();
@@ -359,7 +359,7 @@ final class PooledConnectorTlsTest extends TestCase
                     };
                 }
 
-                $results = Async\concurrently($tasks);
+                $results = Async\concurrently::<int, string>($tasks);
 
                 static::assertCount(3, $results);
                 foreach ($results as $body) {
@@ -385,7 +385,7 @@ final class PooledConnectorTlsTest extends TestCase
         $firstConnectionClass = null;
         $waiterError = false;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 try {
                     $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
@@ -424,7 +424,7 @@ final class PooledConnectorTlsTest extends TestCase
                 $request = new Request(method: 'GET', url: $url);
                 $origin = Origin::fromUrl($request->url);
 
-                $firstFiber = Async\run(static function () use (
+                $firstFiber = Async\run::<void>(static function () use (
                     $connector,
                     $origin,
                     $request,
@@ -442,7 +442,7 @@ final class PooledConnectorTlsTest extends TestCase
                     $tx->response->body?->readAll();
                 });
 
-                $secondFiber = Async\run(static function () use (
+                $secondFiber = Async\run::<void>(static function () use (
                     $connector,
                     $origin,
                     $request,
@@ -486,7 +486,7 @@ final class PooledConnectorTlsTest extends TestCase
 
         $acceptCount = 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor, &$acceptCount): void {
                 $handled = 0;
                 try {
@@ -557,7 +557,7 @@ final class PooledConnectorTlsTest extends TestCase
         /** @var null|string $connectionClass */
         $connectionClass = null;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $acceptor): void {
                 try {
                     $conn = $listener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
@@ -634,7 +634,7 @@ final class PooledConnectorTlsTest extends TestCase
         /** @var null|string $clientBody */
         $clientBody = null;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'target' => static function () use ($targetListener, $acceptor): void {
                 try {
                     $conn = $targetListener->accept(new TimeoutCancellationToken(Duration::seconds(5)));
@@ -680,7 +680,7 @@ final class PooledConnectorTlsTest extends TestCase
 
                     $target = TCP\connect('127.0.0.1', $targetPort);
 
-                    $clientToTarget = Async\run(static function () use ($proxyConn, $target): void {
+                    $clientToTarget = Async\run::<void>(static function () use ($proxyConn, $target): void {
                         try {
                             while (true) {
                                 $data = $proxyConn->read(cancellation: new TimeoutCancellationToken(Duration::seconds(
@@ -699,7 +699,7 @@ final class PooledConnectorTlsTest extends TestCase
                         }
                     });
 
-                    $targetToClient = Async\run(static function () use ($target, $proxyConn): void {
+                    $targetToClient = Async\run::<void>(static function () use ($target, $proxyConn): void {
                         try {
                             while (true) {
                                 $data = $target->read(cancellation: new TimeoutCancellationToken(Duration::seconds(2)));

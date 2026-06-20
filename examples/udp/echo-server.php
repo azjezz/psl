@@ -11,7 +11,7 @@ use Psl\UDP;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function (): void {
         $socket = UDP\Socket::bind('127.0.0.1', 9999);
         IO\write_error_line('< UDP echo server listening on port 9999');

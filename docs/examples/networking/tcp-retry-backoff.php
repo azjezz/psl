@@ -18,7 +18,7 @@ $connector = new TCP\RetryConnector(
 // Demonstrate by connecting to a local server
 $listener = TCP\listen('127.0.0.1');
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         $connection = $listener->accept();
         $connection->writeAll('connected');

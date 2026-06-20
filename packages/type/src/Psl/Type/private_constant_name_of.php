@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function private_constant_name_of(string $classname): TypeInterface
+function private_constant_name_of(string $classname): TypeInterface<string>
 {
     return new Internal\PrivateConstantNameOfType($classname);
 }

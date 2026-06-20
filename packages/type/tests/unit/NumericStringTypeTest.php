@@ -10,13 +10,13 @@ use Psl\Type;
 /**
  * @extends TypeTestCase<numeric-string>
  */
-final class NumericStringTypeTest extends TypeTestCase
+final class NumericStringTypeTest extends TypeTestCase<string>
 {
     /**
      * @return Type\Type<numeric-string>
      */
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\numeric_string();
     }

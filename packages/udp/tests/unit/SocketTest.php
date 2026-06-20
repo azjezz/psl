@@ -189,7 +189,7 @@ final class SocketTest extends TestCase
     {
         $this->expectException(IO\Exception\AlreadyClosedException::class);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             $socket = UDP\Socket::bind('127.0.0.1', 0);
             $socket->close();
             $socket->connect('127.0.0.1', 9999);

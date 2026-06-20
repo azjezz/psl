@@ -16,7 +16,7 @@ final class SortByTest extends TestCase
     #[DataProvider('provideData')]
     public function testSortBy(array $expected, array $array, callable $scalarFun, null|Closure $comp = null): void
     {
-        static::assertSame($expected, Dict\sort_by($array, $scalarFun, $comp));
+        static::assertSame($expected, Dict\sort_by::<string|int, array|string, int|string>($array, $scalarFun, $comp));
     }
 
     public static function provideData(): array
@@ -33,7 +33,7 @@ final class SortByTest extends TestCase
              *
              * @pure
              */
-            Iter\count(...);
+            Iter\count::<string|int>(...);
 
         return [
             [

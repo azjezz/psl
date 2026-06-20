@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Math;
 
-Math\abs(-5); // 5 (preserves int|float type)
+Math\abs::<int>(-5); // 5 (preserves int|float type)
 Math\ceil(4.2); // 5.0
 Math\floor(4.8); // 4.0
 Math\round(3.456, 2); // 3.46

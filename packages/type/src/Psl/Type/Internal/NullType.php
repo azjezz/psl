@@ -10,11 +10,9 @@ use Psl\Type\Exception\AssertException;
 use Psl\Type\Exception\CoercionException;
 
 /**
- * @extends Type\Type<null>
- *
  * @internal
  */
-final readonly class NullType extends Type\Type
+final readonly class NullType extends Type\Type<null>
 {
     /**
      * @psalm-assert-if-true null $value
@@ -29,7 +27,7 @@ final readonly class NullType extends Type\Type
      * @return null
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): null
     {
         if (null === $value) {
             return null;
@@ -44,7 +42,7 @@ final readonly class NullType extends Type\Type
      * @return null
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): null
     {
         if (null === $value) {
             return null;

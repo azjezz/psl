@@ -11,27 +11,27 @@ final class NodesTest extends TestCase
 {
     public function testNodesOnEmptyGraph(): void
     {
-        $graph = Graph\directed();
+        $graph = Graph\directed::<string, int>();
 
-        static::assertSame([], Graph\nodes($graph));
+        static::assertSame([], Graph\nodes::<string, int>($graph));
     }
 
     public function testNodesOnGraphWithNodes(): void
     {
-        $graph = Graph\directed();
-        $graph = Graph\add_node($graph, 'A');
-        $graph = Graph\add_node($graph, 'B');
-        $graph = Graph\add_node($graph, 'C');
+        $graph = Graph\directed::<string, int>();
+        $graph = Graph\add_node::<string, int>($graph, 'A');
+        $graph = Graph\add_node::<string, int>($graph, 'B');
+        $graph = Graph\add_node::<string, int>($graph, 'C');
 
-        static::assertSame(['A', 'B', 'C'], Graph\nodes($graph));
+        static::assertSame(['A', 'B', 'C'], Graph\nodes::<string, int>($graph));
     }
 
     public function testNodesOnUndirectedGraph(): void
     {
-        $graph = Graph\undirected();
-        $graph = Graph\add_edge($graph, 'A', 'B');
+        $graph = Graph\undirected::<string, int>();
+        $graph = Graph\add_edge::<string, int>($graph, 'A', 'B');
 
-        $nodes = Graph\nodes($graph);
+        $nodes = Graph\nodes::<string, int>($graph);
         static::assertCount(2, $nodes);
         static::assertContains('A', $nodes);
         static::assertContains('B', $nodes);

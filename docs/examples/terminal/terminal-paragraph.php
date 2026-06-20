@@ -13,9 +13,9 @@ use Psl\Terminal\Widget;
 
 final class ParagraphState {}
 
-$app = Terminal\Application::create(new ParagraphState(), title: 'Paragraph Demo');
+$app = Terminal\Application::create::<ParagraphState>(new ParagraphState(), title: 'Paragraph Demo');
 
-$app->on(Event\Key::class, static function (Event\Key $event, ParagraphState $_state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, ParagraphState $_state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
     }

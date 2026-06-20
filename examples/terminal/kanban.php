@@ -116,7 +116,7 @@ function handle_input_key(Event\Key $event, KanbanState $state): void
         $title = Str\trim($state->input_text);
         $col = $state->active_col;
         $state->columns[$col][] = new Card($title);
-        $state->selected[$col] = Iter\count($state->columns[$col]) - 1;
+        $state->selected[$col] = Iter\count::<Card>($state->columns[$col]) - 1;
         $state->input_mode = false;
         $state->input_text = '';
         return;
@@ -154,24 +154,24 @@ function move_card(KanbanState $state, int $fromCol, int $toCol): void
 
     /** @var non-negative-int $next */
     $next = $cardIdx + 1;
-    $state->columns[$fromCol] = Vec\concat(
-        Vec\slice($state->columns[$fromCol], 0, $cardIdx),
-        Vec\slice($state->columns[$fromCol], $next),
+    $state->columns[$fromCol] = Vec\concat::<Card>(
+        Vec\slice::<Card>($state->columns[$fromCol], 0, $cardIdx),
+        Vec\slice::<Card>($state->columns[$fromCol], $next),
     );
-    $state->selected[$fromCol] = Math\minva(
+    $state->selected[$fromCol] = Math\minva::<int>(
         $state->selected[$fromCol],
-        Math\maxva(0, Iter\count($state->columns[$fromCol]) - 1),
+        Math\maxva::<int>(0, Iter\count::<Card>($state->columns[$fromCol]) - 1),
     );
 
     $state->columns[$toCol][] = $card;
     $state->active_col = $toCol;
-    $state->selected[$toCol] = Iter\count($state->columns[$toCol]) - 1;
+    $state->selected[$toCol] = Iter\count::<Card>($state->columns[$toCol]) - 1;
 }
 
 function handle_normal_key(Event\Key $event, KanbanState $state): void
 {
     $col = $state->active_col;
-    $cardCount = Iter\count($state->columns[$col]);
+    $cardCount = Iter\count::<Card>($state->columns[$col]);
 
     if ($event->is('tab')) {
         $state->active_col = ($state->active_col + 1) % 3;
@@ -234,12 +234,12 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
         $cardIdx = $state->selected[$col];
         /** @var non-negative-int $next */
         $next = $cardIdx + 1;
-        $state->columns[$col] = Vec\concat(
-            Vec\slice($state->columns[$col], 0, $cardIdx),
-            Vec\slice($state->columns[$col], $next),
+        $state->columns[$col] = Vec\concat::<Card>(
+            Vec\slice::<Card>($state->columns[$col], 0, $cardIdx),
+            Vec\slice::<Card>($state->columns[$col], $next),
         );
-        $newCount = Iter\count($state->columns[$col]);
-        $state->selected[$col] = $newCount > 0 ? Math\minva($state->selected[$col], $newCount - 1) : 0;
+        $newCount = Iter\count::<Card>($state->columns[$col]);
+        $state->selected[$col] = $newCount > 0 ? Math\minva::<int>($state->selected[$col], $newCount - 1) : 0;
 
         return;
     }
@@ -253,7 +253,7 @@ function handle_normal_key(Event\Key $event, KanbanState $state): void
     if ($event->is('end') && $cardCount > 0) {
         $state->selected[$col] = $cardCount - 1;
         $visibleSlots = $state->col_visible_slots[$col] ?? 1;
-        $state->col_scroll[$col] = Math\maxva(0, $cardCount - $visibleSlots);
+        $state->col_scroll[$col] = Math\maxva::<int>(0, $cardCount - $visibleSlots);
     }
 }
 
@@ -269,7 +269,7 @@ function render_column(
     Terminal\Buffer $buffer,
 ): void {
     $isActiveCol = $colIdx === $state->active_col;
-    $cardCount = Iter\count($cards);
+    $cardCount = Iter\count::<Card>($cards);
     $colName = namespace\COLUMN_NAMES[$colIdx];
 
     $borderColor = $isActiveCol ? Color\bright_cyan() : Color\ansi256(240);
@@ -297,8 +297,8 @@ function render_column(
     }
 
     $scrollOffset = $state->col_scroll[$colIdx];
-    $maxScroll = Math\maxva(0, $cardCount - $visibleSlots);
-    $scrollOffset = Math\minva($scrollOffset, $maxScroll);
+    $maxScroll = Math\maxva::<int>(0, $cardCount - $visibleSlots);
+    $scrollOffset = Math\minva::<int>($scrollOffset, $maxScroll);
     $state->col_scroll[$colIdx] = $scrollOffset;
     $state->col_visible_slots[$colIdx] = $visibleSlots;
 
@@ -358,7 +358,7 @@ function render_column(
     }
 
     if ($state->input_mode && $isActiveCol) {
-        $inputY = $innerArea->y + (Math\minva($cardCount - $scrollOffset, $visibleSlots) * $slotHeight);
+        $inputY = $innerArea->y + (Math\minva::<int>($cardCount - $scrollOffset, $visibleSlots) * $slotHeight);
         $inputRect = new Terminal\Rect($innerArea->x, $inputY, $innerArea->width, $cardHeight);
 
         if ($inputRect->bottom() <= $innerArea->bottom()) {
@@ -411,7 +411,7 @@ function render_status_bar(Terminal\Rect $statusBar, KanbanState $state, Termina
 
     $totalCards = 0;
     foreach ($state->columns as $col) {
-        $totalCards += Iter\count($col);
+        $totalCards += Iter\count::<Card>($col);
     }
 
     Widget\Paragraph::new([Widget\Line::new([
@@ -423,13 +423,13 @@ function render_status_bar(Terminal\Rect $statusBar, KanbanState $state, Termina
     ])])->alignment(Widget\Alignment::Right)->render($statusRight, $buffer);
 }
 
-$app = Terminal\Application::create(
+$app = Terminal\Application::create::<KanbanState>(
     new KanbanState(),
     title: 'Kanban Board',
     tickInterval: DateTime\Duration::milliseconds(4),
 );
 
-$app->on(Event\Key::class, static function (Event\Key $event, KanbanState $state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, KanbanState $state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
         return;
@@ -443,7 +443,7 @@ $app->on(Event\Key::class, static function (Event\Key $event, KanbanState $state
     namespace\handle_normal_key($event, $state);
 });
 
-$app->on(Event\Mouse::class, static function (Event\Mouse $event, KanbanState $state): void {
+$app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, KanbanState $state): void {
     if ($event->kind !== Event\MouseKind::ScrollUp && $event->kind !== Event\MouseKind::ScrollDown) {
         return;
     }
@@ -469,9 +469,9 @@ $app->on(Event\Mouse::class, static function (Event\Mouse $event, KanbanState $s
         return;
     }
 
-    $cardCount = Iter\count($state->columns[$col]);
+    $cardCount = Iter\count::<Card>($state->columns[$col]);
     $visibleSlots = $state->col_visible_slots[$col] ?? 1;
-    $maxScroll = Math\maxva(0, $cardCount - $visibleSlots);
+    $maxScroll = Math\maxva::<int>(0, $cardCount - $visibleSlots);
     $oldScroll = $state->col_scroll[$col];
 
     if ($event->kind === Event\MouseKind::ScrollUp) {

@@ -15,24 +15,16 @@ use function sprintf;
 use function str_contains;
 
 /**
- * @template Tl
- * @template Tr
- *
- * @extends Type<Tl&Tr>
- *
  * @internal
  */
-final readonly class IntersectionType extends Type
+final readonly class IntersectionType<Tl: object, Tr: object> extends Type<Tl&Tr>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param TypeInterface<Tl> $left_type
-     * @param TypeInterface<Tr> $right_type
      */
     public function __construct(
-        private TypeInterface $left_type,
-        private TypeInterface $right_type,
+        private TypeInterface<Tl> $left_type,
+        private TypeInterface<Tr> $right_type,
     ) {}
 
     /**
@@ -47,12 +39,10 @@ final readonly class IntersectionType extends Type
     /**
      * @throws CoercionException
      *
-     * @return Tl&Tr
-     *
      * @mago-expect lint:no-empty-catch-clause
      */
     #[Override]
-    public function coerce(mixed $value): mixed
+    public function coerce(mixed $value): Tl&Tr
     {
         try {
             return $this->assert($value);
@@ -82,12 +72,10 @@ final readonly class IntersectionType extends Type
     /**
      * @throws AssertException
      *
-     * @return Tl&Tr
-     *
      * @psalm-assert Tl&Tr $value
      */
     #[Override]
-    public function assert(mixed $value): mixed
+    public function assert(mixed $value): Tl&Tr
     {
         try {
             $value = $this->left_type->assert($value);

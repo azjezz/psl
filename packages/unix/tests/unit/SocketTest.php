@@ -56,7 +56,7 @@ final class SocketTest extends TestCase
         try {
             $listener = Unix\listen($path);
 
-            Async\concurrently([
+            Async\concurrently::<string, void>([
                 'server' => static function () use ($listener): void {
                     $conn = $listener->accept();
                     $data = $conn->read();
@@ -90,7 +90,7 @@ final class SocketTest extends TestCase
             $socket->bind($path);
             $listener = $socket->listen();
 
-            Async\concurrently([
+            Async\concurrently::<string, void>([
                 'server' => static function () use ($listener): void {
                     $conn = $listener->accept();
                     $data = $conn->read();
@@ -141,7 +141,7 @@ final class SocketTest extends TestCase
         try {
             $listener = Unix\listen($path);
 
-            Async\concurrently([
+            Async\concurrently::<string, void>([
                 'server' => static function () use ($listener): void {
                     $conn = $listener->accept();
                     $data = $conn->read();

@@ -17,7 +17,7 @@ use function is_string;
  *
  * @internal
  */
-final readonly class PrivatePropertyNameOfType extends Type
+final readonly class PrivatePropertyNameOfType extends Type<string>
 {
     /**
      * @var class-string

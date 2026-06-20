@@ -20,7 +20,7 @@ trait FloatAsserts
     public static function assertFloatEquals(float $a, float $b, float $epsilon = PHP_FLOAT_EPSILON): void
     {
         TestCase::assertTrue(
-            Math\abs($a - $b) <= $epsilon,
+            Math\abs::<float>($a - $b) <= $epsilon,
             'Failed asserting that float ' . $a . ' is equal to ' . $b . '.',
         );
     }

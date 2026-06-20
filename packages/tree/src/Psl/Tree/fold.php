@@ -21,23 +21,17 @@ use function array_map;
  *      )
  *      => 'root(a,b)'
  *
- * @template T
- * @template Ta
- *
- * @param NodeInterface<T> $tree
  * @param (Closure(T, list<Ta>): Ta) $function
- *
- * @return Ta
  *
  * @api
  */
-function fold(NodeInterface $tree, Closure $function): mixed
+function fold<T, Ta>(NodeInterface<T> $tree, Closure $function): Ta
 {
     if (!$tree instanceof TreeNode) {
         return $function($tree->getValue(), []);
     }
 
-    $foldedChildren = array_map(static fn(NodeInterface $child): mixed => namespace\fold(
+    $foldedChildren = array_map(static fn(NodeInterface<T> $child): mixed => namespace\fold::<T, Ta>(
         $child,
         $function,
     ), $tree->getChildren());

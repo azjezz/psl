@@ -6,10 +6,10 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 use Psl\Tree;
 
-$tree = Tree\tree('root', [
-    Tree\leaf('child1'),
-    Tree\leaf('child2'),
-    Tree\tree('child3', [
-        Tree\leaf('grandchild1'),
+$tree = Tree\tree::<string>('root', [
+    Tree\leaf::<string>('child1'),
+    Tree\leaf::<string>('child2'),
+    Tree\tree::<string>('child3', [
+        Tree\leaf::<string>('grandchild1'),
     ]),
 ]);

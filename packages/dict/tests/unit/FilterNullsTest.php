@@ -13,20 +13,20 @@ final class FilterNullsTest extends TestCase
 {
     public function testFilterNulls(): void
     {
-        static::assertCount(0, Dict\filter_nulls([]));
-        static::assertCount(0, Dict\filter_nulls([null, null]));
-        static::assertCount(1, Dict\filter_nulls([null, false]));
-        static::assertCount(1, Dict\filter_nulls([null, 'null']));
-        static::assertCount(1, Dict\filter_nulls(['null']));
-        static::assertCount(1, Dict\filter_nulls(Iter\Iterator::create(['null'])));
-        static::assertCount(0, Dict\filter_nulls(Iter\Iterator::create([null])));
-        static::assertCount(0, Dict\filter_nulls(Iter\Iterator::create([null, null])));
-        static::assertCount(3, Dict\filter_nulls(Iter\Iterator::create([null, false, '', 0])));
-        static::assertCount(3, Dict\filter_nulls(new Collection\Vector([null, false, '', 0])));
-        static::assertCount(3, Dict\filter_nulls(new Collection\Map([null, false, '', 0])));
+        static::assertCount(0, Dict\filter_nulls::<int, mixed>([]));
+        static::assertCount(0, Dict\filter_nulls::<int, mixed>([null, null]));
+        static::assertCount(1, Dict\filter_nulls::<int, mixed>([null, false]));
+        static::assertCount(1, Dict\filter_nulls::<int, mixed>([null, 'null']));
+        static::assertCount(1, Dict\filter_nulls::<int, mixed>(['null']));
+        static::assertCount(1, Dict\filter_nulls::<int, mixed>(Iter\Iterator::<int, mixed>::create(['null'])));
+        static::assertCount(0, Dict\filter_nulls::<int, mixed>(Iter\Iterator::<int, mixed>::create([null])));
+        static::assertCount(0, Dict\filter_nulls::<int, mixed>(Iter\Iterator::<int, mixed>::create([null, null])));
+        static::assertCount(3, Dict\filter_nulls::<int, mixed>(Iter\Iterator::<int, mixed>::create([null, false, '', 0])));
+        static::assertCount(3, Dict\filter_nulls::<int, mixed>(new Collection\Vector::<mixed>([null, false, '', 0])));
+        static::assertCount(3, Dict\filter_nulls::<int, mixed>(new Collection\Map::<int, mixed>([null, false, '', 0])));
         static::assertCount(
             3,
-            Dict\filter_nulls(
+            Dict\filter_nulls::<int, mixed>(
                 (static function (): iterable {
                     yield null;
                     yield false;

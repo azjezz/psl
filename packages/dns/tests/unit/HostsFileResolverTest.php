@@ -33,7 +33,7 @@ final class HostsFileResolverTest extends TestCase
 
         static::assertSame(ResponseCode::NoError, $response->code);
         static::assertCount(1, $response->answers);
-        static::assertSame('192.168.1.50', $response->getFirstAnswerRecord(ARecord::class)?->address->toString());
+        static::assertSame('192.168.1.50', $response->getFirstAnswerRecord::<ARecord>(ARecord::class)?->address->toString());
     }
 
     public function testResolvesAAAARecordFromHostsFile(): void

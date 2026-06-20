@@ -24,5 +24,5 @@ function capture_groups(array $groups): Type\TypeInterface
         $shape[$key] = Type\string();
     }
 
-    return Type\shape($shape);
+    return Type\shape::<string|int, string>($shape);
 }

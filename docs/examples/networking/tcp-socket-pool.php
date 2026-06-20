@@ -10,7 +10,7 @@ use Psl\TCP;
 $listener = TCP\listen('127.0.0.1');
 $address = $listener->getLocalAddress();
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         $connection = $listener->accept();
         // Keep connection open until client is done

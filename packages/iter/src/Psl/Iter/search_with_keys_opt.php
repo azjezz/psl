@@ -20,24 +20,19 @@ use Psl\Option\Option;
  *      Iter\search_with_keys_opt(['foo', 'bar', 'baz'], fn($k, $v) => 'qux' === $v)
  *      => Option::none()
  *
- * @template TKey
- * @template TValue
- *
  * @param iterable<TKey, TValue> $iterable The iterable to search
  * @param (Closure(TKey, TValue): bool) $predicate
  *
- * @return Option<TValue>
- *
  * @api
  */
-function search_with_keys_opt(iterable $iterable, Closure $predicate): Option
+function search_with_keys_opt<TKey, TValue>(iterable $iterable, Closure $predicate): Option<TValue>
 {
     foreach ($iterable as $key => $value) {
         if (!$predicate($key, $value)) {
             continue;
         }
 
-        return Option::some($value);
+        return Option::<TValue>::some($value);
     }
 
     return Option::none();

@@ -32,26 +32,21 @@ use Psl\EitherOrBoth;
  * pass is O(1); subsequent passes additionally retain the cache of yielded
  * events.
  *
- * @template L
- * @template R
- *
  * @param iterable<L> $left
  * @param iterable<R> $right
  * @param (Closure(L, R): Order) $compare
  *
- * @return Iterator<int, EitherOrBoth\EitherOrBoth<L, R>>
- *
  * @api
  */
-function merge_join_by(iterable $left, iterable $right, Closure $compare): Iterator
+function merge_join_by<L, R>(iterable $left, iterable $right, Closure $compare): Iterator<int, EitherOrBoth\EitherOrBoth<L, R>>
 {
-    return Iterator::from(
+    return Iterator::<int, EitherOrBoth\EitherOrBoth<L, R>>::from(
         /**
          * @return Generator<int, EitherOrBoth\EitherOrBoth<L, R>, mixed, void>
          */
         static function () use ($left, $right, $compare): Generator {
-            $l = Iterator::create($left);
-            $r = Iterator::create($right);
+            $l = Iterator::<int|string, L>::create($left);
+            $r = Iterator::<int|string, R>::create($right);
 
             $l->rewind();
             $r->rewind();
@@ -62,15 +57,15 @@ function merge_join_by(iterable $left, iterable $right, Closure $compare): Itera
 
                 switch ($compare($lv, $rv)) {
                     case Order::Less:
-                        yield new EitherOrBoth\Left($lv);
+                        yield new EitherOrBoth\Left::<L>($lv);
                         $l->next();
                         break;
                     case Order::Greater:
-                        yield new EitherOrBoth\Right($rv);
+                        yield new EitherOrBoth\Right::<R>($rv);
                         $r->next();
                         break;
                     case Order::Equal:
-                        yield new EitherOrBoth\Both($lv, $rv);
+                        yield new EitherOrBoth\Both::<L, R>($lv, $rv);
                         $l->next();
                         $r->next();
                         break;
@@ -78,12 +73,12 @@ function merge_join_by(iterable $left, iterable $right, Closure $compare): Itera
             }
 
             while ($l->valid()) {
-                yield new EitherOrBoth\Left($l->current());
+                yield new EitherOrBoth\Left::<L>($l->current());
                 $l->next();
             }
 
             while ($r->valid()) {
-                yield new EitherOrBoth\Right($r->current());
+                yield new EitherOrBoth\Right::<R>($r->current());
                 $r->next();
             }
         },

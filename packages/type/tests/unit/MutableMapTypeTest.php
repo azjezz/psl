@@ -15,15 +15,12 @@ use Psl\Type;
 use Psl\Vec;
 use RuntimeException;
 
-/**
- * @extends TypeTestCase<MutableMapInterface<array-key, mixed>>
- */
-final class MutableMapTypeTest extends TypeTestCase
+final class MutableMapTypeTest extends TypeTestCase<MutableMapInterface<string|int, mixed>>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<MutableMapInterface<string|int, mixed>>
     {
-        return Type\mutable_map(Type\int(), Type\int());
+        return Type\mutable_map::<int, int>(Type\int(), Type\int());
     }
 
     #[Override]
@@ -31,37 +28,37 @@ final class MutableMapTypeTest extends TypeTestCase
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Vec\range(1, 10),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Vec\range::<int>(1, 10),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Vec\range(1, 10),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Vec\range::<int>(1, 10),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => (string) $value),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => (string) $value),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map_keys(Vec\range(1, 10), static fn(int $key): string => (string) $key),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map_keys::<int, string, int>(Vec\range::<int>(1, 10), static fn(int $key): string => (string) $key),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $value): string => Str\format('00%d', $value)),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            new Collection\Map([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\MutableMap([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Map::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableMap::<int, int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
     }
 
@@ -86,17 +83,17 @@ final class MutableMapTypeTest extends TypeTestCase
         ];
 
         yield [
-            Type\mutable_map(Type\array_key(), Type\int()),
+            Type\mutable_map::<string|int, int>(Type\array_key(), Type\int()),
             'Psl\Collection\MutableMapInterface<array-key, int>',
         ];
 
         yield [
-            Type\mutable_map(Type\array_key(), Type\string()),
+            Type\mutable_map::<string|int, string>(Type\array_key(), Type\string()),
             'Psl\Collection\MutableMapInterface<array-key, string>',
         ];
 
         yield [
-            Type\mutable_map(Type\array_key(), Type\instance_of(Iter\Iterator::class)),
+            Type\mutable_map::<string|int, Iter\Iterator>(Type\array_key(), Type\instance_of::<Iter\Iterator>(Iter\Iterator::class)),
             'Psl\Collection\MutableMapInterface<array-key, Psl\Iter\Iterator>',
         ];
     }
@@ -108,11 +105,11 @@ final class MutableMapTypeTest extends TypeTestCase
     #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
-        if (Type\instance_of(MutableMapInterface::class)->matches($a)) {
+        if (Type\instance_of::<MutableMapInterface>(MutableMapInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\instance_of(MutableMapInterface::class)->matches($b)) {
+        if (Type\instance_of::<MutableMapInterface>(MutableMapInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 
@@ -122,18 +119,18 @@ final class MutableMapTypeTest extends TypeTestCase
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'invalid assertion key' => [
-            Type\mutable_map(Type\int(), Type\int()),
-            new Collection\MutableMap(['nope' => 1]),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
+            new Collection\MutableMap::<string, int>(['nope' => 1]),
             'Expected "' . MutableMapInterface::class . '<int, int>", got "string" at path "key(nope)".',
         ];
         yield 'invalid assertion value' => [
-            Type\mutable_map(Type\int(), Type\int()),
-            new Collection\MutableMap([0 => 'nope']),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
+            new Collection\MutableMap::<int, string>([0 => 'nope']),
             'Expected "' . MutableMapInterface::class . '<int, int>", got "string" at path "0".',
         ];
         yield 'nested' => [
-            Type\mutable_map(Type\int(), Type\mutable_map(Type\int(), Type\int())),
-            new Collection\MutableMap([0 => new Collection\MutableMap(['nope' => 'nope'])]),
+            Type\mutable_map::<int, MutableMapInterface<int, int>>(Type\int(), Type\mutable_map::<int, int>(Type\int(), Type\int())),
+            new Collection\MutableMap::<int, Collection\MutableMap>([0 => new Collection\MutableMap::<string, string>(['nope' => 'nope'])]),
             'Expected "'
                 . MutableMapInterface::class
                 . '<int, '
@@ -145,24 +142,24 @@ final class MutableMapTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'invalid coercion key' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             ['nope' => 1],
             'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "key(nope)".',
         ];
         yield 'invalid coercion value' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             [0 => 'nope'],
             'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "0".',
         ];
         yield 'invalid iterator first item' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield 0 => Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield 0 => 0;
                 yield 1 => Type\int()->coerce('nope');
@@ -170,7 +167,7 @@ final class MutableMapTypeTest extends TypeTestCase
             'Could not coerce "string" to type "' . MutableMapInterface::class . '<int, int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 throw new RuntimeException('whoops');
                 yield;
@@ -178,14 +175,14 @@ final class MutableMapTypeTest extends TypeTestCase
             'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "first()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "null" to type "' . MutableMapInterface::class . '<int, int>" at path "key(null)".',
         ];
         yield 'iterator yielding object key' => [
-            Type\mutable_map(Type\int(), Type\int()),
+            Type\mutable_map::<int, int>(Type\int(), Type\int()),
             (static function (): iterable {
                 yield new class() {} => 'nope';
             })(),
@@ -197,7 +194,7 @@ final class MutableMapTypeTest extends TypeTestCase
 
     #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -211,7 +208,7 @@ final class MutableMapTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -225,16 +222,16 @@ final class MutableMapTypeTest extends TypeTestCase
 
     public function testMatchesReturnsFalseForInvalidValueType(): void
     {
-        $type = Type\mutable_map(Type\int(), Type\int());
-        $map = new Collection\MutableMap([0 => 'not an int']);
+        $type = Type\mutable_map::<int, int>(Type\int(), Type\int());
+        $map = new Collection\MutableMap::<int, string>([0 => 'not an int']);
 
         static::assertFalse($type->matches($map));
     }
 
     public function testMatchesReturnsFalseForInvalidKeyType(): void
     {
-        $type = Type\mutable_map(Type\int(), Type\string());
-        $map = new Collection\MutableMap(['not_int' => 'value']);
+        $type = Type\mutable_map::<int, string>(Type\int(), Type\string());
+        $map = new Collection\MutableMap::<string, string>(['not_int' => 'value']);
 
         static::assertFalse($type->matches($map));
     }

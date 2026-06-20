@@ -7,19 +7,12 @@ namespace Psl\Graph;
 /**
  * Represents an edge in a graph.
  *
- * @template TNode
- * @template TWeight
- *
  * @api
  */
-final readonly class Edge
+final readonly class Edge<TNode, TWeight>
 {
-    /**
-     * @param TNode $to
-     * @param TWeight|null $weight
-     */
     public function __construct(
-        public mixed $to,
-        public mixed $weight = null,
+        public TNode $to,
+        public TWeight|null $weight = null,
     ) {}
 }

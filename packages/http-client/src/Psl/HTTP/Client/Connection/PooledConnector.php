@@ -344,7 +344,7 @@ final class PooledConnector implements ConnectorInterface
         ClientConfiguration $configuration,
     ): ConnectionInterface {
         /** @var Async\Deferred<array{H2Session, ConnectionMetadata}> $deferred */
-        $deferred = new Async\Deferred();
+        $deferred = new Async\Deferred::<array>();
         $awaitable = $deferred->getAwaitable();
         $awaitable->ignore();
         $this->pendingConnections[$key] = $awaitable;

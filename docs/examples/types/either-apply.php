@@ -8,8 +8,8 @@ use Psl\Either;
 use Psl\IO;
 use Psl\Str;
 
-$either = new Either\Right('some data')
+$either = new Either\Right::<string>('some data')
     ->apply(static fn(string $v): mixed => IO\write_error_line('Processing value: %s', $v))
-    ->mapRight(static fn(string $v): string => Str\uppercase($v));
+    ->mapRight::<string>(static fn(string $v): string => Str\uppercase($v));
 
 // Right('SOME DATA')

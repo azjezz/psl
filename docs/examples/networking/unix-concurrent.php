@@ -13,12 +13,12 @@ $path = Filesystem\create_temporary_file(Env\temp_dir(), 'psl-unix-concurrent-')
 
 $listener = Unix\listen($path);
 
-Async\concurrently([
+Async\concurrently::<string, void>([
     'server' => static function () use ($listener): void {
         // Accept multiple clients concurrently
         for ($i = 0; $i < 3; $i++) {
             $connection = $listener->accept();
-            Async\run(static function () use ($connection): void {
+            Async\run::<void>(static function () use ($connection): void {
                 $request = $connection->readAll();
                 $connection->writeAll("handled: {$request}");
                 $connection->close();
@@ -29,7 +29,7 @@ Async\concurrently([
     },
     'clients' => static function () use ($path): void {
         // Spawn 3 clients concurrently
-        Async\concurrently([
+        Async\concurrently::<int, void>([
             static function () use ($path): void {
                 $client = Unix\connect($path);
                 $client->writeAll('request-1');

@@ -16,7 +16,7 @@ final class RestrictedListenerTest extends TestCase
 {
     public function testAcceptsAllowedIpAddress(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $inner = TCP\listen('127.0.0.1', 18_200);
                 $listener = new TCP\RestrictedListener($inner, [
@@ -39,7 +39,7 @@ final class RestrictedListenerTest extends TestCase
 
     public function testAcceptsAllowedCidrBlock(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $inner = TCP\listen('127.0.0.1', 18_201);
                 $listener = new TCP\RestrictedListener($inner, [
@@ -68,7 +68,7 @@ final class RestrictedListenerTest extends TestCase
         ]);
 
         // Connect a client in the background (will be rejected)
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             try {
                 $stream = TCP\connect('127.0.0.1', 18_202);
                 $stream->close();
@@ -132,13 +132,13 @@ final class RestrictedListenerTest extends TestCase
 
         $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
-        Async\run(static function () use ($inner): void {
+        Async\run::<void>(static function () use ($inner): void {
             Async\sleep(Duration::seconds(5));
             $inner->close();
         })->ignore();
 
         try {
-            Async\run(static function () use ($listener, $token): void {
+            Async\run::<void>(static function () use ($listener, $token): void {
                 $listener->accept($token);
             })->await();
 
@@ -155,7 +155,7 @@ final class RestrictedListenerTest extends TestCase
         $inner = TCP\listen('127.0.0.1', 18_203);
         $listener = new TCP\RestrictedListener($inner, []);
 
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             try {
                 $stream = TCP\connect('127.0.0.1', 18_203);
                 $stream->close();
@@ -178,7 +178,7 @@ final class RestrictedListenerTest extends TestCase
 
     public function testMixedIpAndCidrAllowList(): void
     {
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function (): void {
                 $inner = TCP\listen('127.0.0.1', 18_204);
                 $listener = new TCP\RestrictedListener($inner, [

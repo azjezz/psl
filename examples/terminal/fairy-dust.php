@@ -56,9 +56,9 @@ function particle_color(int $age): Color\Color
     };
 }
 
-$app = Terminal\Application::create(new DustState(), title: 'Fairy Dust', mouseMotion: true);
+$app = Terminal\Application::create::<DustState>(new DustState(), title: 'Fairy Dust', mouseMotion: true);
 
-$app->on(Event\Key::class, static function (Event\Key $event, DustState $state) use ($app): void {
+$app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event, DustState $state) use ($app): void {
     if ($event->is('ctrl+c')) {
         $app->stop();
         return;
@@ -69,13 +69,13 @@ $app->on(Event\Key::class, static function (Event\Key $event, DustState $state) 
     }
 });
 
-$app->on(Event\Mouse::class, static function (Event\Mouse $event, DustState $state): void {
+$app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, DustState $state): void {
     if ($event->kind !== Event\MouseKind::Move && $event->kind !== Event\MouseKind::Drag) {
         return;
     }
 
     /** @var non-negative-int $idx */
-    $idx = PseudoRandom\int(0, Iter\count(namespace\SPARKLE_CHARS) - 1);
+    $idx = PseudoRandom\int(0, Iter\count::<string>(namespace\SPARKLE_CHARS) - 1);
     $char = namespace\SPARKLE_CHARS[$idx];
     $state->particles[] = new Particle($event->column, $event->row, 0, $char);
     $state->total_spawned++;
@@ -132,7 +132,7 @@ $app->run(static function (Terminal\Frame $frame, DustState $state): void {
         $buffer->set($particle->x, $particle->y, new Terminal\Cell($particle->char, [Ansi\foreground($color)]));
     }
 
-    $count = Iter\count($state->particles);
+    $count = Iter\count::<Particle>($state->particles);
     $rightText = 'Move your mouse! | c clear | Ctrl+C quit ';
     $rightLen = Str\width($rightText);
 

@@ -16,12 +16,12 @@ final class TraverseTest extends TestCase
 {
     public function testTraverseWithCustomChildrenProperty(): void
     {
-        $tree = Tree\tree(['id' => 1, 'label' => 'A'], [
-            Tree\leaf(['id' => 2, 'label' => 'B']),
-            Tree\leaf(['id' => 3, 'label' => 'C']),
+        $tree = Tree\tree::<array>(['id' => 1, 'label' => 'A'], [
+            Tree\leaf::<array>(['id' => 2, 'label' => 'B']),
+            Tree\leaf::<array>(['id' => 3, 'label' => 'C']),
         ]);
 
-        $result = Tree\traverse($tree, static fn(array $value, Closure $traverse): array => [
+        $result = Tree\traverse::<array, array>($tree, static fn(array $value, Closure $traverse): array => [
             'id' => $value['id'],
             'label' => $value['label'],
             'customChildrenProp' => $traverse(),
@@ -42,9 +42,9 @@ final class TraverseTest extends TestCase
 
     public function testTraverseLeafNode(): void
     {
-        $tree = Tree\leaf('value');
+        $tree = Tree\leaf::<string>('value');
 
-        $result = Tree\traverse($tree, static fn(string $value, Closure $traverse): array => [
+        $result = Tree\traverse::<string, array>($tree, static fn(string $value, Closure $traverse): array => [
             'value' => $value,
             'children' => $traverse(),
         ]);
@@ -60,11 +60,11 @@ final class TraverseTest extends TestCase
 
     public function testTraverseWithValueTransformation(): void
     {
-        $tree = Tree\tree('ROOT', [
-            Tree\leaf('CHILD'),
+        $tree = Tree\tree::<string>('ROOT', [
+            Tree\leaf::<string>('CHILD'),
         ]);
 
-        $result = Tree\traverse($tree, static fn(string $value, Closure $traverse): array => [
+        $result = Tree\traverse::<string, array>($tree, static fn(string $value, Closure $traverse): array => [
             'name' => strtolower($value),
             'children' => $traverse(),
         ]);
@@ -82,15 +82,15 @@ final class TraverseTest extends TestCase
 
     public function testTraverseDeepNesting(): void
     {
-        $tree = Tree\tree(1, [
-            Tree\tree(2, [
-                Tree\tree(3, [
-                    Tree\leaf(4),
+        $tree = Tree\tree::<int>(1, [
+            Tree\tree::<int>(2, [
+                Tree\tree::<int>(3, [
+                    Tree\leaf::<int>(4),
                 ]),
             ]),
         ]);
 
-        $result = Tree\traverse($tree, static fn(int $value, Closure $traverse): array => [
+        $result = Tree\traverse::<int, array>($tree, static fn(int $value, Closure $traverse): array => [
             'v' => $value,
             'c' => $traverse(),
         ]);
@@ -118,12 +118,12 @@ final class TraverseTest extends TestCase
 
     public function testTraverseWithConditionalChildren(): void
     {
-        $tree = Tree\tree('a', [
-            Tree\tree('b', [Tree\leaf('c')]),
-            Tree\leaf('d'),
+        $tree = Tree\tree::<string>('a', [
+            Tree\tree::<string>('b', [Tree\leaf::<string>('c')]),
+            Tree\leaf::<string>('d'),
         ]);
 
-        $result = Tree\traverse($tree, static function (string $value, Closure $traverse) use ($tree): array {
+        $result = Tree\traverse::<string, array>($tree, static function (string $value, Closure $traverse) use ($tree): array {
             $children = $traverse();
             return [
                 'name' => $value,
@@ -156,12 +156,12 @@ final class TraverseTest extends TestCase
 
     public function testTraverseToStringRepresentation(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\leaf('a'),
-            Tree\leaf('b'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\leaf::<string>('a'),
+            Tree\leaf::<string>('b'),
         ]);
 
-        $result = Tree\traverse($tree, static function (string $value, Closure $traverse): string {
+        $result = Tree\traverse::<string, string>($tree, static function (string $value, Closure $traverse): string {
             $children = $traverse();
             if ([] === $children) {
                 return $value;
@@ -175,13 +175,13 @@ final class TraverseTest extends TestCase
 
     public function testTraverseWithIndexedChildren(): void
     {
-        $tree = Tree\tree('parent', [
-            Tree\leaf('first'),
-            Tree\leaf('second'),
-            Tree\leaf('third'),
+        $tree = Tree\tree::<string>('parent', [
+            Tree\leaf::<string>('first'),
+            Tree\leaf::<string>('second'),
+            Tree\leaf::<string>('third'),
         ]);
 
-        $result = Tree\traverse($tree, static fn(string $value, Closure $traverse): array => [
+        $result = Tree\traverse::<string, array>($tree, static fn(string $value, Closure $traverse): array => [
             'label' => $value,
             'items' => $traverse(),
         ]);
@@ -201,14 +201,14 @@ final class TraverseTest extends TestCase
 
     public function testTraversePreservesOrder(): void
     {
-        $tree = Tree\tree('root', [
-            Tree\leaf('1'),
-            Tree\leaf('2'),
-            Tree\leaf('3'),
-            Tree\leaf('4'),
+        $tree = Tree\tree::<string>('root', [
+            Tree\leaf::<string>('1'),
+            Tree\leaf::<string>('2'),
+            Tree\leaf::<string>('3'),
+            Tree\leaf::<string>('4'),
         ]);
 
-        $result = Tree\traverse($tree, static fn(string $value, Closure $traverse): array => [
+        $result = Tree\traverse::<string, array>($tree, static fn(string $value, Closure $traverse): array => [
             'v' => $value,
             'c' => $traverse(),
         ]);

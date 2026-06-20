@@ -11,7 +11,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function mixed_dict(): TypeInterface
+function mixed_dict(): TypeInterface<array>
 {
     return new Internal\MixedDictType();
 }

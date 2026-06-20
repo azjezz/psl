@@ -13,21 +13,13 @@ namespace Psl;
  *
  * `Iter\reduce()` can also be used in some situations to avoid this class.
  *
- * @template T
- *
  * @api
  */
-final class Ref
+final class Ref<T>
 {
-    /**
-     * @var T
-     */
-    public mixed $value;
+    public T $value;
 
-    /**
-     * @param T $value
-     */
-    public function __construct(mixed $value)
+    public function __construct(T $value)
     {
         $this->value = $value;
     }

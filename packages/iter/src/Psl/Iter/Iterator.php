@@ -14,14 +14,11 @@ use function array_key_exists;
 use function count;
 
 /**
- * @template   Tk
- * @template   Tv
- *
  * @implements SeekableIterator<Tk, Tv>
  *
  * @api
  */
-final class Iterator implements Countable, SeekableIterator
+final class Iterator<Tk, Tv> implements Countable, SeekableIterator
 {
     /**
      * @var null|Generator<Tk, Tv, mixed, mixed>
@@ -61,50 +58,38 @@ final class Iterator implements Countable, SeekableIterator
     /**
      * Create an iterator from a factory.
      *
-     * @template Tsk
-     * @template Tsv
-     *
-     * @param (Closure(): iterable<Tsk, Tsv>) $factory
-     *
-     * @return Iterator<Tsk, Tsv>
+     * @param (Closure(): iterable<Tk, Tv>) $factory
      */
-    public static function from(Closure $factory): Iterator
+    public static function from(Closure $factory): Iterator<Tk, Tv>
     {
-        return self::create($factory());
+        return self::<Tk, Tv>::create($factory());
     }
 
     /**
      * Create an iterator from an iterable.
      *
-     * @template Tsk
-     * @template Tsv
-     *
-     * @param iterable<Tsk, Tsv> $iterable
-     *
-     * @return Iterator<Tsk, Tsv>
+     * @param iterable<Tk, Tv> $iterable
      */
-    public static function create(iterable $iterable): Iterator
+    public static function create(iterable $iterable): Iterator<Tk, Tv>
     {
         if ($iterable instanceof Generator) {
-            return new self($iterable);
+            return new self::<Tk, Tv>($iterable);
         }
 
         $factory =
             /**
-             * @return Generator<Tsk, Tsv, mixed, mixed>
+             * @return Generator<Tk, Tv, mixed, mixed>
              */
             static fn(): Generator => yield from $iterable;
 
-        return new self($factory());
+        return new self::<Tk, Tv>($factory());
     }
 
     /**
      * Return the current element.
-     *
-     * @return Tv
      */
     #[Override]
-    public function current(): mixed
+    public function current(): Tv
     {
         $this->save();
 
@@ -145,11 +130,9 @@ final class Iterator implements Countable, SeekableIterator
 
     /**
      * Return the key of the current element.
-     *
-     * @return Tk
      */
     #[Override]
-    public function key(): mixed
+    public function key(): Tk
     {
         $this->save();
 

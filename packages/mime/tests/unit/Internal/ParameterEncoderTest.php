@@ -90,12 +90,12 @@ final class ParameterEncoderTest extends TestCase
         $longName = Str\repeat("\xC3\xA9", 50);
         $pairs = ParameterEncoder::encode('filename', $longName);
 
-        static::assertGreaterThan(1, Iter\count($pairs));
+        static::assertGreaterThan(1, Iter\count::<array>($pairs));
 
         static::assertStringStartsWith('filename*0*', $pairs[0][0]);
         static::assertStringStartsWith("utf-8''", $pairs[0][1]);
 
-        for ($i = 1; $i < Iter\count($pairs); $i++) {
+        for ($i = 1; $i < Iter\count::<array>($pairs); $i++) {
             static::assertSame('filename*' . $i . '*', $pairs[$i][0]);
             static::assertStringNotContainsString("utf-8''", $pairs[$i][1]);
         }
@@ -106,7 +106,7 @@ final class ParameterEncoderTest extends TestCase
         $original = Str\repeat("\xC3\xA9\xC3\xBC\xC3\xB6", 30);
         $pairs = ParameterEncoder::encode('filename', $original);
 
-        static::assertGreaterThan(1, Iter\count($pairs));
+        static::assertGreaterThan(1, Iter\count::<array>($pairs));
 
         $paramString = '';
         foreach ($pairs as [$name, $value]) {
@@ -167,7 +167,7 @@ final class ParameterEncoderTest extends TestCase
         $longUtf8 = Str\repeat("\xC3\xA9", 100);
         $pairs = ParameterEncoder::encode('f', $longUtf8);
 
-        for ($i = 0; $i < Iter\count($pairs); $i++) {
+        for ($i = 0; $i < Iter\count::<array>($pairs); $i++) {
             static::assertStringStartsWith('f*' . $i . '*', $pairs[$i][0]);
         }
     }

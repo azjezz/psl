@@ -9,13 +9,9 @@ use Override;
 /**
  * Immutable tree node implementation (node with children).
  *
- * @template-covariant T
- *
- * @implements NodeInterface<T>
- *
  * @api
  */
-final readonly class TreeNode implements NodeInterface
+final readonly class TreeNode<out T> implements NodeInterface<T>
 {
     /**
      * @var list<NodeInterface<T>>
@@ -23,23 +19,20 @@ final readonly class TreeNode implements NodeInterface
     private array $children;
 
     /**
-     * @param T $value
      * @param list<NodeInterface<T>> $children
      */
     public function __construct(
-        private mixed $value,
+        private T $value,
         array $children = [],
     ) {
         $this->children = $children;
     }
 
     /**
-     * @return T
-     *
      * @psalm-mutation-free
      */
     #[Override]
-    public function getValue(): mixed
+    public function getValue(): T
     {
         return $this->value;
     }
@@ -78,6 +71,6 @@ final readonly class TreeNode implements NodeInterface
     #[Override]
     public function jsonSerialize(): array
     {
-        return namespace\to_array($this);
+        return namespace\to_array::<T>($this);
     }
 }

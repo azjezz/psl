@@ -9,9 +9,9 @@ use Psl\Vec;
 
 $data = ['a' => 1, 'b' => 2, 'c' => 3];
 
-Vec\filter($data, fn($v) => $v > 1);
+Vec\filter::<int>($data, fn($v) => $v > 1);
 // [2, 3]  -- keys dropped, re-indexed as list
 
-Dict\filter($data, fn($v) => $v > 1);
+Dict\filter::<string, int>($data, fn($v) => $v > 1);
 
 // ['b' => 2, 'c' => 3]  -- keys preserved

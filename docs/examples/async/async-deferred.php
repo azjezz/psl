@@ -10,10 +10,10 @@ use Psl\DateTime\Duration;
 /**
  * @return Async\Awaitable<'hello'>
  */
-function get_message(): Async\Awaitable
+function get_message(): Async\Awaitable<string>
 {
     /** @var Async\Deferred<'hello'> $deferred */
-    $deferred = new Async\Deferred();
+    $deferred = new Async\Deferred::<string>();
 
     // Complete the deferred with 'hello' after 2 seconds.
     Async\Scheduler::delay(Duration::seconds(2), static fn() => $deferred->complete('hello'));

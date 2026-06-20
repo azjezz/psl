@@ -91,7 +91,7 @@ final class Table implements WidgetInterface
      */
     public function scroll(int $offset): self
     {
-        $this->scrollOffset = Math\maxva(0, $offset);
+        $this->scrollOffset = Math\maxva::<int>(0, $offset);
         return $this;
     }
 
@@ -150,8 +150,8 @@ final class Table implements WidgetInterface
         }
 
         $visibleHeight = $area->bottom() - $currentY;
-        $maxScroll = Math\maxva(0, count($this->rows) - $visibleHeight);
-        $scrollOffset = Math\minva($this->scrollOffset, $maxScroll);
+        $maxScroll = Math\maxva::<int>(0, count($this->rows) - $visibleHeight);
+        $scrollOffset = Math\minva::<int>($this->scrollOffset, $maxScroll);
 
         for ($rowIdx = $scrollOffset; $rowIdx < count($this->rows); $rowIdx++) {
             if ($currentY >= $area->bottom()) {

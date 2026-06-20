@@ -8,11 +8,9 @@ use Override;
 use Psl\Type\Type;
 
 /**
- * @extends Type<mixed>
- *
  * @internal
  */
-final readonly class MixedType extends Type
+final readonly class MixedType extends Type<mixed>
 {
     /**
      * @psalm-assert-if-true mixed $value

@@ -43,13 +43,13 @@ while (true) {
         break;
     }
 
-    Async\run(static function () use ($connection): void {
+    Async\run::<void>(static function () use ($connection): void {
         $request = $connection->read();
 
         $connection->writeAll("HTTP/1.1 200 OK\nConnection: close\nContent-Type: text/html; charset=utf-8\n\n");
         $connection->writeAll(Str\format(namespace\RESPONSE_FORMAT, Html\encode_special_characters($request)));
         $connection->close();
-    })->catch(static fn(Throwable $e): null => IO\write_error_line('Error: %s.', $e->getMessage()))->ignore();
+    })->catch::<null>(static fn(Throwable $e): null => IO\write_error_line('Error: %s.', $e->getMessage()))->ignore();
 }
 
 IO\write_error_line('');

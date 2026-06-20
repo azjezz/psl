@@ -24,7 +24,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testClear(): void
     {
-        $map = $this->create(['foo' => 'bar']);
+        $map = $this->create::<string, string>(['foo' => 'bar']);
         $cleared = $map->clear();
 
         static::assertSame($cleared, $map);
@@ -33,7 +33,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testSet(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
@@ -55,7 +55,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testSetAll(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
@@ -81,7 +81,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testAdd(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => 'bar',
             'bar' => 'baz',
         ]);
@@ -98,7 +98,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testAddAll(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => 'bar',
             'bar' => 'baz',
         ]);
@@ -120,7 +120,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testRemove(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
@@ -137,7 +137,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testArrayAccess(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => '1',
             'bar' => '2',
             'baz' => '3',
@@ -172,7 +172,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testOffsetSetThrowsForInvalidOffsetType(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => '1',
             'bar' => '2',
             'baz' => '3',
@@ -186,7 +186,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testOffsetIssetThrowsForInvalidOffsetType(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => '1',
             'bar' => '2',
             'baz' => '3',
@@ -200,7 +200,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testOffsetUnsetThrowsForInvalidOffsetType(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => '1',
             'bar' => '2',
             'baz' => '3',
@@ -214,7 +214,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testOffsetGetThrowsForInvalidOffsetType(): void
     {
-        $map = $this->create([
+        $map = $this->create::<string, string>([
             'foo' => '1',
             'bar' => '2',
             'baz' => '3',
@@ -228,7 +228,7 @@ final class MutableMapTest extends AbstractMapTestCase
 
     public function testFromItems(): void
     {
-        $map = MutableMap::fromItems([
+        $map = MutableMap::<string, string>::fromItems([
             'foo' => 'bar',
             'bar' => 'baz',
             'baz' => 'qux',
@@ -240,16 +240,11 @@ final class MutableMapTest extends AbstractMapTestCase
     }
 
     /**
-     * @template     Tk of array-key
-     * @template     Tv
-     *
      * @param iterable<Tk, Tv> $items
-     *
-     * @return MutableMap<Tk, Tv>
      */
     #[Override]
-    protected function create(iterable $items): MutableMap
+    protected function create<Tk: string|int, Tv>(iterable $items): MutableMap<Tk, Tv>
     {
-        return MutableMap::fromArray($items);
+        return MutableMap::<string|int, mixed>::fromArray($items);
     }
 }

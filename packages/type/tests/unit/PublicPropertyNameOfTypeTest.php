@@ -8,10 +8,13 @@ use Override;
 use Psl\Type;
 use Psl\Type\Tests\Fixture\ClassWithProperties;
 
-final class PublicPropertyNameOfTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<non-empty-string>
+ */
+final class PublicPropertyNameOfTypeTest extends TypeTestCase<string>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<string>
     {
         return Type\public_property_name_of(ClassWithProperties::class);
     }

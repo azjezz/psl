@@ -16,30 +16,22 @@ use function is_object;
 use function sprintf;
 
 /**
- * @template T of array-key
- *
- * @extends Type\Type<Collection\MutableSetInterface<T>>
- *
  * @internal
  */
-final readonly class MutableSetType extends Type\Type
+final readonly class MutableSetType<T: string|int> extends Type\Type<Collection\MutableSetInterface<T>>
 {
     /**
      * @psalm-mutation-free
-     *
-     * @param Type\TypeInterface<T> $type
      */
     public function __construct(
-        private Type\TypeInterface $type,
+        private Type\TypeInterface<T> $type,
     ) {}
 
     /**
      * @throws CoercionException
-     *
-     * @return Collection\MutableSetInterface<T>
      */
     #[Override]
-    public function coerce(mixed $value): Collection\MutableSetInterface
+    public function coerce(mixed $value): Collection\MutableSetInterface<T>
     {
         if (is_iterable($value)) {
             /** @var Type\Type<T> $type */
@@ -69,7 +61,7 @@ final readonly class MutableSetType extends Type\Type
                 throw CoercionException::withValue($v, $this->toString(), PathExpression::path($k), $e);
             }
 
-            return new Collection\MutableSet($set);
+            return new Collection\MutableSet::<T>($set);
         }
 
         throw CoercionException::withValue($value, $this->toString());
@@ -78,12 +70,10 @@ final readonly class MutableSetType extends Type\Type
     /**
      * @throws AssertException
      *
-     * @return Collection\MutableSetInterface<T>
-     *
      * @psalm-assert Collection\MutableSetInterface<T> $value
      */
     #[Override]
-    public function assert(mixed $value): Collection\MutableSetInterface
+    public function assert(mixed $value): Collection\MutableSetInterface<T>
     {
         if (is_object($value) && $value instanceof Collection\MutableSetInterface) {
             /** @var Type\Type<T> $type */
@@ -114,7 +104,7 @@ final readonly class MutableSetType extends Type\Type
                 // @codeCoverageIgnoreEnd
             }
 
-            return new Collection\MutableSet($set);
+            return new Collection\MutableSet::<T>($set);
         }
 
         throw AssertException::withValue($value, $this->toString());

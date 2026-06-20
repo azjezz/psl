@@ -11,10 +11,10 @@ use Psl\Type;
 /**
  * @extends TypeTestCase<positive-int>
  */
-final class PositiveIntTypeTest extends TypeTestCase
+final class PositiveIntTypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
         return Type\positive_int();
     }

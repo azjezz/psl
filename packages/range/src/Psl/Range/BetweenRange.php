@@ -210,13 +210,13 @@ final readonly class BetweenRange implements LowerBoundRangeInterface, UpperBoun
      * @psalm-mutation-free
      */
     #[Override]
-    public function getIterator(): Iter\Iterator
+    public function getIterator(): Iter\Iterator<int, int>
     {
         $lower = $this->lowerBound;
         $upper = $this->upperBound;
         $inclusive = $this->upperInclusive;
 
-        return Iter\Iterator::from(
+        return Iter\Iterator::<int, int>::from(
             /**
              * @return Generator<int, int, mixed, void>
              */

@@ -37,7 +37,7 @@ function socket_connect(
     array $context = [],
     CancellationTokenInterface $cancellation = new NullCancellationToken(),
 ): mixed {
-    return namespace\suppress(
+    return namespace\suppress::<mixed>(
         /**
          * @return resource
          */

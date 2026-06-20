@@ -18,18 +18,11 @@ use Closure;
  *      )
  *      => 6
  *
- * @template T
- * @template Ta
- *
- * @param NodeInterface<T> $tree
  * @param (Closure(Ta, T): Ta) $function
- * @param Ta $initial
- *
- * @return Ta
  *
  * @api
  */
-function reduce(NodeInterface $tree, Closure $function, mixed $initial): mixed
+function reduce<T, Ta>(NodeInterface<T> $tree, Closure $function, Ta $initial): Ta
 {
     $accumulator = $function($initial, $tree->getValue());
 
@@ -38,7 +31,7 @@ function reduce(NodeInterface $tree, Closure $function, mixed $initial): mixed
     }
 
     foreach ($tree->getChildren() as $child) {
-        $accumulator = namespace\reduce($child, $function, $accumulator);
+        $accumulator = namespace\reduce::<T, Ta>($child, $function, $accumulator);
     }
 
     return $accumulator;

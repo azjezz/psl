@@ -7,12 +7,15 @@ namespace Psl\Type\Tests\Unit;
 use Override;
 use Psl\Type;
 
-final class LiteralScalarBoolTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<false>
+ */
+final class LiteralScalarBoolTypeTest extends TypeTestCase<bool>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<bool>
     {
-        return Type\literal_scalar(false);
+        return Type\literal_scalar::<bool>(false);
     }
 
     #[Override]
@@ -42,9 +45,9 @@ final class LiteralScalarBoolTypeTest extends TypeTestCase
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'false'];
-        yield [Type\literal_scalar('5'), '"5"'];
-        yield [Type\literal_scalar(5.500_0), '5.5'];
-        yield [Type\literal_scalar(true), 'true'];
-        yield [Type\literal_scalar(5.500_000_000_000_05), '5.50000000000005'];
+        yield [Type\literal_scalar::<string>('5'), '"5"'];
+        yield [Type\literal_scalar::<float>(5.500_0), '5.5'];
+        yield [Type\literal_scalar::<bool>(true), 'true'];
+        yield [Type\literal_scalar::<float>(5.500_000_000_000_05), '5.50000000000005'];
     }
 }

@@ -13,7 +13,7 @@ final class ZipTest extends TestCase
     #[DataProvider('provideData')]
     public function testZip(array $expected, array $first, array $second): void
     {
-        static::assertSame($expected, Vec\zip($first, $second));
+        static::assertSame($expected, Vec\zip::<string, string>($first, $second));
     }
 
     public static function provideData(): iterable

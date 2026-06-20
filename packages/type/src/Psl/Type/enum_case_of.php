@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function enum_case_of(string $enumname): TypeInterface
+function enum_case_of(string $enumname): TypeInterface<string>
 {
     return new Internal\EnumCaseOfType($enumname);
 }

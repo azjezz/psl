@@ -19,8 +19,6 @@ use function array_map;
  *          ],
  *      ])
  *
- * @template T
- *
  * @param array{
  *   value: T,
  *   children?: list<array{
@@ -38,13 +36,11 @@ use function array_map;
  *   }>
  * } $array
  *
- * @return TreeNode<T>
- *
  * @pure
  *
  * @api
  */
-function from_array(array $array): TreeNode
+function from_array<T>(array $array): TreeNode<T>
 {
     /**
      * @var list<array{
@@ -66,5 +62,5 @@ function from_array(array $array): TreeNode
      */
     $children = $array['children'] ?? [];
 
-    return new TreeNode($array['value'], array_map(from_array(...), $children));
+    return new TreeNode::<T>($array['value'], array_map(from_array(...), $children));
 }

@@ -9,11 +9,8 @@ use Override;
 use PhpBench\Attributes\Groups;
 use Psl\Type;
 
-/**
- * @extends GenericTypeBench<Type\TypeInterface<array>>
- */
 #[Groups(['type'])]
-final class ShapeTypeBench extends GenericTypeBench
+final class ShapeTypeBench extends GenericTypeBench<Type\TypeInterface<array>>
 {
     /**
      * {@inheritDoc}
@@ -23,27 +20,27 @@ final class ShapeTypeBench extends GenericTypeBench
     {
         return [
             'empty shape, empty array value' => [
-                'type' => Type\shape([], true),
+                'type' => Type\shape::<string|int, mixed>([], true),
                 'value' => [],
             ],
             'empty shape, empty iterable value' => [
-                'type' => Type\shape([], true),
+                'type' => Type\shape::<string|int, mixed>([], true),
                 'value' => new ArrayIterator([]),
             ],
             'empty shape, non-empty array value' => [
-                'type' => Type\shape([], true),
+                'type' => Type\shape::<string|int, mixed>([], true),
                 'value' => ['foo' => 'bar'],
             ],
             'empty shape, non-empty iterable value' => [
-                'type' => Type\shape([], true),
+                'type' => Type\shape::<string|int, mixed>([], true),
                 'value' => new ArrayIterator(['foo' => 'bar']),
             ],
             'complex shape with optional values, minimum array value' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, mixed>([
                     'foo' => Type\mixed(),
                     'bar' => Type\mixed(),
                     'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
+                    'tab' => Type\optional::<mixed>(Type\mixed()),
                 ], true),
                 'value' => [
                     'foo' => null,
@@ -52,11 +49,11 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, minimum iterable value' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, mixed>([
                     'foo' => Type\mixed(),
                     'bar' => Type\mixed(),
                     'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
+                    'tab' => Type\optional::<mixed>(Type\mixed()),
                 ], true),
                 'value' => new ArrayIterator([
                     'foo' => null,
@@ -65,11 +62,11 @@ final class ShapeTypeBench extends GenericTypeBench
                 ]),
             ],
             'complex shape with optional values, array value with further values' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, mixed>([
                     'foo' => Type\mixed(),
                     'bar' => Type\mixed(),
                     'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
+                    'tab' => Type\optional::<mixed>(Type\mixed()),
                 ], true),
                 'value' => [
                     'foo' => null,
@@ -83,11 +80,11 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, iterable value with further values' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, mixed>([
                     'foo' => Type\mixed(),
                     'bar' => Type\mixed(),
                     'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
+                    'tab' => Type\optional::<mixed>(Type\mixed()),
                 ], true),
                 'value' => new ArrayIterator([
                     'foo' => null,
@@ -101,25 +98,25 @@ final class ShapeTypeBench extends GenericTypeBench
                 ]),
             ],
             'real-life-type-usage' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, array|string>([
                     'name' => Type\string(),
-                    'articles' => Type\vec(Type\shape([
+                    'articles' => Type\vec::<array>(Type\shape::<string, array|int|string>([
                         'title' => Type\string(),
                         'content' => Type\string(),
                         'likes' => Type\int(),
-                        'comments' => Type\optional(Type\vec(Type\shape([
+                        'comments' => Type\optional::<array>(Type\vec::<array>(Type\shape::<string, string>([
                             'user' => Type\string(),
                             'comment' => Type\string(),
                         ]))),
                     ])),
-                    'dictionary' => Type\dict(
+                    'dictionary' => Type\dict::<string, array>(
                         Type\string(),
-                        Type\vec(Type\shape([
+                        Type\vec::<array>(Type\shape::<string, string>([
                             'title' => Type\string(),
                             'content' => Type\string(),
                         ])),
                     ),
-                    'pagination' => Type\optional(Type\shape([
+                    'pagination' => Type\optional::<array>(Type\shape::<string, int>([
                         'currentPage' => Type\uint(),
                         'totalPages' => Type\uint(),
                         'perPage' => Type\uint(),
@@ -162,19 +159,19 @@ final class ShapeTypeBench extends GenericTypeBench
     {
         return [
             'empty shape, empty array value' => [
-                'type' => Type\shape([], true),
+                'type' => Type\shape::<string|int, mixed>([], true),
                 'value' => [],
             ],
             'empty shape, non-empty array value' => [
-                'type' => Type\shape([], true),
+                'type' => Type\shape::<string|int, mixed>([], true),
                 'value' => ['foo' => 'bar'],
             ],
             'complex shape with optional values, minimum array value' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, mixed>([
                     'foo' => Type\mixed(),
                     'bar' => Type\mixed(),
                     'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
+                    'tab' => Type\optional::<mixed>(Type\mixed()),
                 ], true),
                 'value' => [
                     'foo' => null,
@@ -183,11 +180,11 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'complex shape with optional values, array value with further values' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, mixed>([
                     'foo' => Type\mixed(),
                     'bar' => Type\mixed(),
                     'baz' => Type\mixed(),
-                    'tab' => Type\optional(Type\mixed()),
+                    'tab' => Type\optional::<mixed>(Type\mixed()),
                 ], true),
                 'value' => [
                     'foo' => null,
@@ -201,25 +198,25 @@ final class ShapeTypeBench extends GenericTypeBench
                 ],
             ],
             'real-life-type-usage' => [
-                'type' => Type\shape([
+                'type' => Type\shape::<string, array|string>([
                     'name' => Type\string(),
-                    'articles' => Type\vec(Type\shape([
+                    'articles' => Type\vec::<array>(Type\shape::<string, array|int|string>([
                         'title' => Type\string(),
                         'content' => Type\string(),
                         'likes' => Type\int(),
-                        'comments' => Type\optional(Type\vec(Type\shape([
+                        'comments' => Type\optional::<array>(Type\vec::<array>(Type\shape::<string, string>([
                             'user' => Type\string(),
                             'comment' => Type\string(),
                         ]))),
                     ])),
-                    'dictionary' => Type\dict(
+                    'dictionary' => Type\dict::<string, array>(
                         Type\string(),
-                        Type\vec(Type\shape([
+                        Type\vec::<array>(Type\shape::<string, string>([
                             'title' => Type\string(),
                             'content' => Type\string(),
                         ])),
                     ),
-                    'pagination' => Type\optional(Type\shape([
+                    'pagination' => Type\optional::<array>(Type\shape::<string, int>([
                         'currentPage' => Type\uint(),
                         'totalPages' => Type\uint(),
                         'perPage' => Type\uint(),

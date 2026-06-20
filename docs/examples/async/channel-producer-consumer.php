@@ -12,10 +12,10 @@ use Psl\IO;
  * @var Channel\ReceiverInterface<string> $receiver
  * @var Channel\SenderInterface<string> $sender
  */
-[$receiver, $sender] = Channel\bounded(100);
+[$receiver, $sender] = Channel\bounded::<string>(100);
 
 // Producer
-Async\run(function () use ($sender): void {
+Async\run::<void>(function () use ($sender): void {
     foreach (['job-1', 'job-2', 'job-3'] as $job) {
         $sender->send($job);
     }
@@ -24,7 +24,7 @@ Async\run(function () use ($sender): void {
 });
 
 // Consumer
-Async\run(function () use ($receiver): void {
+Async\run::<void>(function () use ($receiver): void {
     while (!$receiver->isClosed() || !$receiver->isEmpty()) {
         $job = $receiver->receive();
         IO\write_error_line('Processing: %s', $job);

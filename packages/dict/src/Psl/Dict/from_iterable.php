@@ -9,16 +9,13 @@ use function is_array;
 /**
  * Convert the given iterable to a dict.
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable
  *
  * @return array<Tk, Tv>
  *
  * @api
  */
-function from_iterable(iterable $iterable): array
+function from_iterable<Tk: string|int, Tv>(iterable $iterable): array
 {
     if (is_array($iterable)) {
         return $iterable;

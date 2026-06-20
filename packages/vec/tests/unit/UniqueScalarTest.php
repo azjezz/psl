@@ -13,10 +13,10 @@ final class UniqueScalarTest extends TestCase
 {
     public function testUniqueScalars(): void
     {
-        $array = Vec\fill(10, 'foo');
+        $array = Vec\fill::<string>(10, 'foo');
         $array[] = 'bar';
 
-        $unique = Vec\unique_scalar($array);
+        $unique = Vec\unique_scalar::<string>($array);
 
         static::assertCount(2, $unique);
         static::assertSame(['foo', 'bar'], $unique);
@@ -24,9 +24,9 @@ final class UniqueScalarTest extends TestCase
 
     public function testUniqueIterator(): void
     {
-        $array = Iter\Iterator::create(['foo', 'foo', 'bar', 'bar', 'baz']);
+        $array = Iter\Iterator::<int, string>::create(['foo', 'foo', 'bar', 'bar', 'baz']);
 
-        $unique = Vec\unique_scalar($array);
+        $unique = Vec\unique_scalar::<string>($array);
 
         static::assertCount(3, $unique);
         static::assertSame(['foo', 'bar', 'baz'], $unique);
@@ -34,9 +34,9 @@ final class UniqueScalarTest extends TestCase
 
     public function testUniqueIteratorAgggregate(): void
     {
-        $array = Collection\Map::fromArray(['foo', 'foo', 'bar', 'bar', 'baz']);
+        $array = Collection\Map::<int, string>::fromArray(['foo', 'foo', 'bar', 'bar', 'baz']);
 
-        $unique = Vec\unique_scalar($array);
+        $unique = Vec\unique_scalar::<string>($array);
 
         static::assertCount(3, $unique);
         static::assertSame(['foo', 'bar', 'baz'], $unique);

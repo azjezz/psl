@@ -13,15 +13,13 @@ use function iterator_to_array;
  * Returns a new dict mapping each value to the number of times it appears
  * in the given array.
  *
- * @template T of array-key
- *
  * @param iterable<T> $values
  *
  * @return array<T, int>
  *
  * @api
  */
-function count_values(iterable $values): array
+function count_values<T: string|int>(iterable $values): array
 {
     if (!is_array($values)) {
         $values = array_values(iterator_to_array($values));

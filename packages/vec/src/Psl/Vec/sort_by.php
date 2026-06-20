@@ -16,9 +16,6 @@ use function uasort;
  * If the optional comparator function isn't provided, the values will be sorted
  * in ascending order of scalar key.
  *
- * @template Tv
- * @template Ts
- *
  * @param iterable<Tv> $iterable
  * @param (Closure(Tv): Ts) $scalarFunc
  * @param (Closure(Ts, Ts): int)|null $comparator
@@ -27,7 +24,7 @@ use function uasort;
  *
  * @api
  */
-function sort_by(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
+function sort_by<Tv, Ts>(iterable $iterable, Closure $scalarFunc, null|Closure $comparator = null): array
 {
     /** @var array<int, Ts> $orderBy */
     $orderBy = [];

@@ -21,7 +21,7 @@ final class ErrorCaseTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $lazy = new TLS\LazyAcceptor();
@@ -47,7 +47,7 @@ final class ErrorCaseTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 Async\sleep(Duration::milliseconds(50));
@@ -73,7 +73,7 @@ final class ErrorCaseTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port ?? 0;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $connection->close();

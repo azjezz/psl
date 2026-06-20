@@ -17,9 +17,6 @@ use Closure;
  *      Dict\drop_while([3, 1, 4, -1, 5], fn($i) => $i > 0)
  *      => Dict(-1, 5)
  *
- * @template Tk of array-key
- * @template Tv
- *
  * @param iterable<Tk, Tv> $iterable Iterable to drop values from
  * @param (Closure(Tv): bool) $predicate
  *
@@ -27,7 +24,7 @@ use Closure;
  *
  * @api
  */
-function drop_while(iterable $iterable, Closure $predicate): array
+function drop_while<Tk: string|int, Tv>(iterable $iterable, Closure $predicate): array
 {
     $result = [];
     $failed = false;

@@ -8,10 +8,13 @@ use Override;
 use Psl\Math;
 use Psl\Type;
 
-final class UIntTypeTest extends TypeTestCase
+/**
+ * @extends TypeTestCase<non-negative-int>
+ */
+final class UIntTypeTest extends TypeTestCase<int>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<int>
     {
         return Type\uint();
     }

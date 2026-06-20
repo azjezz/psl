@@ -70,25 +70,25 @@ final class BlocksState
 }
 
 Async\main(static function (): int {
-    $app = Terminal\Application::create(
+    $app = Terminal\Application::create::<BlocksState>(
         new BlocksState(),
         title: 'Drag Blocks',
         tickInterval: DateTime\Duration::milliseconds(16),
         mouseMotion: true,
     );
 
-    $app->on(Event\Key::class, static function (Event\Key $event) use ($app): void {
+    $app->on::<Event\Key>(Event\Key::class, static function (Event\Key $event) use ($app): void {
         if ($event->is('ctrl+c') || $event->is('escape')) {
             $app->stop();
         }
     });
 
-    $app->on(Event\Mouse::class, static function (Event\Mouse $event, BlocksState $state) use ($app): void {
+    $app->on::<Event\Mouse>(Event\Mouse::class, static function (Event\Mouse $event, BlocksState $state) use ($app): void {
         $col = $event->column;
         $row = $event->row;
 
         if ($event->kind === Event\MouseKind::Press && $event->button === Event\MouseButton::Left) {
-            for ($i = Iter\count($state->blocks) - 1; $i >= 0; $i--) {
+            for ($i = Iter\count::<DragBlock>($state->blocks) - 1; $i >= 0; $i--) {
                 $block = $state->blocks[$i];
                 if (!$block->contains($col, $row)) {
                     continue;
@@ -97,9 +97,9 @@ Async\main(static function (): int {
                 $state->dragOffsetX = $col - $block->x;
                 $state->dragOffsetY = $row - $block->y;
 
-                $picked = Vec\slice($state->blocks, $i, 1);
+                $picked = Vec\slice::<DragBlock>($state->blocks, $i, 1);
                 $state->blocks[] = $picked[0];
-                $state->dragging = Iter\count($state->blocks) - 1;
+                $state->dragging = Iter\count::<DragBlock>($state->blocks) - 1;
                 break;
             }
 
@@ -135,14 +135,14 @@ Async\main(static function (): int {
             $isDragging = $state->dragging === $i;
             $color = $block->rainbow ? namespace\rainbow_color($phase) : $block->color;
 
-            $x = Math\clamp($block->x, 0, $main->right() - $block->width);
-            $y = Math\clamp($block->y, $main->y, $main->bottom() - $block->height);
+            $x = Math\clamp::<int>($block->x, 0, $main->right() - $block->width);
+            $y = Math\clamp::<int>($block->y, $main->y, $main->bottom() - $block->height);
 
             $blockRect = new Terminal\Rect(
-                Math\maxva(0, $x),
-                Math\maxva(0, $y),
-                Math\minva($block->width, $main->right() - Math\maxva(0, $x)),
-                Math\minva($block->height, $main->bottom() - Math\maxva(0, $y)),
+                Math\maxva::<int>(0, $x),
+                Math\maxva::<int>(0, $y),
+                Math\minva::<int>($block->width, $main->right() - Math\maxva::<int>(0, $x)),
+                Math\minva::<int>($block->height, $main->bottom() - Math\maxva::<int>(0, $y)),
             );
 
             if ($blockRect->isEmpty()) {
@@ -197,7 +197,7 @@ Async\main(static function (): int {
                 }
 
                 $titleChars = [' ', 'R', 'a', 'i', 'n', 'b', 'o', 'w', ' '];
-                $titleLen = Iter\count($titleChars);
+                $titleLen = Iter\count::<string>($titleChars);
                 $titleOffset = (int) (($w - $titleLen) / 2);
                 if ($titleOffset < 1) {
                     $titleOffset = 1;

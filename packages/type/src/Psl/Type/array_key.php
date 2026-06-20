@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function array_key(): TypeInterface
+function array_key(): TypeInterface<string|int>
 {
     static $instance = new Internal\ArrayKeyType();
 

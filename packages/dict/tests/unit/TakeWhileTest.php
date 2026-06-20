@@ -14,7 +14,7 @@ final class TakeWhileTest extends TestCase
     #[DataProvider('provideData')]
     public function testTakeWhile(array $expected, array $array, Closure $callable): void
     {
-        $result = Dict\take_while($array, $callable);
+        $result = Dict\take_while::<int, int>($array, $callable);
 
         static::assertSame($expected, $result);
     }

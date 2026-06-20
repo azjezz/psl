@@ -47,7 +47,7 @@ final class QueueTest extends TestCase
 
     public function testPullDoesRemoveTheNode(): void
     {
-        $queue = new DataStructure\Queue();
+        $queue = new DataStructure\Queue::<string>();
         $queue->enqueue('hello');
         $queue->enqueue('hey');
         $queue->enqueue('hi');
@@ -64,7 +64,7 @@ final class QueueTest extends TestCase
 
     public function testPullReturnsNullWhenTheQueueIsEmpty(): void
     {
-        $queue = new DataStructure\Queue();
+        $queue = new DataStructure\Queue::<string>();
 
         static::assertCount(0, $queue);
         static::assertNull($queue->pull());
@@ -72,7 +72,7 @@ final class QueueTest extends TestCase
 
     public function testDequeueThrowsWhenTheQueueIsEmpty(): void
     {
-        $queue = new DataStructure\Queue();
+        $queue = new DataStructure\Queue::<string>();
 
         $this->expectException(DataStructure\Exception\UnderflowException::class);
         $this->expectExceptionMessage('Cannot dequeue a node from an empty queue.');

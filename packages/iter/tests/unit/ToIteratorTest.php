@@ -17,10 +17,10 @@ final class ToIteratorTest extends TestCase
     #[DataProvider('provideToIteratorData')]
     public function testToIterator(array $array): void
     {
-        $iterator = Iter\to_iterator($array);
+        $iterator = Iter\to_iterator::<string|int, mixed>($array);
 
-        static::assertCount(Iter\count($array), $iterator);
-        static::assertSame($array, Dict\from_iterable($iterator));
+        static::assertCount(Iter\count::<mixed>($array), $iterator);
+        static::assertSame($array, Dict\from_iterable::<string|int, mixed>($iterator));
     }
 
     /**

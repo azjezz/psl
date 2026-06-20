@@ -23,7 +23,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testCancelsAfterTimeout(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
             Async\sleep(Duration::milliseconds(50));
@@ -36,7 +36,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testThrowIfCancelledAfterTimeout(): void
     {
-        $previous = Async\run(static function (): Throwable|null {
+        $previous = Async\run::<Throwable|null>(static function (): Throwable|null {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
             Async\sleep(Duration::milliseconds(50));
@@ -55,7 +55,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testSubscriberCalledOnTimeout(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
             $called = false;
 
@@ -73,7 +73,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testUnsubscribePreventsCallback(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
             $called = false;
 
@@ -93,7 +93,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testZeroDurationCancelsImmediately(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $token = new Async\TimeoutCancellationToken(Duration::zero());
 
             Async\sleep(Duration::milliseconds(10));
@@ -106,7 +106,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testGetTokenReturnsSelf(): void
     {
-        $token = Async\run(static function (): Async\CancellationTokenInterface {
+        $token = Async\run::<Async\CancellationTokenInterface>(static function (): Async\CancellationTokenInterface {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
             Async\sleep(Duration::milliseconds(50));
@@ -125,7 +125,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testSubscribeAfterTimeoutInvokesImmediately(): void
     {
-        $result = Async\run(static function (): bool {
+        $result = Async\run::<bool>(static function (): bool {
             $token = new Async\TimeoutCancellationToken(Duration::milliseconds(10));
 
             Async\sleep(Duration::milliseconds(50));
@@ -151,7 +151,7 @@ final class TimeoutCancellationTokenTest extends TestCase
 
     public function testWeakReferenceDroppedBeforeTimeout(): void
     {
-        Async\run(static function (): void {
+        Async\run::<void>(static function (): void {
             // Create a token with a long timeout, then drop all references
             $token = new Async\TimeoutCancellationToken(Duration::seconds(10));
             unset($token);

@@ -24,7 +24,7 @@ final class LazyAcceptorTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $serverConfig): void {
                 $connection = $listener->accept();
                 $lazy = TLS\LazyAcceptor::default();
@@ -64,7 +64,7 @@ final class LazyAcceptorTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $cert): void {
                 $connection = $listener->accept();
                 $lazy = TLS\LazyAcceptor::default();
@@ -120,7 +120,7 @@ final class LazyAcceptorTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $connection->close();
@@ -145,7 +145,7 @@ final class LazyAcceptorTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
 
@@ -174,7 +174,7 @@ final class LazyAcceptorTest extends TestCase
 
         $signal = new Async\SignalCancellationToken();
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener, $signal): void {
                 $connection = $listener->accept();
                 $lazy = new TLS\LazyAcceptor();
@@ -201,7 +201,7 @@ final class LazyAcceptorTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        Async\concurrently([
+        Async\concurrently::<string, void>([
             'server' => static function () use ($listener): void {
                 $connection = $listener->accept();
                 $lazy = new TLS\LazyAcceptor();

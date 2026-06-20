@@ -13,7 +13,7 @@ final class KeyedSequenceTest extends TestCase
 {
     public function testItCallsTheOperation(): void
     {
-        $ks = new Async\KeyedSequence(static function (string $key, int $input): int {
+        $ks = new Async\KeyedSequence::<string, int, int>(static function (string $key, int $input): int {
             static::assertSame('one', $key);
 
             return $input * 2;
@@ -24,12 +24,12 @@ final class KeyedSequenceTest extends TestCase
 
     public function testSequenceOperationWaitsForPendingOperationsWhenLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSequence<string, array{time: ?float, value: string}, void>
          */
-        $ks = new Async\KeyedSequence(static function (string $key, array $data) use ($spy): void {
+        $ks = new Async\KeyedSequence::<string, array, void>(static function (string $key, array $data) use ($spy): void {
             static::assertSame('operation', $key);
 
             if (null !== $data['time']) {
@@ -39,19 +39,19 @@ final class KeyedSequenceTest extends TestCase
             $spy->value[] = $data['value'];
         });
 
-        Async\run(static fn(): null => $ks->waitFor('operation', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(3),
             'value' => 'a',
         ]));
-        Async\run(static fn(): null => $ks->waitFor('operation', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(4),
             'value' => 'b',
         ]));
-        Async\run(static fn(): null => $ks->waitFor('operation', [
+        Async\run::<null>(static fn(): null => $ks->waitFor('operation', [
             'time' => DateTime\Duration::milliseconds(5),
             'value' => 'c',
         ]));
-        $last = Async\run(static fn(): null => $ks->waitFor('operation', ['time' => null, 'value' => 'd']));
+        $last = Async\run::<null>(static fn(): null => $ks->waitFor('operation', ['time' => null, 'value' => 'd']));
         $last->await();
 
         static::assertSame(['a', 'b', 'c', 'd'], $spy->value);
@@ -59,12 +59,12 @@ final class KeyedSequenceTest extends TestCase
 
     public function testOperationIsStartedIfLimitIsNotReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSequence<string, string, void>
          */
-        $ks = new Async\KeyedSequence(static function (string $key, string $input) use ($spy): void {
+        $ks = new Async\KeyedSequence::<string, string, void>(static function (string $key, string $input) use ($spy): void {
             static::assertSame('x', $key);
 
             $spy->value[] = $input;
@@ -72,7 +72,7 @@ final class KeyedSequenceTest extends TestCase
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        $awaitable = Async\run(static fn(): null => $ks->waitFor('x', 'hello'));
+        $awaitable = Async\run::<null>(static fn(): null => $ks->waitFor('x', 'hello'));
 
         Async\later();
 
@@ -83,19 +83,19 @@ final class KeyedSequenceTest extends TestCase
 
     public function testOperationIsNotStartedIfLimitIsReached(): void
     {
-        $spy = new Psl\Ref([]);
+        $spy = new Psl\Ref::<array>([]);
 
         /**
          * @var Async\KeyedSequence<string, string, void>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input) use ($spy): void {
+        $ks = new Async\KeyedSequence::<string, string, void>(static function (string $_, string $input) use ($spy): void {
             $spy->value[] = $input;
 
             Async\sleep(DateTime\Duration::milliseconds(2));
         });
 
-        Async\run(static fn(): null => $ks->waitFor('x', 'hello'));
-        $awaitable = Async\run(static fn(): null => $ks->waitFor('x', 'world'));
+        Async\run::<null>(static fn(): null => $ks->waitFor('x', 'hello'));
+        $awaitable = Async\run::<null>(static fn(): null => $ks->waitFor('x', 'world'));
 
         Async\sleep(DateTime\Duration::milliseconds(1));
 
@@ -109,7 +109,7 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $semaphore = new Async\KeyedSequence(static fn(string $_, string $input): string => $input);
+        $semaphore = new Async\KeyedSequence::<string, string, string>(static fn(string $_, string $input): string => $input);
 
         $semaphore->cancelAll(new Async\Exception\TimeoutException('The semaphore is destroyed.'));
 
@@ -121,14 +121,14 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
-        $two = Async\run(static fn(): string => $ks->waitFor('foo', 'two'));
+        $one = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'one'));
+        $two = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'two'));
 
         Async\sleep(DateTime\Duration::milliseconds(10));
 
@@ -147,22 +147,22 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
         $ingoing = [
-            Async\run(static fn(): string => $ks->waitFor('foo', 'ingoing')),
-            Async\run(static fn(): string => $ks->waitFor('bar', 'ingoing')),
-            Async\run(static fn(): string => $ks->waitFor('baz', 'ingoing')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'ingoing')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'ingoing')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('baz', 'ingoing')),
         ];
 
         $pending = [
-            Async\run(static fn(): string => $ks->waitFor('foo', 'pending')),
-            Async\run(static fn(): string => $ks->waitFor('bar', 'pending')),
-            Async\run(static fn(): string => $ks->waitFor('baz', 'pending')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'pending')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'pending')),
+            Async\run::<string>(static fn(): string => $ks->waitFor('baz', 'pending')),
         ];
 
         Async\sleep(DateTime\Duration::milliseconds(10));
@@ -187,7 +187,7 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
@@ -195,8 +195,8 @@ final class KeyedSequenceTest extends TestCase
 
         $key = 'foo';
 
-        $one = Async\run(static fn(): string => $ks->waitFor($key, 'one'));
-        $two = Async\run(static fn(): string => $ks->waitFor($key, 'two'));
+        $one = Async\run::<string>(static fn(): string => $ks->waitFor($key, 'one'));
+        $two = Async\run::<string>(static fn(): string => $ks->waitFor($key, 'two'));
         static::assertSame(0, $ks->getPendingOperations($key));
         static::assertFalse($ks->hasOngoingOperations($key));
         static::assertFalse($ks->hasPendingOperations($key));
@@ -235,13 +235,13 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
         });
 
-        $one = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
+        $one = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'one'));
         Async\later();
         static::assertFalse($one->isComplete());
         $ks->waitForPending('foo');
@@ -254,7 +254,7 @@ final class KeyedSequenceTest extends TestCase
         /**
          * @var Async\KeyedSequence<string, string, string>
          */
-        $ks = new Async\KeyedSequence(static function (string $_, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $_, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(40));
 
             return $input;
@@ -265,8 +265,8 @@ final class KeyedSequenceTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
-        $fooOne = Async\run(static fn(): string => $ks->waitFor('foo', 'one'));
-        $barOne = Async\run(static fn(): string => $ks->waitFor('bar', 'one'));
+        $fooOne = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'one'));
+        $barOne = Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'one'));
 
         Async\later();
 
@@ -275,8 +275,8 @@ final class KeyedSequenceTest extends TestCase
         static::assertFalse($ks->hasPendingOperations('foo'));
         static::assertFalse($ks->hasPendingOperations('bar'));
 
-        $fooTwo = Async\run(static fn(): string => $ks->waitFor('foo', 'two'));
-        $barTwo = Async\run(static fn(): string => $ks->waitFor('bar', 'two'));
+        $fooTwo = Async\run::<string>(static fn(): string => $ks->waitFor('foo', 'two'));
+        $barTwo = Async\run::<string>(static fn(): string => $ks->waitFor('bar', 'two'));
 
         Async\later();
 
@@ -304,7 +304,7 @@ final class KeyedSequenceTest extends TestCase
 
     public function testWaitForPendingReturnsImmediatelyWhenNotIngoing(): void
     {
-        $ks = new Async\KeyedSequence(static fn(string $key, string $input): string => $input);
+        $ks = new Async\KeyedSequence::<string, string, string>(static fn(string $key, string $input): string => $input);
 
         $ks->waitForPending('key');
 
@@ -313,68 +313,68 @@ final class KeyedSequenceTest extends TestCase
 
     public function testWaitForCancelledWhileWaiting(): void
     {
-        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
     }
 
     public function testWaitForPendingCancelledWhileWaiting(): void
     {
-        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): null => $ks->waitForPending('key', $token))->await();
+        Async\run::<null>(static fn(): null => $ks->waitForPending('key', $token))->await();
     }
 
     public function testWaitForWithAlreadyCancelledToken(): void
     {
-        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(100));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'))->ignore();
 
         $token = new Async\SignalCancellationToken();
         $token->cancel();
 
         $this->expectException(Async\Exception\CancelledException::class);
 
-        Async\run(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
+        Async\run::<string>(static fn(): string => $ks->waitFor('key', 'second', $token))->await();
     }
 
     public function testCancelledWaitForDoesNotAffectOtherOperations(): void
     {
-        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(30));
 
             return $input;
         });
 
-        $first = Async\run(static fn(): string => $ks->waitFor('key', 'first'));
+        $first = Async\run::<string>(static fn(): string => $ks->waitFor('key', 'first'));
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
-        $second = Async\run(static fn(): string => $ks->waitFor('key', 'second', $token));
+        $second = Async\run::<string>(static fn(): string => $ks->waitFor('key', 'second', $token));
 
         try {
             $second->await();
@@ -392,7 +392,7 @@ final class KeyedSequenceTest extends TestCase
         $innerResult = null;
 
         /** @var Async\KeyedSequence<string, string, string> */
-        $ks = new Async\KeyedSequence(static function (string $key, string $input) use (&$ks, &$innerResult): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input) use (&$ks, &$innerResult): string {
             if ($input === 'outer') {
                 $innerResult = $ks->waitFor($key, 'inner');
             }
@@ -411,7 +411,7 @@ final class KeyedSequenceTest extends TestCase
         $innerResult = null;
 
         /** @var Async\KeyedSequence<string, int, int> */
-        $ks = new Async\KeyedSequence(static function (string $key, int $input) use (&$ks, &$innerResult): int {
+        $ks = new Async\KeyedSequence::<string, int, int>(static function (string $key, int $input) use (&$ks, &$innerResult): int {
             if ($input === 1) {
                 $innerResult = $ks->waitFor($key, 2);
             }
@@ -429,7 +429,7 @@ final class KeyedSequenceTest extends TestCase
     public function testReentrantCallWithDifferentKeyDoesNotDeadlock(): void
     {
         /** @var Async\KeyedSequence<string, string, string> */
-        $ks = new Async\KeyedSequence(static function (string $key, string $input) use (&$ks): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input) use (&$ks): string {
             if ($input === 'outer') {
                 return $ks->waitFor('y', 'inner');
             }
@@ -444,18 +444,18 @@ final class KeyedSequenceTest extends TestCase
 
     public function testCancelledWaitForOnOneKeyDoesNotAffectOtherKey(): void
     {
-        $ks = new Async\KeyedSequence(static function (string $key, string $input): string {
+        $ks = new Async\KeyedSequence::<string, string, string>(static function (string $key, string $input): string {
             Async\sleep(DateTime\Duration::milliseconds(30));
 
             return $input;
         });
 
-        Async\run(static fn(): string => $ks->waitFor('a', 'first-a'))->ignore();
+        Async\run::<string>(static fn(): string => $ks->waitFor('a', 'first-a'))->ignore();
 
         $token = new Async\TimeoutCancellationToken(DateTime\Duration::milliseconds(10));
-        $cancelled = Async\run(static fn(): string => $ks->waitFor('a', 'second-a', $token));
+        $cancelled = Async\run::<string>(static fn(): string => $ks->waitFor('a', 'second-a', $token));
 
-        $other = Async\run(static fn(): string => $ks->waitFor('b', 'first-b'));
+        $other = Async\run::<string>(static fn(): string => $ks->waitFor('b', 'first-b'));
 
         try {
             $cancelled->await();

@@ -76,7 +76,7 @@ final class ConnectConfigurationTest extends TestCase
         $listener = TCP\listen('127.0.0.1', 0);
         $port = $listener->getLocalAddress()->port;
 
-        $future = Async\run(static function () use ($listener): void {
+        $future = Async\run::<void>(static function () use ($listener): void {
             $conn = $listener->accept(new Async\TimeoutCancellationToken(DateTime\Duration::seconds(5)));
             $conn->close();
         });

@@ -13,7 +13,7 @@ namespace Psl\Type;
  *
  * @api
  */
-function uint(): TypeInterface
+function uint(): TypeInterface<int>
 {
     static $instance = new Internal\UIntType();
 

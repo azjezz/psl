@@ -9,11 +9,7 @@ use Psl\Crypto\Exception;
 use SodiumException;
 
 /**
- * @template T
- *
  * @param (Closure(): T) $callback
- *
- * @return T
  *
  * @throws Exception\RuntimeException If the sodium operation fails.
  *
@@ -21,7 +17,7 @@ use SodiumException;
  *
  * @codeCoverageIgnore -We can't reproduce this easily, just ignore it.
  */
-function call_sodium(Closure $callback): mixed
+function call_sodium<T>(Closure $callback): T
 {
     try {
         return $callback();

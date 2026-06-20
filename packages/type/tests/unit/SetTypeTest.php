@@ -14,15 +14,12 @@ use Psl\Type;
 use Psl\Vec;
 use RuntimeException;
 
-/**
- * @extends TypeTestCase<SetInterface<array-key>>
- */
-final class SetTypeTest extends TypeTestCase
+final class SetTypeTest extends TypeTestCase<SetInterface<string|int>>
 {
     #[Override]
-    public static function getType(): Type\TypeInterface
+    public static function getType(): Type\TypeInterface<SetInterface<string|int>>
     {
-        return Type\set(Type\int());
+        return Type\set::<int>(Type\int());
     }
 
     #[Override]
@@ -30,37 +27,37 @@ final class SetTypeTest extends TypeTestCase
     {
         yield [
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
             ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
-            new Collection\Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+            new Collection\Set::<int>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
         ];
 
         yield [
-            Vec\range(1, 10),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Vec\range::<int>(1, 10),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            Dict\map(Vec\range(1, 10), static fn(int $key): string => (string) $key),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            Dict\map::<int, int, string>(Vec\range::<int>(1, 10), static fn(int $key): string => (string) $key),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            new Collection\MutableSet([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableSet::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
 
         yield [
-            new Collection\MutableVector([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-            new Collection\Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\MutableVector::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+            new Collection\Set::<int>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
         ];
     }
 
@@ -80,7 +77,7 @@ final class SetTypeTest extends TypeTestCase
     public static function getToStringExamples(): iterable
     {
         yield [static::getType(), 'Psl\Collection\SetInterface<int>'];
-        yield [Type\set(Type\string()), 'Psl\Collection\SetInterface<string>'];
+        yield [Type\set::<string>(Type\string()), 'Psl\Collection\SetInterface<string>'];
     }
 
     /**
@@ -90,11 +87,11 @@ final class SetTypeTest extends TypeTestCase
     #[Override]
     protected static function equals(mixed $a, mixed $b): bool
     {
-        if (Type\instance_of(SetInterface::class)->matches($a)) {
+        if (Type\instance_of::<SetInterface>(SetInterface::class)->matches($a)) {
             $a = $a->toArray();
         }
 
-        if (Type\instance_of(SetInterface::class)->matches($b)) {
+        if (Type\instance_of::<SetInterface>(SetInterface::class)->matches($b)) {
             $b = $b->toArray();
         }
 
@@ -104,13 +101,13 @@ final class SetTypeTest extends TypeTestCase
     public static function provideAssertExceptionExpectations(): iterable
     {
         yield 'invalid assertion value' => [
-            Type\set(Type\int()),
-            new Collection\MutableSet(['foo' => 'nope']),
+            Type\set::<int>(Type\int()),
+            new Collection\MutableSet::<string>(['foo' => 'nope']),
             'Expected "' . SetInterface::class . '<int>", got "string" at path "nope".',
         ];
         yield 'nested' => [
-            Type\set(Type\string()),
-            new Collection\MutableSet([1 => 123]),
+            Type\set::<string>(Type\string()),
+            new Collection\MutableSet::<int>([1 => 123]),
             'Expected "' . SetInterface::class . '<string>", got "int" at path "123".',
         ];
     }
@@ -118,19 +115,19 @@ final class SetTypeTest extends TypeTestCase
     public static function provideCoerceExceptionExpectations(): iterable
     {
         yield 'invalid coercion value' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             ['nope' => 'nope'],
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];
         yield 'invalid iterator first item' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             (static function (): iterable {
                 yield Type\int()->coerce('nope');
             })(),
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "first()".',
         ];
         yield 'invalid iterator second item' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             (static function (): iterable {
                 yield 0;
                 yield Type\int()->coerce('nope');
@@ -138,7 +135,7 @@ final class SetTypeTest extends TypeTestCase
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "0.next()".',
         ];
         yield 'iterator throwing exception' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             (static function (): iterable {
                 yield 0;
                 throw new RuntimeException('whoops');
@@ -146,21 +143,21 @@ final class SetTypeTest extends TypeTestCase
             'Could not coerce "null" to type "' . SetInterface::class . '<int>" at path "0.next()": whoops.',
         ];
         yield 'iterator yielding null key' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             (static function (): iterable {
                 yield null => 'nope';
             })(),
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "null".',
         ];
         yield 'iterator yielding string key, null value' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             (static function (): iterable {
                 yield 'nope' => 'bar';
             })(),
             'Could not coerce "string" to type "' . SetInterface::class . '<int>" at path "nope".',
         ];
         yield 'iterator yielding object key' => [
-            Type\set(Type\int()),
+            Type\set::<int>(Type\int()),
             (static function (): iterable {
                 yield 'nope' => new class() {};
             })(),
@@ -170,7 +167,7 @@ final class SetTypeTest extends TypeTestCase
 
     #[DataProvider('provideAssertExceptionExpectations')]
     public function testInvalidAssertionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
@@ -184,7 +181,7 @@ final class SetTypeTest extends TypeTestCase
 
     #[DataProvider('provideCoerceExceptionExpectations')]
     public function testInvalidCoercionTypeExceptions(
-        Type\TypeInterface $type,
+        Type\TypeInterface<mixed> $type,
         mixed $data,
         string $expectedMessage,
     ): void {
