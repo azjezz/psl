@@ -113,7 +113,7 @@ Async\main(static function(): int {
 
 | Tool | Description |
 |---|---|
-| [Mago](https://mago.carthage.software/tools/analyzer/configuration-reference#available-plugins) | Enhanced type inference for Mago |
+| [Mago](https://mago.carthage.software/latest/en/tools/analyzer/configuration-reference/#available-plugins) | Enhanced type inference for Mago |
 | [Psalm Plugin](https://github.com/php-standard-library/psalm-plugin) | Enhanced type inference for Psalm |
 | [PHPStan Extension](https://github.com/php-standard-library/phpstan-extension) | Enhanced type inference for PHPStan |
 
