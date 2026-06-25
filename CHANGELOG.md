@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.3.0
+
+### features
+
+* feat(type): add `numeric` type - [#793](https://github.com/php-standard-library/php-standard-library/pull/793) by @gsteel
+
 ## 6.2.1
 
 ### security

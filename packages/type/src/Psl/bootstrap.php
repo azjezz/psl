@@ -46,6 +46,7 @@ declare(strict_types=1);
         'Psl\Type\nullable' => __DIR__ . '/Type/nullable.php',
         'Psl\Type\nullish' => __DIR__ . '/Type/nullish.php',
         'Psl\Type\num' => __DIR__ . '/Type/num.php',
+        'Psl\Type\numeric' => __DIR__ . '/Type/numeric.php',
         'Psl\Type\numeric_string' => __DIR__ . '/Type/numeric_string.php',
         'Psl\Type\object' => __DIR__ . '/Type/object.php',
         'Psl\Type\optional' => __DIR__ . '/Type/optional.php',
