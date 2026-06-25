@@ -28,6 +28,7 @@
         "php-standard-library/iter": "^6.0"
     },
     "require-dev": {
+        "ext-bcmath": "*",
         "php-standard-library/dict": "^6.0",
         "php-standard-library/math": "^6.0",
         "php-standard-library/result": "^6.0",
