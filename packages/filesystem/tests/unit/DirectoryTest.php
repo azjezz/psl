@@ -46,7 +46,7 @@ final class DirectoryTest extends AbstractFilesystemTestCase
     public function testReadDirectoryThrowsIfDirectoryDoesNotExist(): void
     {
         $this->expectException(Filesystem\Exception\NotFoundException::class);
-        $this->expectExceptionMessage('Directory "' . Env\temp_dir() . '/foo-bar-baz' . '" is not found.');
+        $this->expectExceptionMessage('Directory "' . Env\temp_dir() . '/foo-bar-baz" is not found.');
 
         Filesystem\read_directory(Env\temp_dir() . '/foo-bar-baz');
     }

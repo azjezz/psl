@@ -603,7 +603,7 @@ final class ConnectorTest extends TestCase
     }
 
     /**
-     * @param (Closure(Origin, Request?, ClientConfiguration?): void) $onConnect
+     * @param (Closure(Origin, null|Request=, null|ClientConfiguration=): void) $onConnect
      */
     private function createMockConnector(Closure $onConnect): ConnectorInterface
     {

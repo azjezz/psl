@@ -357,7 +357,7 @@ final class RrsigVerifierTest extends TestCase
 
         $caaRecord = new CAARecord('example.com', Duration::seconds(300), 0, 'issue', 'letsencrypt.org');
 
-        $rdata = Byte\chr(0) . Byte\chr(5) . 'issue' . 'letsencrypt.org';
+        $rdata = Byte\chr(0) . Byte\chr(5) . 'issueletsencrypt.org';
 
         $signerWire = Encoder::encodeName('example.com');
         $rrsigPrefix = new Writer()

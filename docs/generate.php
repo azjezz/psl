@@ -700,7 +700,7 @@ Async\main(static function (): int {
     $template = File\read(RESOURCES_DIR . '/page.html');
     // Encoded for embedding inside a <script> block: hex-escape <, >, ', " so the data
     // can never break out of the script context (e.g. a literal </script>).
-    $scriptJsonFlags = \JSON_HEX_TAG | \JSON_HEX_APOS | \JSON_HEX_QUOT | \JSON_HEX_AMP;
+    $scriptJsonFlags = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP;
     $packagesJson = Json\encode(SLUG_TO_PACKAGE, false, $scriptJsonFlags);
     $versionJson = Json\encode($gitRef, false, $scriptJsonFlags);
 
