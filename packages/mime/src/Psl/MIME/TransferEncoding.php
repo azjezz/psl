@@ -103,7 +103,7 @@ enum TransferEncoding: string
             return self::QuotedPrintable;
         }
 
-        if ($highBytes === 0 && $maxLineLength > 998) {
+        if ($highBytes === 0) {
             return self::QuotedPrintable;
         }
 
