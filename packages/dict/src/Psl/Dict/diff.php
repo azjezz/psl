@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Psl\Dict;
 
+use Stringable;
+
 use function array_diff;
 use function array_map;
 
@@ -11,7 +13,7 @@ use function array_map;
  * Computes the difference of iterables.
  *
  * @template Tk of array-key
- * @template Tv
+ * @template Tv of scalar|null|resource|Stringable
  *
  * @param iterable<Tk, Tv> $first
  * @param iterable<Tk, Tv> $second
