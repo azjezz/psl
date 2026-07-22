@@ -21,6 +21,7 @@ final class FormatTest extends TestCase
 
     public function testFormatWithNoArgsReturnsMessageAsIs(): void
     {
+        // @mago-expect lint:no-missing-format-argument
         static::assertSame('hello %s', Str\format('hello %s'));
     }
 

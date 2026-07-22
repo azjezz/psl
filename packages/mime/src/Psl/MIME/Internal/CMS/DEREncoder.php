@@ -75,6 +75,7 @@ final class DEREncoder
             $i++;
         }
 
+        // @mago-expect analysis:redundant-condition - FP
         if ($i > 0) {
             $bytes = substr($bytes, $i);
         }

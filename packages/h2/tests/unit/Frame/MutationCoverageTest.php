@@ -1062,7 +1062,7 @@ final class MutationCoverageTest extends TestCase
 
     public function testAltSvcOriginLengthOneUsesSubstrNotEmpty(): void
     {
-        $raw = new RawFrame(FrameType::AltSvc->value, 0, 0, pack('n', 1) . 'X' . 'val');
+        $raw = new RawFrame(FrameType::AltSvc->value, 0, 0, pack('n', 1) . 'Xval');
         $parsed = AltSvcFrame::fromRaw($raw);
         static::assertSame('X', $parsed->origin);
         static::assertSame('val', $parsed->fieldValue);

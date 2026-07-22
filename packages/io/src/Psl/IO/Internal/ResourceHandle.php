@@ -91,7 +91,7 @@ class ResourceHandle implements
             $this->useSingleRead = 'udp_socket' === $meta['stream_type'] || 'STDIO' === $meta['stream_type'];
         }
 
-        // @mago-expect analysis:redundant-null-coalesce,redundant-null-coalesce - FP
+        /** @mago-expect analysis:redundant-null-coalesce */
         $this->blocks = ($meta['blocked'] ?? true) || ($meta['wrapper_type'] ?? '') === 'plainfile';
         if ($seek) {
             $seekable = $meta['seekable'];
