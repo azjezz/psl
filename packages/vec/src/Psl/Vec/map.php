@@ -31,8 +31,6 @@ use function is_array;
  *
  * @return ($iterable is non-empty-array|non-empty-list ? non-empty-list<T> : list<T>)
  *
- * @mago-expect analysis:impossible-type-comparison,impossible-condition - false positive.
- *
  * @api
  */
 function map(iterable $iterable, Closure $function): array

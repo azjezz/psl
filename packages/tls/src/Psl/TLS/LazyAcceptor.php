@@ -98,7 +98,6 @@ final class LazyAcceptor implements DefaultInterface
         }
 
         // Resource may have been closed by another fiber during suspend.
-        // @mago-expect analysis:redundant-type-comparison,impossible-condition
         if (!is_resource($resource)) {
             throw new Network\Exception\RuntimeException('Stream closed while waiting for ClientHello.');
         }

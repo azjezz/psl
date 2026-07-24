@@ -77,7 +77,7 @@ final class MemoryHandle implements WriteHandleInterface, ReadHandleInterface, S
         $length -= $this->offset;
         $length = $length > $maxBytes ? $maxBytes : $length;
         $result = substr($this->buffer, $this->offset, $length);
-        $this->offset = ($offset = $this->offset + $length) >= 0 ? $offset : 0;
+        $this->offset += $length;
 
         return $result;
     }
