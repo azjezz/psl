@@ -245,7 +245,6 @@ final class StateMachine
                 throw ProtocolException::forFrameSizeError($this->localMaxFrameSize, $payloadLength);
             }
 
-            // @mago-expect analysis:redundant-comparison,redundant-logical-operation - false positives!
             if ($type === 2 && $payloadLength !== 5) {
                 throw FrameDecodingException::forInvalidPayload('PRIORITY', 'payload must be exactly 5 bytes');
             }
