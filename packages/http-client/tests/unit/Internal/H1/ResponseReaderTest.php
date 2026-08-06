@@ -131,6 +131,26 @@ final class ResponseReaderTest extends TestCase
         ResponseReader::read(self::reader(''), 8192, self::timeout(), false);
     }
 
+    public function testConflictingContentLengthFieldsThrow(): void
+    {
+        $raw = "HTTP/1.1 200 OK\r\ncontent-length: 5\r\ncontent-length: 500\r\n\r\nhello";
+
+        $this->expectException(ProtocolException::class);
+        $this->expectExceptionMessage('Conflicting content-length');
+
+        ResponseReader::read(self::reader($raw), 8192, self::timeout(), false);
+    }
+
+    public function testIdenticalDuplicateContentLengthFieldsCollapse(): void
+    {
+        $raw = "HTTP/1.1 200 OK\r\ncontent-length: 5\r\ncontent-length: 5\r\n\r\nhello";
+        [$response] = ResponseReader::read(self::reader($raw), 8192, self::timeout(), false);
+
+        $body = $response->body;
+        static::assertNotNull($body);
+        static::assertSame('hello', $body->readAll());
+    }
+
     public function testMalformedStatusLineNoSpace(): void
     {
         $this->expectException(ProtocolException::class);

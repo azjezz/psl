@@ -106,4 +106,19 @@ final class StreamException extends RuntimeException
     {
         return new self('Stream ' . $streamId . ' has malformed content-length: "' . $value . '".');
     }
+
+    /**
+     * Create a stream exception when a message carries multiple content-length
+     * fields that do not agree, which makes it invalid (RFC 9110 §8.6).
+     *
+     * @param int $streamId The stream identifier.
+     * @param string $first The first content-length value seen.
+     * @param string $second The conflicting value that followed it.
+     */
+    public static function forConflictingContentLength(int $streamId, string $first, string $second): self
+    {
+        return new self(
+            'Stream ' . $streamId . ' has conflicting content-length fields: "' . $first . '" and "' . $second . '".',
+        );
+    }
 }
