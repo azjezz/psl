@@ -150,7 +150,13 @@ final class ResponseReader
             $headers[] = [$name, $value];
 
             $nameLen = $colonPos;
-            if ($nameLen === 14 && $contentLength === null && strtolower($name) === 'content-length') {
+            if ($nameLen === 14 && strtolower($name) === 'content-length') {
+                // RFC 9110 §8.6: duplicate content-length fields that disagree make the
+                // message framing invalid. Identical duplicates collapse to one value.
+                if ($contentLength !== null && $contentLength !== $value) {
+                    throw ProtocolException::forMalformedResponse('Conflicting content-length header fields.');
+                }
+
                 $contentLength = $value;
             } elseif ($nameLen === 17 && $transferEncoding === null && strtolower($name) === 'transfer-encoding') {
                 $transferEncoding = $value;

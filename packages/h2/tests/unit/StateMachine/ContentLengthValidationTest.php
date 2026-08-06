@@ -219,4 +219,101 @@ final class ContentLengthValidationTest extends TestCase
 
         static::assertTrue(true);
     }
+
+    /**
+     * Open a server-side stream carrying the given content-length fields, in order.
+     *
+     * @param list<string> $contentLengths
+     *
+     * @return array{StateMachine, Encoder}
+     */
+    private function createServerWithContentLengths(array $contentLengths): array
+    {
+        $sm = new StateMachine(false);
+        $sm->initialize();
+
+        $headers = [
+            new Header(':method', 'POST'),
+            new Header(':scheme', 'https'),
+            new Header(':path', '/'),
+        ];
+
+        foreach ($contentLengths as $value) {
+            $headers[] = new Header('content-length', $value);
+        }
+
+        $encoder = new Encoder();
+        $block = $encoder->encode($headers);
+        $sm->receive(new HeadersFrame(1, $block, false, true)->toRaw());
+
+        return [$sm, $encoder];
+    }
+
+    public function testConflictingContentLengthFieldsThrow(): void
+    {
+        $this->expectException(StreamException::class);
+        $this->expectExceptionMessage('conflicting content-length');
+
+        $this->createServerWithContentLengths(['5', '500']);
+    }
+
+    public function testConflictingContentLengthFieldsThrowRegardlessOfOrder(): void
+    {
+        $this->expectException(StreamException::class);
+        $this->expectExceptionMessage('conflicting content-length');
+
+        $this->createServerWithContentLengths(['500', '5']);
+    }
+
+    public function testMalformedContentLengthAfterAValidOneThrows(): void
+    {
+        $this->expectException(StreamException::class);
+        $this->expectExceptionMessage('malformed content-length');
+
+        $this->createServerWithContentLengths(['5', 'not-a-number']);
+    }
+
+    public function testIdenticalDuplicateContentLengthFieldsCollapse(): void
+    {
+        [$sm] = $this->createServerWithContentLengths(['5', '5']);
+
+        [, $events] = $sm->receive(new DataFrame(1, 'hello', true)->toRaw());
+
+        static::assertNotEmpty($events);
+        static::assertInstanceOf(DataReceived::class, $events[0]);
+        static::assertSame('hello', $events[0]->data);
+    }
+
+    public function testCollapsedDuplicateContentLengthIsStillEnforcedAgainstData(): void
+    {
+        [$sm] = $this->createServerWithContentLengths(['5', '5']);
+
+        $this->expectException(StreamException::class);
+        $this->expectExceptionMessage('content-length mismatch');
+
+        $sm->receive(new DataFrame(1, 'too much data', false)->toRaw());
+    }
+
+    public function testConflictingContentLengthOnResponseThrowsForClient(): void
+    {
+        $sm = new StateMachine(true);
+        $sm->initialize();
+
+        $sm->sendHeadersEncoded(
+            1,
+            [new Header(':method', 'GET'), new Header(':scheme', 'https'), new Header(':path', '/')],
+            true,
+        );
+
+        $block = new Encoder()->encode([
+            new Header(':status', '200'),
+            new Header('content-length', '5'),
+            new Header('content-length', '500'),
+        ]);
+
+        $this->expectException(StreamException::class);
+        $this->expectExceptionMessage('conflicting content-length');
+
+        $sm->receive(new HeadersFrame(1, $block, false, true)->toRaw());
+    }
 }

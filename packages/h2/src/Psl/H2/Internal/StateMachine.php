@@ -1131,21 +1131,14 @@ final class StateMachine
                 $stream->state = StreamState::HalfClosedLocal;
             }
 
-            // RFC 9113 §8.1.1: only servers validate content-length on incoming requests.
-            // HEAD responses may declare content-length without sending DATA.
-            if (!$isTrailing && !$this->isClient) {
-                foreach ($headers as $header) {
-                    if ($header->name !== 'content-length') {
-                        continue;
-                    }
+            if (!$isTrailing) {
+                $contentLength = self::resolveContentLength($streamId, $headers);
 
-                    if ($header->value === '' || !ctype_digit($header->value)) {
-                        throw StreamException::forMalformedContentLength($streamId, $header->value);
-                    }
-
-                    $stream->declaredContentLength = (int) $header->value;
-
-                    break;
+                // RFC 9113 §8.1.1: only servers enforce the declared length against
+                // received DATA. HEAD responses may declare content-length without
+                // sending any DATA frames.
+                if (!$this->isClient && $contentLength !== null) {
+                    $stream->declaredContentLength = (int) $contentLength;
                 }
             }
 
@@ -1172,6 +1165,40 @@ final class StateMachine
         }
 
         return [[], $events];
+    }
+
+    /**
+     * Resolve the content-length field, rejecting malformed and conflicting values.
+     *
+     * Repeated field lines are equivalent to a single comma-separated value
+     * (RFC 9110 §5.3), so duplicate content-length fields that disagree make the
+     * message invalid (RFC 9110 §8.6). Identical duplicates collapse to one value.
+     *
+     * @param positive-int $streamId
+     * @param list<Header> $headers
+     *
+     * @throws StreamException If a value is malformed, or conflicts with an earlier one.
+     */
+    private static function resolveContentLength(int $streamId, array $headers): null|string
+    {
+        $resolved = null;
+        foreach ($headers as $header) {
+            if ($header->name !== 'content-length') {
+                continue;
+            }
+
+            if ($header->value === '' || !ctype_digit($header->value)) {
+                throw StreamException::forMalformedContentLength($streamId, $header->value);
+            }
+
+            if ($resolved !== null && $resolved !== $header->value) {
+                throw StreamException::forConflictingContentLength($streamId, $resolved, $header->value);
+            }
+
+            $resolved = $header->value;
+        }
+
+        return $resolved;
     }
 
     /**
