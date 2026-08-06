@@ -38,7 +38,6 @@ final readonly class NonEmptyStringType extends Type\Type
     public function coerce(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
-            /** @var non-empty-string $value */
             return $value;
         }
 
@@ -67,7 +66,6 @@ final readonly class NonEmptyStringType extends Type\Type
     public function assert(mixed $value): string
     {
         if ('' !== $value && is_string($value)) {
-            /** @var non-empty-string $value */
             return $value;
         }
 
