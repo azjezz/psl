@@ -1,4 +1,4 @@
-[# Compression
+# Compression
 
 The `Compression` component provides streaming compression and decompression abstractions for IO handles. It defines compressor and decompressor interfaces, and four handle decorators that transparently compress or decompress data as it flows through.
 
