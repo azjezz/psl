@@ -49,7 +49,7 @@ Install everything with `composer require php-standard-library/php-standard-libr
 
 ## I/O
 
-- [compression](https://php-standard-library.dev/next/compression/index.md): The Compression component provides streaming compression and decompression abstractions for IO ha...
+- [Compression](https://php-standard-library.dev/next/compression/index.md): The Compression component provides streaming compression and decompression abstractions for IO ha...
 - [File](https://php-standard-library.dev/next/file/index.md): The File component provides typed file handles for reading and writing files. It builds on the IO...
 - [Filesystem](https://php-standard-library.dev/next/filesystem/index.md): The Filesystem component provides type-safe functions for common file system operations. It repla...
 - [IO](https://php-standard-library.dev/next/io/index.md): The IO component provides handle-based I/O abstractions. Instead of reaching for global functions...
@@ -4789,7 +4789,7 @@ See [src/Psl/Regex/](https://github.com/php-standard-library/php-standard-librar
 
 ---
 
-[# Compression
+# Compression
 
 The `Compression` component provides streaming compression and decompression abstractions for IO handles. It defines compressor and decompressor interfaces, and four handle decorators that transparently compress or decompress data as it flows through.
 
