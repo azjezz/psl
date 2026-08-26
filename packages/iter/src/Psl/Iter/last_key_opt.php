@@ -7,7 +7,7 @@ namespace Psl\Iter;
 use Psl\Option\Option;
 
 /**
- * Returns the first key of an iterable wrapped in {@see Option::some},
+ * Returns the last key of an iterable wrapped in {@see Option::some},
  * if the iterable is empty, {@see Option::none} will be returned.
  *
  * @template Tk
